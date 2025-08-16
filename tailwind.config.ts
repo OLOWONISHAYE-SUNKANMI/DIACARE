@@ -59,7 +59,9 @@ export default {
 					green: 'hsl(var(--medical-green))',
 					'green-light': 'hsl(var(--medical-green-light))',
 					blue: 'hsl(var(--medical-blue))',
-					'blue-light': 'hsl(var(--medical-blue-light))'
+					'blue-light': 'hsl(var(--medical-blue-light))',
+					purple: 'hsl(var(--medical-purple))',
+					'purple-light': 'hsl(var(--medical-purple-light))'
 				},
 				// Medical Status Colors
 				status: {

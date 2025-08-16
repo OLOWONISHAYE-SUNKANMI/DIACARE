@@ -53,6 +53,8 @@ All colors MUST be HSL.
     --medical-green-light: 142 76% 90%;
     --medical-blue: 210 50% 45%;
     --medical-blue-light: 210 50% 90%;
+    --medical-purple: 260 50% 45%;
+    --medical-purple-light: 260 30% 90%;
     
     /* Medical Glucose Zones */
     --glucose-normal: 142 76% 36%;
