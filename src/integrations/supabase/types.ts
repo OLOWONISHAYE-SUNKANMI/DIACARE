@@ -381,6 +381,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: string
       }
+      get_webhook_url: {
+        Args: { webhook_type: string }
+        Returns: string
+      }
       is_permission_valid: {
         Args: { permission_id: string }
         Returns: boolean
@@ -417,6 +421,10 @@ export type Database = {
           approve: boolean
           permission_id_param: string
         }
+        Returns: boolean
+      }
+      test_webhook: {
+        Args: { webhook_type: string }
         Returns: boolean
       }
       use_consultation: {
