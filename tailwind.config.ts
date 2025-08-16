@@ -60,7 +60,12 @@ export default {
 				glucose: {
 					normal: 'hsl(var(--glucose-normal))',
 					high: 'hsl(var(--glucose-high))',
-					low: 'hsl(var(--glucose-low))'
+					low: 'hsl(var(--glucose-low))',
+					'very-high': 'hsl(var(--glucose-very-high))',
+					target: 'hsl(var(--glucose-target))',
+					'very-low': 'hsl(var(--glucose-very-low))',
+					'limit-high': 'hsl(var(--glucose-limit-high))',
+					'limit-low': 'hsl(var(--glucose-limit-low))'
 				},
 				pricing: {
 					essential: 'hsl(var(--pricing-essential))',

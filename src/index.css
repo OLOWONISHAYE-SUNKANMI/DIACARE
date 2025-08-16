@@ -53,6 +53,13 @@ All colors MUST be HSL.
     --glucose-high: 25 85% 55%;
     --glucose-low: 220 85% 55%;
     
+    /* Glucose zones for CGM */
+    --glucose-very-high: 0 85% 55%;
+    --glucose-target: 142 76% 36%;
+    --glucose-very-low: 220 90% 50%;
+    --glucose-limit-high: 35 85% 55%;
+    --glucose-limit-low: 180 60% 50%;
+    
     /* Pricing colors */
     --pricing-essential: 45 93% 47%;
     --pricing-essential-light: 45 93% 95%;
