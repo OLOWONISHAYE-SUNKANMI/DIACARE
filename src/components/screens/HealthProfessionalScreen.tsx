@@ -33,6 +33,20 @@ const HealthProfessionalScreen = () => {
 
   const handleRegistration = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Vérifier que les deux checkboxes sont cochées
+    const termsChecked = (document.getElementById('terms') as HTMLInputElement)?.checked;
+    const charterChecked = (document.getElementById('charter') as HTMLInputElement)?.checked;
+    
+    if (!termsChecked || !charterChecked) {
+      toast({
+        title: "Acceptation requise",
+        description: "Vous devez accepter les conditions d'utilisation et la charte déontologique",
+        variant: "destructive"
+      });
+      return;
+    }
+    
     setShowCharter(true);
   };
 
@@ -159,14 +173,14 @@ const HealthProfessionalScreen = () => {
 
                 <div className="space-y-3">
                   <div className="flex items-start space-x-2">
-                    <input type="checkbox" id="terms" className="mt-1" required />
+                    <input type="checkbox" id="terms" className="mt-1" />
                     <Label htmlFor="terms" className="text-sm">
                       J'accepte les conditions d'utilisation
                     </Label>
                   </div>
                   
                   <div className="flex items-start space-x-2">
-                    <input type="checkbox" id="charter" className="mt-1" required />
+                    <input type="checkbox" id="charter" className="mt-1" />
                     <Label htmlFor="charter" className="text-sm">
                       J'accepte la charte de déontologie DARE (obligatoire)
                     </Label>
