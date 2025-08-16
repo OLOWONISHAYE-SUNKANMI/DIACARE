@@ -16,6 +16,7 @@ import ProfileScreen from "@/components/screens/ProfileScreen";
 import PaymentScreen from "@/components/screens/PaymentScreen";
 import AssistantScreen from "@/components/screens/AssistantScreen";
 import HealthProfessionalScreen from "@/components/screens/HealthProfessionalScreen";
+import { AdminDashboardScreen } from "@/components/screens/AdminDashboardScreen";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("home");
@@ -65,6 +66,8 @@ const Index = () => {
         return <ChatScreen />;
       case "health-pro":
         return <HealthProfessionalScreen />;
+      case "admin":
+        return <AdminDashboardScreen />;
       case "blog":
         return <BlogScreen />;
       case "assistant":
@@ -112,6 +115,14 @@ const Index = () => {
           🏥 Candidature Pro
         </Button>
       </Link>
+      
+      {/* Bouton admin temporaire pour test */}
+      <Button 
+        onClick={() => setActiveTab("admin")}
+        className="fixed bottom-36 left-4 px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 z-10 text-sm"
+      >
+        👨‍💼 Admin
+      </Button>
     </div>
   );
 };
