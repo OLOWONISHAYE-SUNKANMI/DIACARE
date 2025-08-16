@@ -28,16 +28,10 @@ const HomeScreen = () => {
 
   return (
     <div className="flex-1 p-4 space-y-6 pb-24 animate-fade-in">
-      {/* Welcome & Regional Badge */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold text-foreground">Bonjour !</h2>
-          <p className="text-muted-foreground">Comment vous sentez-vous aujourd'hui ?</p>
-        </div>
-        <Badge className="bg-africa-green text-white flex items-center space-x-1">
-          <Globe className="w-3 h-3" />
-          <span className="text-xs">🌍 Afrique de l'Ouest & Centrale</span>
-        </Badge>
+      {/* Welcome Header */}
+      <div className="text-center space-y-2">
+        <h2 className="text-2xl font-bold text-foreground">Bonjour !</h2>
+        <p className="text-muted-foreground">Comment vous sentez-vous aujourd'hui ?</p>
       </div>
 
       {/* Current Glucose Reading - Large Teal Card */}
