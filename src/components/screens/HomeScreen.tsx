@@ -7,7 +7,7 @@ import NativeHeader from "@/components/ui/NativeHeader";
 import GlucoseWidget from "@/components/ui/GlucoseWidget";
 import QuickActionsGrid from "@/components/ui/QuickActionsGrid";
 import AddGlucoseModal from "@/components/modals/AddGlucoseModal";
-import ScanMealModal from "@/components/modals/ScanMealModal";
+import MealModal from "@/components/modals/ScanMealModal";
 import MedicationModal from "@/components/modals/MedicationModal";
 import ActivityModal from "@/components/modals/ActivityModal";
 
@@ -180,7 +180,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
         isOpen={activeModal === "glucose"} 
         onClose={() => setActiveModal(null)} 
       />
-      <ScanMealModal 
+      <MealModal 
         isOpen={activeModal === "meal"} 
         onClose={() => setActiveModal(null)} 
       />
