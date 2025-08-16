@@ -46,8 +46,11 @@ class ErrorBoundary extends Component<Props, State> {
                 className="w-full bg-medical-teal hover:bg-medical-teal/90"
               >
                 <RefreshCw className="w-4 h-4 mr-2" />
-                Redémarrer l'app
+                Redémarrer DARE
               </Button>
+              <p className="text-xs text-muted-foreground">
+                💪 DARE - Osez vaincre le diabète
+              </p>
             </CardContent>
           </Card>
         </div>

@@ -70,12 +70,12 @@ const BlogScreen = (props: BlogScreenProps) => {
 
   return (
     <div className="flex-1 p-4 space-y-6 pb-24 animate-fade-in">
-      {/* Header */}
+      {/* Header avec branding DARE */}
       <div className="text-center space-y-2">
         <h1 className="text-2xl font-bold text-foreground flex items-center justify-center gap-2">
-          📚 Blog DARE
+          💪 <span className="text-medical-teal">DARE</span> Blog
         </h1>
-        <p className="text-muted-foreground">Bien vivre avec le diabète</p>
+        <p className="text-muted-foreground">Osez bien vivre avec le diabète</p>
       </div>
 
       {/* Filtres catégories */}

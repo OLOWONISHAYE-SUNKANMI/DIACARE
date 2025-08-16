@@ -1,73 +1,146 @@
-# Welcome to your Lovable project
+# 💪 DARE - Votre Compagnon Diabète
 
-## Project info
+> **DARE** : *Diabetes African Revolutionary Experience*  
+> Application de gestion du diabète adaptée au contexte africain et aux standards UEMOA
 
-**URL**: https://lovable.dev/projects/4f4a1ae9-6088-4353-aad8-9b1aee7bc73e
+## 🌍 Vision
 
-## How can I edit this code?
+DARE révolutionne la prise en charge du diabète en Afrique en offrant une solution technologique adaptée aux réalités locales : climat sahélien, prix en F CFA, contexte médical africain, et alimentation traditionnelle.
 
-There are several ways of editing your application.
+## ✨ Fonctionnalités Principales
 
-**Use Lovable**
+### 📊 **Suivi Glycémique Intelligent**
+- Mesures en temps réel avec statuts colorés
+- Objectifs adaptés au climat tropical (70-140 mg/dL)
+- Historique 7 jours avec observance
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/4f4a1ae9-6088-4353-aad8-9b1aee7bc73e) and start prompting.
+### 💉 **Calculateur de Doses**
+- **Formule adaptée UEMOA** : Correction = (glycémie-120)/50, Repas = glucides/15
+- Interface intuitive avec sliders
+- Calcul temps réel automatique
+- Conservation insuline (conseils canari terre cuite)
 
-Changes made via Lovable will be committed automatically to this repo.
+### 📝 **Carnet de Suivi**
+- Entrées contextualisées (thiéboudienne, attiéké, bissap)
+- Suivi injections avec alertes
+- Statistiques hebdomadaires personnalisées
 
-**Use your preferred IDE**
+### 👨‍👩‍👧‍👦 **Réseau Familial**
+- Code partage familial sécurisé
+- Permissions granulaires (lecture, urgence, complet)
+- Activité temps réel des Care Partners
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### 📚 **Blog DARE**
+- Articles "OSER" motivationnels
+- Contenu adapté Afrique (cuisine, climat, lifestyle)
+- Témoignages authentiques africains
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### 👤 **Profil Personnalisé**
+- Données réalistes africaines (noms, téléphones +221)
+- Équipe médicale locale (CHU Le Dantec)
+- Prix médicaments en F CFA
 
-Follow these steps:
+## 🏥 **Contexte Médical Africain**
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+### Standards UEMOA Intégrés
+- Objectifs glycémiques adaptés climat tropical
+- Formules insuline pour population africaine
+- Prix médicaments en Francs CFA
+- Réseau hospitalier local (Sénégal)
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+### Personnages Authentiques
+- **Amadou Diallo** (49 ans, Enseignant, Dakar)
+- **Dr. Mamadou Kane** (CHU Aristide Le Dantec)
+- **Fatou Diop** (Épouse, Care Partner principal)
+- **Ibrahim Diallo** (Fils, monitoring familial)
 
-# Step 3: Install the necessary dependencies.
-npm i
+## 🎨 **Design System**
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+### Couleurs Principales
+- **Medical Teal**: `#0d9488` - Couleur principale confiance
+- **Success Green**: `#16a34a` - Glycémie normale
+- **Warning Orange**: `#ea580c` - Attention
+- **African Earth**: Tons chauds authentiques
+
+### Typographie
+- Font system adaptée lisibilité mobile
+- Tailles touch-friendly (44px minimum)
+- Contrastes validés accessibilité
+
+## 📱 **Expérience Mobile**
+
+### PWA Ready
+- Interface app-like native
+- Navigation bottom persistante
+- Micro-animations fluides
+- Offline graceful degradation
+
+### Responsive Design
+- Optimisé mobile-first
+- Breakpoints adaptés usage africain
+- Touch targets accessibilité
+
+## 🚀 **Architecture Technique**
+
+### Stack Moderne
+```
+- React 18 + TypeScript
+- Vite (build optimisé)
+- Tailwind CSS (design system)
+- Lucide React (icônes optimisées)
+- Shadcn/ui (composants accessibles)
 ```
 
-**Edit a file directly in GitHub**
+### Performance
+- Code splitting automatique
+- Lazy loading composants
+- Bundle size optimisé <1MB
+- First paint <2s
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### Accessibilité (WCAG 2.1)
+- Navigation clavier complète
+- Screen readers support
+- Focus indicators
+- Contrastes validés AA
 
-**Use GitHub Codespaces**
+## 🔧 **Installation & Développement**
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+```bash
+# Installation dépendances
+npm install
 
-## What technologies are used for this project?
+# Démarrage développement
+npm run dev
 
-This project is built with:
+# Build production
+npm run build
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+# Preview production
+npm run preview
+```
 
-## How can I deploy this project?
+## 🌟 **Philosophie DARE**
 
-Simply open [Lovable](https://lovable.dev/projects/4f4a1ae9-6088-4353-aad8-9b1aee7bc73e) and click on Share -> Publish.
+**OSER** c'est la philosophie au cœur de DARE :
+- **O**ser prendre sa santé en main
+- **S**uivre avec persévérance  
+- **E**ngager sa famille et son équipe médicale
+- **R**éussir à vivre pleinement avec le diabète
 
-## Can I connect a custom domain to my Lovable project?
+## 📞 **Support & Contact**
 
-Yes, you can!
+- **Documentation** : Intégrée à l'application
+- **Support technique** : Via l'interface DARE
+- **Feedback** : Système de notifications intégré
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## 🏆 **Impact Attendu**
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+DARE vise à améliorer la prise en charge du diabète en Afrique en :
+- Réduisant les complications par un meilleur suivi
+- Adapting la technologie aux réalités locales
+- Impliquant les familles dans le parcours de soins
+- Démocratisant l'accès aux outils de gestion moderne
+
+---
+
+**DARE - Ensemble, osons vaincre le diabète en Afrique ! 💪🌍**
