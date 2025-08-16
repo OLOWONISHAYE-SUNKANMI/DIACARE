@@ -17,6 +17,7 @@ import PaymentScreen from "@/components/screens/PaymentScreen";
 import AssistantScreen from "@/components/screens/AssistantScreen";
 import HealthProfessionalScreen from "@/components/screens/HealthProfessionalScreen";
 import { AdminDashboardScreen } from "@/components/screens/AdminDashboardScreen";
+import { AdminApplicationReview } from "@/components/screens/AdminApplicationReview";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("home");
@@ -68,6 +69,8 @@ const Index = () => {
         return <HealthProfessionalScreen />;
       case "admin":
         return <AdminDashboardScreen />;
+      case "admin-review":
+        return <AdminApplicationReview />;
       case "blog":
         return <BlogScreen />;
       case "assistant":
@@ -122,6 +125,14 @@ const Index = () => {
         className="fixed bottom-36 left-4 px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 z-10 text-sm"
       >
         👨‍💼 Admin
+      </Button>
+      
+      {/* Bouton examen candidatures */}
+      <Button 
+        onClick={() => setActiveTab("admin-review")}
+        className="fixed bottom-52 left-4 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 z-10 text-sm"
+      >
+        📋 Candidatures
       </Button>
     </div>
   );
