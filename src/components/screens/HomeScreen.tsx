@@ -100,19 +100,26 @@ const HomeScreen = () => {
             <div className="flex items-start space-x-3 p-3 rounded-lg bg-medical-green-light">
               <div className="w-8 h-8 rounded-full bg-medical-green text-white flex items-center justify-center font-bold text-sm">D</div>
               <div>
-                <p className="font-medium text-card-foreground">Diabetes Awareness</p>
-                <p className="text-sm text-muted-foreground">Sensibilisation au diabète</p>
+                <p className="font-medium text-card-foreground">Diabetes</p>
+                <p className="text-sm text-muted-foreground">Gestion du diabète</p>
               </div>
             </div>
             <div className="flex items-start space-x-3 p-3 rounded-lg bg-medical-teal-light">
               <div className="w-8 h-8 rounded-full bg-medical-teal text-white flex items-center justify-center font-bold text-sm">A</div>
               <div>
-                <p className="font-medium text-card-foreground">Routine</p>
-                <p className="text-sm text-muted-foreground">Routines de soins quotidiennes</p>
+                <p className="font-medium text-card-foreground">Awareness</p>
+                <p className="text-sm text-muted-foreground">Sensibilisation et éducation</p>
               </div>
             </div>
             <div className="flex items-start space-x-3 p-3 rounded-lg bg-medical-blue-light">
               <div className="w-8 h-8 rounded-full bg-medical-blue text-white flex items-center justify-center font-bold text-sm">R</div>
+              <div>
+                <p className="font-medium text-card-foreground">Routine</p>
+                <p className="text-sm text-muted-foreground">Routines de soins quotidiennes</p>
+              </div>
+            </div>
+            <div className="flex items-start space-x-3 p-3 rounded-lg bg-medical-purple-light">
+              <div className="w-8 h-8 rounded-full bg-medical-purple text-white flex items-center justify-center font-bold text-sm">E</div>
               <div>
                 <p className="font-medium text-card-foreground">Empowerment</p>
                 <p className="text-sm text-muted-foreground">Autonomisation et contrôle</p>
