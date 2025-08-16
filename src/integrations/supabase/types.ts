@@ -14,6 +14,184 @@ export type Database = {
   }
   public: {
     Tables: {
+      patient_access_codes: {
+        Row: {
+          access_code: string
+          expires_at: string
+          generated_at: string | null
+          id: string
+          is_active: boolean | null
+          professional_access_count: number | null
+          user_id: string
+        }
+        Insert: {
+          access_code: string
+          expires_at: string
+          generated_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          professional_access_count?: number | null
+          user_id: string
+        }
+        Update: {
+          access_code?: string
+          expires_at?: string
+          generated_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          professional_access_count?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      professional_applications: {
+        Row: {
+          city: string | null
+          code_expires_at: string | null
+          code_issued_at: string | null
+          country: string
+          created_at: string | null
+          documents: Json | null
+          email: string
+          first_name: string
+          id: string
+          institution: string | null
+          last_name: string
+          license_number: string
+          phone: string | null
+          professional_code: string | null
+          professional_type: string
+          rejection_reason: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          city?: string | null
+          code_expires_at?: string | null
+          code_issued_at?: string | null
+          country: string
+          created_at?: string | null
+          documents?: Json | null
+          email: string
+          first_name: string
+          id?: string
+          institution?: string | null
+          last_name: string
+          license_number: string
+          phone?: string | null
+          professional_code?: string | null
+          professional_type: string
+          rejection_reason?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          city?: string | null
+          code_expires_at?: string | null
+          code_issued_at?: string | null
+          country?: string
+          created_at?: string | null
+          documents?: Json | null
+          email?: string
+          first_name?: string
+          id?: string
+          institution?: string | null
+          last_name?: string
+          license_number?: string
+          phone?: string | null
+          professional_code?: string | null
+          professional_type?: string
+          rejection_reason?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      professional_codes: {
+        Row: {
+          code: string
+          expires_at: string
+          generated_at: string | null
+          id: string
+          is_active: boolean | null
+          max_usage: number | null
+          professional_id: string | null
+          specialty: string | null
+          usage_count: number | null
+        }
+        Insert: {
+          code: string
+          expires_at: string
+          generated_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          max_usage?: number | null
+          professional_id?: string | null
+          specialty?: string | null
+          usage_count?: number | null
+        }
+        Update: {
+          code?: string
+          expires_at?: string
+          generated_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          max_usage?: number | null
+          professional_id?: string | null
+          specialty?: string | null
+          usage_count?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "professional_codes_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professional_applications"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      professional_patient_access: {
+        Row: {
+          access_method: string | null
+          accessed_at: string | null
+          id: string
+          is_active: boolean | null
+          patient_user_id: string
+          professional_id: string | null
+        }
+        Insert: {
+          access_method?: string | null
+          accessed_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          patient_user_id: string
+          professional_id?: string | null
+        }
+        Update: {
+          access_method?: string | null
+          accessed_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          patient_user_id?: string
+          professional_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "professional_patient_access_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professional_applications"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           created_at: string
@@ -58,7 +236,18 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      approve_professional_application: {
+        Args: { application_id: string; reviewer_id: string }
+        Returns: boolean
+      }
+      generate_patient_access_code: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
+      generate_professional_code: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never
