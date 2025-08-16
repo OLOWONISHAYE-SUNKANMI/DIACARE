@@ -8,6 +8,7 @@ import HomeScreen from "@/components/screens/HomeScreen";
 import ChartsScreen from "@/components/screens/ChartsScreen";
 import DosesScreen from "@/components/screens/DosesScreen";
 import JournalScreen from "@/components/screens/JournalScreen";
+import ChatScreen from "@/components/screens/ChatScreen";
 import BlogScreen from "@/components/screens/BlogScreen";
 import FamilyScreen from "@/components/screens/FamilyScreen";
 import ProfileScreen from "@/components/screens/ProfileScreen";
@@ -58,6 +59,8 @@ const Index = () => {
           showAlert={showAlert}
           setShowAlert={setShowAlert}
         />;
+      case "chat":
+        return <ChatScreen />;
       case "blog":
         return <BlogScreen />;
       case "assistant":
