@@ -52,22 +52,18 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				// DARE Modern Pastel Colors
+				// DARE Dark Premium Colors
 				medical: {
 					teal: 'hsl(var(--medical-teal))',
 					'teal-light': 'hsl(var(--medical-teal-light))',
 					'teal-dark': 'hsl(var(--medical-teal-dark))'
 				},
-				pastel: {
-					rose: 'hsl(var(--pastel-rose))',
-					'rose-dark': 'hsl(var(--pastel-rose-dark))',
-					lavender: 'hsl(var(--pastel-lavender))',
-					'lavender-dark': 'hsl(var(--pastel-lavender-dark))',
-					mint: 'hsl(var(--pastel-mint))',
-					'mint-dark': 'hsl(var(--pastel-mint-dark))',
-					peach: 'hsl(var(--pastel-peach))',
-					'peach-dark': 'hsl(var(--pastel-peach-dark))'
-				},
+				// Dark Fitness App Colors
+				cyan: 'hsl(188 100% 42%)',
+				'electric-green': 'hsl(142 76% 36%)',
+				'vibrant-purple': 'hsl(262 83% 58%)',
+				'vibrant-orange': 'hsl(45 93% 47%)',
+				'lime-green': 'hsl(84 81% 44%)',
 				glucose: {
 					normal: 'hsl(var(--glucose-normal))',
 					high: 'hsl(var(--glucose-high))',

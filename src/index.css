@@ -8,90 +8,85 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Modern Pastel Design System */
-    --background: 0 0% 99%;
-    --foreground: 220 15% 20%;
+    /* Dark Premium Design System */
+    --background: 0 0% 6%;
+    --foreground: 0 0% 95%;
 
-    /* Card system - Ultra rounded with soft shadows */
-    --card: 0 0% 100%;
-    --card-foreground: 220 15% 20%;
+    /* Card system - Dark glassmorphism */
+    --card: 0 0% 8%;
+    --card-foreground: 0 0% 95%;
 
     /* Popover */
-    --popover: 0 0% 100%;
-    --popover-foreground: 220 15% 20%;
+    --popover: 0 0% 8%;
+    --popover-foreground: 0 0% 95%;
 
-    /* Primary - Soft Blue Pastel */
-    --primary: 199 100% 88%;
-    --primary-foreground: 220 15% 20%;
+    /* Primary - Vibrant Cyan */
+    --primary: 188 100% 42%;
+    --primary-foreground: 0 0% 98%;
 
-    /* Secondary - Lavande pastel */
-    --secondary: 270 100% 96%;
-    --secondary-foreground: 220 15% 20%;
+    /* Secondary - Electric Green */
+    --secondary: 142 76% 36%;
+    --secondary-foreground: 0 0% 98%;
 
-    /* Muted tones - Very soft */
-    --muted: 220 14% 96%;
-    --muted-foreground: 220 8% 46%;
+    /* Muted tones - Dark */
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 65%;
 
-    /* Accent - Mint pastel */
-    --accent: 158 100% 95%;
-    --accent-foreground: 158 60% 20%;
+    /* Accent - Vibrant Purple */
+    --accent: 262 83% 58%;
+    --accent-foreground: 0 0% 98%;
 
-    /* Health status colors - Pastel versions */
-    --success: 142 76% 85%;
-    --success-foreground: 142 76% 20%;
+    /* Health status colors - Dark vibrant */
+    --success: 84 81% 44%;
+    --success-foreground: 0 0% 98%;
     
-    --warning: 45 93% 85%;
-    --warning-foreground: 45 93% 20%;
+    --warning: 45 93% 47%;
+    --warning-foreground: 0 0% 98%;
     
-    --destructive: 0 84% 88%;
-    --destructive-foreground: 0 84% 30%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
 
-    /* DARE Modern Pastel Colors */
-    --medical-teal: 180 100% 85%;
-    --medical-teal-light: 180 100% 95%;
-    --medical-teal-dark: 180 100% 35%;
+    /* DARE Dark Premium Colors */
+    --medical-teal: 188 100% 42%;
+    --medical-teal-light: 188 100% 85%;
+    --medical-teal-dark: 188 100% 25%;
     
-    /* Glucose zones - Pastel */
-    --glucose-normal: 142 76% 85%;
-    --glucose-high: 25 85% 85%;
-    --glucose-low: 220 85% 85%;
-    --glucose-very-high: 0 85% 85%;
-    --glucose-target: 142 76% 85%;
-    --glucose-very-low: 220 90% 85%;
-    --glucose-limit-high: 35 85% 85%;
-    --glucose-limit-low: 180 60% 85%;
+    /* Glucose zones - Dark vibrant */
+    --glucose-normal: 84 81% 44%;
+    --glucose-high: 25 95% 53%;
+    --glucose-low: 220 91% 56%;
+    --glucose-very-high: 0 72% 51%;
+    --glucose-target: 84 81% 44%;
+    --glucose-very-low: 220 91% 56%;
+    --glucose-limit-high: 35 95% 53%;
+    --glucose-limit-low: 188 100% 42%;
     
-    /* Modern Pastel Pricing */
-    --pricing-essential: 280 100% 90%;
-    --pricing-essential-light: 280 100% 96%;
-    --pricing-premium: 250 100% 90%;
-    --pricing-premium-light: 250 100% 96%;
+    /* Dark Premium Pricing */
+    --pricing-essential: 45 93% 47%;
+    --pricing-essential-light: 45 93% 15%;
+    --pricing-premium: 262 83% 58%;
+    --pricing-premium-light: 262 83% 15%;
     
-    /* Pastel Action Colors */
-    --pastel-rose: 330 100% 94%;
-    --pastel-rose-dark: 330 100% 40%;
-    --pastel-lavender: 270 100% 94%;
-    --pastel-lavender-dark: 270 100% 40%;
-    --pastel-mint: 158 100% 94%;
-    --pastel-mint-dark: 158 100% 40%;
-    --pastel-peach: 25 100% 94%;
-    --pastel-peach-dark: 25 100% 40%;
+    /* Dark Glassmorphism Colors */
+    --glass-dark: rgba(0, 0, 0, 0.4);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-accent: rgba(6, 182, 212, 0.2);
     
-    /* Modern Gradients */
-    --gradient-header: linear-gradient(135deg, hsl(199 100% 88%), hsl(270 100% 90%));
-    --gradient-mint: linear-gradient(135deg, hsl(158 100% 95%), hsl(180 100% 85%));
-    --gradient-rose: linear-gradient(135deg, hsl(330 100% 94%), hsl(320 100% 90%));
-    --gradient-lavender: linear-gradient(135deg, hsl(270 100% 94%), hsl(280 100% 90%));
-    --gradient-peach: linear-gradient(135deg, hsl(25 100% 94%), hsl(35 100% 90%));
-    --gradient-glass: linear-gradient(135deg, rgba(255,255,255,0.25), rgba(255,255,255,0.1));
+    /* Dark Premium Gradients */
+    --gradient-header: linear-gradient(135deg, #1E40AF 0%, #0891B2 50%, #059669 100%);
+    --gradient-cyan: linear-gradient(135deg, #06B6D4 0%, #0891B2 100%);
+    --gradient-green: linear-gradient(135deg, #10B981 0%, #059669 100%);
+    --gradient-purple: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+    --gradient-orange: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+    --gradient-glass: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
 
     /* Glassmorphism borders */
-    --border: 220 14% 92%;
-    --input: 220 14% 94%;
-    --ring: 199 100% 80%;
+    --border: 0 0% 20%;
+    --input: 0 0% 15%;
+    --ring: 188 100% 42%;
 
     /* Ultra rounded corners */
-    --radius: 1.5rem;
+    --radius: 1rem;
 
     --sidebar-background: 0 0% 98%;
 
@@ -230,5 +225,6 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    background: radial-gradient(ellipse at top, rgba(6, 182, 212, 0.1) 0%, rgba(0, 0, 0, 1) 50%);
   }
 }
