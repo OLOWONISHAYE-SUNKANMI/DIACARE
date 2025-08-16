@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { User, Phone, MapPin, Calendar, Users, Pill, Settings, Download, Shield, MessageSquare, PhoneCall } from "lucide-react";
+import { User, Phone, MapPin, Calendar, Users, Pill, Settings, Download, Shield, MessageSquare, PhoneCall, LogOut } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -13,6 +14,7 @@ const ProfileScreen = (props: ProfileScreenProps) => {
   const [notifications, setNotifications] = useState(true);
   const [dataSharing, setDataSharing] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
+  const { signOut } = useAuth();
 
   return (
     <div className="flex-1 p-4 space-y-6 pb-24 animate-fade-in">
@@ -229,6 +231,14 @@ const ProfileScreen = (props: ProfileScreenProps) => {
         <Button variant="outline" className="w-full">
           <Shield className="w-4 h-4 mr-2" />
           Confidentialité
+        </Button>
+        <Button 
+          variant="destructive" 
+          className="w-full"
+          onClick={signOut}
+        >
+          <LogOut className="w-4 h-4 mr-2" />
+          Se déconnecter
         </Button>
       </div>
     </div>
