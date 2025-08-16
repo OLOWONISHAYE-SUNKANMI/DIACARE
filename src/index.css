@@ -8,81 +8,90 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Base medical app colors */
-    --background: 210 20% 98%;
-    --foreground: 210 15% 12%;
+    /* Modern Pastel Design System */
+    --background: 0 0% 99%;
+    --foreground: 220 15% 20%;
 
-    /* Card system */
+    /* Card system - Ultra rounded with soft shadows */
     --card: 0 0% 100%;
-    --card-foreground: 210 15% 12%;
+    --card-foreground: 220 15% 20%;
 
     /* Popover */
     --popover: 0 0% 100%;
-    --popover-foreground: 210 15% 12%;
+    --popover-foreground: 220 15% 20%;
 
-    /* Primary - Deep navy for trust */
-    --primary: 210 50% 20%;
-    --primary-foreground: 0 0% 100%;
+    /* Primary - Soft Blue Pastel */
+    --primary: 199 100% 88%;
+    --primary-foreground: 220 15% 20%;
 
-    /* Secondary - Light medical blue */
-    --secondary: 200 25% 95%;
-    --secondary-foreground: 210 15% 12%;
+    /* Secondary - Lavande pastel */
+    --secondary: 270 100% 96%;
+    --secondary-foreground: 220 15% 20%;
 
-    /* Muted tones */
-    --muted: 200 15% 94%;
-    --muted-foreground: 210 10% 50%;
+    /* Muted tones - Very soft */
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 8% 46%;
 
-    /* Accent - Medical teal */
-    --accent: 180 25% 94%;
-    --accent-foreground: 180 40% 20%;
+    /* Accent - Mint pastel */
+    --accent: 158 100% 95%;
+    --accent-foreground: 158 60% 20%;
 
-    /* Health status colors */
-    --success: 142 76% 36%;
-    --success-foreground: 0 0% 100%;
+    /* Health status colors - Pastel versions */
+    --success: 142 76% 85%;
+    --success-foreground: 142 76% 20%;
     
-    --warning: 45 93% 47%;
-    --warning-foreground: 0 0% 100%;
+    --warning: 45 93% 85%;
+    --warning-foreground: 45 93% 20%;
     
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive: 0 84% 88%;
+    --destructive-foreground: 0 84% 30%;
 
-    /* DARE specific colors */
-    --medical-teal: 180 50% 45%;
-    --medical-teal-light: 180 30% 85%;
-    --glucose-normal: 142 76% 36%;
-    --glucose-high: 25 85% 55%;
-    --glucose-low: 220 85% 55%;
+    /* DARE Modern Pastel Colors */
+    --medical-teal: 180 100% 85%;
+    --medical-teal-light: 180 100% 95%;
+    --medical-teal-dark: 180 100% 35%;
     
-    /* Glucose zones for CGM */
-    --glucose-very-high: 0 85% 55%;
-    --glucose-target: 142 76% 36%;
-    --glucose-very-low: 220 90% 50%;
-    --glucose-limit-high: 35 85% 55%;
-    --glucose-limit-low: 180 60% 50%;
+    /* Glucose zones - Pastel */
+    --glucose-normal: 142 76% 85%;
+    --glucose-high: 25 85% 85%;
+    --glucose-low: 220 85% 85%;
+    --glucose-very-high: 0 85% 85%;
+    --glucose-target: 142 76% 85%;
+    --glucose-very-low: 220 90% 85%;
+    --glucose-limit-high: 35 85% 85%;
+    --glucose-limit-low: 180 60% 85%;
     
-    /* Pricing colors */
-    --pricing-essential: 45 93% 47%;
-    --pricing-essential-light: 45 93% 95%;
-    --pricing-premium: 250 70% 55%;
-    --pricing-premium-light: 250 70% 95%;
+    /* Modern Pastel Pricing */
+    --pricing-essential: 280 100% 90%;
+    --pricing-essential-light: 280 100% 96%;
+    --pricing-premium: 250 100% 90%;
+    --pricing-premium-light: 250 100% 96%;
     
-    /* Regional colors */
-    --africa-green: 120 40% 30%;
-    --africa-orange: 30 100% 50%;
-    --glucose-normal: 142 76% 36%;
-    --glucose-high: 25 85% 55%;
-    --glucose-low: 220 85% 55%;
+    /* Pastel Action Colors */
+    --pastel-rose: 330 100% 94%;
+    --pastel-rose-dark: 330 100% 40%;
+    --pastel-lavender: 270 100% 94%;
+    --pastel-lavender-dark: 270 100% 40%;
+    --pastel-mint: 158 100% 94%;
+    --pastel-mint-dark: 158 100% 40%;
+    --pastel-peach: 25 100% 94%;
+    --pastel-peach-dark: 25 100% 40%;
     
-    /* Gradients */
-    --gradient-header: linear-gradient(135deg, hsl(210 50% 20%), hsl(200 70% 50%));
-    --gradient-card: linear-gradient(135deg, hsl(0 0% 100%), hsl(200 25% 98%));
+    /* Modern Gradients */
+    --gradient-header: linear-gradient(135deg, hsl(199 100% 88%), hsl(270 100% 90%));
+    --gradient-mint: linear-gradient(135deg, hsl(158 100% 95%), hsl(180 100% 85%));
+    --gradient-rose: linear-gradient(135deg, hsl(330 100% 94%), hsl(320 100% 90%));
+    --gradient-lavender: linear-gradient(135deg, hsl(270 100% 94%), hsl(280 100% 90%));
+    --gradient-peach: linear-gradient(135deg, hsl(25 100% 94%), hsl(35 100% 90%));
+    --gradient-glass: linear-gradient(135deg, rgba(255,255,255,0.25), rgba(255,255,255,0.1));
 
-    /* Borders and inputs */
-    --border: 200 20% 88%;
-    --input: 200 20% 88%;
-    --ring: 180 50% 45%;
+    /* Glassmorphism borders */
+    --border: 220 14% 92%;
+    --input: 220 14% 94%;
+    --ring: 199 100% 80%;
 
-    --radius: 0.5rem;
+    /* Ultra rounded corners */
+    --radius: 1.5rem;
 
     --sidebar-background: 0 0% 98%;
 

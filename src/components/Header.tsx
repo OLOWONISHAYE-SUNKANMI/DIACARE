@@ -2,14 +2,14 @@ import { Heart } from "lucide-react";
 
 const Header = () => {
   return (
-    <header className="w-full bg-gradient-to-r from-primary to-medical-teal text-primary-foreground p-4 shadow-lg">
-      <div className="flex items-center justify-center space-x-3">
-        <div className="flex items-center justify-center w-10 h-10 bg-white/20 rounded-full">
-          <Heart className="w-6 h-6 text-white" />
+    <header className="w-full rounded-3xl m-4 mb-0 shadow-2xl overflow-hidden" style={{background: 'var(--gradient-header)'}}>
+      <div className="flex items-center justify-center space-x-4 py-8 px-6">
+        <div className="flex items-center justify-center w-16 h-16 bg-white/20 rounded-full shadow-lg backdrop-blur-sm">
+          <span className="text-3xl">💪</span>
         </div>
         <div className="text-center">
-          <h1 className="text-2xl font-bold tracking-wide">DARE</h1>
-          <p className="text-xs text-white/90 tracking-wide">
+          <h1 className="text-4xl font-black tracking-wider text-white drop-shadow-lg">DARE</h1>
+          <p className="text-sm text-white/85 tracking-wide font-light mt-1">
             Diabetes Awareness, Routine & Empowerment
           </p>
         </div>

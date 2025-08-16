@@ -27,51 +27,59 @@ const HomeScreen = () => {
   ];
 
   return (
-    <div className="flex-1 p-4 space-y-6 pb-24 animate-fade-in">
+    <div className="flex-1 p-6 space-y-8 pb-32 animate-fade-in">
       {/* Welcome Header */}
-      <div className="text-center space-y-2">
-        <h2 className="text-2xl font-bold text-foreground">Bonjour !</h2>
-        <p className="text-muted-foreground">Comment vous sentez-vous aujourd'hui ?</p>
+      <div className="text-center space-y-3 pt-4">
+        <h2 className="text-4xl font-black text-foreground tracking-wide">Bonjour !</h2>
+        <p className="text-lg text-muted-foreground font-light">Comment vous sentez-vous aujourd'hui ?</p>
       </div>
 
-      {/* Current Glucose Reading - Large Teal Card */}
-      <Card className="bg-medical-teal text-white border-0 shadow-lg">
-        <CardHeader className="text-center pb-3">
-          <CardTitle className="flex items-center justify-center space-x-2 text-white">
-            <Activity className="w-6 h-6" />
-            <span className="text-lg">Glycémie Actuelle</span>
+      {/* Current Glucose Reading - Modern Gradient Card */}
+      <Card className="border-0 shadow-2xl rounded-3xl overflow-hidden" style={{background: 'var(--gradient-mint)'}}>
+        <CardHeader className="text-center pb-4 pt-8">
+          <CardTitle className="flex items-center justify-center space-x-3 text-medical-teal-dark">
+            <div className="w-12 h-12 rounded-full bg-white/30 flex items-center justify-center backdrop-blur-sm">
+              <Activity className="w-7 h-7" />
+            </div>
+            <span className="text-2xl font-bold">Glycémie Actuelle</span>
           </CardTitle>
         </CardHeader>
-        <CardContent className="text-center space-y-4">
-          <div className="space-y-2">
-            <div className="text-6xl font-bold text-white">
+        <CardContent className="text-center space-y-6 pb-8">
+          <div className="space-y-4">
+            <div className="text-8xl font-black text-medical-teal-dark drop-shadow-lg">
               {currentGlucose}
             </div>
-            <div className="text-lg text-white/90">mg/dL</div>
-            <div className="inline-flex items-center space-x-1 px-4 py-2 rounded-full text-sm font-medium bg-white/20 text-white">
-              <Activity className="w-4 h-4" />
+            <div className="text-2xl text-medical-teal-dark/80 font-semibold">mg/dL</div>
+            <div className="inline-flex items-center space-x-2 px-6 py-3 rounded-full text-lg font-semibold bg-white/40 text-medical-teal-dark backdrop-blur-sm shadow-lg">
+              <Activity className="w-5 h-5" />
               <span>Dans la normale</span>
             </div>
           </div>
-          <div className="text-sm text-white/80 flex items-center justify-center space-x-1">
-            <Calendar className="w-4 h-4" />
+          <div className="text-base text-medical-teal-dark/70 flex items-center justify-center space-x-2 font-medium">
+            <Calendar className="w-5 h-5" />
             <span>Dernière mesure : Aujourd'hui 14:30</span>
           </div>
         </CardContent>
       </Card>
 
-      {/* Quick Actions Grid */}
-      <div className="space-y-3">
-        <h3 className="text-lg font-semibold text-foreground">Actions Rapides</h3>
-        <div className="grid grid-cols-2 gap-3">
+      {/* Quick Actions Grid - Modern Pastel */}
+      <div className="space-y-6">
+        <h3 className="text-3xl font-bold text-foreground">Actions Rapides</h3>
+        <div className="grid grid-cols-2 gap-6">
           {quickActions.map((action, index) => {
             const Icon = action.icon;
+            const gradients = ['var(--gradient-rose)', 'var(--gradient-lavender)', 'var(--gradient-mint)', 'var(--gradient-peach)'];
+            const textColors = ['text-pastel-rose-dark', 'text-pastel-lavender-dark', 'text-pastel-mint-dark', 'text-pastel-peach-dark'];
             return (
-              <Card key={index} className="hover:shadow-md transition-all cursor-pointer hover:scale-105 border-medical-teal/20">
-                <CardContent className="p-4 text-center space-y-3">
-                  <div className="text-2xl">{action.emoji}</div>
-                  <Icon className="w-6 h-6 text-medical-teal mx-auto" />
-                  <p className="text-sm font-medium text-foreground">{action.label}</p>
+              <Card key={index} className="border-0 shadow-2xl rounded-3xl transition-all duration-300 cursor-pointer hover:scale-105 hover:shadow-3xl" style={{background: gradients[index]}}>
+                <CardContent className="p-6 text-center space-y-4">
+                  <div className="w-16 h-16 rounded-full bg-white/30 flex items-center justify-center mx-auto backdrop-blur-sm shadow-lg">
+                    <div className="text-3xl">{action.emoji}</div>
+                  </div>
+                  <div className={`w-12 h-12 rounded-full bg-white/40 flex items-center justify-center mx-auto backdrop-blur-sm shadow-md`}>
+                    <Icon className={`w-7 h-7 ${textColors[index]}`} />
+                  </div>
+                  <p className={`text-base font-bold ${textColors[index]}`}>{action.label}</p>
                 </CardContent>
               </Card>
             );
@@ -79,126 +87,155 @@ const HomeScreen = () => {
         </div>
       </div>
 
-      {/* Mission DARE */}
-      <Card className="border-l-4 border-l-medical-teal bg-gradient-to-r from-medical-teal-light to-white">
-        <CardHeader>
-          <CardTitle className="text-lg text-foreground flex items-center space-x-2">
-            <Target className="w-5 h-5 text-medical-teal" />
+      {/* Mission DARE - Modern Pastel */}
+      <Card className="border-0 shadow-2xl rounded-3xl overflow-hidden" style={{background: 'var(--gradient-lavender)'}}>
+        <CardHeader className="pb-4 pt-6">
+          <CardTitle className="text-2xl font-bold text-pastel-lavender-dark flex items-center space-x-3">
+            <div className="w-10 h-10 rounded-full bg-white/30 flex items-center justify-center backdrop-blur-sm">
+              <Target className="w-6 h-6" />
+            </div>
             <span>Mission DARE</span>
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-3">
-            <div className="flex items-start space-x-3">
-              <div className="w-8 h-8 rounded-full bg-medical-teal text-white flex items-center justify-center font-bold text-sm">D</div>
+        <CardContent className="space-y-6 pb-6">
+          <div className="space-y-5">
+            <div className="flex items-start space-x-4 p-4 rounded-2xl bg-white/30 backdrop-blur-sm">
+              <div className="w-12 h-12 rounded-full bg-pastel-lavender-dark text-white flex items-center justify-center font-black text-lg shadow-lg">D</div>
               <div>
-                <p className="font-medium text-foreground">Diabetes Awareness</p>
-                <p className="text-sm text-muted-foreground">Sensibilisation au diabète</p>
+                <p className="font-bold text-lg text-pastel-lavender-dark">Diabetes Awareness</p>
+                <p className="text-pastel-lavender-dark/70 font-medium">Sensibilisation au diabète</p>
               </div>
             </div>
-            <div className="flex items-start space-x-3">
-              <div className="w-8 h-8 rounded-full bg-medical-teal text-white flex items-center justify-center font-bold text-sm">A</div>
+            <div className="flex items-start space-x-4 p-4 rounded-2xl bg-white/30 backdrop-blur-sm">
+              <div className="w-12 h-12 rounded-full bg-pastel-lavender-dark text-white flex items-center justify-center font-black text-lg shadow-lg">A</div>
               <div>
-                <p className="font-medium text-foreground">Routine</p>
-                <p className="text-sm text-muted-foreground">Routines de soins quotidiennes</p>
+                <p className="font-bold text-lg text-pastel-lavender-dark">Routine</p>
+                <p className="text-pastel-lavender-dark/70 font-medium">Routines de soins quotidiennes</p>
               </div>
             </div>
-            <div className="flex items-start space-x-3">
-              <div className="w-8 h-8 rounded-full bg-medical-teal text-white flex items-center justify-center font-bold text-sm">R</div>
+            <div className="flex items-start space-x-4 p-4 rounded-2xl bg-white/30 backdrop-blur-sm">
+              <div className="w-12 h-12 rounded-full bg-pastel-lavender-dark text-white flex items-center justify-center font-black text-lg shadow-lg">R</div>
               <div>
-                <p className="font-medium text-foreground">Empowerment</p>
-                <p className="text-sm text-muted-foreground">Autonomisation et contrôle</p>
+                <p className="font-bold text-lg text-pastel-lavender-dark">Empowerment</p>
+                <p className="text-pastel-lavender-dark/70 font-medium">Autonomisation et contrôle</p>
               </div>
             </div>
           </div>
         </CardContent>
       </Card>
 
-      {/* Défis DARE Aujourd'hui */}
-      <Card className="border-medical-teal border">
-        <CardHeader>
-          <CardTitle className="text-lg text-foreground flex items-center space-x-2">
-            <Target className="w-5 h-5 text-medical-teal" />
+      {/* Défis DARE Aujourd'hui - Modern */}
+      <Card className="border-0 shadow-2xl rounded-3xl bg-card">
+        <CardHeader className="pb-4">
+          <CardTitle className="text-2xl font-bold text-foreground flex items-center space-x-3">
+            <div className="w-10 h-10 rounded-full bg-medical-teal flex items-center justify-center">
+              <Target className="w-6 h-6 text-white" />
+            </div>
             <span>Défis DARE Aujourd'hui</span>
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-3">
+        <CardContent className="space-y-4 pb-6">
           {challenges.map((challenge, index) => (
-            <div key={index} className="flex items-center space-x-3 p-2 rounded-lg bg-muted/50">
-              <div className={`w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold ${
+            <div key={index} className="flex items-center space-x-4 p-4 rounded-2xl bg-muted/30">
+              <div className={`w-10 h-10 rounded-full flex items-center justify-center text-white text-base font-bold shadow-lg ${
                 challenge.completed ? 'bg-success' : 'bg-muted-foreground'
               }`}>
                 {challenge.letter}
               </div>
-              <span className={`flex-1 text-sm ${challenge.completed ? 'line-through text-muted-foreground' : 'text-foreground'}`}>
+              <span className={`flex-1 text-base font-medium ${challenge.completed ? 'line-through text-muted-foreground' : 'text-foreground'}`}>
                 {challenge.challenge}
               </span>
               {challenge.completed ? (
-                <Check className="w-4 h-4 text-success" />
+                <div className="w-8 h-8 rounded-full bg-success flex items-center justify-center">
+                  <Check className="w-5 h-5 text-white" />
+                </div>
               ) : (
-                <div className="w-4 h-4 rounded border border-muted-foreground" />
+                <div className="w-8 h-8 rounded-full border-2 border-muted-foreground" />
               )}
             </div>
           ))}
         </CardContent>
       </Card>
 
-      {/* Pricing Cards */}
-      <div className="space-y-3">
-        <h3 className="text-lg font-semibold text-foreground">Forfaits DARE</h3>
-        <div className="space-y-3">
+      {/* Pricing Cards - Premium Modern Design */}
+      <div className="space-y-6">
+        <h3 className="text-3xl font-bold text-foreground">Forfaits DARE</h3>
+        <div className="space-y-6">
           {/* Forfait Essentiel */}
-          <Card className="bg-pricing-essential-light border-pricing-essential">
-            <CardHeader>
-              <CardTitle className="text-lg text-foreground flex items-center justify-between">
+          <Card className="border-0 shadow-2xl rounded-3xl overflow-hidden" style={{background: 'var(--gradient-peach)'}}>
+            <CardHeader className="pb-4 pt-6">
+              <CardTitle className="text-xl font-bold text-pastel-peach-dark flex items-center justify-between">
                 <span>Forfait Essentiel</span>
-                <span className="text-xl font-bold text-pricing-essential">5 000 F CFA/mois</span>
+                <div className="text-right">
+                  <div className="text-4xl font-black text-pastel-peach-dark">5 000</div>
+                  <div className="text-sm font-semibold text-pastel-peach-dark/70">F CFA/mois</div>
+                </div>
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Check className="w-4 h-4 text-success" />
-                <span className="text-sm">Suivi glycémie de base</span>
+            <CardContent className="space-y-4 pb-6">
+              <div className="flex items-center space-x-3 p-3 rounded-2xl bg-white/30 backdrop-blur-sm">
+                <div className="w-8 h-8 rounded-full bg-success flex items-center justify-center">
+                  <Check className="w-5 h-5 text-white" />
+                </div>
+                <span className="text-base font-semibold text-pastel-peach-dark">Suivi glycémie de base</span>
               </div>
-              <div className="flex items-center space-x-2">
-                <Check className="w-4 h-4 text-success" />
-                <span className="text-sm">Rappels médicaments</span>
+              <div className="flex items-center space-x-3 p-3 rounded-2xl bg-white/30 backdrop-blur-sm">
+                <div className="w-8 h-8 rounded-full bg-success flex items-center justify-center">
+                  <Check className="w-5 h-5 text-white" />
+                </div>
+                <span className="text-base font-semibold text-pastel-peach-dark">Rappels médicaments</span>
               </div>
-              <div className="flex items-center space-x-2">
-                <X className="w-4 h-4 text-destructive" />
-                <span className="text-sm text-muted-foreground">Analyses avancées</span>
+              <div className="flex items-center space-x-3 p-3 rounded-2xl bg-white/20 backdrop-blur-sm opacity-60">
+                <div className="w-8 h-8 rounded-full bg-destructive flex items-center justify-center">
+                  <X className="w-5 h-5 text-white" />
+                </div>
+                <span className="text-base text-pastel-peach-dark/60">Analyses avancées</span>
               </div>
-              <div className="flex items-center space-x-2">
-                <X className="w-4 h-4 text-destructive" />
-                <span className="text-sm text-muted-foreground">Support médical 24/7</span>
+              <div className="flex items-center space-x-3 p-3 rounded-2xl bg-white/20 backdrop-blur-sm opacity-60">
+                <div className="w-8 h-8 rounded-full bg-destructive flex items-center justify-center">
+                  <X className="w-5 h-5 text-white" />
+                </div>
+                <span className="text-base text-pastel-peach-dark/60">Support médical 24/7</span>
               </div>
             </CardContent>
           </Card>
 
           {/* Forfait Premium */}
-          <Card className="bg-pricing-premium-light border-pricing-premium">
-            <CardHeader>
-              <CardTitle className="text-lg text-foreground flex items-center justify-between">
+          <Card className="border-0 shadow-2xl rounded-3xl overflow-hidden relative" style={{background: 'var(--gradient-rose)'}}>
+            <div className="absolute top-4 right-4 bg-white/90 text-pastel-rose-dark px-3 py-1 rounded-full text-xs font-bold backdrop-blur-sm">⭐ POPULAIRE</div>
+            <CardHeader className="pb-4 pt-6">
+              <CardTitle className="text-xl font-bold text-pastel-rose-dark flex items-center justify-between">
                 <span>Forfait Premium</span>
-                <span className="text-xl font-bold text-pricing-premium">10 000 F CFA/mois</span>
+                <div className="text-right">
+                  <div className="text-4xl font-black text-pastel-rose-dark">10 000</div>
+                  <div className="text-sm font-semibold text-pastel-rose-dark/70">F CFA/mois</div>
+                </div>
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Check className="w-4 h-4 text-success" />
-                <span className="text-sm">Suivi glycémie avancé</span>
+            <CardContent className="space-y-4 pb-6">
+              <div className="flex items-center space-x-3 p-3 rounded-2xl bg-white/30 backdrop-blur-sm">
+                <div className="w-8 h-8 rounded-full bg-success flex items-center justify-center">
+                  <Check className="w-5 h-5 text-white" />
+                </div>
+                <span className="text-base font-semibold text-pastel-rose-dark">Suivi glycémie avancé</span>
               </div>
-              <div className="flex items-center space-x-2">
-                <Check className="w-4 h-4 text-success" />
-                <span className="text-sm">Rappels intelligents</span>
+              <div className="flex items-center space-x-3 p-3 rounded-2xl bg-white/30 backdrop-blur-sm">
+                <div className="w-8 h-8 rounded-full bg-success flex items-center justify-center">
+                  <Check className="w-5 h-5 text-white" />
+                </div>
+                <span className="text-base font-semibold text-pastel-rose-dark">Rappels intelligents</span>
               </div>
-              <div className="flex items-center space-x-2">
-                <Check className="w-4 h-4 text-success" />
-                <span className="text-sm">Analyses et prédictions IA</span>
+              <div className="flex items-center space-x-3 p-3 rounded-2xl bg-white/30 backdrop-blur-sm">
+                <div className="w-8 h-8 rounded-full bg-success flex items-center justify-center">
+                  <Check className="w-5 h-5 text-white" />
+                </div>
+                <span className="text-base font-semibold text-pastel-rose-dark">Analyses et prédictions IA</span>
               </div>
-              <div className="flex items-center space-x-2">
-                <Check className="w-4 h-4 text-success" />
-                <span className="text-sm">Support médical 24/7</span>
+              <div className="flex items-center space-x-3 p-3 rounded-2xl bg-white/30 backdrop-blur-sm">
+                <div className="w-8 h-8 rounded-full bg-success flex items-center justify-center">
+                  <Check className="w-5 h-5 text-white" />
+                </div>
+                <span className="text-base font-semibold text-pastel-rose-dark">Support médical 24/7</span>
               </div>
             </CardContent>
           </Card>
