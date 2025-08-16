@@ -133,6 +133,39 @@ All colors MUST be HSL.
   animation: scale-in 0.2s ease-out;
 }
 
+/* Micro-animations pour boutons */
+.btn-hover {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-hover:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-hover:active {
+  transform: translateY(0);
+}
+
+/* Touch targets minimum 44px */
+@media (max-width: 768px) {
+  button, .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Focus indicators for accessibility */
+.focus-ring {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.focus-ring:focus {
+  outline: 2px solid hsl(var(--medical-teal));
+  outline-offset: 2px;
+}
+
 /* Scrollbar hide */
 .scrollbar-hide {
   -ms-overflow-style: none;

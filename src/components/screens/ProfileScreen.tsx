@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { User, Phone, Mail, MapPin, Briefcase, Calendar, Users, Pill, Target, Settings, Download, Shield, MessageSquare, PhoneCall } from "lucide-react";
+import { User, Phone, MapPin, Calendar, Users, Pill, Settings, Download, Shield, MessageSquare, PhoneCall } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -87,7 +87,7 @@ const ProfileScreen = (props: ProfileScreenProps) => {
             </div>
             <div>
               <span className="text-muted-foreground">Ville</span>
-              <p className="font-medium">Dakar</p>
+              <p className="font-medium">Dakar, Sénégal</p>
             </div>
             <div>
               <span className="text-muted-foreground">Profession</span>
@@ -108,8 +108,8 @@ const ProfileScreen = (props: ProfileScreenProps) => {
         <CardContent className="space-y-4">
           <div className="space-y-2">
             <div className="font-medium">Dr. Mamadou Kane</div>
-            <div className="text-sm text-muted-foreground">Médecin traitant</div>
-            <div className="text-sm">+221 33 825 14 52</div>
+            <div className="text-sm text-muted-foreground">Médecin traitant • Diabétologue</div>
+            <div className="text-sm">📞 +221 33 825 14 52</div>
           </div>
           
           <Separator />
@@ -117,13 +117,15 @@ const ProfileScreen = (props: ProfileScreenProps) => {
           <div className="space-y-2">
             <div className="font-medium">CHU Aristide Le Dantec</div>
             <div className="text-sm text-muted-foreground">Établissement de suivi</div>
+            <div className="text-sm text-muted-foreground">📍 Dakar, Sénégal</div>
           </div>
           
           <Separator />
           
           <div className="space-y-2">
             <div className="font-medium">Dr. Aminata Sow</div>
-            <div className="text-sm text-muted-foreground">Endocrinologue</div>
+            <div className="text-sm text-muted-foreground">Endocrinologue consultante</div>
+            <div className="text-sm text-muted-foreground">🏥 Polyclinique du Point E</div>
           </div>
         </CardContent>
       </Card>
@@ -140,14 +142,17 @@ const ProfileScreen = (props: ProfileScreenProps) => {
           <div>
             <span className="text-muted-foreground text-sm">Insulines</span>
             <p className="font-medium">Lantus 20UI matin • Humalog selon glycémie</p>
+            <p className="text-xs text-muted-foreground">Conservées au frais (canari en terre cuite)</p>
           </div>
           <div>
-            <span className="text-muted-foreground text-sm">Médicaments</span>
+            <span className="text-muted-foreground text-sm">Médicaments oraux</span>
             <p className="font-medium">Metformine 1000mg 2x/j</p>
+            <p className="text-xs text-muted-foreground">Prix: 2,500 F CFA/mois</p>
           </div>
           <div>
             <span className="text-muted-foreground text-sm">Objectif glycémique</span>
-            <p className="font-medium">70-140 mg/dL</p>
+            <p className="font-medium">70-140 mg/dL (norme UEMOA)</p>
+            <p className="text-xs text-muted-foreground">Adapté au climat tropical</p>
           </div>
         </CardContent>
       </Card>

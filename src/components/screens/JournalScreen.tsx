@@ -34,7 +34,8 @@ const JournalScreen = ({ showAlert, setShowAlert }: JournalScreenProps) => {
       glucoseStatus: "Légèrement élevé",
       glucoseColor: "text-amber-600",
       glucoseBg: "bg-amber-50",
-      insulin: { type: "Humalog", dose: 8, injectionTime: "15h35", status: "injected" }
+      insulin: { type: "Humalog", dose: 8, injectionTime: "15h35", status: "injected" },
+      context: "Après thiéboudienne"
     },
     {
       id: 2,
@@ -45,7 +46,8 @@ const JournalScreen = ({ showAlert, setShowAlert }: JournalScreenProps) => {
       glucoseStatus: "Dans la cible",
       glucoseColor: "text-emerald-600",
       glucoseBg: "bg-emerald-50",
-      insulin: { type: "Lantus", dose: 20, injectionTime: "08h05", status: "injected" }
+      insulin: { type: "Lantus", dose: 20, injectionTime: "08h05", status: "injected" },
+      context: "À jeun"
     },
     {
       id: 3,
@@ -56,7 +58,8 @@ const JournalScreen = ({ showAlert, setShowAlert }: JournalScreenProps) => {
       glucoseStatus: "Élevé",
       glucoseColor: "text-red-600",
       glucoseBg: "bg-red-50",
-      insulin: { type: "Humalog", dose: 6, injectionTime: null, status: "missed" }
+      insulin: { type: "Humalog", dose: 6, injectionTime: null, status: "missed" },
+      context: "Avant dîner"
     },
     {
       id: 4,
@@ -67,7 +70,8 @@ const JournalScreen = ({ showAlert, setShowAlert }: JournalScreenProps) => {
       glucoseStatus: "Dans la cible",
       glucoseColor: "text-emerald-600",
       glucoseBg: "bg-emerald-50",
-      insulin: { type: "Humalog", dose: 7, injectionTime: "12h20", status: "injected" }
+      insulin: { type: "Humalog", dose: 7, injectionTime: "12h20", status: "injected" },
+      context: "Post-déjeuner"
     },
     {
       id: 5,
@@ -78,7 +82,8 @@ const JournalScreen = ({ showAlert, setShowAlert }: JournalScreenProps) => {
       glucoseStatus: "Dans la cible",
       glucoseColor: "text-emerald-600",
       glucoseBg: "bg-emerald-50",
-      insulin: { type: "Humalog", dose: 5, injectionTime: "20h35", status: "injected" }
+      insulin: { type: "Humalog", dose: 5, injectionTime: "20h35", status: "injected" },
+      context: "Après bissap sans sucre"
     }
   ];
 
@@ -153,18 +158,21 @@ const JournalScreen = ({ showAlert, setShowAlert }: JournalScreenProps) => {
       {/* Entrées du carnet */}
       <div className="space-y-4">
         {journalEntries.map((entry) => (
-          <Card key={entry.id} className="border-medical-teal/20">
+          <Card key={entry.id} className="border-medical-teal/20 hover:shadow-md transition-shadow">
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
                   <span className="font-semibold text-foreground">{entry.date}</span>
                   <span className="text-muted-foreground">{entry.time}</span>
+                  <Badge variant="secondary" className="text-xs">
+                    {entry.context}
+                  </Badge>
                 </div>
                 <span className="text-sm text-muted-foreground">{entry.fullDate}</span>
               </div>
             </CardHeader>
             <CardContent className="space-y-4">
-              {/* Glycémie */}
+              {/* Glycémie avec context africain */}
               <div className={`p-4 rounded-lg ${entry.glucoseBg} border border-opacity-20`}>
                 <div className="flex items-center justify-between">
                   <div>

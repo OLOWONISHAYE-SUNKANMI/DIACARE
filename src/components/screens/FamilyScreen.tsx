@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Users, Share2, Settings, UserPlus, Shield, Eye, AlertTriangle, Clock, CheckCircle, Phone } from "lucide-react";
+import { Users, Share2, Settings, UserPlus, Eye, AlertTriangle, Clock, CheckCircle, Phone } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -9,8 +9,6 @@ import { Separator } from "@/components/ui/separator";
 interface FamilyScreenProps {}
 
 const FamilyScreen = (props: FamilyScreenProps) => {
-  const [showShareCode, setShowShareCode] = useState(false);
-
   const familyMembers = [
     {
       id: 1,
@@ -21,29 +19,32 @@ const FamilyScreen = (props: FamilyScreenProps) => {
       avatar: "F",
       lastSeen: "En ligne",
       icon: CheckCircle,
-      color: "text-green-500"
+      color: "text-green-500",
+      phone: "+221 77 987 65 43"
     },
     {
       id: 2,
-      name: "Dr. Kane",
-      role: "Médecin",
-      permission: "Urgences",
+      name: "Dr. Mamadou Kane",
+      role: "Médecin traitant",
+      permission: "Urgences + Données",
       status: "emergency",
       avatar: "Dr",
       lastSeen: "Il y a 2h",
       icon: AlertTriangle,
-      color: "text-orange-500"
+      color: "text-orange-500",
+      phone: "+221 33 825 14 52"
     },
     {
       id: 3,
-      name: "Ibrahim",
+      name: "Ibrahim Diallo",
       role: "Fils",
       permission: "Lecture seule",
       status: "readonly",
       avatar: "I",
       lastSeen: "Il y a 1j",
       icon: Eye,
-      color: "text-blue-500"
+      color: "text-blue-500",
+      phone: "+221 76 543 21 09"
     }
   ];
 
@@ -52,25 +53,29 @@ const FamilyScreen = (props: FamilyScreenProps) => {
       id: 1,
       time: "Il y a 10 min",
       action: "Fatou a consulté vos dernières glycémies",
-      type: "view"
+      type: "view",
+      actor: "Fatou"
     },
     {
       id: 2,
       time: "Il y a 2h",
       action: "Dr. Kane a ajouté une note médicale",
-      type: "medical"
+      type: "medical",
+      actor: "Dr. Kane"
     },
     {
       id: 3,
       time: "Hier 19:30",
-      action: "Ibrahim a reçu une alerte manquée",
-      type: "alert"
+      action: "Ibrahim a reçu une alerte d'injection manquée",
+      type: "alert",
+      actor: "Ibrahim"
     },
     {
       id: 4,
       time: "Hier 15:00",
-      action: "Fatou a confirmé votre injection",
-      type: "confirmation"
+      action: "Fatou a confirmé votre injection de Humalog",
+      type: "confirmation",
+      actor: "Fatou"
     }
   ];
 
