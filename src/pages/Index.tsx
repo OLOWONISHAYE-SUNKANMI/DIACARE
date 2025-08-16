@@ -12,6 +12,7 @@ import BlogScreen from "@/components/screens/BlogScreen";
 import FamilyScreen from "@/components/screens/FamilyScreen";
 import ProfileScreen from "@/components/screens/ProfileScreen";
 import PaymentScreen from "@/components/screens/PaymentScreen";
+import AssistantScreen from "@/components/screens/AssistantScreen";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("home");
@@ -59,6 +60,8 @@ const Index = () => {
         />;
       case "blog":
         return <BlogScreen />;
+      case "assistant":
+        return <AssistantScreen />;
       case "family":
         return <FamilyScreen />;
       case "profile":
