@@ -52,6 +52,24 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				// DARE Medical App Colors
+				medical: {
+					teal: 'hsl(var(--medical-teal))',
+					'teal-light': 'hsl(var(--medical-teal-light))'
+				},
+				glucose: {
+					normal: 'hsl(var(--glucose-normal))',
+					high: 'hsl(var(--glucose-high))',
+					low: 'hsl(var(--glucose-low))'
+				},
+				success: {
+					DEFAULT: 'hsl(var(--success))',
+					foreground: 'hsl(var(--success-foreground))'
+				},
+				warning: {
+					DEFAULT: 'hsl(var(--warning))',
+					foreground: 'hsl(var(--warning-foreground))'
+				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
