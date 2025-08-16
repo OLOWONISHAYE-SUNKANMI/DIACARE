@@ -62,6 +62,16 @@ export default {
 					high: 'hsl(var(--glucose-high))',
 					low: 'hsl(var(--glucose-low))'
 				},
+				pricing: {
+					essential: 'hsl(var(--pricing-essential))',
+					'essential-light': 'hsl(var(--pricing-essential-light))',
+					premium: 'hsl(var(--pricing-premium))',
+					'premium-light': 'hsl(var(--pricing-premium-light))'
+				},
+				africa: {
+					green: 'hsl(var(--africa-green))',
+					orange: 'hsl(var(--africa-orange))'
+				},
 				success: {
 					DEFAULT: 'hsl(var(--success))',
 					foreground: 'hsl(var(--success-foreground))'
