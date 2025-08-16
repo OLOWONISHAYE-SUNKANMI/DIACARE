@@ -1,15 +1,28 @@
 
 import { useState } from "react";
-import { BookOpen, PenTool, AlertTriangle, CheckCircle, XCircle, TrendingUp, Clock, Syringe } from "lucide-react";
+import { BookOpen, PenTool, AlertTriangle, CheckCircle, XCircle, TrendingUp, Clock, Syringe, X } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { useToast } from "@/hooks/use-toast";
 
-const JournalScreen = () => {
+interface JournalScreenProps {
+  showAlert: boolean;
+  setShowAlert: (show: boolean) => void;
+}
+
+const JournalScreen = ({ showAlert, setShowAlert }: JournalScreenProps) => {
   const [selectedPeriod, setSelectedPeriod] = useState("today");
-  const [showReminder, setShowReminder] = useState(true);
+  const { toast } = useToast();
+
+  const handleNewEntry = () => {
+    toast({
+      title: "Nouvelle entrée",
+      description: "Redirection vers le formulaire de saisie",
+    });
+  };
 
   const journalEntries = [
     {
@@ -80,27 +93,28 @@ const JournalScreen = () => {
       </div>
 
       {/* Rappel Insuline */}
-      {showReminder && (
-        <Alert className="border-red-200 bg-red-50">
+      {showAlert && (
+        <Alert className="border-red-200 bg-red-50 animate-scale-in">
           <AlertTriangle className="h-4 w-4 text-red-600" />
-          <AlertDescription className="flex items-center justify-between">
-            <span className="text-red-800 font-medium">
-              Rappel Insuline - 19h00 Lantus 20UI
-            </span>
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              onClick={() => setShowReminder(false)}
-              className="text-red-600 hover:text-red-700 hover:bg-red-100 h-6 w-6 p-0"
-            >
-              ×
-            </Button>
+          <AlertDescription className="text-red-800 pr-8">
+            <strong>Rappel Insuline</strong> - 19h00 Lantus 20UI
           </AlertDescription>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="absolute top-2 right-2 h-6 w-6 p-0 text-red-600 hover:bg-red-100"
+            onClick={() => setShowAlert(false)}
+          >
+            <X className="h-4 w-4" />
+          </Button>
         </Alert>
       )}
 
       {/* Bouton Nouvelle Entrée */}
-      <Button className="w-full bg-medical-teal hover:bg-medical-teal/90 text-white font-medium py-3">
+      <Button 
+        className="w-full bg-medical-teal hover:bg-medical-teal/90 text-white font-medium py-3 transition-all hover:scale-105 transform duration-200"
+        onClick={handleNewEntry}
+      >
         <PenTool className="w-5 h-5 mr-2" />
         📝 Nouvelle entrée glycémie/insuline
       </Button>

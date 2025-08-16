@@ -6,12 +6,27 @@ import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useToast } from "@/hooks/use-toast";
 
-const DosesScreen = () => {
-  const [glucoseValue, setGlucoseValue] = useState(126);
-  const [carbValue, setCarbValue] = useState([45]);
+interface DosesScreenProps {
+  glucoseValue: number;
+  setGlucoseValue: (value: number) => void;
+  carbValue: number;
+  setCarbValue: (value: number) => void;
+  showAlert: boolean;
+  setShowAlert: (show: boolean) => void;
+}
+
+const DosesScreen = ({ 
+  glucoseValue, 
+  setGlucoseValue, 
+  carbValue, 
+  setCarbValue, 
+  showAlert, 
+  setShowAlert 
+}: DosesScreenProps) => {
   const [calculatedDose, setCalculatedDose] = useState({ correction: 0, meal: 0, total: 0 });
-  const [showAlert, setShowAlert] = useState(true);
+  const { toast } = useToast();
 
   // Insulin calculation logic
   useEffect(() => {
@@ -22,12 +37,19 @@ const DosesScreen = () => {
     
     // Meal dose calculation (carb ratio: 15g per unit)
     const carbRatio = 15;
-    const meal = Math.round(carbValue[0] / carbRatio);
+    const meal = Math.round(carbValue / carbRatio);
     
     const total = correction + meal;
     
     setCalculatedDose({ correction, meal, total });
   }, [glucoseValue, carbValue]);
+
+  const handleMarkInjected = (type: string) => {
+    toast({
+      title: "Injection marquée",
+      description: `${type} marqué comme injecté avec succès`,
+    });
+  };
 
   const historyData = [
     { day: 'L', percentage: 100, injections: 4 },
@@ -103,7 +125,10 @@ const DosesScreen = () => {
             </p>
           </div>
           
-          <Button className="w-full bg-medical-teal hover:bg-medical-teal/90 text-white">
+          <Button 
+            className="w-full bg-medical-teal hover:bg-medical-teal/90 text-white transition-all hover:scale-105 transform duration-200"
+            onClick={() => handleMarkInjected("Lantus 20UI")}
+          >
             <CheckCircle className="w-4 h-4 mr-2" />
             Marquer comme injecté
           </Button>
@@ -145,12 +170,12 @@ const DosesScreen = () => {
                 Glucides du repas
               </label>
               <span className="text-lg font-semibold text-medical-teal">
-                {carbValue[0]}g
+                {carbValue}g
               </span>
             </div>
             <Slider
-              value={carbValue}
-              onValueChange={setCarbValue}
+              value={[carbValue]}
+              onValueChange={(value) => setCarbValue(value[0])}
               max={100}
               step={5}
               className="w-full"
