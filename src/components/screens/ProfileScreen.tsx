@@ -7,13 +7,15 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 
-const ProfileScreen = () => {
+interface ProfileScreenProps {}
+
+const ProfileScreen = (props: ProfileScreenProps) => {
   const [notifications, setNotifications] = useState(true);
   const [dataSharing, setDataSharing] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
 
   return (
-    <div className="flex-1 p-4 space-y-6 pb-24">
+    <div className="flex-1 p-4 space-y-6 pb-24 animate-fade-in">
       {/* Header Profil */}
       <div className="text-center space-y-4">
         <Avatar className="w-24 h-24 mx-auto bg-gradient-to-br from-gray-400 to-gray-600">

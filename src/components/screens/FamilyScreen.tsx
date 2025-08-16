@@ -6,7 +6,9 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 
-const FamilyScreen = () => {
+interface FamilyScreenProps {}
+
+const FamilyScreen = (props: FamilyScreenProps) => {
   const [showShareCode, setShowShareCode] = useState(false);
 
   const familyMembers = [
@@ -73,7 +75,7 @@ const FamilyScreen = () => {
   ];
 
   return (
-    <div className="flex-1 p-4 space-y-6 pb-24">
+    <div className="flex-1 p-4 space-y-6 pb-24 animate-fade-in">
       {/* Header */}
       <div className="text-center space-y-2">
         <h1 className="text-2xl font-bold text-foreground flex items-center justify-center gap-2">

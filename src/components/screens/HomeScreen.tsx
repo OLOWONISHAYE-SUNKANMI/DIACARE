@@ -27,7 +27,7 @@ const HomeScreen = () => {
   ];
 
   return (
-    <div className="flex-1 p-4 space-y-6 pb-24">
+    <div className="flex-1 p-4 space-y-6 pb-24 animate-fade-in">
       {/* Welcome & Regional Badge */}
       <div className="flex items-center justify-between">
         <div>

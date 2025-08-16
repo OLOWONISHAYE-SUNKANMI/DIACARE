@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { Plus } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 import Header from "@/components/Header";
 import BottomNavigation from "@/components/BottomNavigation";
 import HomeScreen from "@/components/screens/HomeScreen";
@@ -11,6 +14,17 @@ import ProfileScreen from "@/components/screens/ProfileScreen";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("home");
+  const [glucoseValue, setGlucoseValue] = useState(126);
+  const [carbValue, setCarbValue] = useState(45);
+  const [showAlert, setShowAlert] = useState(true);
+  const { toast } = useToast();
+
+  const handleQuickAdd = () => {
+    toast({
+      title: "Nouvelle entrée",
+      description: "Fonctionnalité disponible prochainement",
+    });
+  };
 
   const renderScreen = () => {
     switch (activeTab) {
@@ -19,9 +33,19 @@ const Index = () => {
       case "charts":
         return <ChartsScreen />;
       case "doses":
-        return <DosesScreen />;
+        return <DosesScreen 
+          glucoseValue={glucoseValue}
+          setGlucoseValue={setGlucoseValue}
+          carbValue={carbValue}
+          setCarbValue={setCarbValue}
+          showAlert={showAlert}
+          setShowAlert={setShowAlert}
+        />;
       case "journal":
-        return <JournalScreen />;
+        return <JournalScreen 
+          showAlert={showAlert}
+          setShowAlert={setShowAlert}
+        />;
       case "blog":
         return <BlogScreen />;
       case "family":
@@ -34,10 +58,21 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col max-w-sm mx-auto relative">
+    <div className="min-h-screen bg-background flex flex-col max-w-sm mx-auto relative overflow-hidden">
       <Header />
-      {renderScreen()}
+      <div className="flex-1 overflow-y-auto scrollbar-hide">
+        {renderScreen()}
+      </div>
       <BottomNavigation activeTab={activeTab} onTabChange={setActiveTab} />
+      
+      {/* Bouton flottant + */}
+      <Button 
+        onClick={handleQuickAdd}
+        className="fixed bottom-20 right-4 w-14 h-14 rounded-full bg-medical-teal hover:bg-medical-teal/90 shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 z-10"
+        size="icon"
+      >
+        <Plus className="w-6 h-6" />
+      </Button>
     </div>
   );
 };
