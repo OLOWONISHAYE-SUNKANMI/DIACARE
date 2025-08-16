@@ -21,19 +21,37 @@ import {
   MessageSquare
 } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 const HealthProfessionalScreen = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [registrationStep, setRegistrationStep] = useState(1);
+  const [charterAccepted, setCharterAccepted] = useState<boolean | null>(null);
+  const [showCharter, setShowCharter] = useState(false);
   const { toast } = useToast();
 
   const handleRegistration = (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Inscription soumise",
-      description: "Votre demande d'inscription sera examinée sous 24h",
-    });
-    setRegistrationStep(2);
+    setShowCharter(true);
+  };
+
+  const handleCharterAcceptance = (accepted: boolean) => {
+    setCharterAccepted(accepted);
+    setShowCharter(false);
+    
+    if (accepted) {
+      toast({
+        title: "Inscription soumise",
+        description: "Votre demande d'inscription sera examinée sous 24h",
+      });
+      setRegistrationStep(2);
+    } else {
+      toast({
+        title: "Accès refusé",
+        description: "L'acceptation de la charte déontologique DARE est obligatoire",
+        variant: "destructive"
+      });
+    }
   };
 
   const handleConsultationStart = () => {
@@ -72,10 +90,10 @@ const HealthProfessionalScreen = () => {
   ];
 
   const earnings = {
-    today: 245,
-    week: 1680,
-    month: 6750,
-    pending: 420
+    today: 6000,
+    week: 42000,
+    month: 168000,
+    pending: 12000
   };
 
   if (registrationStep === 1) {
@@ -154,8 +172,8 @@ const HealthProfessionalScreen = () => {
               <div className="mt-8 p-4 bg-accent/10 rounded-lg">
                 <h4 className="font-semibold mb-2">Avantages professionnels :</h4>
                 <ul className="space-y-1 text-sm text-muted-foreground">
-                  <li>• Rémunération de 45€ par téléconsultation</li>
-                  <li>• Paiement automatique sous 48h</li>
+                  <li>• Rémunération de 500 FCFA par téléconsultation</li>
+                  <li>• Paiement mensuel automatique</li>
                   <li>• Plateforme sécurisée et certifiée</li>
                   <li>• Accès aux données glycémiques temps réel</li>
                   <li>• Support technique 24/7</li>
@@ -232,7 +250,7 @@ const HealthProfessionalScreen = () => {
                   <div className="flex items-center">
                     <DollarSign className="h-8 w-8 text-green-500" />
                     <div className="ml-4">
-                      <p className="text-2xl font-bold">€540</p>
+                      <p className="text-2xl font-bold">6000 FCFA</p>
                       <p className="text-muted-foreground">Revenus aujourd'hui</p>
                     </div>
                   </div>
@@ -352,22 +370,22 @@ const HealthProfessionalScreen = () => {
                 <CardContent className="space-y-4">
                   <div className="flex justify-between items-center">
                     <span>Aujourd'hui</span>
-                    <span className="font-semibold">€{earnings.today}</span>
+                    <span className="font-semibold">{earnings.today} FCFA</span>
                   </div>
                   <Separator />
                   <div className="flex justify-between items-center">
                     <span>Cette semaine</span>
-                    <span className="font-semibold">€{earnings.week}</span>
+                    <span className="font-semibold">{earnings.week} FCFA</span>
                   </div>
                   <Separator />
                   <div className="flex justify-between items-center">
                     <span>Ce mois</span>
-                    <span className="font-semibold">€{earnings.month}</span>
+                    <span className="font-semibold">{earnings.month} FCFA</span>
                   </div>
                   <Separator />
                   <div className="flex justify-between items-center text-orange-600">
                     <span>En attente de paiement</span>
-                    <span className="font-semibold">€{earnings.pending}</span>
+                    <span className="font-semibold">{earnings.pending} FCFA</span>
                   </div>
                 </CardContent>
               </Card>
@@ -376,7 +394,7 @@ const HealthProfessionalScreen = () => {
                 <CardHeader>
                   <CardTitle>Paiements automatiques</CardTitle>
                   <CardDescription>
-                    Vos rémunérations sont versées automatiquement tous les mardis
+                    Vos rémunérations sont versées automatiquement chaque mois
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -387,17 +405,17 @@ const HealthProfessionalScreen = () => {
                           <p className="font-medium text-green-800">Dernier virement</p>
                           <p className="text-sm text-green-600">15 janvier 2024</p>
                         </div>
-                        <p className="text-lg font-bold text-green-800">€1,890</p>
-                      </div>
-                    </div>
-                    
-                    <div className="p-4 bg-orange-50 rounded-lg border border-orange-200">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="font-medium text-orange-800">Prochain virement</p>
-                          <p className="text-sm text-orange-600">23 janvier 2024</p>
-                        </div>
-                        <p className="text-lg font-bold text-orange-800">€{earnings.pending}</p>
+                         <p className="text-lg font-bold text-green-800">47,250 FCFA</p>
+                       </div>
+                     </div>
+                     
+                     <div className="p-4 bg-orange-50 rounded-lg border border-orange-200">
+                       <div className="flex items-center justify-between">
+                         <div>
+                           <p className="font-medium text-orange-800">Prochain virement</p>
+                           <p className="text-sm text-orange-600">31 janvier 2024</p>
+                         </div>
+                         <p className="text-lg font-bold text-orange-800">{earnings.pending} FCFA</p>
                       </div>
                     </div>
                   </div>
@@ -446,6 +464,92 @@ const HealthProfessionalScreen = () => {
           </TabsContent>
         </Tabs>
       </div>
+
+      {/* Modale Charte Déontologique */}
+      <Dialog open={showCharter} onOpenChange={() => {}}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-bold text-center">
+              Charte Déontologique DARE
+            </DialogTitle>
+            <DialogDescription className="text-center">
+              Veuillez lire attentivement et accepter notre charte déontologique pour rejoindre DARE
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-6 py-4">
+            <div className="bg-primary/5 p-4 rounded-lg">
+              <h3 className="font-semibold text-lg mb-3">Article 1 - Engagement professionnel</h3>
+              <p className="text-sm text-muted-foreground">
+                Le professionnel de santé s'engage à respecter les principes déontologiques de sa profession et à maintenir ses compétences à jour dans le domaine du diabète.
+              </p>
+            </div>
+
+            <div className="bg-accent/5 p-4 rounded-lg">
+              <h3 className="font-semibold text-lg mb-3">Article 2 - Qualité des soins</h3>
+              <p className="text-sm text-muted-foreground">
+                Tous les soins dispensés via DARE doivent respecter les standards de qualité les plus élevés. Le professionnel s'engage à fournir des consultations complètes et adaptées aux besoins spécifiques de chaque patient diabétique.
+              </p>
+            </div>
+
+            <div className="bg-primary/5 p-4 rounded-lg">
+              <h3 className="font-semibold text-lg mb-3">Article 3 - Confidentialité et protection des données</h3>
+              <p className="text-sm text-muted-foreground">
+                Le professionnel s'engage à respecter strictement la confidentialité des données patients et à ne jamais divulguer d'informations médicales sans autorisation expresse. Toutes les données sont protégées selon les normes RGPD.
+              </p>
+            </div>
+
+            <div className="bg-accent/5 p-4 rounded-lg">
+              <h3 className="font-semibold text-lg mb-3">Article 4 - Disponibilité et ponctualité</h3>
+              <p className="text-sm text-muted-foreground">
+                Le professionnel s'engage à respecter ses créneaux de consultation et à être ponctuel. En cas d'empêchement, il doit prévenir au minimum 2 heures à l'avance.
+              </p>
+            </div>
+
+            <div className="bg-primary/5 p-4 rounded-lg">
+              <h3 className="font-semibold text-lg mb-3">Article 5 - Responsabilité médicale</h3>
+              <p className="text-sm text-muted-foreground">
+                Le professionnel reste pleinement responsable de ses actes médicaux et diagnostics. DARE fournit uniquement la plateforme technologique, la responsabilité médicale incombe entièrement au professionnel de santé.
+              </p>
+            </div>
+
+            <div className="bg-accent/5 p-4 rounded-lg">
+              <h3 className="font-semibold text-lg mb-3">Article 6 - Formation continue</h3>
+              <p className="text-sm text-muted-foreground">
+                Le professionnel s'engage à participer aux formations DARE proposées et à maintenir ses connaissances à jour concernant les nouvelles pratiques en diabétologie.
+              </p>
+            </div>
+
+            <div className="bg-red-50 border border-red-200 p-4 rounded-lg">
+              <h3 className="font-semibold text-lg mb-3 text-red-800">Article 7 - Sanctions</h3>
+              <p className="text-sm text-red-700">
+                Le non-respect de cette charte peut entraîner une suspension temporaire ou définitive de l'accès à la plateforme DARE, sans préavis ni compensation.
+              </p>
+            </div>
+          </div>
+
+          <DialogFooter className="flex-col space-y-2">
+            <p className="text-xs text-muted-foreground text-center">
+              En acceptant cette charte, vous confirmez avoir lu, compris et vous engagez à respecter tous les articles ci-dessus.
+            </p>
+            <div className="flex space-x-4 w-full">
+              <Button 
+                variant="outline" 
+                onClick={() => handleCharterAcceptance(false)}
+                className="flex-1"
+              >
+                Refuser
+              </Button>
+              <Button 
+                onClick={() => handleCharterAcceptance(true)}
+                className="flex-1"
+              >
+                Accepter et continuer
+              </Button>
+            </div>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
