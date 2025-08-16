@@ -356,6 +356,75 @@ export type Database = {
         }
         Relationships: []
       }
+      user_activity_stats: {
+        Row: {
+          created_at: string | null
+          days_active: number | null
+          helpful_reactions_received: number | null
+          id: string
+          last_message_at: string | null
+          messages_sent: number | null
+          reports_submitted: number | null
+          updated_at: string | null
+          user_id: string
+          warnings_received: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          days_active?: number | null
+          helpful_reactions_received?: number | null
+          id?: string
+          last_message_at?: string | null
+          messages_sent?: number | null
+          reports_submitted?: number | null
+          updated_at?: string | null
+          user_id: string
+          warnings_received?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          days_active?: number | null
+          helpful_reactions_received?: number | null
+          id?: string
+          last_message_at?: string | null
+          messages_sent?: number | null
+          reports_submitted?: number | null
+          updated_at?: string | null
+          user_id?: string
+          warnings_received?: number | null
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          assigned_at: string | null
+          assigned_by: string | null
+          expires_at: string | null
+          id: string
+          is_active: boolean | null
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          assigned_at?: string | null
+          assigned_by?: string | null
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          assigned_at?: string | null
+          assigned_by?: string | null
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -381,9 +450,20 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: string
       }
+      get_user_role: {
+        Args: { _user_id: string }
+        Returns: Database["public"]["Enums"]["app_role"]
+      }
       get_webhook_url: {
         Args: { webhook_type: string }
         Returns: string
+      }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
       }
       is_permission_valid: {
         Args: { permission_id: string }
@@ -427,13 +507,17 @@ export type Database = {
         Args: { webhook_type: string }
         Returns: boolean
       }
+      update_user_activity: {
+        Args: { _activity_type: string; _user_id: string }
+        Returns: undefined
+      }
       use_consultation: {
         Args: { patient_code_param: string; professional_code_param: string }
         Returns: boolean
       }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "member" | "verified_member" | "expert" | "moderator"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -560,6 +644,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["member", "verified_member", "expert", "moderator"],
+    },
   },
 } as const
