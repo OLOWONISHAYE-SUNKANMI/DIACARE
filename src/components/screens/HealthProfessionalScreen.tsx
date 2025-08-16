@@ -22,6 +22,7 @@ import {
 } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import ProfessionalCodeManager from "@/components/ProfessionalCodeManager";
 
 const HealthProfessionalScreen = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -211,11 +212,12 @@ const HealthProfessionalScreen = () => {
 
       <div className="container mx-auto px-4 py-6">
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="dashboard">Tableau de bord</TabsTrigger>
             <TabsTrigger value="consultations">Consultations</TabsTrigger>
             <TabsTrigger value="earnings">Rémunérations</TabsTrigger>
             <TabsTrigger value="patients">Patients</TabsTrigger>
+            <TabsTrigger value="codes">Codes d'accès</TabsTrigger>
           </TabsList>
 
           <TabsContent value="dashboard" className="mt-6">
@@ -461,6 +463,10 @@ const HealthProfessionalScreen = () => {
                 </div>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="codes" className="mt-6">
+            <ProfessionalCodeManager />
           </TabsContent>
         </Tabs>
       </div>
