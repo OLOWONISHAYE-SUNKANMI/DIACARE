@@ -24,7 +24,7 @@ const QuickActionsGrid = ({ onActionPress }: QuickActionsGridProps) => {
     },
     { 
       icon: Utensils, 
-      label: "Scanner Repas", 
+      label: "Journal des repas", 
       emoji: "🍽️", 
       action: "meal",
       gradient: "from-medical-green to-emerald-600"
