@@ -1,4 +1,4 @@
-import { Home, BarChart3, Pill, BookOpen, User } from "lucide-react";
+import { Home, BarChart3, Pill, BookOpen, User, Users, FileText } from "lucide-react";
 
 interface BottomNavigationProps {
   activeTab: string;
@@ -8,9 +8,11 @@ interface BottomNavigationProps {
 const BottomNavigation = ({ activeTab, onTabChange }: BottomNavigationProps) => {
   const tabs = [
     { id: "home", label: "Accueil", icon: Home },
-    { id: "charts", label: "Graphiques", icon: BarChart3 },
+    { id: "charts", label: "Données", icon: BarChart3 },
     { id: "doses", label: "Doses", icon: Pill },
-    { id: "journal", label: "Carnet", icon: BookOpen },
+    { id: "journal", label: "Carnet", icon: FileText },
+    { id: "blog", label: "Blog", icon: BookOpen },
+    { id: "family", label: "Famille", icon: Users },
     { id: "profile", label: "Profil", icon: User },
   ];
 

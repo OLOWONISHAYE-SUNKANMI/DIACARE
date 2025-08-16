@@ -5,6 +5,8 @@ import HomeScreen from "@/components/screens/HomeScreen";
 import ChartsScreen from "@/components/screens/ChartsScreen";
 import DosesScreen from "@/components/screens/DosesScreen";
 import JournalScreen from "@/components/screens/JournalScreen";
+import BlogScreen from "@/components/screens/BlogScreen";
+import FamilyScreen from "@/components/screens/FamilyScreen";
 import ProfileScreen from "@/components/screens/ProfileScreen";
 
 const Index = () => {
@@ -20,6 +22,10 @@ const Index = () => {
         return <DosesScreen />;
       case "journal":
         return <JournalScreen />;
+      case "blog":
+        return <BlogScreen />;
+      case "family":
+        return <FamilyScreen />;
       case "profile":
         return <ProfileScreen />;
       default:
