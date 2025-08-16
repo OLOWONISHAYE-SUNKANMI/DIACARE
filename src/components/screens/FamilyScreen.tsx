@@ -121,7 +121,7 @@ const FamilyScreen = (props: FamilyScreenProps) => {
       <div className="grid grid-cols-3 gap-3">
         <Card className="text-center p-3">
           <CardContent className="p-0">
-            <div className="text-2xl font-bold text-medical-teal">3</div>
+            <div className="text-2xl font-bold text-medical-teal">∞</div>
             <div className="text-xs text-muted-foreground">Care Partners</div>
           </CardContent>
         </Card>

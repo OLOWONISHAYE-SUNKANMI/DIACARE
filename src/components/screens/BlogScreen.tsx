@@ -140,12 +140,12 @@ const BlogScreen = (props: BlogScreenProps) => {
       <Card className="bg-gradient-to-r from-medical-teal/5 to-medical-teal/10 border-medical-teal/20">
         <CardContent className="p-4 text-center">
           <BookOpen className="w-8 h-8 text-medical-teal mx-auto mb-2" />
-          <h3 className="font-semibold text-foreground mb-1">Envie de plus ?</h3>
+          <h3 className="font-semibold text-foreground mb-1">Profitez de DARE</h3>
           <p className="text-sm text-muted-foreground mb-3">
-            Découvrez notre collection complète d'articles DARE
+            Accédez à tous nos contenus médicaux et conseils personnalisés
           </p>
           <Button variant="outline" size="sm">
-            Voir tous les articles
+            Explorez tous nos conseils
           </Button>
         </CardContent>
       </Card>

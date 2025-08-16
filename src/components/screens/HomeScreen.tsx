@@ -169,7 +169,7 @@ const HomeScreen = () => {
           <CardHeader className="bg-white/10 backdrop-blur-sm">
             <CardTitle className="text-xl text-white flex items-center justify-between">
               <div className="flex items-center space-x-2">
-                <span>DARE Premium</span>
+                <span>DARE Complet</span>
                 <Badge className="bg-white/20 text-white text-xs border-white/30">ACCÈS COMPLET</Badge>
               </div>
               <div className="text-right">
@@ -180,7 +180,7 @@ const HomeScreen = () => {
           </CardHeader>
           <CardContent className="p-6 space-y-4 bg-white/5 backdrop-blur-sm">
             <p className="text-white/90 text-center font-medium mb-4">
-              Accès Complet DARE - Toutes fonctionnalités débloquées
+              Votre santé n'a pas de prix - DARE à 5 000F CFA/mois
             </p>
             
             <div className="grid grid-cols-1 gap-2 space-y-1">
@@ -212,7 +212,7 @@ const HomeScreen = () => {
             
             <div className="pt-4 space-y-2">
               <Button className="w-full bg-white text-medical-green hover:bg-white/90 font-semibold py-3">
-                Commencer mon suivi diabète
+                Commencer mon suivi DARE
               </Button>
               <div className="text-center text-white/80 text-xs space-y-1">
                 <p>Essai gratuit 7 jours</p>

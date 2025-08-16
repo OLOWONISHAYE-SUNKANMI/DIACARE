@@ -31,7 +31,7 @@ const ProfileScreen = (props: ProfileScreenProps) => {
               ✓ Profil Vérifié
             </Badge>
             <Badge variant="default" className="bg-medical-teal/10 text-medical-teal border-medical-teal/30">
-              DARE Premium
+              DARE Complet
             </Badge>
           </div>
         </div>
