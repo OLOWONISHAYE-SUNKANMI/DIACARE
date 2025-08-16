@@ -192,6 +192,86 @@ export type Database = {
           },
         ]
       }
+      professional_sessions: {
+        Row: {
+          access_denied_reason: string | null
+          access_granted: boolean | null
+          access_requested_at: string | null
+          consultation_duration_minutes: number | null
+          consultation_ended_at: string | null
+          consultation_notes: string | null
+          consultation_started_at: string | null
+          created_at: string | null
+          data_sections_accessed: string[] | null
+          fee_amount: number | null
+          fee_paid_at: string | null
+          fee_status: string | null
+          id: string
+          ip_address: unknown | null
+          patient_approved_at: string | null
+          patient_code: string
+          patient_name: string | null
+          professional_code: string
+          professional_id: string | null
+          updated_at: string | null
+          user_agent: string | null
+        }
+        Insert: {
+          access_denied_reason?: string | null
+          access_granted?: boolean | null
+          access_requested_at?: string | null
+          consultation_duration_minutes?: number | null
+          consultation_ended_at?: string | null
+          consultation_notes?: string | null
+          consultation_started_at?: string | null
+          created_at?: string | null
+          data_sections_accessed?: string[] | null
+          fee_amount?: number | null
+          fee_paid_at?: string | null
+          fee_status?: string | null
+          id?: string
+          ip_address?: unknown | null
+          patient_approved_at?: string | null
+          patient_code: string
+          patient_name?: string | null
+          professional_code: string
+          professional_id?: string | null
+          updated_at?: string | null
+          user_agent?: string | null
+        }
+        Update: {
+          access_denied_reason?: string | null
+          access_granted?: boolean | null
+          access_requested_at?: string | null
+          consultation_duration_minutes?: number | null
+          consultation_ended_at?: string | null
+          consultation_notes?: string | null
+          consultation_started_at?: string | null
+          created_at?: string | null
+          data_sections_accessed?: string[] | null
+          fee_amount?: number | null
+          fee_paid_at?: string | null
+          fee_status?: string | null
+          id?: string
+          ip_address?: unknown | null
+          patient_approved_at?: string | null
+          patient_code?: string
+          patient_name?: string | null
+          professional_code?: string
+          professional_id?: string | null
+          updated_at?: string | null
+          user_agent?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "professional_sessions_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professional_applications"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           created_at: string
@@ -247,6 +327,22 @@ export type Database = {
       generate_professional_code: {
         Args: Record<PropertyKey, never>
         Returns: string
+      }
+      request_patient_access: {
+        Args: {
+          pat_code: string
+          patient_name_param?: string
+          prof_code: string
+        }
+        Returns: string
+      }
+      respond_to_access_request: {
+        Args: {
+          approve: boolean
+          denial_reason?: string
+          session_id_param: string
+        }
+        Returns: boolean
       }
     }
     Enums: {
