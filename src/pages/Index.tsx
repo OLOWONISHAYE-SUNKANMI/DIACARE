@@ -11,12 +11,14 @@ import JournalScreen from "@/components/screens/JournalScreen";
 import BlogScreen from "@/components/screens/BlogScreen";
 import FamilyScreen from "@/components/screens/FamilyScreen";
 import ProfileScreen from "@/components/screens/ProfileScreen";
+import PaymentScreen from "@/components/screens/PaymentScreen";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("home");
   const [glucoseValue, setGlucoseValue] = useState(126);
   const [carbValue, setCarbValue] = useState(45);
   const [showAlert, setShowAlert] = useState(true);
+  const [isSubscribed, setIsSubscribed] = useState(false);
   const { toast } = useToast();
 
   const handleQuickAdd = () => {
@@ -26,10 +28,19 @@ const Index = () => {
     });
   };
 
+  const handlePaymentSuccess = () => {
+    setIsSubscribed(true);
+    setActiveTab("home");
+    toast({
+      title: "Bienvenue dans DARE Premium !",
+      description: "Votre abonnement est maintenant actif",
+    });
+  };
+
   const renderScreen = () => {
     switch (activeTab) {
       case "home":
-        return <HomeScreen />;
+        return <HomeScreen onTabChange={setActiveTab} />;
       case "charts":
         return <ChartsScreen />;
       case "doses":
@@ -52,8 +63,15 @@ const Index = () => {
         return <FamilyScreen />;
       case "profile":
         return <ProfileScreen />;
+      case "payment":
+        return (
+          <PaymentScreen 
+            onBack={() => setActiveTab("home")}
+            onPaymentSuccess={handlePaymentSuccess}
+          />
+        );
       default:
-        return <HomeScreen />;
+        return <HomeScreen onTabChange={setActiveTab} />;
     }
   };
 
@@ -63,7 +81,9 @@ const Index = () => {
       <div className="flex-1 overflow-y-auto scrollbar-hide">
         {renderScreen()}
       </div>
-      <BottomNavigation activeTab={activeTab} onTabChange={setActiveTab} />
+      {activeTab !== "payment" && (
+        <BottomNavigation activeTab={activeTab} onTabChange={setActiveTab} />
+      )}
       
       {/* Bouton flottant + */}
       <Button 

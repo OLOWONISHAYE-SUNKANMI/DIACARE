@@ -3,7 +3,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
-const HomeScreen = () => {
+interface HomeScreenProps {
+  onTabChange?: (tab: string) => void;
+}
+
+const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
   const currentGlucose = 126; // mg/dL
   const getGlucoseStatus = (value: number) => {
     if (value < 70) return { status: "low", color: "glucose-low", message: "Glycémie basse" };
@@ -211,7 +215,10 @@ const HomeScreen = () => {
             </div>
             
             <div className="pt-4 space-y-2">
-              <Button className="w-full bg-white text-medical-green hover:bg-white/90 font-semibold py-3">
+              <Button 
+                className="w-full bg-white text-medical-green hover:bg-white/90 font-semibold py-3"
+                onClick={() => onTabChange?.('payment' as any)}
+              >
                 Commencer mon suivi DARE
               </Button>
               <div className="text-center text-white/80 text-xs space-y-1">
