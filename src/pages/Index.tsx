@@ -14,6 +14,7 @@ import FamilyScreen from "@/components/screens/FamilyScreen";
 import ProfileScreen from "@/components/screens/ProfileScreen";
 import PaymentScreen from "@/components/screens/PaymentScreen";
 import AssistantScreen from "@/components/screens/AssistantScreen";
+import HealthProfessionalScreen from "@/components/screens/HealthProfessionalScreen";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("home");
@@ -61,6 +62,8 @@ const Index = () => {
         />;
       case "chat":
         return <ChatScreen />;
+      case "health-pro":
+        return <HealthProfessionalScreen />;
       case "blog":
         return <BlogScreen />;
       case "assistant":
