@@ -44,6 +44,51 @@ export type Database = {
         }
         Relationships: []
       }
+      patient_access_permissions: {
+        Row: {
+          allowed_data_sections: string[] | null
+          approved_at: string | null
+          created_at: string | null
+          expires_at: string | null
+          id: string
+          max_consultations: number | null
+          patient_code: string
+          patient_id: string
+          permission_status: string
+          professional_code: string
+          updated_at: string | null
+          used_consultations: number | null
+        }
+        Insert: {
+          allowed_data_sections?: string[] | null
+          approved_at?: string | null
+          created_at?: string | null
+          expires_at?: string | null
+          id?: string
+          max_consultations?: number | null
+          patient_code: string
+          patient_id: string
+          permission_status?: string
+          professional_code: string
+          updated_at?: string | null
+          used_consultations?: number | null
+        }
+        Update: {
+          allowed_data_sections?: string[] | null
+          approved_at?: string | null
+          created_at?: string | null
+          expires_at?: string | null
+          id?: string
+          max_consultations?: number | null
+          patient_code?: string
+          patient_id?: string
+          permission_status?: string
+          professional_code?: string
+          updated_at?: string | null
+          used_consultations?: number | null
+        }
+        Relationships: []
+      }
       professional_applications: {
         Row: {
           city: string | null
@@ -320,6 +365,14 @@ export type Database = {
         Args: { application_id: string; reviewer_id: string }
         Returns: boolean
       }
+      can_access_data_section: {
+        Args: {
+          data_section: string
+          patient_code_param: string
+          professional_code_param: string
+        }
+        Returns: boolean
+      }
       generate_patient_access_code: {
         Args: Record<PropertyKey, never>
         Returns: string
@@ -327,6 +380,10 @@ export type Database = {
       generate_professional_code: {
         Args: Record<PropertyKey, never>
         Returns: string
+      }
+      is_permission_valid: {
+        Args: { permission_id: string }
+        Returns: boolean
       }
       request_patient_access: {
         Args: {
@@ -336,12 +393,34 @@ export type Database = {
         }
         Returns: string
       }
+      request_patient_permission: {
+        Args: {
+          max_consultations_param?: number
+          patient_code_param: string
+          professional_code_param: string
+          requested_sections?: string[]
+          validity_days?: number
+        }
+        Returns: string
+      }
       respond_to_access_request: {
         Args: {
           approve: boolean
           denial_reason?: string
           session_id_param: string
         }
+        Returns: boolean
+      }
+      respond_to_permission_request: {
+        Args: {
+          allowed_sections?: string[]
+          approve: boolean
+          permission_id_param: string
+        }
+        Returns: boolean
+      }
+      use_consultation: {
+        Args: { patient_code_param: string; professional_code_param: string }
         Returns: boolean
       }
     }
