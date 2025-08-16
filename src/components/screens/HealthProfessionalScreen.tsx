@@ -138,8 +138,8 @@ const HealthProfessionalScreen = () => {
                 </div>
 
                 <div>
-                  <Label htmlFor="license">Numéro RPPS/ADELI *</Label>
-                  <Input id="license" placeholder="Ex: 12345678901" required />
+                  <Label htmlFor="license">Numéro CNI *</Label>
+                  <Input id="license" placeholder="Ex: A1234567890" required />
                 </div>
 
                 <div>
@@ -157,11 +157,20 @@ const HealthProfessionalScreen = () => {
                   <Input id="phone" type="tel" required />
                 </div>
 
-                <div className="flex items-start space-x-2">
-                  <input type="checkbox" id="terms" className="mt-1" required />
-                  <Label htmlFor="terms" className="text-sm">
-                    J'accepte les conditions d'utilisation et la charte déontologique DARE
-                  </Label>
+                <div className="space-y-3">
+                  <div className="flex items-start space-x-2">
+                    <input type="checkbox" id="terms" className="mt-1" required />
+                    <Label htmlFor="terms" className="text-sm">
+                      J'accepte les conditions d'utilisation
+                    </Label>
+                  </div>
+                  
+                  <div className="flex items-start space-x-2">
+                    <input type="checkbox" id="charter" className="mt-1" required />
+                    <Label htmlFor="charter" className="text-sm">
+                      J'accepte la charte de déontologie DARE (obligatoire)
+                    </Label>
+                  </div>
                 </div>
 
                 <Button type="submit" className="w-full" size="lg">
