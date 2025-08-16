@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import NativeHeader from "@/components/ui/NativeHeader";
 import GlucoseWidget from "@/components/ui/GlucoseWidget";
 import QuickActionsGrid from "@/components/ui/QuickActionsGrid";
+import PredictiveAlerts from "@/components/ui/PredictiveAlerts";
 import AddGlucoseModal from "@/components/modals/AddGlucoseModal";
 import MealModal from "@/components/modals/ScanMealModal";
 import MedicationModal from "@/components/modals/MedicationModal";
@@ -42,6 +43,11 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
 
         {/* Quick Actions */}
         <QuickActionsGrid onActionPress={setActiveModal} />
+
+        {/* Predictive Alerts */}
+        <div className="px-4">
+          <PredictiveAlerts />
+        </div>
 
         {/* Mission DARE - Mobile Native */}
         <div className="px-4">
