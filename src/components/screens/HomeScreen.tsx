@@ -1,6 +1,7 @@
 import { Activity, TrendingUp, Calendar, AlertCircle, Pill, BarChart3, Utensils, Footprints, Target, Check, X, Globe } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 const HomeScreen = () => {
   const currentGlucose = 126; // mg/dL
@@ -160,75 +161,66 @@ const HomeScreen = () => {
         </CardContent>
       </Card>
 
-      {/* Pricing Cards - Medical Professional */}
+      {/* Forfait DARE Premium Unique */}
       <div className="space-y-3">
-        <h3 className="text-lg font-semibold text-foreground">Forfaits DARE</h3>
-        <div className="space-y-3">
-          {/* Forfait Essentiel */}
-          <Card className="bg-card shadow-lg border border-border rounded-lg">
-            <CardHeader>
-              <CardTitle className="text-lg text-card-foreground flex items-center justify-between">
-                <span>Forfait Essentiel</span>
-                <div className="text-right">
-                  <div className="text-2xl font-bold text-medical-green">5 000</div>
-                  <div className="text-sm text-muted-foreground">F CFA/mois</div>
-                </div>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
+        <h3 className="text-lg font-semibold text-foreground">Forfait DARE</h3>
+        
+        <Card className="bg-gradient-to-br from-medical-green to-medical-teal shadow-lg border-0 rounded-lg overflow-hidden">
+          <CardHeader className="bg-white/10 backdrop-blur-sm">
+            <CardTitle className="text-xl text-white flex items-center justify-between">
               <div className="flex items-center space-x-2">
-                <Check className="w-4 h-4 text-success" />
-                <span className="text-sm text-card-foreground">Suivi glycémie de base</span>
+                <span>DARE Premium</span>
+                <Badge className="bg-white/20 text-white text-xs border-white/30">ACCÈS COMPLET</Badge>
+              </div>
+              <div className="text-right">
+                <div className="text-5xl font-bold text-white">5 000</div>
+                <div className="text-sm text-white/90">F CFA/mois</div>
+              </div>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-6 space-y-4 bg-white/5 backdrop-blur-sm">
+            <p className="text-white/90 text-center font-medium mb-4">
+              Accès Complet DARE - Toutes fonctionnalités débloquées
+            </p>
+            
+            <div className="grid grid-cols-1 gap-2 space-y-1">
+              <div className="flex items-center space-x-2">
+                <Check className="w-4 h-4 text-white" />
+                <span className="text-sm text-white">Carnet glycémie illimité</span>
               </div>
               <div className="flex items-center space-x-2">
-                <Check className="w-4 h-4 text-success" />
-                <span className="text-sm text-card-foreground">Rappels médicaments</span>
+                <Check className="w-4 h-4 text-white" />
+                <span className="text-sm text-white">Rappels d'insuline intelligents</span>
               </div>
               <div className="flex items-center space-x-2">
-                <X className="w-4 h-4 text-destructive" />
-                <span className="text-sm text-muted-foreground">Analyses avancées</span>
+                <Check className="w-4 h-4 text-white" />
+                <span className="text-sm text-white">Graphiques style Clarity complets</span>
               </div>
               <div className="flex items-center space-x-2">
-                <X className="w-4 h-4 text-destructive" />
-                <span className="text-sm text-muted-foreground">Support médical 24/7</span>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Forfait Premium */}
-          <Card className="bg-card shadow-lg border-2 border-medical-green rounded-lg">
-            <CardHeader>
-              <CardTitle className="text-lg text-card-foreground flex items-center justify-between">
-                <div className="flex items-center space-x-2">
-                  <span>Forfait Premium</span>
-                  <Badge className="bg-medical-green text-white text-xs">RECOMMANDÉ</Badge>
-                </div>
-                <div className="text-right">
-                  <div className="text-2xl font-bold text-medical-green">10 000</div>
-                  <div className="text-sm text-muted-foreground">F CFA/mois</div>
-                </div>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Check className="w-4 h-4 text-success" />
-                <span className="text-sm text-card-foreground">Suivi glycémie avancé</span>
+                <Check className="w-4 h-4 text-white" />
+                <span className="text-sm text-white">Calculateur doses insuline avancé</span>
               </div>
               <div className="flex items-center space-x-2">
-                <Check className="w-4 h-4 text-success" />
-                <span className="text-sm text-card-foreground">Rappels intelligents</span>
+                <Check className="w-4 h-4 text-white" />
+                <span className="text-sm text-white">Support familial illimité</span>
               </div>
               <div className="flex items-center space-x-2">
-                <Check className="w-4 h-4 text-success" />
-                <span className="text-sm text-card-foreground">Analyses et prédictions IA</span>
+                <Check className="w-4 h-4 text-white" />
+                <span className="text-sm text-white">Assistant IA DARE</span>
               </div>
-              <div className="flex items-center space-x-2">
-                <Check className="w-4 h-4 text-success" />
-                <span className="text-sm text-card-foreground">Support médical 24/7</span>
+            </div>
+            
+            <div className="pt-4 space-y-2">
+              <Button className="w-full bg-white text-medical-green hover:bg-white/90 font-semibold py-3">
+                Commencer mon suivi diabète
+              </Button>
+              <div className="text-center text-white/80 text-xs space-y-1">
+                <p>Essai gratuit 7 jours</p>
+                <p>Annulable à tout moment • Support technique inclus</p>
               </div>
-            </CardContent>
-          </Card>
-        </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

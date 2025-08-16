@@ -30,8 +30,8 @@ const ProfileScreen = (props: ProfileScreenProps) => {
             <Badge variant="default" className="bg-green-100 text-green-800 border-green-200">
               ✓ Profil Vérifié
             </Badge>
-            <Badge variant="default" className="bg-blue-100 text-blue-800 border-blue-200">
-              Premium
+            <Badge variant="default" className="bg-medical-teal/10 text-medical-teal border-medical-teal/30">
+              DARE Premium
             </Badge>
           </div>
         </div>

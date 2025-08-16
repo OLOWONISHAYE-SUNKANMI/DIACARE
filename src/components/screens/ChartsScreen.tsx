@@ -1,4 +1,4 @@
-import { BarChart3, TrendingUp, Calendar, Target, Clock, Lock } from "lucide-react";
+import { BarChart3, TrendingUp, Calendar, Target, Clock } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
@@ -222,18 +222,6 @@ const ChartsScreen = () => {
         </CardContent>
       </Card>
 
-      {/* Premium Banner */}
-      <Card className="bg-pricing-premium-light border-pricing-premium">
-        <CardContent className="p-4 text-center space-y-2">
-          <div className="flex items-center justify-center space-x-2 text-pricing-premium">
-            <Lock className="w-5 h-5" />
-            <span className="font-semibold">🔒 Fonctionnalité Premium DARE</span>
-          </div>
-          <p className="text-sm text-muted-foreground">
-            Accédez aux analyses avancées pour 10 000 F CFA/mois
-          </p>
-        </CardContent>
-      </Card>
     </div>
   );
 };

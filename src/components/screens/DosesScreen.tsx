@@ -94,11 +94,11 @@ const DosesScreen = ({
       )}
 
       {/* Lantus Card */}
-      <Card className="border-l-4 border-l-pricing-premium">
+      <Card className="border-l-4 border-l-medical-teal">
         <CardHeader>
           <CardTitle className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <Pill className="w-5 h-5 text-pricing-premium" />
+              <Pill className="w-5 h-5 text-medical-teal" />
               <span className="text-foreground">Lantus (Basale)</span>
             </div>
             <Badge className="bg-success text-success-foreground">
@@ -188,27 +188,27 @@ const DosesScreen = ({
           </div>
 
           {/* Calculated Dose */}
-          <Card className="bg-pricing-premium-light border-pricing-premium">
+          <Card className="bg-medical-teal/10 border-medical-teal/30">
             <CardContent className="p-4 space-y-3">
-              <h4 className="font-semibold text-pricing-premium flex items-center space-x-2">
+              <h4 className="font-semibold text-medical-teal flex items-center space-x-2">
                 <Target className="w-4 h-4" />
                 <span>Dose Calculée</span>
               </h4>
               <div className="grid grid-cols-3 gap-3 text-center">
                 <div>
-                  <p className="text-2xl font-bold text-pricing-premium">
+                  <p className="text-2xl font-bold text-medical-teal">
                     {calculatedDose.correction}
                   </p>
                   <p className="text-xs text-muted-foreground">Correction</p>
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-pricing-premium">
+                  <p className="text-2xl font-bold text-medical-teal">
                     {calculatedDose.meal}
                   </p>
                   <p className="text-xs text-muted-foreground">Repas</p>
                 </div>
                 <div>
-                  <p className="text-3xl font-bold text-pricing-premium">
+                  <p className="text-3xl font-bold text-medical-teal">
                     {calculatedDose.total}
                   </p>
                   <p className="text-xs text-muted-foreground">Total UI</p>
@@ -217,7 +217,7 @@ const DosesScreen = ({
             </CardContent>
           </Card>
 
-          <Button className="w-full bg-pricing-premium hover:bg-pricing-premium/90 text-white">
+          <Button className="w-full bg-medical-teal hover:bg-medical-teal/90 text-white">
             <Clock className="w-4 h-4 mr-2" />
             Programmer injection
           </Button>
