@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import BottomNavigation from "@/components/BottomNavigation";
 import HomeScreen from "@/components/screens/HomeScreen";
@@ -102,6 +103,15 @@ const Index = () => {
       >
         <Plus className="w-6 h-6" />
       </Button>
+      
+      {/* Bouton candidature professionnelle */}
+      <Link to="/professional-registration">
+        <Button 
+          className="fixed bottom-20 left-4 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 z-10 text-sm"
+        >
+          🏥 Candidature Pro
+        </Button>
+      </Link>
     </div>
   );
 };
