@@ -52,18 +52,20 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				// DARE Dark Premium Colors
+				// DARE Glassmorphisme Colors
 				medical: {
 					teal: 'hsl(var(--medical-teal))',
 					'teal-light': 'hsl(var(--medical-teal-light))',
 					'teal-dark': 'hsl(var(--medical-teal-dark))'
 				},
-				// Dark Fitness App Colors
-				cyan: 'hsl(188 100% 42%)',
-				'electric-green': 'hsl(142 76% 36%)',
-				'vibrant-purple': 'hsl(262 83% 58%)',
-				'vibrant-orange': 'hsl(45 93% 47%)',
-				'lime-green': 'hsl(84 81% 44%)',
+				// Glassmorphisme Glass Colors
+				glass: {
+					blue: 'hsl(var(--glass-blue))',
+					mint: 'hsl(var(--glass-mint))',
+					purple: 'hsl(var(--glass-purple))',
+					orange: 'hsl(var(--glass-orange))',
+					rose: 'hsl(var(--glass-rose))'
+				},
 				glucose: {
 					normal: 'hsl(var(--glucose-normal))',
 					high: 'hsl(var(--glucose-high))',
