@@ -52,19 +52,23 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				// DARE Glassmorphisme Colors
+				// DARE Medical Professional Colors
 				medical: {
 					teal: 'hsl(var(--medical-teal))',
 					'teal-light': 'hsl(var(--medical-teal-light))',
-					'teal-dark': 'hsl(var(--medical-teal-dark))'
+					green: 'hsl(var(--medical-green))',
+					'green-light': 'hsl(var(--medical-green-light))',
+					blue: 'hsl(var(--medical-blue))',
+					'blue-light': 'hsl(var(--medical-blue-light))'
 				},
-				// Glassmorphisme Glass Colors
-				glass: {
-					blue: 'hsl(var(--glass-blue))',
-					mint: 'hsl(var(--glass-mint))',
-					purple: 'hsl(var(--glass-purple))',
-					orange: 'hsl(var(--glass-orange))',
-					rose: 'hsl(var(--glass-rose))'
+				// Medical Status Colors
+				status: {
+					active: 'hsl(var(--status-active))',
+					'active-bg': 'hsl(var(--status-active-bg))',
+					warning: 'hsl(var(--status-warning))',
+					'warning-bg': 'hsl(var(--status-warning-bg))',
+					critical: 'hsl(var(--status-critical))',
+					'critical-bg': 'hsl(var(--status-critical-bg))'
 				},
 				glucose: {
 					normal: 'hsl(var(--glucose-normal))',

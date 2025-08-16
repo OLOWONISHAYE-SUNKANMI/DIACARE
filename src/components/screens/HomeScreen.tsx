@@ -27,64 +27,57 @@ const HomeScreen = () => {
   ];
 
   return (
-    <div className="flex-1 p-6 space-y-8 pb-32 animate-fade-in">
+    <div className="flex-1 p-4 space-y-6 pb-24 animate-fade-in">
       {/* Welcome Header */}
-      <div className="text-center space-y-4 pt-6">
-        <h2 className="text-5xl font-black text-white tracking-wide drop-shadow-lg">Bonjour !</h2>
-        <p className="text-xl text-white/90 font-light drop-shadow-md">Comment vous sentez-vous aujourd'hui ?</p>
+      <div className="text-center space-y-2">
+        <h2 className="text-2xl font-bold text-foreground">Bonjour !</h2>
+        <p className="text-muted-foreground">Comment vous sentez-vous aujourd'hui ?</p>
       </div>
 
-      {/* Current Glucose Reading - Glassmorphisme */}
-      <Card className="border border-white/30 shadow-2xl rounded-3xl overflow-hidden backdrop-blur-xl" style={{background: 'rgba(255, 255, 255, 0.2)'}}>
-        <CardHeader className="text-center pb-6 pt-10">
-          <CardTitle className="flex items-center justify-center space-x-4 text-white">
-            <div className="w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-sm border border-white/40 shadow-lg" style={{background: 'rgba(0, 206, 209, 0.3)'}}>
-              <Activity className="w-8 h-8 text-white" />
+      {/* Current Glucose Reading - Medical Card */}
+      <Card className="bg-card shadow-lg border border-border rounded-lg">
+        <CardHeader className="text-center pb-3">
+          <CardTitle className="flex items-center justify-center space-x-2 text-card-foreground">
+            <div className="w-10 h-10 rounded-full bg-medical-green flex items-center justify-center">
+              <Activity className="w-6 h-6 text-white" />
             </div>
-            <span className="text-3xl font-bold text-white drop-shadow-lg">Glycémie Actuelle</span>
+            <span className="text-lg font-semibold">Glycémie Actuelle</span>
           </CardTitle>
         </CardHeader>
-        <CardContent className="text-center space-y-8 pb-10">
-          <div className="space-y-6">
-            <div className="text-9xl font-black text-white drop-shadow-2xl filter" style={{textShadow: '0 0 30px rgba(255,255,255,0.5)'}}>
+        <CardContent className="text-center space-y-4">
+          <div className="space-y-2">
+            <div className="text-6xl font-bold text-medical-green">
               {currentGlucose}
             </div>
-            <div className="text-3xl text-medical-teal font-bold drop-shadow-lg">mg/dL</div>
-            <div className="inline-flex items-center space-x-3 px-8 py-4 rounded-full text-xl font-semibold text-white backdrop-blur-sm shadow-xl border border-white/40" style={{background: 'rgba(152, 251, 152, 0.3)'}}>
-              <Activity className="w-6 h-6" />
+            <div className="text-lg text-muted-foreground">mg/dL</div>
+            <div className="inline-flex items-center space-x-1 px-4 py-2 rounded-full text-sm font-medium bg-status-active-bg text-status-active">
+              <Activity className="w-4 h-4" />
               <span>Dans la normale</span>
             </div>
           </div>
-          <div className="text-lg text-white/80 flex items-center justify-center space-x-3 font-medium drop-shadow-md">
-            <Calendar className="w-6 h-6" />
+          <div className="text-sm text-muted-foreground flex items-center justify-center space-x-1">
+            <Calendar className="w-4 h-4" />
             <span>Dernière mesure : Aujourd'hui 14:30</span>
           </div>
         </CardContent>
       </Card>
 
-      {/* Quick Actions Grid - Glassmorphisme */}
-      <div className="space-y-6">
-        <h3 className="text-3xl font-bold text-white drop-shadow-lg">Actions Rapides</h3>
-        <div className="grid grid-cols-2 gap-6">
+      {/* Quick Actions Grid - Medical Style */}
+      <div className="space-y-3">
+        <h3 className="text-lg font-semibold text-foreground">Actions Rapides</h3>
+        <div className="grid grid-cols-2 gap-3">
           {quickActions.map((action, index) => {
             const Icon = action.icon;
-            const glassColors = [
-              'rgba(135, 206, 235, 0.3)', // Sky blue
-              'rgba(152, 251, 152, 0.3)', // Mint green  
-              'rgba(221, 160, 221, 0.3)', // Plum
-              'rgba(255, 182, 193, 0.3)'  // Light pink
-            ];
-            const iconColors = ['text-glass-blue', 'text-glass-mint', 'text-glass-purple', 'text-glass-orange'];
+            const colors = ['text-medical-blue', 'text-medical-green', 'text-medical-teal', 'text-warning'];
+            const bgColors = ['bg-medical-blue-light', 'bg-medical-green-light', 'bg-medical-teal-light', 'bg-status-warning-bg'];
             return (
-              <Card key={index} className="border border-white/30 backdrop-blur-xl shadow-2xl rounded-3xl transition-all duration-300 cursor-pointer hover:scale-105 hover:shadow-3xl" style={{background: 'rgba(255, 255, 255, 0.2)'}}>
-                <CardContent className="p-6 text-center space-y-4">
-                  <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto backdrop-blur-sm shadow-lg border border-white/40" style={{background: glassColors[index]}}>
-                    <div className="text-3xl">{action.emoji}</div>
+              <Card key={index} className="bg-card shadow-md border border-border rounded-lg transition-all cursor-pointer hover:shadow-lg hover:scale-105">
+                <CardContent className="p-4 text-center space-y-3">
+                  <div className={`w-12 h-12 rounded-full flex items-center justify-center mx-auto ${bgColors[index]}`}>
+                    <div className="text-xl">{action.emoji}</div>
                   </div>
-                  <div className="w-12 h-12 rounded-full flex items-center justify-center mx-auto backdrop-blur-sm shadow-md border border-white/30" style={{background: 'rgba(255, 255, 255, 0.15)'}}>
-                    <Icon className={`w-7 h-7 text-white`} />
-                  </div>
-                  <p className="text-base font-bold text-white drop-shadow-md">{action.label}</p>
+                  <Icon className={`w-6 h-6 ${colors[index]} mx-auto`} />
+                  <p className="text-sm font-medium text-card-foreground">{action.label}</p>
                 </CardContent>
               </Card>
             );
@@ -92,156 +85,139 @@ const HomeScreen = () => {
         </div>
       </div>
 
-      {/* Mission DARE - Glassmorphisme */}
-      <Card className="border border-white/30 shadow-2xl rounded-3xl overflow-hidden backdrop-blur-xl" style={{background: 'rgba(255, 255, 255, 0.2)'}}>
-        <CardHeader className="pb-4 pt-6">
-          <CardTitle className="text-2xl font-bold text-white flex items-center space-x-3 drop-shadow-lg">
-            <div className="w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-sm border border-white/40 shadow-lg" style={{background: 'rgba(221, 160, 221, 0.3)'}}>
-              <Target className="w-6 h-6 text-white" />
+      {/* Mission DARE - Medical Style */}
+      <Card className="bg-card shadow-lg border border-border rounded-lg">
+        <CardHeader>
+          <CardTitle className="text-lg text-card-foreground flex items-center space-x-2">
+            <div className="w-8 h-8 rounded-full bg-medical-green flex items-center justify-center">
+              <Target className="w-5 h-5 text-white" />
             </div>
             <span>Mission DARE</span>
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-6 pb-6">
-          <div className="space-y-5">
-            <div className="flex items-start space-x-4 p-4 rounded-2xl backdrop-blur-sm border border-white/20 shadow-lg" style={{background: 'rgba(255, 255, 255, 0.15)'}}>
-              <div className="w-12 h-12 rounded-full text-white flex items-center justify-center font-black text-lg shadow-lg" style={{background: 'rgba(0, 206, 209, 0.6)'}}>D</div>
+        <CardContent className="space-y-4">
+          <div className="space-y-3">
+            <div className="flex items-start space-x-3 p-3 rounded-lg bg-medical-green-light">
+              <div className="w-8 h-8 rounded-full bg-medical-green text-white flex items-center justify-center font-bold text-sm">D</div>
               <div>
-                <p className="font-bold text-lg text-white drop-shadow-md">Diabetes Awareness</p>
-                <p className="text-white/80 font-medium">Sensibilisation au diabète</p>
+                <p className="font-medium text-card-foreground">Diabetes Awareness</p>
+                <p className="text-sm text-muted-foreground">Sensibilisation au diabète</p>
               </div>
             </div>
-            <div className="flex items-start space-x-4 p-4 rounded-2xl backdrop-blur-sm border border-white/20 shadow-lg" style={{background: 'rgba(255, 255, 255, 0.15)'}}>
-              <div className="w-12 h-12 rounded-full text-white flex items-center justify-center font-black text-lg shadow-lg" style={{background: 'rgba(152, 251, 152, 0.6)'}}>A</div>
+            <div className="flex items-start space-x-3 p-3 rounded-lg bg-medical-teal-light">
+              <div className="w-8 h-8 rounded-full bg-medical-teal text-white flex items-center justify-center font-bold text-sm">A</div>
               <div>
-                <p className="font-bold text-lg text-white drop-shadow-md">Routine</p>
-                <p className="text-white/80 font-medium">Routines de soins quotidiennes</p>
+                <p className="font-medium text-card-foreground">Routine</p>
+                <p className="text-sm text-muted-foreground">Routines de soins quotidiennes</p>
               </div>
             </div>
-            <div className="flex items-start space-x-4 p-4 rounded-2xl backdrop-blur-sm border border-white/20 shadow-lg" style={{background: 'rgba(255, 255, 255, 0.15)'}}>
-              <div className="w-12 h-12 rounded-full text-white flex items-center justify-center font-black text-lg shadow-lg" style={{background: 'rgba(221, 160, 221, 0.6)'}}>R</div>
+            <div className="flex items-start space-x-3 p-3 rounded-lg bg-medical-blue-light">
+              <div className="w-8 h-8 rounded-full bg-medical-blue text-white flex items-center justify-center font-bold text-sm">R</div>
               <div>
-                <p className="font-bold text-lg text-white drop-shadow-md">Empowerment</p>
-                <p className="text-white/80 font-medium">Autonomisation et contrôle</p>
+                <p className="font-medium text-card-foreground">Empowerment</p>
+                <p className="text-sm text-muted-foreground">Autonomisation et contrôle</p>
               </div>
             </div>
           </div>
         </CardContent>
       </Card>
 
-      {/* Défis DARE Aujourd'hui - Glassmorphisme */}
-      <Card className="border border-white/30 shadow-2xl rounded-3xl backdrop-blur-xl" style={{background: 'rgba(255, 255, 255, 0.2)'}}>
-        <CardHeader className="pb-4">
-          <CardTitle className="text-2xl font-bold text-white flex items-center space-x-3 drop-shadow-lg">
-            <div className="w-10 h-10 rounded-full flex items-center justify-center border border-white/40 shadow-lg" style={{background: 'rgba(0, 206, 209, 0.3)'}}>
-              <Target className="w-6 h-6 text-white" />
+      {/* Défis DARE Aujourd'hui - Medical Style */}
+      <Card className="bg-card shadow-lg border border-border rounded-lg">
+        <CardHeader>
+          <CardTitle className="text-lg text-card-foreground flex items-center space-x-2">
+            <div className="w-8 h-8 rounded-full bg-medical-green flex items-center justify-center">
+              <Target className="w-5 h-5 text-white" />
             </div>
             <span>Défis DARE Aujourd'hui</span>
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4 pb-6">
+        <CardContent className="space-y-3">
           {challenges.map((challenge, index) => (
-            <div key={index} className="flex items-center space-x-4 p-4 rounded-2xl backdrop-blur-sm border border-white/20 shadow-lg" style={{background: 'rgba(255, 255, 255, 0.15)'}}>
-              <div className={`w-10 h-10 rounded-full flex items-center justify-center text-white text-base font-bold shadow-lg ${
-                challenge.completed ? 'bg-glass-mint' : 'bg-white/30'
+            <div key={index} className="flex items-center space-x-3 p-3 rounded-lg bg-muted/50">
+              <div className={`w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold ${
+                challenge.completed ? 'bg-success' : 'bg-muted-foreground'
               }`}>
                 {challenge.letter}
               </div>
-              <span className={`flex-1 text-base font-medium ${challenge.completed ? 'line-through text-white/60' : 'text-white'} drop-shadow-sm`}>
+              <span className={`flex-1 text-sm font-medium ${challenge.completed ? 'line-through text-muted-foreground' : 'text-card-foreground'}`}>
                 {challenge.challenge}
               </span>
               {challenge.completed ? (
-                <div className="w-8 h-8 rounded-full flex items-center justify-center shadow-lg" style={{background: 'rgba(152, 251, 152, 0.6)'}}>
-                  <Check className="w-5 h-5 text-white" />
-                </div>
+                <Check className="w-4 h-4 text-success" />
               ) : (
-                <div className="w-8 h-8 rounded-full border-2 border-white/40" />
+                <div className="w-4 h-4 rounded border border-muted-foreground" />
               )}
             </div>
           ))}
         </CardContent>
       </Card>
 
-      {/* Pricing Cards - Glassmorphisme Premium */}
-      <div className="space-y-6">
-        <h3 className="text-3xl font-bold text-white drop-shadow-lg">Forfaits DARE</h3>
-        <div className="space-y-6">
+      {/* Pricing Cards - Medical Professional */}
+      <div className="space-y-3">
+        <h3 className="text-lg font-semibold text-foreground">Forfaits DARE</h3>
+        <div className="space-y-3">
           {/* Forfait Essentiel */}
-          <Card className="border border-white/30 shadow-2xl rounded-3xl overflow-hidden backdrop-blur-xl relative" style={{background: 'rgba(255, 255, 255, 0.2)'}}>
-            <div className="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold backdrop-blur-sm border border-white/40 text-white shadow-lg" style={{background: 'rgba(255, 182, 193, 0.3)'}}>💼 ESSENTIEL</div>
-            <CardHeader className="pb-4 pt-6">
-              <CardTitle className="text-xl font-bold text-white flex items-center justify-between drop-shadow-lg">
+          <Card className="bg-card shadow-lg border border-border rounded-lg">
+            <CardHeader>
+              <CardTitle className="text-lg text-card-foreground flex items-center justify-between">
                 <span>Forfait Essentiel</span>
                 <div className="text-right">
-                  <div className="text-5xl font-black text-white drop-shadow-lg">5 000</div>
-                  <div className="text-base font-semibold text-glass-orange">F CFA/mois</div>
+                  <div className="text-2xl font-bold text-medical-green">5 000</div>
+                  <div className="text-sm text-muted-foreground">F CFA/mois</div>
                 </div>
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4 pb-6">
-              <div className="flex items-center space-x-3 p-3 rounded-2xl backdrop-blur-sm border border-white/20 shadow-md" style={{background: 'rgba(255, 255, 255, 0.15)'}}>
-                <div className="w-8 h-8 rounded-full flex items-center justify-center shadow-lg" style={{background: 'rgba(152, 251, 152, 0.6)'}}>
-                  <Check className="w-5 h-5 text-white" />
-                </div>
-                <span className="text-base font-semibold text-white drop-shadow-sm">Suivi glycémie de base</span>
+            <CardContent className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <Check className="w-4 h-4 text-success" />
+                <span className="text-sm text-card-foreground">Suivi glycémie de base</span>
               </div>
-              <div className="flex items-center space-x-3 p-3 rounded-2xl backdrop-blur-sm border border-white/20 shadow-md" style={{background: 'rgba(255, 255, 255, 0.15)'}}>
-                <div className="w-8 h-8 rounded-full flex items-center justify-center shadow-lg" style={{background: 'rgba(152, 251, 152, 0.6)'}}>
-                  <Check className="w-5 h-5 text-white" />
-                </div>
-                <span className="text-base font-semibold text-white drop-shadow-sm">Rappels médicaments</span>
+              <div className="flex items-center space-x-2">
+                <Check className="w-4 h-4 text-success" />
+                <span className="text-sm text-card-foreground">Rappels médicaments</span>
               </div>
-              <div className="flex items-center space-x-3 p-3 rounded-2xl backdrop-blur-sm border border-white/10 shadow-md opacity-50" style={{background: 'rgba(255, 255, 255, 0.1)'}}>
-                <div className="w-8 h-8 rounded-full flex items-center justify-center shadow-lg" style={{background: 'rgba(255, 182, 193, 0.6)'}}>
-                  <X className="w-5 h-5 text-white" />
-                </div>
-                <span className="text-base text-white/60">Analyses avancées</span>
+              <div className="flex items-center space-x-2">
+                <X className="w-4 h-4 text-destructive" />
+                <span className="text-sm text-muted-foreground">Analyses avancées</span>
               </div>
-              <div className="flex items-center space-x-3 p-3 rounded-2xl backdrop-blur-sm border border-white/10 shadow-md opacity-50" style={{background: 'rgba(255, 255, 255, 0.1)'}}>
-                <div className="w-8 h-8 rounded-full flex items-center justify-center shadow-lg" style={{background: 'rgba(255, 182, 193, 0.6)'}}>
-                  <X className="w-5 h-5 text-white" />
-                </div>
-                <span className="text-base text-white/60">Support médical 24/7</span>
+              <div className="flex items-center space-x-2">
+                <X className="w-4 h-4 text-destructive" />
+                <span className="text-sm text-muted-foreground">Support médical 24/7</span>
               </div>
             </CardContent>
           </Card>
 
           {/* Forfait Premium */}
-          <Card className="border border-white/30 shadow-2xl rounded-3xl overflow-hidden backdrop-blur-xl relative" style={{background: 'rgba(255, 255, 255, 0.2)'}}>
-            <div className="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold backdrop-blur-sm border border-white/40 text-white shadow-lg" style={{background: 'rgba(221, 160, 221, 0.3)'}}>⭐ PREMIUM</div>
-            <CardHeader className="pb-4 pt-6">
-              <CardTitle className="text-xl font-bold text-white flex items-center justify-between drop-shadow-lg">
-                <span>Forfait Premium</span>
+          <Card className="bg-card shadow-lg border-2 border-medical-green rounded-lg">
+            <CardHeader>
+              <CardTitle className="text-lg text-card-foreground flex items-center justify-between">
+                <div className="flex items-center space-x-2">
+                  <span>Forfait Premium</span>
+                  <Badge className="bg-medical-green text-white text-xs">RECOMMANDÉ</Badge>
+                </div>
                 <div className="text-right">
-                  <div className="text-5xl font-black text-white drop-shadow-lg">10 000</div>
-                  <div className="text-base font-semibold text-glass-purple">F CFA/mois</div>
+                  <div className="text-2xl font-bold text-medical-green">10 000</div>
+                  <div className="text-sm text-muted-foreground">F CFA/mois</div>
                 </div>
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4 pb-6">
-              <div className="flex items-center space-x-3 p-3 rounded-2xl backdrop-blur-sm border border-white/20 shadow-md" style={{background: 'rgba(255, 255, 255, 0.15)'}}>
-                <div className="w-8 h-8 rounded-full flex items-center justify-center shadow-lg" style={{background: 'rgba(152, 251, 152, 0.6)'}}>
-                  <Check className="w-5 h-5 text-white" />
-                </div>
-                <span className="text-base font-semibold text-white drop-shadow-sm">Suivi glycémie avancé</span>
+            <CardContent className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <Check className="w-4 h-4 text-success" />
+                <span className="text-sm text-card-foreground">Suivi glycémie avancé</span>
               </div>
-              <div className="flex items-center space-x-3 p-3 rounded-2xl backdrop-blur-sm border border-white/20 shadow-md" style={{background: 'rgba(255, 255, 255, 0.15)'}}>
-                <div className="w-8 h-8 rounded-full flex items-center justify-center shadow-lg" style={{background: 'rgba(152, 251, 152, 0.6)'}}>
-                  <Check className="w-5 h-5 text-white" />
-                </div>
-                <span className="text-base font-semibold text-white drop-shadow-sm">Rappels intelligents</span>
+              <div className="flex items-center space-x-2">
+                <Check className="w-4 h-4 text-success" />
+                <span className="text-sm text-card-foreground">Rappels intelligents</span>
               </div>
-              <div className="flex items-center space-x-3 p-3 rounded-2xl backdrop-blur-sm border border-white/20 shadow-md" style={{background: 'rgba(255, 255, 255, 0.15)'}}>
-                <div className="w-8 h-8 rounded-full flex items-center justify-center shadow-lg" style={{background: 'rgba(152, 251, 152, 0.6)'}}>
-                  <Check className="w-5 h-5 text-white" />
-                </div>
-                <span className="text-base font-semibold text-white drop-shadow-sm">Analyses et prédictions IA</span>
+              <div className="flex items-center space-x-2">
+                <Check className="w-4 h-4 text-success" />
+                <span className="text-sm text-card-foreground">Analyses et prédictions IA</span>
               </div>
-              <div className="flex items-center space-x-3 p-3 rounded-2xl backdrop-blur-sm border border-white/20 shadow-md" style={{background: 'rgba(255, 255, 255, 0.15)'}}>
-                <div className="w-8 h-8 rounded-full flex items-center justify-center shadow-lg" style={{background: 'rgba(152, 251, 152, 0.6)'}}>
-                  <Check className="w-5 h-5 text-white" />
-                </div>
-                <span className="text-base font-semibold text-white drop-shadow-sm">Support médical 24/7</span>
+              <div className="flex items-center space-x-2">
+                <Check className="w-4 h-4 text-success" />
+                <span className="text-sm text-card-foreground">Support médical 24/7</span>
               </div>
             </CardContent>
           </Card>
