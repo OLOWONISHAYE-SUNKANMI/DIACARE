@@ -1,13 +1,19 @@
+import { useState } from "react";
 import { Activity, TrendingUp, Calendar, AlertCircle, Pill, BarChart3, Utensils, Footprints, Target, Check, X, Globe } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import AddGlucoseModal from "@/components/modals/AddGlucoseModal";
+import ScanMealModal from "@/components/modals/ScanMealModal";
+import MedicationModal from "@/components/modals/MedicationModal";
+import ActivityModal from "@/components/modals/ActivityModal";
 
 interface HomeScreenProps {
   onTabChange?: (tab: string) => void;
 }
 
 const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
+  const [activeModal, setActiveModal] = useState<string | null>(null);
   const currentGlucose = 126; // mg/dL
   const getGlucoseStatus = (value: number) => {
     if (value < 70) return { status: "low", color: "glucose-low", message: "Glycémie basse" };
@@ -18,10 +24,10 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
   const glucoseStatus = getGlucoseStatus(currentGlucose);
 
   const quickActions = [
-    { icon: BarChart3, label: "Ajouter Glycémie", emoji: "📊" },
-    { icon: Utensils, label: "Scanner Repas", emoji: "🍽️" },
-    { icon: Pill, label: "Médicaments", emoji: "💊" },
-    { icon: Footprints, label: "Activité", emoji: "🏃" },
+    { icon: BarChart3, label: "Ajouter Glycémie", emoji: "📊", action: "glucose" },
+    { icon: Utensils, label: "Scanner Repas", emoji: "🍽️", action: "meal" },
+    { icon: Pill, label: "Médicaments", emoji: "💊", action: "medication" },
+    { icon: Footprints, label: "Activité", emoji: "🏃", action: "activity" },
   ];
 
   const challenges = [
@@ -76,7 +82,11 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
             const colors = ['text-medical-blue', 'text-medical-green', 'text-medical-teal', 'text-warning'];
             const bgColors = ['bg-medical-blue-light', 'bg-medical-green-light', 'bg-medical-teal-light', 'bg-status-warning-bg'];
             return (
-              <Card key={index} className="bg-card shadow-md border border-border rounded-lg transition-all cursor-pointer hover:shadow-lg hover:scale-105">
+              <Card 
+                key={index} 
+                className="bg-card shadow-md border border-border rounded-lg transition-all cursor-pointer hover:shadow-lg hover:scale-105"
+                onClick={() => setActiveModal(action.action)}
+              >
                 <CardContent className="p-4 text-center space-y-3">
                   <div className={`w-12 h-12 rounded-full flex items-center justify-center mx-auto ${bgColors[index]}`}>
                     <div className="text-xl">{action.emoji}</div>
@@ -229,6 +239,24 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
           </CardContent>
         </Card>
       </div>
+
+      {/* Action Modals */}
+      <AddGlucoseModal 
+        isOpen={activeModal === "glucose"} 
+        onClose={() => setActiveModal(null)} 
+      />
+      <ScanMealModal 
+        isOpen={activeModal === "meal"} 
+        onClose={() => setActiveModal(null)} 
+      />
+      <MedicationModal 
+        isOpen={activeModal === "medication"} 
+        onClose={() => setActiveModal(null)} 
+      />
+      <ActivityModal 
+        isOpen={activeModal === "activity"} 
+        onClose={() => setActiveModal(null)} 
+      />
     </div>
   );
 };
