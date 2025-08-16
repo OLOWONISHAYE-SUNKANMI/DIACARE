@@ -75,6 +75,20 @@ All colors MUST be HSL.
     --status-critical: 0 84% 60%;
     --status-critical-bg: 0 84% 95%;
     
+    /* Missing glucose limits */
+    --glucose-limit-high: 25 85% 55%;
+    --glucose-limit-low: 220 85% 55%;
+    
+    /* Missing pricing colors */
+    --pricing-essential: 142 76% 36%;
+    --pricing-essential-light: 142 76% 95%;
+    --pricing-premium: 260 50% 45%;
+    --pricing-premium-light: 260 30% 90%;
+    
+    /* Missing Africa colors */
+    --africa-green: 142 76% 36%;
+    --africa-orange: 25 85% 55%;
+    
     /* Professional Medical Gradients */
     --gradient-medical: linear-gradient(135deg, hsl(142 76% 36%), hsl(180 50% 45%));
     --gradient-subtle: linear-gradient(180deg, hsl(0 0% 100%), hsl(200 25% 98%));
