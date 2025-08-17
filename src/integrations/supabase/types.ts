@@ -684,6 +684,72 @@ export type Database = {
         }
         Relationships: []
       }
+      user_badges: {
+        Row: {
+          badge_type: Database["public"]["Enums"]["badge_type"]
+          description: string | null
+          earned_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          badge_type: Database["public"]["Enums"]["badge_type"]
+          description?: string | null
+          earned_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          badge_type?: Database["public"]["Enums"]["badge_type"]
+          description?: string | null
+          earned_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_reputation: {
+        Row: {
+          challenge_participations: number
+          created_at: string
+          data_shares: number
+          helpful_messages: number
+          id: string
+          last_calculated_at: string
+          mentored_users: number
+          positive_reactions: number
+          score: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          challenge_participations?: number
+          created_at?: string
+          data_shares?: number
+          helpful_messages?: number
+          id?: string
+          last_calculated_at?: string
+          mentored_users?: number
+          positive_reactions?: number
+          score?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          challenge_participations?: number
+          created_at?: string
+          data_shares?: number
+          helpful_messages?: number
+          id?: string
+          last_calculated_at?: string
+          mentored_users?: number
+          positive_reactions?: number
+          score?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           assigned_at: string | null
@@ -721,6 +787,13 @@ export type Database = {
     Functions: {
       approve_professional_application: {
         Args: { application_id: string; reviewer_id: string }
+        Returns: boolean
+      }
+      award_badge_if_eligible: {
+        Args: {
+          _badge_type: Database["public"]["Enums"]["badge_type"]
+          _user_id: string
+        }
         Returns: boolean
       }
       can_access_data_section: {
@@ -800,6 +873,17 @@ export type Database = {
         Args: { _activity_type: string; _user_id: string }
         Returns: undefined
       }
+      update_user_reputation: {
+        Args: {
+          _challenge_participations?: number
+          _data_shares?: number
+          _helpful_messages?: number
+          _mentored_users?: number
+          _positive_reactions?: number
+          _user_id: string
+        }
+        Returns: undefined
+      }
       use_consultation: {
         Args: { patient_code_param: string; professional_code_param: string }
         Returns: boolean
@@ -807,6 +891,13 @@ export type Database = {
     }
     Enums: {
       app_role: "member" | "verified_member" | "expert" | "moderator"
+      badge_type:
+        | "welcome"
+        | "helper"
+        | "consistent"
+        | "motivator"
+        | "expert"
+        | "champion"
       challenge_type:
         | "glucose_monitoring"
         | "exercise"
@@ -947,6 +1038,14 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["member", "verified_member", "expert", "moderator"],
+      badge_type: [
+        "welcome",
+        "helper",
+        "consistent",
+        "motivator",
+        "expert",
+        "champion",
+      ],
       challenge_type: [
         "glucose_monitoring",
         "exercise",
