@@ -4,6 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
+import ApplicationCard from '@/components/ui/ApplicationCard';
 import { 
   CheckCircle, 
   XCircle, 
@@ -26,6 +28,7 @@ interface ProfessionalApplication {
   city?: string;
   status: 'pending' | 'approved' | 'rejected';
   created_at: string;
+  documents: any[];
 }
 
 interface Consultation {
@@ -52,7 +55,12 @@ const AdminTabs = () => {
       country: 'Sénégal',
       city: 'Dakar',
       status: 'pending',
-      created_at: '2024-01-15T10:00:00Z'
+      created_at: '2024-01-15T10:00:00Z',
+      documents: [
+        { name: 'diplome.pdf', url: '#' },
+        { name: 'licence.pdf', url: '#' },
+        { name: 'cv.pdf', url: '#' }
+      ]
     },
     {
       id: '2',
@@ -65,7 +73,11 @@ const AdminTabs = () => {
       country: 'Sénégal',
       city: 'Thiès',
       status: 'pending',
-      created_at: '2024-01-16T14:30:00Z'
+      created_at: '2024-01-16T14:30:00Z',
+      documents: [
+        { name: 'diplome.pdf', url: '#' },
+        { name: 'ordre.pdf', url: '#' }
+      ]
     }
   ]);
 
@@ -169,85 +181,44 @@ const AdminTabs = () => {
 
       {/* Candidatures Tab */}
       <TabsContent value="applications" className="space-y-4">
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
+        <div className="p-6">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-xl font-bold flex items-center gap-2">
               <Users className="w-5 h-5" />
-              Candidatures de Professionnels
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
+              📋 Candidatures en Attente
+            </h3>
+            {applications.filter(app => app.status === 'pending').length > 0 && (
+              <Badge className="bg-orange-100 text-orange-800 border-orange-300">
+                {applications.filter(app => app.status === 'pending').length} en attente
+              </Badge>
+            )}
+          </div>
+          
+          {applications.length > 0 ? (
             <div className="space-y-4">
               {applications.map((application) => (
-                <div 
+                <ApplicationCard
                   key={application.id}
-                  className="border rounded-lg p-4 hover:bg-muted/50 transition-colors"
-                >
-                  <div className="flex items-start justify-between">
-                    <div className="space-y-2">
-                      <div className="flex items-center gap-3">
-                        <h4 className="font-semibold text-lg">
-                          {application.first_name} {application.last_name}
-                        </h4>
-                        {getStatusBadge(application.status)}
-                      </div>
-                      
-                      <div className="grid grid-cols-2 gap-4 text-sm text-muted-foreground">
-                        <div>
-                          <span className="font-medium">Spécialité:</span> {application.professional_type}
-                        </div>
-                        <div>
-                          <span className="font-medium">Institution:</span> {application.institution || 'N/A'}
-                        </div>
-                        <div>
-                          <span className="font-medium">Licence:</span> {application.license_number}
-                        </div>
-                        <div>
-                          <span className="font-medium">Localisation:</span> {application.city}, {application.country}
-                        </div>
-                        <div>
-                          <span className="font-medium">Email:</span> {application.email}
-                        </div>
-                        <div>
-                          <span className="font-medium">Date:</span> {formatDate(application.created_at)}
-                        </div>
-                      </div>
-                    </div>
-
-                    {application.status === 'pending' && (
-                      <div className="flex gap-2">
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => {/* TODO: View details */}}
-                        >
-                          <Eye className="w-4 h-4 mr-1" />
-                          Voir
-                        </Button>
-                        <Button
-                          size="sm"
-                          onClick={() => handleApproveApplication(application.id)}
-                          className="bg-green-600 hover:bg-green-700"
-                        >
-                          <CheckCircle className="w-4 h-4 mr-1" />
-                          Approuver
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="destructive"
-                          onClick={() => handleRejectApplication(application.id)}
-                        >
-                          <XCircle className="w-4 h-4 mr-1" />
-                          Rejeter
-                        </Button>
-                      </div>
-                    )}
-                  </div>
-                </div>
+                  application={application}
+                  onApprove={handleApproveApplication}
+                  onReject={handleRejectApplication}
+                />
               ))}
             </div>
-          </CardContent>
-        </Card>
+          ) : (
+            <Card>
+              <CardContent className="p-8">
+                <div className="text-center">
+                  <Users className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                  <h3 className="text-lg font-semibold mb-2">Aucune candidature</h3>
+                  <p className="text-muted-foreground">
+                    Les nouvelles candidatures de professionnels apparaîtront ici
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+        </div>
       </TabsContent>
 
       {/* Consultations Tab */}
