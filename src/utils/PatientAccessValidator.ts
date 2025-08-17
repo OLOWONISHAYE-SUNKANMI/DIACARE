@@ -1,5 +1,6 @@
 import { supabase } from '@/integrations/supabase/client';
 import { AuditSystem } from './AuditSystem';
+import { TransparencyNotifications } from './TransparencyNotifications';
 
 interface Professional {
   id: string;
@@ -60,8 +61,8 @@ export const PatientAccessValidator = {
         dataAccessed: ['overview', 'basic_info']
       });
       
-      // 5. Notifier patient (optionnel)
-      await notifyPatientAccess(patient.id, professional);
+      // 5. Notifier patient de l'accès (transparence)
+      await TransparencyNotifications.notifyPatientAccess(patient.userId, professional);
       
       return {
         success: true,
@@ -77,6 +78,16 @@ export const PatientAccessValidator = {
         patientCode,
         actionType: 'unauthorized_attempt'
       });
+
+      // Notifier le patient de la tentative non autorisée
+      await TransparencyNotifications.sendUnauthorizedAccessAlert(
+        patientCode, // Utiliser le code patient en attendant l'ID réel
+        {
+          timestamp: new Date().toISOString(),
+          professionalCode,
+          error: error.message
+        }
+      );
       
       return {
         success: false,
