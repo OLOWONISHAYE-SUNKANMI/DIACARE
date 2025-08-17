@@ -21,6 +21,7 @@ import AssistantScreen from "@/components/screens/AssistantScreen";
 import HealthProfessionalScreen from "@/components/screens/HealthProfessionalScreen";
 import AdminDashboard from "@/components/screens/AdminDashboard";
 import { AdminApplicationReview } from "@/components/screens/AdminApplicationReview";
+import PatientAccessScreen from "@/components/screens/PatientAccessScreen";
 import { useAuth } from "@/contexts/AuthContext";
 
 const Index = () => {
@@ -96,6 +97,8 @@ const Index = () => {
             onPaymentSuccess={handlePaymentSuccess}
           />
         );
+      case "patient-access":
+        return <PatientAccessScreen />;
       default:
         return <HomeScreen onTabChange={setActiveTab} />;
     }
@@ -157,6 +160,14 @@ const Index = () => {
         className="fixed bottom-68 left-4 px-4 py-2 bg-medical-blue hover:bg-medical-blue/90 text-white shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 z-10 text-sm"
       >
         🩺 Dashboard Médecin
+      </Button>
+      
+      {/* Bouton accès patients pour test */}
+      <Button 
+        onClick={() => setActiveTab("patient-access")}
+        className="fixed bottom-84 left-4 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 z-10 text-sm"
+      >
+        🔐 Accès Patients
       </Button>
     </div>
   );
