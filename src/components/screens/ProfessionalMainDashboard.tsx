@@ -126,50 +126,48 @@ export const ProfessionalMainDashboard: React.FC<ProfessionalMainDashboardProps>
 
     setIsAccessing(true);
     try {
-      // Demander accès aux données patient
-      const result = await ProfessionalCodeGenerator.requestPatientDataAccess(
-        professional.identificationCode,
-        code,
-        ['glucose', 'medications', 'meals', 'activities'],
-        1
-      );
+      // Demander accès aux données patient via l'edge function
+      const { data, error } = await supabase.functions.invoke('verify-professional-access', {
+        body: {
+          professionalCode: professional.identificationCode,
+          patientId: code,
+          accessType: 'consultation_request'
+        }
+      });
 
-      if (result.success) {
-        // Simuler les données patient pour le moment
-        const mockPatient: Patient = {
-          id: `patient_${code}`,
-          firstName: 'Marie',
-          lastName: 'Dupont',
-          diabetesType: 'Type 2',
-          patientCode: code,
-          lastGlucose: 142,
-          dataAccess: {
-            allowedSections: ['glucose', 'medications', 'meals', 'activities'],
-            consultationsRemaining: 1,
-            expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
-          }
-        };
-
-        setCurrentPatient(mockPatient);
-        setPatientCode('');
-        
-        toast({
-          title: "✅ Accès autorisé",
-          description: `Données de ${mockPatient.firstName} ${mockPatient.lastName} accessibles`,
-        });
-
-        loadAccessHistory();
-      } else {
-        toast({
-          title: "❌ Accès refusé",
-          description: result.error || "Code patient invalide ou accès non autorisé",
-          variant: "destructive"
-        });
+      if (error || !data?.access_granted) {
+        throw new Error(data?.error || 'Accès refusé');
       }
-    } catch (error) {
+
+      // Créer l'objet patient avec les données reçues
+      const patientData: Patient = {
+        id: data.patient_data.id,
+        firstName: data.patient_data.first_name,
+        lastName: data.patient_data.last_name,
+        diabetesType: data.patient_data.diabetes_type,
+        patientCode: code,
+        lastGlucose: data.patient_data.glucose_readings?.[0]?.value || null,
+        dataAccess: {
+          allowedSections: ['glucose', 'medications', 'meals', 'activities'],
+          consultationsRemaining: 1,
+          expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
+        }
+      };
+
+      setCurrentPatient(patientData);
+      setPatientCode('');
+      
       toast({
-        title: "❌ Erreur",
-        description: "Erreur lors de l'accès aux données",
+        title: "✅ Accès autorisé",
+        description: `Données de ${patientData.firstName} ${patientData.lastName} accessibles`,
+      });
+
+      loadAccessHistory();
+    } catch (error: any) {
+      console.error('Erreur accès patient:', error);
+      toast({
+        title: "❌ Accès refusé",
+        description: error.message || "Code patient invalide ou accès non autorisé",
         variant: "destructive"
       });
     } finally {
@@ -178,6 +176,15 @@ export const ProfessionalMainDashboard: React.FC<ProfessionalMainDashboardProps>
   };
 
   const startConsultation = async (patientId: string) => {
+    if (!currentPatient) {
+      toast({
+        title: "❌ Erreur",
+        description: "Aucun patient sélectionné",
+        variant: "destructive"
+      });
+      return;
+    }
+
     try {
       // Créer une session de consultation
       const { data, error } = await supabase
@@ -185,8 +192,8 @@ export const ProfessionalMainDashboard: React.FC<ProfessionalMainDashboardProps>
         .insert({
           professional_id: professional.id,
           professional_code: professional.identificationCode,
-          patient_code: currentPatient?.patientCode || '',
-          patient_name: `${currentPatient?.firstName} ${currentPatient?.lastName}`,
+          patient_code: currentPatient.patientCode,
+          patient_name: `${currentPatient.firstName} ${currentPatient.lastName}`,
           consultation_started_at: new Date().toISOString(),
           access_granted: true
         })
@@ -199,11 +206,14 @@ export const ProfessionalMainDashboard: React.FC<ProfessionalMainDashboardProps>
 
       toast({
         title: "🩺 Consultation démarrée",
-        description: `Consultation avec ${currentPatient?.firstName} ${currentPatient?.lastName}`,
+        description: `Consultation avec ${currentPatient.firstName} ${currentPatient.lastName}`,
       });
 
+      // Rediriger vers l'interface de téléconsultation
+      // TODO: Implémenter la navigation vers TeleconsultationInterface
+      
       loadAccessHistory();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erreur démarrage consultation:', error);
       toast({
         title: "❌ Erreur",
@@ -212,6 +222,7 @@ export const ProfessionalMainDashboard: React.FC<ProfessionalMainDashboardProps>
       });
     }
   };
+
 
   return (
     <div className="min-h-screen bg-muted/30">
