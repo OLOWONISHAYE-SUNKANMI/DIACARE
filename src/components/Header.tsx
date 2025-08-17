@@ -1,6 +1,13 @@
 import { Heart } from "lucide-react";
 
-const Header = () => {
+interface HeaderProps {
+  user?: any;
+  onLogout?: () => void;
+  isProfessional?: boolean;
+  professionalData?: any;
+}
+
+const Header = ({ user, onLogout, isProfessional, professionalData }: HeaderProps) => {
   return (
     <header className="w-full mx-4 my-4 mb-0 rounded-lg shadow-lg overflow-hidden bg-card border border-border">
       <div className="flex items-center justify-center py-6 px-6 bg-gradient-to-r from-medical-green to-medical-teal">

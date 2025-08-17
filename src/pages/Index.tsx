@@ -100,9 +100,15 @@ const Index = () => {
     }
   };
 
+  const { user, signOut, isProfessional, professionalData } = useAuth();
+
+  const handleLogout = async () => {
+    await signOut();
+  };
+
   return (
     <div className="min-h-screen bg-background flex flex-col max-w-sm mx-auto relative overflow-hidden">
-      <Header />
+      <Header user={user} onLogout={handleLogout} isProfessional={isProfessional} professionalData={professionalData} />
       <div className="flex-1 overflow-y-auto scrollbar-hide">
         {renderScreen()}
       </div>
