@@ -1,4 +1,5 @@
 import { supabase } from '@/integrations/supabase/client';
+import { AuditSystem } from './AuditSystem';
 
 interface Professional {
   id: string;
@@ -49,12 +50,14 @@ export const PatientAccessValidator = {
         throw new Error('Accès non autorisé à ce patient');
       }
       
-      // 4. Logger l'accès
-      await logDataAccess({
+      // 4. Logger l'accès avec audit système
+      await AuditSystem.logDataAccess({
         professionalId: professional.id,
+        professionalCode: professional.identificationCode,
         patientId: patient.id,
-        accessTime: new Date(),
-        accessType: 'data_view'
+        patientCode: patient.patientCode,
+        actionType: 'view',
+        dataAccessed: ['overview', 'basic_info']
       });
       
       // 5. Notifier patient (optionnel)
@@ -68,12 +71,11 @@ export const PatientAccessValidator = {
       };
       
     } catch (error: any) {
-      // Logger tentative d'accès non autorisé
-      await logUnauthorizedAccess({
+      // Logger tentative d'accès non autorisé avec audit système
+      await AuditSystem.logDataAccess({
         professionalCode,
         patientCode,
-        error: error.message,
-        timestamp: new Date()
+        actionType: 'unauthorized_attempt'
       });
       
       return {
