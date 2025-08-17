@@ -175,7 +175,7 @@ const TeleconsultationBooking = () => {
 
   const filteredProfessionals = professionals.filter(prof => {
     return (
-      (!filters.specialty || prof.specialty === filters.specialty) &&
+      (!filters.specialty || filters.specialty === 'all' || prof.specialty === filters.specialty) &&
       (!filters.city || prof.city?.toLowerCase().includes(filters.city.toLowerCase())) &&
       (!filters.search || 
         `${prof.first_name} ${prof.last_name}`.toLowerCase().includes(filters.search.toLowerCase()) ||
@@ -261,7 +261,7 @@ const TeleconsultationBooking = () => {
                   <SelectValue placeholder="Toutes les spécialités" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Toutes les spécialités</SelectItem>
+                  <SelectItem value="all">Toutes les spécialités</SelectItem>
                   <SelectItem value="endocrinologist">Endocrinologue</SelectItem>
                   <SelectItem value="diabetologist">Diabétologue</SelectItem>
                   <SelectItem value="nutritionist">Nutritionniste</SelectItem>
