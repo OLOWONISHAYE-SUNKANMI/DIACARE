@@ -94,55 +94,55 @@ export const ApplicationCard: React.FC<ApplicationCardProps> = ({
   };
 
   return (
-    <Card className="p-6 hover:shadow-lg transition-all duration-200 border-l-4 border-l-orange-400">
+    <Card className="p-6 hover:shadow-lg transition-all duration-200 border-l-4 border-l-status-warning animate-fade-in">
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center gap-4">
-          <Avatar className="h-12 w-12 bg-gradient-to-br from-blue-500 to-purple-600 text-white">
-            <AvatarFallback className="bg-transparent text-white font-bold">
+          <Avatar className="h-12 w-12 bg-gradient-medical text-primary-foreground">
+            <AvatarFallback className="bg-transparent text-primary-foreground font-bold">
               {getInitials(application.first_name, application.last_name)}
             </AvatarFallback>
           </Avatar>
           
           <div>
-            <h3 className="text-lg font-bold text-gray-900">
+            <h3 className="text-lg font-bold text-foreground">
               Dr. {application.first_name} {application.last_name}
             </h3>
-            <div className="flex items-center gap-2 text-sm text-gray-600">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <span className="text-lg">{getSpecialtyIcon(application.professional_type)}</span>
               <span>{getSpecialtyLabel(application.professional_type)}</span>
             </div>
           </div>
         </div>
 
-        <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">
+        <Badge variant="outline" className="bg-status-warning-bg text-status-warning border-status-warning/20">
           <Clock className="h-3 w-3 mr-1" />
           En attente
         </Badge>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm mb-4">
-        <div className="flex items-center gap-2 text-gray-600">
+        <div className="flex items-center gap-2 text-muted-foreground">
           <Mail className="h-4 w-4" />
           <span className="truncate">{application.email}</span>
         </div>
         
-        <div className="flex items-center gap-2 text-gray-600">
+        <div className="flex items-center gap-2 text-muted-foreground">
           <Phone className="h-4 w-4" />
           <span>{application.phone}</span>
         </div>
         
-        <div className="flex items-center gap-2 text-gray-600">
+        <div className="flex items-center gap-2 text-muted-foreground">
           <MapPin className="h-4 w-4" />
           <span>{application.city}, {application.country}</span>
         </div>
         
-        <div className="flex items-center gap-2 text-gray-600">
+        <div className="flex items-center gap-2 text-muted-foreground">
           <Building2 className="h-4 w-4" />
           <span className="truncate">{application.institution || 'Non spécifiée'}</span>
         </div>
       </div>
 
-      <div className="flex items-center gap-2 text-xs text-gray-500 mb-4">
+      <div className="flex items-center gap-2 text-xs text-muted-foreground mb-4">
         <Calendar className="h-3 w-3" />
         <span>
           Candidature déposée {formatDistanceToNow(new Date(application.created_at), { 
@@ -168,7 +168,7 @@ export const ApplicationCard: React.FC<ApplicationCardProps> = ({
         <Button
           size="sm"
           onClick={() => onApprove(application)}
-          className="bg-green-600 hover:bg-green-700 text-white flex-1 min-w-24"
+          className="bg-success text-success-foreground hover:bg-success/90 flex-1 min-w-24"
         >
           <CheckCircle className="h-4 w-4 mr-1" />
           Approuver
@@ -233,17 +233,17 @@ export const ApplicationDetails: React.FC<ApplicationDetailsProps> = ({ applicat
   return (
     <Card className="p-6 sticky top-6">
       <div className="text-center mb-6">
-        <Avatar className="h-20 w-20 mx-auto mb-3 bg-gradient-to-br from-blue-500 to-purple-600 text-white">
-          <AvatarFallback className="bg-transparent text-white font-bold text-xl">
+        <Avatar className="h-20 w-20 mx-auto mb-3 bg-gradient-medical text-primary-foreground">
+          <AvatarFallback className="bg-transparent text-primary-foreground font-bold text-xl">
             {`${application.first_name.charAt(0)}${application.last_name.charAt(0)}`.toUpperCase()}
           </AvatarFallback>
         </Avatar>
         
-        <h2 className="text-xl font-bold text-gray-900">
+        <h2 className="text-xl font-bold text-foreground">
           Dr. {application.first_name} {application.last_name}
         </h2>
         
-        <div className="flex items-center justify-center gap-2 text-gray-600 mt-1">
+        <div className="flex items-center justify-center gap-2 text-muted-foreground mt-1">
           <span className="text-xl">{getSpecialtyIcon(application.professional_type)}</span>
           <span className="font-medium">{getSpecialtyLabel(application.professional_type)}</span>
         </div>
@@ -251,22 +251,22 @@ export const ApplicationDetails: React.FC<ApplicationDetailsProps> = ({ applicat
 
       <div className="space-y-4">
         <div>
-          <h3 className="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+          <h3 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
             <User className="h-4 w-4" />
             Informations personnelles
           </h3>
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
-              <span className="text-gray-600">Email :</span>
-              <span className="font-medium text-right">{application.email}</span>
+              <span className="text-muted-foreground">Email :</span>
+              <span className="font-medium text-right text-foreground">{application.email}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-600">Téléphone :</span>
-              <span className="font-medium">{application.phone}</span>
+              <span className="text-muted-foreground">Téléphone :</span>
+              <span className="font-medium text-foreground">{application.phone}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-600">Localisation :</span>
-              <span className="font-medium text-right">{application.city}, {application.country}</span>
+              <span className="text-muted-foreground">Localisation :</span>
+              <span className="font-medium text-right text-foreground">{application.city}, {application.country}</span>
             </div>
           </div>
         </div>
@@ -274,18 +274,18 @@ export const ApplicationDetails: React.FC<ApplicationDetailsProps> = ({ applicat
         <Separator />
 
         <div>
-          <h3 className="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+          <h3 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
             <Award className="h-4 w-4" />
             Qualifications professionnelles
           </h3>
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
-              <span className="text-gray-600">N° Licence :</span>
-              <span className="font-medium font-mono">{application.license_number}</span>
+              <span className="text-muted-foreground">N° Licence :</span>
+              <span className="font-medium font-mono text-foreground">{application.license_number}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-600">Institution :</span>
-              <span className="font-medium text-right">
+              <span className="text-muted-foreground">Institution :</span>
+              <span className="font-medium text-right text-foreground">
                 {application.institution || 'Non spécifiée'}
               </span>
             </div>
@@ -295,7 +295,7 @@ export const ApplicationDetails: React.FC<ApplicationDetailsProps> = ({ applicat
         <Separator />
 
         <div>
-          <h3 className="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
+          <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
             <FileText className="h-4 w-4" />
             Documents justificatifs ({application.documents?.length || 0})
           </h3>
@@ -303,10 +303,10 @@ export const ApplicationDetails: React.FC<ApplicationDetailsProps> = ({ applicat
           {application.documents && application.documents.length > 0 ? (
             <div className="space-y-2">
               {application.documents.map((doc, index) => (
-                <div key={index} className="flex items-center justify-between p-2 bg-gray-50 rounded border">
+                <div key={index} className="flex items-center justify-between p-2 bg-muted/30 rounded border border-border">
                   <div className="flex items-center gap-2">
-                    <FileText className="h-4 w-4 text-blue-500" />
-                    <span className="text-sm text-gray-700">Document {index + 1}</span>
+                    <FileText className="h-4 w-4 text-medical-blue" />
+                    <span className="text-sm text-foreground">Document {index + 1}</span>
                   </div>
                   <Button 
                     size="sm" 
@@ -320,8 +320,8 @@ export const ApplicationDetails: React.FC<ApplicationDetailsProps> = ({ applicat
               ))}
             </div>
           ) : (
-            <div className="text-center py-4 text-gray-500 bg-gray-50 rounded border-2 border-dashed">
-              <FileText className="h-8 w-8 mx-auto mb-2 text-gray-300" />
+            <div className="text-center py-4 text-muted-foreground bg-muted/30 rounded border-2 border-dashed border-border">
+              <FileText className="h-8 w-8 mx-auto mb-2 text-muted-foreground/50" />
               <p className="text-sm">Aucun document</p>
             </div>
           )}
@@ -329,7 +329,7 @@ export const ApplicationDetails: React.FC<ApplicationDetailsProps> = ({ applicat
 
         <Separator />
 
-        <div className="text-xs text-gray-500 text-center">
+        <div className="text-xs text-muted-foreground text-center">
           <div className="flex items-center justify-center gap-1">
             <Calendar className="h-3 w-3" />
             Candidature déposée le {new Date(application.created_at).toLocaleDateString('fr-FR', {
