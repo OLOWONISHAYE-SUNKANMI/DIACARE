@@ -1,6 +1,7 @@
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from '@/hooks/use-toast';
+import { EmailNotifications } from './EmailNotifications';
 
 interface Application {
   id: string;
@@ -41,20 +42,14 @@ export const ApplicationManager = {
 
       if (fetchError) throw fetchError;
 
-      // Envoyer l'email d'approbation via edge function
-      const { error: emailError } = await supabase.functions.invoke('send-professional-emails', {
-        body: {
-          type: 'approval',
-          application: {
-            ...application,
-            professional_code: updatedApplication.professional_code
-          }
-        }
+      // Envoyer l'email d'approbation via le service de notifications
+      const emailSent = await EmailNotifications.sendApprovalEmail({
+        ...application,
+        professional_code: updatedApplication.professional_code
       });
 
-      if (emailError) {
-        console.warn('Erreur envoi email:', emailError);
-        // Ne pas faire échouer l'approbation si l'email échoue
+      if (!emailSent) {
+        console.warn('Attention: Email d\'approbation non envoyé');
       }
 
       toast({
@@ -98,18 +93,11 @@ export const ApplicationManager = {
 
       if (error) throw error;
 
-      // Envoyer l'email de rejet via edge function
-      const { error: emailError } = await supabase.functions.invoke('send-professional-emails', {
-        body: {
-          type: 'rejection',
-          application,
-          rejection_reason: reason
-        }
-      });
+      // Envoyer l'email de rejet via le service de notifications
+      const emailSent = await EmailNotifications.sendRejectionEmail(application, reason);
 
-      if (emailError) {
-        console.warn('Erreur envoi email:', emailError);
-        // Ne pas faire échouer le rejet si l'email échoue
+      if (!emailSent) {
+        console.warn('Attention: Email de rejet non envoyé');
       }
 
       toast({

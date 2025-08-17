@@ -4,6 +4,7 @@ import { renderAsync } from "npm:@react-email/components@0.0.22";
 import React from "npm:react@18.3.1";
 import { ApprovalEmail } from "./_templates/approval-email.tsx";
 import { RejectionEmail } from "./_templates/rejection-email.tsx";
+import { WelcomeEmail } from "./_templates/welcome-email.tsx";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
@@ -13,7 +14,7 @@ const corsHeaders = {
 };
 
 interface EmailRequest {
-  type: 'approval' | 'rejection';
+  type: 'approval' | 'rejection' | 'welcome' | 'code_expiry_reminder';
   application: {
     first_name: string;
     last_name: string;
@@ -70,6 +71,34 @@ serve(async (req) => {
         })
       );
       subject = "Mise à jour de votre candidature DARE";
+
+    } else if (type === 'welcome') {
+      if (!application.professional_code) {
+        throw new Error('Code professionnel requis pour l\'email de bienvenue');
+      }
+
+      html = await renderAsync(
+        React.createElement(WelcomeEmail, {
+          firstName: application.first_name,
+          lastName: application.last_name,
+          professionalType: application.professional_type,
+          professionalCode: application.professional_code,
+        })
+      );
+      subject = "🚀 Bienvenue dans la communauté DARE !";
+
+    } else if (type === 'code_expiry_reminder') {
+      // Utiliser le template d'approbation mais avec un message différent
+      html = await renderAsync(
+        React.createElement(ApprovalEmail, {
+          firstName: application.first_name,
+          lastName: application.last_name,
+          professionalType: application.professional_type,
+          professionalCode: application.professional_code || '',
+          institution: application.institution,
+        })
+      );
+      subject = "⚠️ Votre code professionnel DARE expire bientôt";
 
     } else {
       throw new Error(`Type d'email non supporté: ${type}`);
