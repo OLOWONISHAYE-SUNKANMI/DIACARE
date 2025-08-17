@@ -14,6 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      anonymous_community_stats: {
+        Row: {
+          age_group: string | null
+          avg_glucose: number | null
+          created_at: string
+          diabetes_type: Database["public"]["Enums"]["diabetes_type"] | null
+          id: string
+          month_year: string | null
+          region: string | null
+          time_in_range: number | null
+        }
+        Insert: {
+          age_group?: string | null
+          avg_glucose?: number | null
+          created_at?: string
+          diabetes_type?: Database["public"]["Enums"]["diabetes_type"] | null
+          id?: string
+          month_year?: string | null
+          region?: string | null
+          time_in_range?: number | null
+        }
+        Update: {
+          age_group?: string | null
+          avg_glucose?: number | null
+          created_at?: string
+          diabetes_type?: Database["public"]["Enums"]["diabetes_type"] | null
+          id?: string
+          month_year?: string | null
+          region?: string | null
+          time_in_range?: number | null
+        }
+        Relationships: []
+      }
       challenge_participants: {
         Row: {
           challenge_id: string | null
@@ -100,6 +133,66 @@ export type Database = {
           target_unit?: string | null
           target_value?: number | null
           updated_at?: string
+        }
+        Relationships: []
+      }
+      community_insights: {
+        Row: {
+          calculated_for_date: string
+          calculation_period: string
+          created_at: string
+          id: string
+          insight_type: string
+          insight_value: Json
+        }
+        Insert: {
+          calculated_for_date: string
+          calculation_period: string
+          created_at?: string
+          id?: string
+          insight_type: string
+          insight_value: Json
+        }
+        Update: {
+          calculated_for_date?: string
+          calculation_period?: string
+          created_at?: string
+          id?: string
+          insight_type?: string
+          insight_value?: Json
+        }
+        Relationships: []
+      }
+      data_sharing_preferences: {
+        Row: {
+          created_at: string
+          id: string
+          share_age_group: boolean | null
+          share_diabetes_type: boolean | null
+          share_region: boolean | null
+          share_stats: boolean | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          share_age_group?: boolean | null
+          share_diabetes_type?: boolean | null
+          share_region?: boolean | null
+          share_stats?: boolean | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          share_age_group?: boolean | null
+          share_diabetes_type?: boolean | null
+          share_region?: boolean | null
+          share_stats?: boolean | null
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -780,6 +873,42 @@ export type Database = {
         }
         Relationships: []
       }
+      user_statistics: {
+        Row: {
+          avg_glucose: number | null
+          created_at: string
+          days_active: number | null
+          hba1c: number | null
+          id: string
+          last_calculated_at: string | null
+          time_in_range: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avg_glucose?: number | null
+          created_at?: string
+          days_active?: number | null
+          hba1c?: number | null
+          id?: string
+          last_calculated_at?: string | null
+          time_in_range?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avg_glucose?: number | null
+          created_at?: string
+          days_active?: number | null
+          hba1c?: number | null
+          id?: string
+          last_calculated_at?: string | null
+          time_in_range?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -804,12 +933,20 @@ export type Database = {
         }
         Returns: boolean
       }
+      generate_community_insights: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
+      }
       generate_patient_access_code: {
         Args: Record<PropertyKey, never>
         Returns: string
       }
       generate_professional_code: {
         Args: Record<PropertyKey, never>
+        Returns: string
+      }
+      get_age_group: {
+        Args: { age: number }
         Returns: string
       }
       get_user_role: {
@@ -865,6 +1002,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      share_anonymous_statistics: {
+        Args: { _user_id: string }
+        Returns: boolean
+      }
       test_webhook: {
         Args: { webhook_type: string }
         Returns: boolean
@@ -904,6 +1045,7 @@ export type Database = {
         | "nutrition"
         | "medication_adherence"
         | "community_engagement"
+      diabetes_type: "type1" | "type2" | "gestational" | "other"
       emergency_priority: "low" | "medium" | "high" | "critical"
       support_session_type:
         | "group_session"
@@ -1053,6 +1195,7 @@ export const Constants = {
         "medication_adherence",
         "community_engagement",
       ],
+      diabetes_type: ["type1", "type2", "gestational", "other"],
       emergency_priority: ["low", "medium", "high", "critical"],
       support_session_type: [
         "group_session",
