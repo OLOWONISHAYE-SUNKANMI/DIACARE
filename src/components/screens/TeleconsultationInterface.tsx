@@ -20,6 +20,11 @@ interface PatientData {
   age: number;
   diabetesType: number;
   location: string;
+  diagnosisDate: string;
+  lastHbA1c: number;
+  recentGlucose: Array<{ time: string; value: number }>;
+  medications: Array<{ name: string; dose: string }>;
+  alerts: string[];
 }
 
 interface ConsultationData {
