@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { ProfessionalCodeGenerator } from '@/utils/ProfessionalCodeGenerator';
+import { PatientDataTabs } from '@/components/ui/PatientDataTabs';
 import { supabase } from '@/integrations/supabase/client';
 
 interface Professional {
@@ -355,24 +356,24 @@ const PatientDataInterface: React.FC<PatientDataInterfaceProps> = ({
           </div>
         </div>
 
-        {/* Actions */}
-        <div className="flex gap-3">
+        {/* Actions principales */}
+        <div className="flex gap-3 mb-6">
           <Button 
             onClick={() => onStartConsultation(patient.id)}
             className="flex-1"
           >
             🩺 Démarrer Consultation
           </Button>
-          <Button variant="outline" className="flex-1">
-            📊 Voir Historique Glycémique
-          </Button>
-          <Button variant="outline" className="flex-1">
-            💊 Médications
+          <Button variant="outline" onClick={onCloseAccess}>
+            ✕ Fermer Accès
           </Button>
         </div>
 
+        {/* Onglets données patient */}
+        <PatientDataTabs patient={patient} />
+
         {/* Notes de consultation */}
-        <div>
+        <div className="mt-6">
           <label className="block text-sm font-medium mb-2">Notes de consultation</label>
           <textarea
             value={consultationNotes}
@@ -381,21 +382,6 @@ const PatientDataInterface: React.FC<PatientDataInterfaceProps> = ({
             className="w-full p-3 border border-input rounded-md resize-none"
             rows={4}
           />
-        </div>
-
-        {/* Sections de données accessibles */}
-        <div>
-          <h4 className="font-medium mb-2">Sections accessibles:</h4>
-          <div className="flex flex-wrap gap-2">
-            {patient.dataAccess.allowedSections.map((section) => (
-              <Badge key={section} variant="secondary">
-                {section === 'glucose' && '📈 Glycémie'}
-                {section === 'medications' && '💊 Médications'}
-                {section === 'meals' && '🍽️ Repas'}
-                {section === 'activities' && '🏃 Activités'}
-              </Badge>
-            ))}
-          </div>
         </div>
       </CardContent>
     </Card>
