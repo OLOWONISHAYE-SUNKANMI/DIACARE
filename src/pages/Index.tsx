@@ -7,6 +7,7 @@ import Header from "@/components/Header";
 import BottomNavigation from "@/components/BottomNavigation";
 import PaymentScreen from "@/components/screens/PaymentScreen";
 import ProfessionalDashboard from "@/components/screens/ProfessionalDashboard";
+import DoctorDashboard from "@/components/screens/DoctorDashboard";
 import TeleconsultationBooking from "@/components/screens/TeleconsultationBooking";
 import HomeScreen from "@/components/screens/HomeScreen";
 import ChartsScreen from "@/components/screens/ChartsScreen";
@@ -83,6 +84,8 @@ const Index = () => {
         return <ProfileScreen />;
       case "teleconsultation":
         return <TeleconsultationBooking />;
+      case "doctor-dashboard":
+        return <DoctorDashboard />;
       case "professional-dashboard":
         return <ProfessionalDashboard />;
       case "payment":
@@ -139,6 +142,14 @@ const Index = () => {
         className="fixed bottom-52 left-4 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 z-10 text-sm"
       >
         📋 Candidatures
+      </Button>
+      
+      {/* Bouton dashboard médecin pour test */}
+      <Button 
+        onClick={() => setActiveTab("doctor-dashboard")}
+        className="fixed bottom-68 left-4 px-4 py-2 bg-medical-blue hover:bg-medical-blue/90 text-white shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 z-10 text-sm"
+      >
+        🩺 Dashboard Médecin
       </Button>
     </div>
   );

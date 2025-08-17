@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Badge } from '@/components/ui/badge';
 import { Upload, FileText, CheckCircle, AlertCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 import { DocumentUploader } from '@/components/DocumentUploader';
 
 interface ProfessionType {
@@ -107,18 +108,48 @@ const HealthProfessionalSignup = () => {
 
     setLoading(true);
     try {
-      // Soumission à implémenter avec Supabase
-      console.log('Submitting professional application:', {
-        ...formData,
-        professionalType: selectedProfessionData?.specialty,
-        documents
-      });
+      // Soumission de la candidature professionnelle
+      const { error } = await supabase
+        .from('professional_applications')
+        .insert({
+          first_name: formData.firstName,
+          last_name: formData.lastName,
+          email: formData.email,
+          phone: formData.phone,
+          license_number: formData.licenseNumber,
+          institution: formData.institution,
+          city: formData.city,
+          country: formData.country,
+          professional_type: selectedProfessionData?.specialty,
+          status: 'pending'
+        });
+
+      if (error) throw error;
       
       toast({
         title: "Candidature soumise !",
         description: "Votre candidature a été envoyée pour examen. Vous recevrez une réponse dans les 24-48h.",
       });
+
+      // Reset form
+      setSelectedProfession('');
+      setFormData({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        licenseNumber: '',
+        institution: '',
+        city: '',
+        country: '',
+        specialty: '',
+        experience: '',
+        biography: ''
+      });
+      setDocuments([]);
+      
     } catch (error) {
+      console.error('Error submitting application:', error);
       toast({
         title: "Erreur",
         description: "Une erreur est survenue lors de la soumission.",
