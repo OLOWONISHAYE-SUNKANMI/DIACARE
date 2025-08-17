@@ -448,6 +448,39 @@ export type Database = {
         }
         Relationships: []
       }
+      professional_availability: {
+        Row: {
+          created_at: string
+          day_of_week: number
+          end_time: string
+          id: string
+          is_available: boolean | null
+          professional_id: string
+          start_time: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          day_of_week: number
+          end_time: string
+          id?: string
+          is_available?: boolean | null
+          professional_id: string
+          start_time: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          day_of_week?: number
+          end_time?: string
+          id?: string
+          is_available?: boolean | null
+          professional_id?: string
+          start_time?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       professional_codes: {
         Row: {
           code: string
@@ -492,6 +525,48 @@ export type Database = {
           },
         ]
       }
+      professional_earnings: {
+        Row: {
+          created_at: string
+          currency: string | null
+          gross_amount: number
+          id: string
+          net_amount: number
+          payout_date: string | null
+          payout_reference: string | null
+          payout_status: string | null
+          platform_fee: number
+          professional_id: string
+          teleconsultation_id: string
+        }
+        Insert: {
+          created_at?: string
+          currency?: string | null
+          gross_amount: number
+          id?: string
+          net_amount: number
+          payout_date?: string | null
+          payout_reference?: string | null
+          payout_status?: string | null
+          platform_fee: number
+          professional_id: string
+          teleconsultation_id: string
+        }
+        Update: {
+          created_at?: string
+          currency?: string | null
+          gross_amount?: number
+          id?: string
+          net_amount?: number
+          payout_date?: string | null
+          payout_reference?: string | null
+          payout_status?: string | null
+          platform_fee?: number
+          professional_id?: string
+          teleconsultation_id?: string
+        }
+        Relationships: []
+      }
       professional_patient_access: {
         Row: {
           access_method: string | null
@@ -526,6 +601,33 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      professional_rates: {
+        Row: {
+          created_at: string
+          currency: string | null
+          id: string
+          rate_per_consultation: number
+          specialty: Database["public"]["Enums"]["professional_specialty"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          currency?: string | null
+          id?: string
+          rate_per_consultation: number
+          specialty: Database["public"]["Enums"]["professional_specialty"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          currency?: string | null
+          id?: string
+          rate_per_consultation?: number
+          specialty?: Database["public"]["Enums"]["professional_specialty"]
+          updated_at?: string
+        }
+        Relationships: []
       }
       professional_sessions: {
         Row: {
@@ -738,6 +840,72 @@ export type Database = {
         }
         Relationships: []
       }
+      teleconsultations: {
+        Row: {
+          amount_charged: number | null
+          consultation_notes: string | null
+          created_at: string
+          duration_minutes: number | null
+          ended_at: string | null
+          follow_up_date: string | null
+          id: string
+          patient_feedback: string | null
+          patient_id: string
+          payment_status: string | null
+          prescription: string | null
+          professional_id: string
+          rating: number | null
+          scheduled_at: string
+          session_id: string | null
+          started_at: string | null
+          status: string | null
+          stripe_payment_intent_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          amount_charged?: number | null
+          consultation_notes?: string | null
+          created_at?: string
+          duration_minutes?: number | null
+          ended_at?: string | null
+          follow_up_date?: string | null
+          id?: string
+          patient_feedback?: string | null
+          patient_id: string
+          payment_status?: string | null
+          prescription?: string | null
+          professional_id: string
+          rating?: number | null
+          scheduled_at: string
+          session_id?: string | null
+          started_at?: string | null
+          status?: string | null
+          stripe_payment_intent_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          amount_charged?: number | null
+          consultation_notes?: string | null
+          created_at?: string
+          duration_minutes?: number | null
+          ended_at?: string | null
+          follow_up_date?: string | null
+          id?: string
+          patient_feedback?: string | null
+          patient_id?: string
+          payment_status?: string | null
+          prescription?: string | null
+          professional_id?: string
+          rating?: number | null
+          scheduled_at?: string
+          session_id?: string | null
+          started_at?: string | null
+          status?: string | null
+          stripe_payment_intent_id?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_activity_stats: {
         Row: {
           created_at: string | null
@@ -925,6 +1093,13 @@ export type Database = {
         }
         Returns: boolean
       }
+      calculate_professional_earnings: {
+        Args: {
+          _platform_fee_percentage?: number
+          _teleconsultation_id: string
+        }
+        Returns: string
+      }
       can_access_data_section: {
         Args: {
           data_section: string
@@ -948,6 +1123,21 @@ export type Database = {
       get_age_group: {
         Args: { age: number }
         Returns: string
+      }
+      get_professional_schedule: {
+        Args: {
+          _end_date: string
+          _professional_id: string
+          _start_date: string
+        }
+        Returns: {
+          booked_slots: number
+          date: string
+          day_of_week: number
+          end_time: string
+          is_available: boolean
+          start_time: string
+        }[]
       }
       get_user_role: {
         Args: { _user_id: string }
@@ -1047,6 +1237,13 @@ export type Database = {
         | "community_engagement"
       diabetes_type: "type1" | "type2" | "gestational" | "other"
       emergency_priority: "low" | "medium" | "high" | "critical"
+      professional_specialty:
+        | "endocrinologist"
+        | "psychologist"
+        | "nutritionist"
+        | "nurse"
+        | "general_practitioner"
+        | "diabetologist"
       support_session_type:
         | "group_session"
         | "peer_mentoring"
@@ -1197,6 +1394,14 @@ export const Constants = {
       ],
       diabetes_type: ["type1", "type2", "gestational", "other"],
       emergency_priority: ["low", "medium", "high", "critical"],
+      professional_specialty: [
+        "endocrinologist",
+        "psychologist",
+        "nutritionist",
+        "nurse",
+        "general_practitioner",
+        "diabetologist",
+      ],
       support_session_type: [
         "group_session",
         "peer_mentoring",

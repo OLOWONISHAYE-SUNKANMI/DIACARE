@@ -5,6 +5,9 @@ import { useToast } from "@/hooks/use-toast";
 import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import BottomNavigation from "@/components/BottomNavigation";
+import PaymentScreen from "@/components/screens/PaymentScreen";
+import ProfessionalDashboard from "@/components/screens/ProfessionalDashboard";
+import TeleconsultationBooking from "@/components/screens/TeleconsultationBooking";
 import HomeScreen from "@/components/screens/HomeScreen";
 import ChartsScreen from "@/components/screens/ChartsScreen";
 import DosesScreen from "@/components/screens/DosesScreen";
@@ -13,7 +16,6 @@ import ChatScreen from "@/components/screens/ChatScreen";
 import BlogScreen from "@/components/screens/BlogScreen";
 import FamilyScreen from "@/components/screens/FamilyScreen";
 import ProfileScreen from "@/components/screens/ProfileScreen";
-import PaymentScreen from "@/components/screens/PaymentScreen";
 import AssistantScreen from "@/components/screens/AssistantScreen";
 import HealthProfessionalScreen from "@/components/screens/HealthProfessionalScreen";
 import { AdminDashboardScreen } from "@/components/screens/AdminDashboardScreen";
@@ -79,6 +81,10 @@ const Index = () => {
         return <FamilyScreen />;
       case "profile":
         return <ProfileScreen />;
+      case "teleconsultation":
+        return <TeleconsultationBooking />;
+      case "professional-dashboard":
+        return <ProfessionalDashboard />;
       case "payment":
         return (
           <PaymentScreen 

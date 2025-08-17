@@ -23,7 +23,11 @@ const App = () => (
           <BrowserRouter>
             <Routes>
               <Route path="/auth" element={<Auth />} />
-              <Route path="/professional-registration" element={<ProfessionalRegistrationScreen />} />
+              <Route path="/professional-registration" element={
+                <ProtectedRoute>
+                  <ProfessionalRegistrationScreen />
+                </ProtectedRoute>
+              } />
               <Route path="/" element={
                 <ProtectedRoute>
                   <Index />
