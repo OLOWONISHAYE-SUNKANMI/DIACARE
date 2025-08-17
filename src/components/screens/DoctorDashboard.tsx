@@ -19,16 +19,15 @@ import ConsultationCard from '@/components/ui/ConsultationCard';
 
 interface ConsultationData {
   id: string;
-  patient_id: string;
-  scheduled_at: string;
-  duration_estimate: number;
-  status: string;
-  amount_charged: number;
-  urgency: 'low' | 'medium' | 'high';
+  patient: {
+    firstName: string;
+    lastName: string;
+    age: number;
+    diabetesType: number;
+    location: string;
+  };
+  timeAgo: string;
   reason: string;
-  patient_name: string;
-  patient_age?: number;
-  patient_location?: string;
 }
 
 interface DashboardStats {
@@ -87,13 +86,16 @@ const DoctorDashboard = () => {
       if (consultationsData) {
         // Enrichir avec des données mock pour la démo
         const enrichedConsultations: ConsultationData[] = consultationsData.map((consultation, index) => ({
-          ...consultation,
-          duration_estimate: consultation.duration_minutes || 30,
-          urgency: ['low', 'medium', 'high'][index % 3] as 'low' | 'medium' | 'high',
-          reason: consultation.consultation_notes || 'Consultation de suivi diabète',
-          patient_name: `Patient ${consultation.patient_id.slice(0, 8)}`,
-          patient_age: 25 + (index * 5),
-          patient_location: ['Dakar', 'Thiès', 'Saint-Louis'][index % 3]
+          id: consultation.id,
+          patient: {
+            firstName: `Patient${index + 1}`,
+            lastName: consultation.patient_id.slice(0, 8),
+            age: 25 + (index * 5),
+            diabetesType: (index % 2) + 1,
+            location: ['Dakar', 'Thiès', 'Saint-Louis'][index % 3]
+          },
+          timeAgo: `${index + 1}h`,
+          reason: consultation.consultation_notes || 'Consultation de suivi diabète'
         }));
         
         setPendingConsultations(enrichedConsultations);
@@ -140,7 +142,7 @@ const DoctorDashboard = () => {
     }
   };
 
-  const acceptConsultation = async (consultationId: string) => {
+  const acceptConsultation = async (consultation: ConsultationData) => {
     try {
       const { error } = await supabase
         .from('teleconsultations')
@@ -148,7 +150,7 @@ const DoctorDashboard = () => {
           status: 'confirmed',
           started_at: new Date().toISOString()
         })
-        .eq('id', consultationId);
+        .eq('id', consultation.id);
 
       if (error) throw error;
 
@@ -159,7 +161,7 @@ const DoctorDashboard = () => {
 
       // Retirer de la liste des consultations en attente
       setPendingConsultations(prev => 
-        prev.filter(c => c.id !== consultationId)
+        prev.filter(c => c.id !== consultation.id)
       );
 
       // Recharger les données
@@ -328,7 +330,6 @@ const DoctorDashboard = () => {
                     key={consultation.id}
                     consultation={consultation}
                     onAccept={acceptConsultation}
-                    onDecline={declineConsultation}
                   />
                 ))}
               </div>
