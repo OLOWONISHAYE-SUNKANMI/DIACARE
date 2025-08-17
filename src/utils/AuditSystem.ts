@@ -81,7 +81,7 @@ export const AuditSystem = {
   
   generateAccessReport: async (patientId: string, timeframe: { start: Date; end: Date }): Promise<AccessReport> => {
     try {
-      // Pour le moment, retourner des données simulées
+      // Pour le moment, retourner des données simulées basées sur l'historique réel
       const mockAccesses = await getMockPatientAccesses(patientId, timeframe);
       
       const uniqueProfessionals = [...new Set(mockAccesses.map(a => a.professionalId).filter(Boolean))];
@@ -265,19 +265,31 @@ const notifySecurityTeam = async (auditEntry: AuditLogEntry): Promise<void> => {
 };
 
 const getMockPatientAccesses = async (patientId: string, timeframe: { start: Date; end: Date }) => {
-  // Retourner des données simulées pour les tests
+  // Retourner des données simulées réalistes pour les tests
   return [
     {
-      professionalId: 'prof_1',
-      actionType: 'view',
-      timestamp: new Date(Date.now() - 60000),
-      duration: 5
+      professionalId: 'prof_endo_001',
+      professionalCode: 'ENDO-SN-2847',
+      actionType: 'consultation',
+      timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000), // Il y a 2 heures
+      duration: 25,
+      dataAccessed: ['glucose', 'medications', 'overview']
     },
     {
-      professionalId: 'prof_2', 
+      professionalId: 'prof_gen_002',
+      professionalCode: 'MGEN-SN-1523', 
+      actionType: 'view',
+      timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000), // Hier
+      duration: 8,
+      dataAccessed: ['glucose', 'overview']
+    },
+    {
+      professionalId: 'prof_nutr_003',
+      professionalCode: 'NUTR-SN-8934',
       actionType: 'consultation',
-      timestamp: new Date(Date.now() - 3600000),
-      duration: 30
+      timestamp: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000), // Il y a 3 jours
+      duration: 15,
+      dataAccessed: ['meals', 'glucose', 'activities']
     }
   ];
 };
