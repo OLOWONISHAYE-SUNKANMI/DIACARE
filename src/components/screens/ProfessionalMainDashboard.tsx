@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { ProfessionalCodeGenerator } from '@/utils/ProfessionalCodeGenerator';
 import { PatientDataTabs } from '@/components/ui/PatientDataTabs';
+import { PatientAccessValidator } from '@/utils/PatientAccessValidator';
 import { supabase } from '@/integrations/supabase/client';
 
 interface Professional {
@@ -126,27 +127,24 @@ export const ProfessionalMainDashboard: React.FC<ProfessionalMainDashboardProps>
 
     setIsAccessing(true);
     try {
-      // Demander accès aux données patient via l'edge function
-      const { data, error } = await supabase.functions.invoke('verify-professional-access', {
-        body: {
-          professionalCode: professional.identificationCode,
-          patientId: code,
-          accessType: 'consultation_request'
-        }
-      });
+      // Utiliser le validateur d'accès patient
+      const result = await PatientAccessValidator.validateAccess(
+        professional.identificationCode,
+        code
+      );
 
-      if (error || !data?.access_granted) {
-        throw new Error(data?.error || 'Accès refusé');
+      if (!result.success || !result.patient) {
+        throw new Error(result.error || 'Accès refusé');
       }
 
-      // Créer l'objet patient avec les données reçues
+      // Créer l'objet patient avec les données validées
       const patientData: Patient = {
-        id: data.patient_data.id,
-        firstName: data.patient_data.first_name,
-        lastName: data.patient_data.last_name,
-        diabetesType: data.patient_data.diabetes_type,
-        patientCode: code,
-        lastGlucose: data.patient_data.glucose_readings?.[0]?.value || null,
+        id: result.patient.id,
+        firstName: result.patient.firstName,
+        lastName: result.patient.lastName,
+        diabetesType: result.patient.diabetesType,
+        patientCode: result.patient.patientCode,
+        lastGlucose: result.patient.lastGlucose || null,
         dataAccess: {
           allowedSections: ['glucose', 'medications', 'meals', 'activities'],
           consultationsRemaining: 1,
