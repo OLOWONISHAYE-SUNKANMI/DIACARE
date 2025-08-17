@@ -60,11 +60,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const checkProfessionalStatus = async (userId: string) => {
     try {
-      // Check if user has professional profile
+      // Check if user has professional profile  
       const { data: professionalApp, error } = await supabase
         .from('professional_applications')
         .select('*')
-        .eq('user_id', userId)
+        .eq('reviewed_by', userId)
         .eq('status', 'approved')
         .single();
 
@@ -126,7 +126,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
 
       // 3. Vérifier si un compte utilisateur existe déjà pour ce professionnel
-      if (professionalApp.user_id) {
+      if (professionalApp.reviewed_by) {
         // Le professionnel a déjà un compte, nous devons le connecter différemment
         return { error: { message: 'Ce code est lié à un compte. Veuillez vous connecter avec vos identifiants email.' } };
       }
@@ -159,7 +159,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (authData.user) {
         await supabase
           .from('professional_applications')
-          .update({ user_id: authData.user.id })
+          .update({ reviewed_by: authData.user.id })
           .eq('id', professionalApp.id);
       }
 
