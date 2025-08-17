@@ -14,6 +14,173 @@ export type Database = {
   }
   public: {
     Tables: {
+      challenge_participants: {
+        Row: {
+          challenge_id: string | null
+          completed: boolean | null
+          completed_at: string | null
+          current_progress: number | null
+          id: string
+          joined_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          challenge_id?: string | null
+          completed?: boolean | null
+          completed_at?: string | null
+          current_progress?: number | null
+          id?: string
+          joined_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          challenge_id?: string | null
+          completed?: boolean | null
+          completed_at?: string | null
+          current_progress?: number | null
+          id?: string
+          joined_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "challenge_participants_challenge_id_fkey"
+            columns: ["challenge_id"]
+            isOneToOne: false
+            referencedRelation: "community_challenges"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      community_challenges: {
+        Row: {
+          challenge_type: Database["public"]["Enums"]["challenge_type"]
+          created_at: string
+          created_by: string | null
+          description: string | null
+          end_date: string
+          id: string
+          is_active: boolean | null
+          name: string
+          reward_badge: string | null
+          reward_description: string | null
+          start_date: string
+          target_unit: string | null
+          target_value: number | null
+          updated_at: string
+        }
+        Insert: {
+          challenge_type: Database["public"]["Enums"]["challenge_type"]
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          end_date: string
+          id?: string
+          is_active?: boolean | null
+          name: string
+          reward_badge?: string | null
+          reward_description?: string | null
+          start_date: string
+          target_unit?: string | null
+          target_value?: number | null
+          updated_at?: string
+        }
+        Update: {
+          challenge_type?: Database["public"]["Enums"]["challenge_type"]
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          end_date?: string
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          reward_badge?: string | null
+          reward_description?: string | null
+          start_date?: string
+          target_unit?: string | null
+          target_value?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      emergency_responders: {
+        Row: {
+          average_response_time_minutes: number | null
+          created_at: string
+          id: string
+          is_available: boolean | null
+          last_online_at: string | null
+          specialties: string[] | null
+          total_responses: number | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          average_response_time_minutes?: number | null
+          created_at?: string
+          id?: string
+          is_available?: boolean | null
+          last_online_at?: string | null
+          specialties?: string[] | null
+          total_responses?: number | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          average_response_time_minutes?: number | null
+          created_at?: string
+          id?: string
+          is_available?: boolean | null
+          last_online_at?: string | null
+          specialties?: string[] | null
+          total_responses?: number | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      emergency_support_requests: {
+        Row: {
+          created_at: string
+          id: string
+          location_info: Json | null
+          message: string | null
+          priority: Database["public"]["Enums"]["emergency_priority"]
+          resolved: boolean | null
+          resolved_at: string | null
+          resolved_by: string | null
+          response_time_minutes: number | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          location_info?: Json | null
+          message?: string | null
+          priority?: Database["public"]["Enums"]["emergency_priority"]
+          resolved?: boolean | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          response_time_minutes?: number | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          location_info?: Json | null
+          message?: string | null
+          priority?: Database["public"]["Enums"]["emergency_priority"]
+          resolved?: boolean | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          response_time_minutes?: number | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       patient_access_codes: {
         Row: {
           access_code: string
@@ -86,6 +253,36 @@ export type Database = {
           professional_code?: string
           updated_at?: string | null
           used_consultations?: number | null
+        }
+        Relationships: []
+      }
+      peer_support_pairs: {
+        Row: {
+          id: string
+          is_active: boolean | null
+          last_interaction_at: string | null
+          mentee_id: string | null
+          mentor_id: string | null
+          notes: string | null
+          paired_at: string | null
+        }
+        Insert: {
+          id?: string
+          is_active?: boolean | null
+          last_interaction_at?: string | null
+          mentee_id?: string | null
+          mentor_id?: string | null
+          notes?: string | null
+          paired_at?: string | null
+        }
+        Update: {
+          id?: string
+          is_active?: boolean | null
+          last_interaction_at?: string | null
+          mentee_id?: string | null
+          mentor_id?: string | null
+          notes?: string | null
+          paired_at?: string | null
         }
         Relationships: []
       }
@@ -356,6 +553,98 @@ export type Database = {
         }
         Relationships: []
       }
+      session_participants: {
+        Row: {
+          attended: boolean | null
+          feedback_comment: string | null
+          feedback_rating: number | null
+          id: string
+          joined_at: string | null
+          session_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          attended?: boolean | null
+          feedback_comment?: string | null
+          feedback_rating?: number | null
+          id?: string
+          joined_at?: string | null
+          session_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          attended?: boolean | null
+          feedback_comment?: string | null
+          feedback_rating?: number | null
+          id?: string
+          joined_at?: string | null
+          session_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "session_participants_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "support_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      support_sessions: {
+        Row: {
+          created_at: string
+          description: string | null
+          duration_minutes: number | null
+          id: string
+          is_active: boolean | null
+          is_recurring: boolean | null
+          max_participants: number | null
+          meeting_link: string | null
+          moderator_id: string | null
+          moderator_name: string
+          recurrence_pattern: string | null
+          scheduled_time: string
+          session_type: Database["public"]["Enums"]["support_session_type"]
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          duration_minutes?: number | null
+          id?: string
+          is_active?: boolean | null
+          is_recurring?: boolean | null
+          max_participants?: number | null
+          meeting_link?: string | null
+          moderator_id?: string | null
+          moderator_name: string
+          recurrence_pattern?: string | null
+          scheduled_time: string
+          session_type: Database["public"]["Enums"]["support_session_type"]
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          duration_minutes?: number | null
+          id?: string
+          is_active?: boolean | null
+          is_recurring?: boolean | null
+          max_participants?: number | null
+          meeting_link?: string | null
+          moderator_id?: string | null
+          moderator_name?: string
+          recurrence_pattern?: string | null
+          scheduled_time?: string
+          session_type?: Database["public"]["Enums"]["support_session_type"]
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_activity_stats: {
         Row: {
           created_at: string | null
@@ -518,6 +807,18 @@ export type Database = {
     }
     Enums: {
       app_role: "member" | "verified_member" | "expert" | "moderator"
+      challenge_type:
+        | "glucose_monitoring"
+        | "exercise"
+        | "nutrition"
+        | "medication_adherence"
+        | "community_engagement"
+      emergency_priority: "low" | "medium" | "high" | "critical"
+      support_session_type:
+        | "group_session"
+        | "peer_mentoring"
+        | "emergency_support"
+        | "challenge_group"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -646,6 +947,20 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["member", "verified_member", "expert", "moderator"],
+      challenge_type: [
+        "glucose_monitoring",
+        "exercise",
+        "nutrition",
+        "medication_adherence",
+        "community_engagement",
+      ],
+      emergency_priority: ["low", "medium", "high", "critical"],
+      support_session_type: [
+        "group_session",
+        "peer_mentoring",
+        "emergency_support",
+        "challenge_group",
+      ],
     },
   },
 } as const
