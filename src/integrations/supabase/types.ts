@@ -14,6 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_notifications: {
+        Row: {
+          created_at: string
+          data: Json | null
+          id: string
+          is_read: boolean | null
+          message: string
+          notification_type: string
+          read_at: string | null
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          data?: Json | null
+          id?: string
+          is_read?: boolean | null
+          message: string
+          notification_type: string
+          read_at?: string | null
+          title: string
+        }
+        Update: {
+          created_at?: string
+          data?: Json | null
+          id?: string
+          is_read?: boolean | null
+          message?: string
+          notification_type?: string
+          read_at?: string | null
+          title?: string
+        }
+        Relationships: []
+      }
       anonymous_community_stats: {
         Row: {
           age_group: string | null
@@ -162,6 +195,47 @@ export type Database = {
           insight_value?: Json
         }
         Relationships: []
+      }
+      consultation_summaries: {
+        Row: {
+          created_at: string
+          doctor_notes: string | null
+          duration_minutes: number | null
+          id: string
+          prescription: string | null
+          recommendations: string | null
+          teleconsultation_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          doctor_notes?: string | null
+          duration_minutes?: number | null
+          id?: string
+          prescription?: string | null
+          recommendations?: string | null
+          teleconsultation_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          doctor_notes?: string | null
+          duration_minutes?: number | null
+          id?: string
+          prescription?: string | null
+          recommendations?: string | null
+          teleconsultation_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "consultation_summaries_teleconsultation_id_fkey"
+            columns: ["teleconsultation_id"]
+            isOneToOne: false
+            referencedRelation: "teleconsultations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       data_sharing_preferences: {
         Row: {
@@ -842,15 +916,20 @@ export type Database = {
       }
       teleconsultations: {
         Row: {
+          admin_notified_at: string | null
           amount_charged: number | null
           consultation_notes: string | null
+          consultation_summary: string | null
           created_at: string
+          doctor_payout_amount: number | null
+          doctor_payout_status: string | null
           duration_minutes: number | null
           ended_at: string | null
           follow_up_date: string | null
           id: string
           patient_feedback: string | null
           patient_id: string
+          patient_summary_sent_at: string | null
           payment_status: string | null
           prescription: string | null
           professional_id: string
@@ -863,15 +942,20 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          admin_notified_at?: string | null
           amount_charged?: number | null
           consultation_notes?: string | null
+          consultation_summary?: string | null
           created_at?: string
+          doctor_payout_amount?: number | null
+          doctor_payout_status?: string | null
           duration_minutes?: number | null
           ended_at?: string | null
           follow_up_date?: string | null
           id?: string
           patient_feedback?: string | null
           patient_id: string
+          patient_summary_sent_at?: string | null
           payment_status?: string | null
           prescription?: string | null
           professional_id: string
@@ -884,15 +968,20 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          admin_notified_at?: string | null
           amount_charged?: number | null
           consultation_notes?: string | null
+          consultation_summary?: string | null
           created_at?: string
+          doctor_payout_amount?: number | null
+          doctor_payout_status?: string | null
           duration_minutes?: number | null
           ended_at?: string | null
           follow_up_date?: string | null
           id?: string
           patient_feedback?: string | null
           patient_id?: string
+          patient_summary_sent_at?: string | null
           payment_status?: string | null
           prescription?: string | null
           professional_id?: string
