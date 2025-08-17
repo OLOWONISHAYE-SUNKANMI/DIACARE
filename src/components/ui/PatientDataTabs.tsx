@@ -83,76 +83,163 @@ const SectionLocked = ({ section }: { section: string }) => (
 );
 
 // Onglet Vue d'ensemble
-const OverviewTab: React.FC<{ patient: any }> = ({ patient }) => (
-  <div className="space-y-6">
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-      {/* Dernière glycémie */}
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Dernière Glycémie</CardTitle>
-          <Activity className="h-4 w-4 text-muted-foreground" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">{patient.lastGlucose || '--'} mg/dL</div>
-          <p className="text-xs text-muted-foreground">
-            {patient.lastGlucose && patient.lastGlucose > 140 ? 'Élevée' : 'Normale'}
-          </p>
-        </CardContent>
-      </Card>
+const OverviewTab: React.FC<{ patient: any }> = ({ patient }) => {
+  // Mock data pour la démonstration
+  const mockPatient = {
+    currentHbA1c: patient.currentHbA1c || 7.2,
+    timeInRange: patient.timeInRange || 68,
+    medications: patient.medications || [
+      { name: 'Metformine', dose: '500mg 2x/j' },
+      { name: 'Lantus', dose: '12 UI/soir' },
+      { name: 'Humalog', dose: '4-6 UI/repas' }
+    ],
+    activeAlerts: patient.activeAlerts || [
+      'HbA1c > objectif',
+      '3 hypoglycémies cette semaine',
+      'Rendez-vous de suivi prévu'
+    ]
+  };
 
-      {/* HbA1c estimée */}
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">HbA1c Estimée</CardTitle>
-          <TrendingUp className="h-4 w-4 text-muted-foreground" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">7.2%</div>
-          <p className="text-xs text-muted-foreground">Objectif: {'<'}7%</p>
-        </CardContent>
-      </Card>
-
-      {/* Temps dans la cible */}
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Temps dans la cible</CardTitle>
-          <BarChart3 className="h-4 w-4 text-muted-foreground" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">68%</div>
-          <Progress value={68} className="mt-2" />
-        </CardContent>
-      </Card>
-    </div>
-
-    {/* Résumé des 7 derniers jours */}
-    <Card>
-      <CardHeader>
-        <CardTitle>📈 Résumé des 7 derniers jours</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="text-center">
-            <div className="text-lg font-bold">156 mg/dL</div>
-            <div className="text-sm text-muted-foreground">Moyenne</div>
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {/* Métriques clés */}
+      <div className="bg-destructive/10 p-4 rounded-lg border border-destructive/20">
+        <h4 className="font-bold text-destructive mb-2">🩸 Contrôle Glycémique</h4>
+        <div className="space-y-2">
+          <div className="flex justify-between">
+            <span>HbA1c actuelle:</span>
+            <span className="font-bold text-destructive">{mockPatient.currentHbA1c}%</span>
           </div>
-          <div className="text-center">
-            <div className="text-lg font-bold">42</div>
-            <div className="text-sm text-muted-foreground">Mesures</div>
+          <div className="flex justify-between">
+            <span>Objectif:</span>
+            <span className="text-green-600">&lt;7%</span>
           </div>
-          <div className="text-center">
-            <div className="text-lg font-bold">15%</div>
-            <div className="text-sm text-muted-foreground">Variabilité</div>
+          <div className="flex justify-between">
+            <span>Temps dans cible:</span>
+            <span className="font-bold">{mockPatient.timeInRange}%</span>
           </div>
-          <div className="text-center">
-            <div className="text-lg font-bold">3</div>
-            <div className="text-sm text-muted-foreground">Hypoglycémies</div>
+          <div className="mt-3">
+            <Progress value={mockPatient.timeInRange} className="h-2" />
           </div>
         </div>
-      </CardContent>
-    </Card>
-  </div>
-);
+      </div>
+
+      {/* Traitement actuel */}
+      <div className="bg-primary/10 p-4 rounded-lg border border-primary/20">
+        <h4 className="font-bold text-primary mb-2">💊 Traitement</h4>
+        <div className="space-y-1 text-sm">
+          {mockPatient.medications.map((med, idx) => (
+            <div key={idx} className="flex justify-between">
+              <span>{med.name}:</span>
+              <span className="font-bold">{med.dose}</span>
+            </div>
+          ))}
+        </div>
+        <div className="mt-3">
+          <Badge variant="secondary" className="text-xs">
+            {mockPatient.medications.length} médicaments actifs
+          </Badge>
+        </div>
+      </div>
+
+      {/* Alertes */}
+      <div className="bg-orange-50 p-4 rounded-lg border border-orange-200">
+        <h4 className="font-bold text-orange-800 mb-2">⚠️ Alertes Actives</h4>
+        <div className="space-y-1 text-sm">
+          {mockPatient.activeAlerts.map((alert, idx) => (
+            <div key={idx} className="text-orange-700 flex items-start gap-1">
+              <span className="text-orange-500 mt-1">•</span>
+              <span>{alert}</span>
+            </div>
+          ))}
+        </div>
+        <div className="mt-3">
+          <Badge variant="outline" className="text-xs border-orange-300 text-orange-700">
+            {mockPatient.activeAlerts.length} alertes
+          </Badge>
+        </div>
+      </div>
+
+      {/* Dernières glycémies */}
+      <div className="bg-muted/50 p-4 rounded-lg border">
+        <h4 className="font-bold mb-3">🩸 Dernières Mesures</h4>
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <span className="text-sm">Actuelle:</span>
+            <Badge variant={patient.lastGlucose > 140 ? "destructive" : "secondary"}>
+              {patient.lastGlucose || 142} mg/dL
+            </Badge>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-sm">Moyenne 7j:</span>
+            <span className="font-medium">156 mg/dL</span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-sm">Variabilité:</span>
+            <span className="font-medium">15% CV</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Activité récente */}
+      <div className="bg-green-50 p-4 rounded-lg border border-green-200">
+        <h4 className="font-bold text-green-800 mb-2">🏃 Activité</h4>
+        <div className="space-y-2 text-sm">
+          <div className="flex justify-between">
+            <span>Aujourd'hui:</span>
+            <span className="font-bold">75 min</span>
+          </div>
+          <div className="flex justify-between">
+            <span>Cette semaine:</span>
+            <span className="font-bold">4h 30min</span>
+          </div>
+          <div className="flex justify-between">
+            <span>Objectif:</span>
+            <span className="text-green-600">150 min/sem</span>
+          </div>
+        </div>
+        <div className="mt-3">
+          <Progress value={75} className="h-2" />
+          <p className="text-xs text-green-600 mt-1">75% de l'objectif</p>
+        </div>
+      </div>
+
+      {/* Nutrition */}
+      <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
+        <h4 className="font-bold text-purple-800 mb-2">🍽️ Nutrition</h4>
+        <div className="space-y-2 text-sm">
+          <div className="flex justify-between">
+            <span>Glucides aujourd'hui:</span>
+            <span className="font-bold">160g</span>
+          </div>
+          <div className="flex justify-between">
+            <span>Repas enregistrés:</span>
+            <span className="font-bold">3/3</span>
+          </div>
+          <div className="flex justify-between">
+            <span>IG moyen:</span>
+            <span className="font-bold">Modéré</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Graphique glycémie récente */}
+      <div className="col-span-full bg-muted/30 p-6 rounded-lg border">
+        <h4 className="font-bold mb-4 flex items-center gap-2">
+          <BarChart3 className="h-5 w-5" />
+          📈 Glycémies des 7 derniers jours
+        </h4>
+        <div className="h-48 bg-background rounded border flex items-center justify-center border-dashed">
+          <div className="text-center text-muted-foreground">
+            <BarChart3 className="h-12 w-12 mx-auto mb-2 opacity-50" />
+            <p>Graphique glycémies patient</p>
+            <p className="text-sm">Données des 7 derniers jours</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 // Onglet Glycémies
 const GlucoseTab: React.FC<{ patient: any; canAccess: boolean }> = ({ patient, canAccess }) => {
