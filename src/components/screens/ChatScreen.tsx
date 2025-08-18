@@ -6,6 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Send, Phone, Video, MoreVertical, Heart, Users2, Stethoscope } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useTranslation } from 'react-i18next';
 
 interface Message {
   id: string;
@@ -22,6 +23,7 @@ interface ChatScreenProps {
 }
 
 const ChatScreen = ({ onBack }: ChatScreenProps) => {
+  const { t } = useTranslation();
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "1",
@@ -75,8 +77,8 @@ const ChatScreen = ({ onBack }: ChatScreenProps) => {
     setNewMessage("");
     
     toast({
-      title: "Message envoyé",
-      description: "Votre message a été partagé avec la communauté DARE",
+      title: t('chatScreen.messageSent'),
+      description: t('chatScreen.messageShared'),
     });
   };
 
@@ -146,8 +148,8 @@ const ChatScreen = ({ onBack }: ChatScreenProps) => {
               <div className="absolute -top-1 -right-1 w-3 h-3 bg-status-active rounded-full border-2 border-card"></div>
             </div>
             <div>
-              <h2 className="text-lg font-semibold text-foreground">DARE Chat</h2>
-              <p className="text-sm text-muted-foreground">127 membres connectés</p>
+              <h2 className="text-lg font-semibold text-foreground">{t('chatScreen.title')}</h2>
+              <p className="text-sm text-muted-foreground">127 {t('chatScreen.membersConnected')}</p>
             </div>
           </div>
           
@@ -167,13 +169,13 @@ const ChatScreen = ({ onBack }: ChatScreenProps) => {
         {/* Community Stats */}
         <div className="flex items-center gap-4 mt-3 pt-3 border-t border-border">
           <Badge variant="secondary" className="text-xs">
-            💚 142 succès cette semaine
+            {t('chatScreen.successesThisWeek')}
           </Badge>
           <Badge variant="secondary" className="text-xs">
-            🎯 89% dans la zone cible
+            {t('chatScreen.inTargetZone')}
           </Badge>
           <Badge variant="secondary" className="text-xs">
-            👥 12 nouveaux membres
+            {t('chatScreen.newMembers')}
           </Badge>
         </div>
       </div>
@@ -260,7 +262,7 @@ const ChatScreen = ({ onBack }: ChatScreenProps) => {
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder="Écrivez votre message de soutien..."
+              placeholder={t('chatScreen.typingMessage')}
               className="border-0 bg-background focus-visible:ring-1 focus-visible:ring-ring"
             />
           </div>
@@ -275,11 +277,11 @@ const ChatScreen = ({ onBack }: ChatScreenProps) => {
         </div>
         
         <div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
-          <span>💚 Bienveillance</span>
+          <span>{t('chatScreen.kindness')}</span>
           <span>•</span>
-          <span>🤝 Entraide</span>
+          <span>{t('chatScreen.mutualHelp')}</span>
           <span>•</span>
-          <span>🎯 Motivation commune</span>
+          <span>{t('chatScreen.sharedMotivation')}</span>
         </div>
       </div>
     </div>

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { User, Phone, MapPin, Calendar, Users, Pill, Settings, Download, Shield, MessageSquare, PhoneCall, LogOut } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -11,6 +12,7 @@ import { Separator } from "@/components/ui/separator";
 interface ProfileScreenProps {}
 
 const ProfileScreen = (props: ProfileScreenProps) => {
+  const { t } = useTranslation();
   const [notifications, setNotifications] = useState(true);
   const [dataSharing, setDataSharing] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
@@ -30,10 +32,10 @@ const ProfileScreen = (props: ProfileScreenProps) => {
           
           <div className="flex gap-2 justify-center flex-wrap">
             <Badge variant="default" className="bg-green-100 text-green-800 border-green-200">
-              ✓ Profil Vérifié
+              {t('profileScreen.verified')}
             </Badge>
             <Badge variant="default" className="bg-medical-teal/10 text-medical-teal border-medical-teal/30">
-              DARE Complet
+              {t('homeScreen.completePlan')}
             </Badge>
           </div>
         </div>
@@ -44,19 +46,19 @@ const ProfileScreen = (props: ProfileScreenProps) => {
         <Card className="text-center p-3">
           <CardContent className="p-0">
             <div className="text-2xl font-bold text-medical-teal">6</div>
-            <div className="text-xs text-muted-foreground">Années avec DARE</div>
+            <div className="text-xs text-muted-foreground">{t('profileScreen.yearsWithDare')}</div>
           </CardContent>
         </Card>
         <Card className="text-center p-3">
           <CardContent className="p-0">
             <div className="text-2xl font-bold text-medical-teal">847</div>
-            <div className="text-xs text-muted-foreground">Mesures glycémie</div>
+            <div className="text-xs text-muted-foreground">{t('profileScreen.glucoseMeasures')}</div>
           </CardContent>
         </Card>
         <Card className="text-center p-3">
           <CardContent className="p-0">
             <div className="text-2xl font-bold text-medical-teal">91%</div>
-            <div className="text-xs text-muted-foreground">Observance</div>
+            <div className="text-xs text-muted-foreground">{t('profileScreen.adherence')}</div>
           </CardContent>
         </Card>
       </div>
@@ -66,33 +68,33 @@ const ProfileScreen = (props: ProfileScreenProps) => {
         <CardHeader>
           <CardTitle className="text-lg flex items-center gap-2">
             <User className="w-5 h-5 text-medical-teal" />
-            Informations Personnelles
+            {t('profileScreen.personalInfo')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
           <div className="grid grid-cols-2 gap-4 text-sm">
             <div>
-              <span className="text-muted-foreground">Nom complet</span>
+              <span className="text-muted-foreground">{t('profileScreen.fullName')}</span>
               <p className="font-medium">Amadou Diallo</p>
             </div>
             <div>
-              <span className="text-muted-foreground">Date de naissance</span>
+              <span className="text-muted-foreground">{t('profileScreen.dateOfBirth')}</span>
               <p className="font-medium">15 Mars 1975</p>
             </div>
             <div>
-              <span className="text-muted-foreground">Âge</span>
-              <p className="font-medium">49 ans</p>
+              <span className="text-muted-foreground">{t('profileScreen.age')}</span>
+              <p className="font-medium">49 {t('profileScreen.years')}</p>
             </div>
             <div>
-              <span className="text-muted-foreground">Téléphone</span>
+              <span className="text-muted-foreground">{t('profileScreen.phone')}</span>
               <p className="font-medium">+221 77 123 45 67</p>
             </div>
             <div>
-              <span className="text-muted-foreground">Ville</span>
+              <span className="text-muted-foreground">{t('profileScreen.city')}</span>
               <p className="font-medium">Dakar, Sénégal</p>
             </div>
             <div>
-              <span className="text-muted-foreground">Profession</span>
+              <span className="text-muted-foreground">{t('profileScreen.profession')}</span>
               <p className="font-medium">Enseignant</p>
             </div>
           </div>
@@ -104,13 +106,13 @@ const ProfileScreen = (props: ProfileScreenProps) => {
         <CardHeader>
           <CardTitle className="text-lg flex items-center gap-2">
             <Users className="w-5 h-5 text-medical-teal" />
-            Équipe Médicale
+            {t('profileScreen.medicalTeam')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
             <div className="font-medium">Dr. Mamadou Kane</div>
-            <div className="text-sm text-muted-foreground">Médecin traitant • Diabétologue</div>
+            <div className="text-sm text-muted-foreground">{t('profileScreen.doctor')}</div>
             <div className="text-sm">📞 +221 33 825 14 52</div>
           </div>
           
@@ -118,7 +120,7 @@ const ProfileScreen = (props: ProfileScreenProps) => {
           
           <div className="space-y-2">
             <div className="font-medium">CHU Aristide Le Dantec</div>
-            <div className="text-sm text-muted-foreground">Établissement de suivi</div>
+            <div className="text-sm text-muted-foreground">{t('profileScreen.followUpCenter')}</div>
             <div className="text-sm text-muted-foreground">📍 Dakar, Sénégal</div>
           </div>
           
@@ -126,7 +128,7 @@ const ProfileScreen = (props: ProfileScreenProps) => {
           
           <div className="space-y-2">
             <div className="font-medium">Dr. Aminata Sow</div>
-            <div className="text-sm text-muted-foreground">Endocrinologue consultante</div>
+            <div className="text-sm text-muted-foreground">{t('profileScreen.consultant')}</div>
             <div className="text-sm text-muted-foreground">🏥 Polyclinique du Point E</div>
           </div>
         </CardContent>
@@ -137,24 +139,24 @@ const ProfileScreen = (props: ProfileScreenProps) => {
         <CardHeader>
           <CardTitle className="text-lg flex items-center gap-2">
             <Pill className="w-5 h-5 text-medical-teal" />
-            Traitement Actuel
+            {t('profileScreen.currentTreatment')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
           <div>
-            <span className="text-muted-foreground text-sm">Insulines</span>
+            <span className="text-muted-foreground text-sm">{t('profileScreen.insulins')}</span>
             <p className="font-medium">Lantus 20UI matin • Humalog selon glycémie</p>
-            <p className="text-xs text-muted-foreground">Conservées au frais (canari en terre cuite)</p>
+            <p className="text-xs text-muted-foreground">{t('profileScreen.keepCool')}</p>
           </div>
           <div>
-            <span className="text-muted-foreground text-sm">Médicaments oraux</span>
+            <span className="text-muted-foreground text-sm">{t('profileScreen.oralMedications')}</span>
             <p className="font-medium">Metformine 1000mg 2x/j</p>
-            <p className="text-xs text-muted-foreground">Prix: 2,500 F CFA/mois</p>
+            <p className="text-xs text-muted-foreground">{t('profileScreen.price')}: 2,500 F CFA/mois</p>
           </div>
           <div>
-            <span className="text-muted-foreground text-sm">Objectif glycémique</span>
+            <span className="text-muted-foreground text-sm">{t('profileScreen.glucoseTarget')}</span>
             <p className="font-medium">70-140 mg/dL (norme UEMOA)</p>
-            <p className="text-xs text-muted-foreground">Adapté au climat tropical</p>
+            <p className="text-xs text-muted-foreground">{t('profileScreen.adaptedClimate')}</p>
           </div>
         </CardContent>
       </Card>
@@ -164,22 +166,22 @@ const ProfileScreen = (props: ProfileScreenProps) => {
         <CardHeader>
           <CardTitle className="text-lg flex items-center gap-2 text-red-700">
             <Phone className="w-5 h-5" />
-            Contact d'Urgence
+            {t('profileScreen.emergencyContact')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
           <div>
-            <div className="font-medium text-red-700">Fatou Diop (Épouse)</div>
+            <div className="font-medium text-red-700">Fatou Diop ({t('profileScreen.spouse')})</div>
             <div className="text-sm text-red-600">+221 77 987 65 43</div>
           </div>
           <div className="flex gap-2">
             <Button size="sm" className="bg-red-600 hover:bg-red-700 text-white">
               <PhoneCall className="w-4 h-4 mr-1" />
-              Appeler
+              {t('profileScreen.call')}
             </Button>
             <Button size="sm" variant="outline" className="border-red-600 text-red-600 hover:bg-red-50">
               <MessageSquare className="w-4 h-4 mr-1" />
-              SMS
+              {t('profileScreen.sms')}
             </Button>
           </div>
         </CardContent>
@@ -190,26 +192,26 @@ const ProfileScreen = (props: ProfileScreenProps) => {
         <CardHeader>
           <CardTitle className="text-lg flex items-center gap-2">
             <Settings className="w-5 h-5 text-medical-teal" />
-            Paramètres
+            {t('profileScreen.settings')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex items-center justify-between">
-            <span className="text-sm font-medium">Notifications</span>
+            <span className="text-sm font-medium">{t('profileScreen.notifications')}</span>
             <Switch 
               checked={notifications}
               onCheckedChange={setNotifications}
             />
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-sm font-medium">Partage de données</span>
+            <span className="text-sm font-medium">{t('profileScreen.dataSharing')}</span>
             <Switch 
               checked={dataSharing}
               onCheckedChange={setDataSharing}
             />
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-sm font-medium">Mode sombre</span>
+            <span className="text-sm font-medium">{t('profileScreen.darkMode')}</span>
             <Switch 
               checked={darkMode}
               onCheckedChange={setDarkMode}
@@ -222,15 +224,15 @@ const ProfileScreen = (props: ProfileScreenProps) => {
       <div className="space-y-3">
         <Button variant="outline" className="w-full">
           <User className="w-4 h-4 mr-2" />
-          Modifier le profil
+          {t('profileScreen.editProfile')}
         </Button>
         <Button variant="outline" className="w-full">
           <Download className="w-4 h-4 mr-2" />
-          Exporter les données
+          {t('profileScreen.exportData')}
         </Button>
         <Button variant="outline" className="w-full">
           <Shield className="w-4 h-4 mr-2" />
-          Confidentialité
+          {t('profileScreen.privacy')}
         </Button>
         <Button 
           variant="destructive" 
@@ -238,7 +240,7 @@ const ProfileScreen = (props: ProfileScreenProps) => {
           onClick={signOut}
         >
           <LogOut className="w-4 h-4 mr-2" />
-          Se déconnecter
+          {t('profileScreen.signOut')}
         </Button>
       </div>
     </div>

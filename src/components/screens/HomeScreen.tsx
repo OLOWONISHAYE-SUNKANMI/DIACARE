@@ -3,6 +3,7 @@ import { Target, Check } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from 'react-i18next';
 import NativeHeader from "@/components/ui/NativeHeader";
 import GlucoseWidget from "@/components/ui/GlucoseWidget";
 import QuickActionsGrid from "@/components/ui/QuickActionsGrid";
@@ -17,14 +18,15 @@ interface HomeScreenProps {
 }
 
 const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
+  const { t } = useTranslation();
   const [activeModal, setActiveModal] = useState<string | null>(null);
   const currentGlucose = 126; // mg/dL
 
   const challenges = [
-    { letter: "D", challenge: "Mesurer la glycémie 3x aujourd'hui", completed: true },
-    { letter: "A", challenge: "Prendre ses médicaments à l'heure", completed: false },
-    { letter: "R", challenge: "30 min d'activité physique", completed: false },
-    { letter: "E", challenge: "Noter ses observations", completed: true },
+    { letter: "D", challenge: t('homeScreen.measureGlucose'), completed: true },
+    { letter: "A", challenge: t('homeScreen.takeMedication'), completed: false },
+    { letter: "R", challenge: t('homeScreen.physicalActivity'), completed: false },
+    { letter: "E", challenge: t('homeScreen.noteObservations'), completed: true },
   ];
 
   return (
@@ -37,7 +39,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
         {/* Glucose Widget */}
         <GlucoseWidget 
           currentGlucose={currentGlucose}
-          lastReading="Aujourd'hui 14:30"
+          lastReading={t('homeScreen.lastReading')}
           trend="stable"
         />
 
@@ -57,30 +59,30 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
                 <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm">
                   <Target className="w-5 h-5 text-white" />
                 </div>
-                <span>Mission DARE</span>
+                <span>{t('homeScreen.mission')}</span>
               </CardTitle>
             </CardHeader>
             <CardContent className="p-4 space-y-3">
               <div className="grid grid-cols-2 gap-3">
                 <div className="text-center p-3 rounded-xl bg-medical-green-light">
                   <div className="w-10 h-10 rounded-full bg-medical-green text-white flex items-center justify-center font-bold text-lg mx-auto mb-2">D</div>
-                  <p className="text-xs font-medium text-card-foreground">Diabetes</p>
-                  <p className="text-xs text-muted-foreground">Gestion</p>
+                  <p className="text-xs font-medium text-card-foreground">{t('homeScreen.diabetes')}</p>
+                  <p className="text-xs text-muted-foreground">{t('homeScreen.management')}</p>
                 </div>
                 <div className="text-center p-3 rounded-xl bg-medical-teal-light">
                   <div className="w-10 h-10 rounded-full bg-medical-teal text-white flex items-center justify-center font-bold text-lg mx-auto mb-2">A</div>
-                  <p className="text-xs font-medium text-card-foreground">Awareness</p>
-                  <p className="text-xs text-muted-foreground">Éducation</p>
+                  <p className="text-xs font-medium text-card-foreground">{t('homeScreen.awareness')}</p>
+                  <p className="text-xs text-muted-foreground">{t('homeScreen.education')}</p>
                 </div>
                 <div className="text-center p-3 rounded-xl bg-blue-50">
                   <div className="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold text-lg mx-auto mb-2">R</div>
-                  <p className="text-xs font-medium text-card-foreground">Routine</p>
-                  <p className="text-xs text-muted-foreground">Quotidien</p>
+                  <p className="text-xs font-medium text-card-foreground">{t('homeScreen.routine')}</p>
+                  <p className="text-xs text-muted-foreground">{t('homeScreen.daily')}</p>
                 </div>
                 <div className="text-center p-3 rounded-xl bg-purple-50">
                   <div className="w-10 h-10 rounded-full bg-purple-500 text-white flex items-center justify-center font-bold text-lg mx-auto mb-2">E</div>
-                  <p className="text-xs font-medium text-card-foreground">Empowerment</p>
-                  <p className="text-xs text-muted-foreground">Contrôle</p>
+                  <p className="text-xs font-medium text-card-foreground">{t('homeScreen.empowerment')}</p>
+                  <p className="text-xs text-muted-foreground">{t('homeScreen.control')}</p>
                 </div>
               </div>
             </CardContent>
@@ -95,7 +97,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
                 <div className="w-8 h-8 rounded-full bg-medical-green flex items-center justify-center">
                   <Target className="w-5 h-5 text-white" />
                 </div>
-                <span>Défis Aujourd'hui</span>
+                <span>{t('homeScreen.todaysChallenges')}</span>
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
@@ -124,36 +126,36 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
 
         {/* Forfait DARE Premium - Mobile Native */}
         <div className="px-4 space-y-3">
-          <h3 className="text-lg font-semibold text-foreground">Forfait DARE</h3>
+          <h3 className="text-lg font-semibold text-foreground">{t('homeScreen.darePackage')}</h3>
           
           <Card className="bg-gradient-to-br from-medical-green to-medical-teal shadow-xl border-0 rounded-3xl overflow-hidden">
             <CardHeader className="bg-white/10 backdrop-blur-sm p-6">
               <CardTitle className="text-white">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center space-x-2">
-                    <span className="text-xl font-bold">DARE Complet</span>
-                    <Badge className="bg-white/20 text-white text-xs border-white/30 px-2 py-1">PREMIUM</Badge>
+                    <span className="text-xl font-bold">{t('homeScreen.completePlan')}</span>
+                    <Badge className="bg-white/20 text-white text-xs border-white/30 px-2 py-1">{t('homeScreen.premium')}</Badge>
                   </div>
                 </div>
                 <div className="text-center">
                   <div className="text-5xl font-bold text-white mb-1">5 000</div>
-                  <div className="text-white/90">F CFA/mois</div>
+                  <div className="text-white/90">{t('homeScreen.monthlyPrice')}</div>
                 </div>
               </CardTitle>
             </CardHeader>
             <CardContent className="p-6 bg-white/5 backdrop-blur-sm">
               <p className="text-white/90 text-center font-medium mb-6">
-                Votre santé n'a pas de prix
+                {t('homeScreen.healthPriceless')}
               </p>
               
               <div className="space-y-3 mb-6">
                 {[
-                  "Carnet glycémie illimité",
-                  "Rappels d'insuline intelligents", 
-                  "Graphiques style Clarity",
-                  "Calculateur doses avancé",
-                  "Support familial",
-                  "Assistant IA DARE"
+                  t('homeScreen.unlimitedLogbook'),
+                  t('homeScreen.smartReminders'), 
+                  t('homeScreen.clarityCharts'),
+                  t('homeScreen.advancedCalculator'),
+                  t('homeScreen.familySupport'),
+                  t('homeScreen.aiAssistant')
                 ].map((feature, index) => (
                   <div key={index} className="flex items-center space-x-3">
                     <div className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center">
@@ -169,11 +171,11 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
                   className="w-full bg-white text-medical-green hover:bg-white/90 font-semibold py-4 rounded-2xl text-lg active:scale-95 transition-transform"
                   onClick={() => onTabChange?.('payment' as any)}
                 >
-                  Commencer mon suivi DARE
+                  {t('homeScreen.startTracking')}
                 </Button>
                 <div className="text-center text-white/80 text-xs space-y-1">
-                  <p>✨ Essai gratuit 7 jours</p>
-                  <p>Annulable à tout moment • Support inclus</p>
+                  <p>{t('homeScreen.freeTrial')}</p>
+                  <p>{t('homeScreen.cancelAnytime')}</p>
                 </div>
               </div>
             </CardContent>
