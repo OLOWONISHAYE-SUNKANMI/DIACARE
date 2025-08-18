@@ -17,7 +17,7 @@ import ChatScreen from "@/components/screens/ChatScreen";
 import BlogScreen from "@/components/screens/BlogScreen";
 import FamilyScreen from "@/components/screens/FamilyScreen";
 import ProfileScreen from "@/components/screens/ProfileScreen";
-import AssistantScreen from "@/components/screens/AssistantScreen";
+
 import HealthProfessionalScreen from "@/components/screens/HealthProfessionalScreen";
 import AdminDashboard from "@/components/screens/AdminDashboard";
 import { AdminApplicationReview } from "@/components/screens/AdminApplicationReview";
@@ -78,8 +78,6 @@ const Index = () => {
         return <AdminApplicationReview />;
       case "blog":
         return <BlogScreen />;
-      case "assistant":
-        return <AssistantScreen />;
       case "family":
         return <FamilyScreen />;
       case "profile":
