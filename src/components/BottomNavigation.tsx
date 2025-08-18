@@ -1,4 +1,5 @@
 import { Home, BarChart3, Pill, BookOpen, User, Users, FileText, Bot, MessageCircle, Stethoscope } from "lucide-react";
+import { useTranslation } from 'react-i18next';
 
 interface BottomNavigationProps {
   activeTab: string;
@@ -6,17 +7,19 @@ interface BottomNavigationProps {
 }
 
 const BottomNavigation = ({ activeTab, onTabChange }: BottomNavigationProps) => {
+  const { t } = useTranslation();
+  
   const tabs = [
-    { id: "home", label: "Accueil", icon: Home },
-    { id: "charts", label: "Données", icon: BarChart3 },
-    { id: "doses", label: "Doses", icon: Pill },
-    { id: "teleconsultation", label: "Télé", icon: Stethoscope },
-    { id: "chat", label: "Chat", icon: MessageCircle },
-    { id: "assistant", label: "Assistant", icon: Bot },
-    { id: "journal", label: "Carnet", icon: FileText },
-    { id: "blog", label: "Blog", icon: BookOpen },
-    { id: "family", label: "Famille", icon: Users },
-    { id: "profile", label: "Profil", icon: User },
+    { id: "home", label: t('nav.home'), icon: Home },
+    { id: "charts", label: t('nav.charts'), icon: BarChart3 },
+    { id: "doses", label: t('nav.doses'), icon: Pill },
+    { id: "teleconsultation", label: t('nav.teleconsultation'), icon: Stethoscope },
+    { id: "chat", label: t('nav.chat'), icon: MessageCircle },
+    { id: "assistant", label: t('nav.assistant'), icon: Bot },
+    { id: "journal", label: t('nav.journal'), icon: FileText },
+    { id: "blog", label: t('nav.blog'), icon: BookOpen },
+    { id: "family", label: t('nav.family'), icon: Users },
+    { id: "profile", label: t('nav.profile'), icon: User },
   ];
 
   return (
