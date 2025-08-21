@@ -196,6 +196,90 @@ export type Database = {
         }
         Relationships: []
       }
+      consultation_notes: {
+        Row: {
+          consultation_id: string | null
+          created_at: string | null
+          id: string
+          next_appointment_date: string | null
+          notes: string
+          patient_id: string
+          professional_id: string
+          recommendations: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          consultation_id?: string | null
+          created_at?: string | null
+          id?: string
+          next_appointment_date?: string | null
+          notes: string
+          patient_id: string
+          professional_id: string
+          recommendations?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          consultation_id?: string | null
+          created_at?: string | null
+          id?: string
+          next_appointment_date?: string | null
+          notes?: string
+          patient_id?: string
+          professional_id?: string
+          recommendations?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      consultation_requests: {
+        Row: {
+          consultation_fee: number | null
+          consultation_reason: string
+          created_at: string | null
+          id: string
+          patient_id: string
+          patient_message: string | null
+          professional_code: string
+          professional_id: string
+          professional_response: string | null
+          requested_at: string | null
+          responded_at: string | null
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          consultation_fee?: number | null
+          consultation_reason: string
+          created_at?: string | null
+          id?: string
+          patient_id: string
+          patient_message?: string | null
+          professional_code: string
+          professional_id: string
+          professional_response?: string | null
+          requested_at?: string | null
+          responded_at?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          consultation_fee?: number | null
+          consultation_reason?: string
+          created_at?: string | null
+          id?: string
+          patient_id?: string
+          patient_message?: string | null
+          professional_code?: string
+          professional_id?: string
+          professional_response?: string | null
+          requested_at?: string | null
+          responded_at?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       consultation_summaries: {
         Row: {
           created_at: string
