@@ -27,8 +27,17 @@ const AuthPage = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
+  // Show loading first
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-medical-blue-light via-background to-medical-green-light">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
   // Redirect if already authenticated
-  if (user && !loading) {
+  if (user) {
     return <Navigate to="/" replace />;
   }
 
@@ -161,13 +170,6 @@ const AuthPage = () => {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-medical-blue-light via-background to-medical-green-light">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-medical-blue-light via-background to-medical-green-light flex items-center justify-center p-4">
