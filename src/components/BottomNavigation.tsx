@@ -13,7 +13,7 @@ const BottomNavigation = ({ activeTab, onTabChange }: BottomNavigationProps) => 
     { id: "home", label: t('nav.home'), icon: Home },
     { id: "charts", label: t('nav.charts'), icon: BarChart3 },
     { id: "doses", label: t('nav.doses'), icon: Pill },
-    { id: "teleconsultation", label: t('nav.teleconsultation'), icon: Stethoscope },
+    { id: "consultation-request", label: "Consultation", icon: Stethoscope },
     { id: "chat", label: t('nav.chat'), icon: MessageCircle },
     { id: "journal", label: t('nav.journal'), icon: FileText },
     { id: "blog", label: t('nav.blog'), icon: BookOpen },

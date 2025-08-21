@@ -44,49 +44,41 @@ const HealthProfessionalSignup = () => {
       id: 'endocrinologist', 
       name: 'Endocrinologue', 
       icon: '🩺',
-      rate: '500 F CFA/consultation',
+      rate: '630 F CFA/consultation (35%)',
       description: 'Spécialiste diabète et hormones',
       specialty: 'endocrinologist'
-    },
-    { 
-      id: 'psychologist', 
-      name: 'Psychologue', 
-      icon: '🧠',
-      rate: '500 F CFA/séance',
-      description: 'Soutien psychologique diabète',
-      specialty: 'psychologist'
-    },
-    { 
-      id: 'nutritionist', 
-      name: 'Nutritionniste', 
-      icon: '🥗',
-      rate: '500 F CFA/consultation',
-      description: 'Conseils alimentaires personnalisés',
-      specialty: 'nutritionist'
-    },
-    { 
-      id: 'nurse', 
-      name: 'Infirmier(ère)', 
-      icon: '👩‍⚕️',
-      rate: '500 F CFA/suivi',
-      description: 'Suivi et éducation thérapeutique',
-      specialty: 'nurse'
-    },
-    { 
-      id: 'diabetologist', 
-      name: 'Diabétologue', 
-      icon: '💉',
-      rate: '600 F CFA/consultation',
-      description: 'Spécialiste du diabète',
-      specialty: 'diabetologist'
     },
     { 
       id: 'general_practitioner', 
       name: 'Médecin Généraliste', 
       icon: '👨‍⚕️',
-      rate: '500 F CFA/consultation',
+      rate: '520 F CFA/consultation (29%)',
       description: 'Médecine générale avec focus diabète',
       specialty: 'general_practitioner'
+    },
+    { 
+      id: 'psychologist', 
+      name: 'Psychologue', 
+      icon: '🧠',
+      rate: '430 F CFA/séance (24%)',
+      description: 'Soutien psychologique diabète',
+      specialty: 'psychologist'
+    },
+    { 
+      id: 'nurse', 
+      name: 'Infirmier(ère)', 
+      icon: '👩‍⚕️',
+      rate: '120 F CFA/suivi (7%)',
+      description: 'Suivi et éducation thérapeutique',
+      specialty: 'nurse'
+    },
+    { 
+      id: 'nutritionist', 
+      name: 'Nutritionniste', 
+      icon: '🥗',
+      rate: '100 F CFA/consultation (5%)',
+      description: 'Conseils alimentaires personnalisés',
+      specialty: 'nutritionist'
     }
   ];
 
@@ -399,19 +391,31 @@ const HealthProfessionalSignup = () => {
           <CardContent className="pt-6">
             <div className="text-center space-y-4">
               <div className="p-4 bg-muted/30 rounded-lg">
-                <h3 className="font-semibold mb-2">Après validation :</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                <h3 className="font-semibold mb-2">Nouveau système de rémunération (1800 F/patient/mois) :</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                   <div className="flex items-center gap-2">
                     <CheckCircle className="w-4 h-4 text-medical-green" />
-                    <span>Code professionnel unique</span>
+                    <span>Endocrinologue: 630 F (35%)</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <CheckCircle className="w-4 h-4 text-medical-green" />
-                    <span>Accès plateforme télémédecine</span>
+                    <span>Médecin généraliste: 520 F (29%)</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <CheckCircle className="w-4 h-4 text-medical-green" />
-                    <span>Paiements automatiques</span>
+                    <span>Psychologue: 430 F (24%)</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-medical-green" />
+                    <span>Infirmier(ère): 120 F (7%)</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-medical-green" />
+                    <span>Nutritionniste: 100 F (5%)</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-medical-green" />
+                    <span>Paiements automatiques mensuels</span>
                   </div>
                 </div>
               </div>

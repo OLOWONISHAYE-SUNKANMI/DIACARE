@@ -17,6 +17,8 @@ import ChatScreen from "@/components/screens/ChatScreen";
 import BlogScreen from "@/components/screens/BlogScreen";
 import FamilyScreen from "@/components/screens/FamilyScreen";
 import ProfileScreen from "@/components/screens/ProfileScreen";
+import ConsultationRequest from "@/components/screens/ConsultationRequest";
+import ProfessionalDashboardNew from "@/components/ui/ProfessionalDashboardNew";
 
 import HealthProfessionalScreen from "@/components/screens/HealthProfessionalScreen";
 import AdminDashboard from "@/components/screens/AdminDashboard";
@@ -88,6 +90,10 @@ const Index = () => {
         return <DoctorDashboard />;
       case "professional-dashboard":
         return <ProfessionalDashboard />;
+      case "consultation-request":
+        return <ConsultationRequest />;
+      case "professional-dashboard-new":
+        return <ProfessionalDashboardNew />;
       case "payment":
         return (
           <PaymentScreen 

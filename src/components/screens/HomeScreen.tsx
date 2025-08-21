@@ -173,6 +173,12 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
                 >
                   {t('homeScreen.startTracking')}
                 </Button>
+                <Button 
+                  className="w-full bg-white/20 text-white hover:bg-white/30 font-semibold py-3 rounded-2xl border border-white/30"
+                  onClick={() => onTabChange?.('consultation-request' as any)}
+                >
+                  💊 Consultation médicale
+                </Button>
                 <div className="text-center text-white/80 text-xs space-y-1">
                   <p>{t('homeScreen.freeTrial')}</p>
                   <p>{t('homeScreen.cancelAnytime')}</p>
