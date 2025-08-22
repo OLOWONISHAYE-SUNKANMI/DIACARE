@@ -16,7 +16,7 @@ const BottomNavigation = ({ activeTab, onTabChange }: BottomNavigationProps) => 
     { id: "consultation-request", label: "Consultation", icon: Stethoscope },
     { id: "chat", label: t('nav.chat'), icon: MessageCircle },
     { id: "journal", label: t('nav.journal'), icon: FileText },
-    { id: "blog", label: t('nav.blog'), icon: BookOpen },
+    { id: "blog", label: "Nouvelles", icon: BookOpen },
     { id: "family", label: t('nav.family'), icon: Users },
     { id: "profile", label: t('nav.profile'), icon: User },
   ];
