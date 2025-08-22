@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FlutterWaveButton, closePaymentModal } from 'flutterwave-react-v3';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -6,6 +6,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
+import { CountrySelector } from '@/components/ui/CountrySelector';
+import { CurrencyConverter, CountryCurrency } from '@/utils/CurrencyConverter';
 import { ArrowLeft, Check, Phone, Shield, CreditCard, User, Mail } from 'lucide-react';
 
 interface PaymentFormData {
@@ -27,6 +29,8 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({ onBack, onPaymentSuccess 
   });
   const [paymentStep, setPaymentStep] = useState<'form' | 'processing' | 'success'>('form');
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState<string>('');
+  const [currency, setCurrency] = useState<CountryCurrency>(CurrencyConverter.getCurrencyInfo('DEFAULT'));
   const { toast } = useToast();
 
   // Get plan from localStorage
@@ -39,12 +43,23 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({ onBack, onPaymentSuccess 
     }
   }, []);
 
+  // Calculate prices in local currency
+  const convertedPrices = React.useMemo(() => {
+    if (!selectedPlan) return null;
+    return CurrencyConverter.convertPrice(selectedPlan.price_eur / 100, selectedCountry || 'DEFAULT');
+  }, [selectedPlan, selectedCountry]);
+
+  const handleCountrySelect = (countryCode: string, currencyInfo: CountryCurrency) => {
+    setSelectedCountry(countryCode);
+    setCurrency(currencyInfo);
+  };
+
   // Configuration Flutterwave
-  const config = {
+  const config = React.useMemo(() => ({
     public_key: 'FLWPUBK_TEST-SANDBOXDEMOKEY-X', // Remplacer par votre clé publique
     tx_ref: `DIACARE-${Date.now()}`,
-    amount: selectedPlan?.price_eur || 5000,
-    currency: 'XOF', // Franc CFA
+    amount: convertedPrices?.amount || selectedPlan?.price_eur || 5000,
+    currency: currency.currency,
     payment_options: 'card,mobilemoney,ussd',
     customer: {
       email: formData.email,
@@ -56,11 +71,11 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({ onBack, onPaymentSuccess 
       description: selectedPlan?.description || 'Abonnement mensuel DiaCare Premium',
       logo: 'https://assets.aceternity.com/demos/lila.jpg',
     },
-  };
+  }), [convertedPrices, selectedPlan, currency, formData]);
 
   const fwConfig = {
     ...config,
-    text: `Payer ${((selectedPlan?.price_eur || 5000) / 100).toFixed(0)}€`,
+    text: convertedPrices ? `Payer ${convertedPrices.formatted}` : `Payer ${((selectedPlan?.price_eur || 5000) / 100).toFixed(0)}€`,
     callback: (response: any) => {
       console.log(response);
         if (response.status === 'successful') {
@@ -140,12 +155,20 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({ onBack, onPaymentSuccess 
             <CreditCard className="w-8 h-8 text-medical-teal" />
           </div>
           <h2 className="text-2xl font-bold text-medical-teal mb-2">{selectedPlan?.name || 'DiaCare Premium'}</h2>
-          <p className="text-3xl font-bold text-foreground">{((selectedPlan?.price_eur || 5000) / 100).toFixed(0)} <span className="text-lg">€</span></p>
+          <p className="text-3xl font-bold text-foreground">
+            {convertedPrices ? convertedPrices.formatted : `${((selectedPlan?.price_eur || 5000) / 100).toFixed(0)}€`}
+          </p>
           <p className="text-muted-foreground">par mois</p>
           <Badge className="mt-2 bg-medical-green/10 text-medical-green border-medical-green/20">
             Paiement sécurisé
           </Badge>
         </div>
+
+        {/* Country and Currency Selection */}
+        <CountrySelector 
+          onCountrySelect={handleCountrySelect}
+          selectedCountry={selectedCountry}
+        />
 
         <Card className="mb-6">
           <CardHeader>
@@ -203,16 +226,26 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({ onBack, onPaymentSuccess 
             <div className="bg-muted/50 rounded-lg p-3 space-y-2">
               <div className="flex justify-between text-sm">
                 <span>{selectedPlan?.name || 'DiaCare Premium'}</span>
-                <span className="font-semibold">{((selectedPlan?.price_eur || 5000) / 100).toFixed(0)}€</span>
+                <span className="font-semibold">
+                  {convertedPrices ? convertedPrices.formatted : `${((selectedPlan?.price_eur || 5000) / 100).toFixed(0)}€`}
+                </span>
               </div>
               <div className="flex justify-between text-sm text-muted-foreground">
                 <span>Période</span>
                 <span>1 mois</span>
               </div>
+              {currency.country !== 'Autre' && (
+                <div className="flex justify-between text-sm text-blue-600">
+                  <span>Devise locale</span>
+                  <span>{currency.country} ({currency.currency})</span>
+                </div>
+              )}
               <hr className="my-2" />
               <div className="flex justify-between font-semibold">
                 <span>Total</span>
-                <span>{((selectedPlan?.price_eur || 5000) / 100).toFixed(0)}€</span>
+                <span>
+                  {convertedPrices ? convertedPrices.formatted : `${((selectedPlan?.price_eur || 5000) / 100).toFixed(0)}€`}
+                </span>
               </div>
             </div>
 
@@ -231,7 +264,7 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({ onBack, onPaymentSuccess 
                 ? 'bg-medical-teal hover:bg-medical-teal/90 text-white' 
                 : 'bg-muted text-muted-foreground cursor-not-allowed'
             }`}
-            disabled={!isFormValid}
+            disabled={!isFormValid || !selectedCountry}
           />
 
           <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
