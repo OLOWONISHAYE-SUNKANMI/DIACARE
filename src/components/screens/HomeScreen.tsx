@@ -23,6 +23,8 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
   const [activeModal, setActiveModal] = useState<string | null>(null);
   const { getLatestReading, getTrend } = useGlucose();
   
+  console.log("HomeScreen render, activeModal:", activeModal);
+  
   const latestReading = getLatestReading();
   const currentGlucose = latestReading?.value || 126;
 
@@ -49,10 +51,13 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
 
         {/* Quick Actions */}
         <QuickActionsGrid onActionPress={(action) => {
+          console.log("Button clicked:", action);
           if (action === "reminders") {
             onTabChange?.("reminders");
           } else {
+            console.log("Opening modal for:", action);
             setActiveModal(action);
+            setTimeout(() => console.log("ActiveModal state:", action), 100);
           }
         }} />
 
@@ -119,19 +124,31 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
       {/* Action Modals */}
       <AddGlucoseModal 
         isOpen={activeModal === "glucose"} 
-        onClose={() => setActiveModal(null)} 
+        onClose={() => {
+          console.log("Closing glucose modal");
+          setActiveModal(null);
+        }} 
       />
       <MealModal 
         isOpen={activeModal === "meal"} 
-        onClose={() => setActiveModal(null)} 
+        onClose={() => {
+          console.log("Closing meal modal");
+          setActiveModal(null);
+        }} 
       />
       <MedicationModal 
         isOpen={activeModal === "medication"} 
-        onClose={() => setActiveModal(null)} 
+        onClose={() => {
+          console.log("Closing medication modal");
+          setActiveModal(null);
+        }} 
       />
       <ActivityModal 
         isOpen={activeModal === "activity"} 
-        onClose={() => setActiveModal(null)} 
+        onClose={() => {
+          console.log("Closing activity modal");
+          setActiveModal(null);
+        }} 
       />
     </div>
   );
