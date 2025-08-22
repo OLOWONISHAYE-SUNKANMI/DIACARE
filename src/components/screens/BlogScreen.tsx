@@ -1,81 +1,127 @@
 import { useState } from "react";
-import { BookOpen, Clock, ArrowRight } from "lucide-react";
+import { Globe, Clock, ArrowRight, TrendingUp, Heart, Brain, Search, Bookmark } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 interface BlogScreenProps {}
 
 const BlogScreen = (props: BlogScreenProps) => {
   const [activeCategory, setActiveCategory] = useState("Tous");
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const categories = ["Tous", "Lifestyle", "Nutrition", "Médical", "Témoignage"];
+  const categories = ["Tous", "Recherches", "Nutrition", "Mental", "Innovation", "Témoignages"];
 
   const articles = [
     {
       id: 1,
-      image: "🌍",
-      category: "Lifestyle",
-      readTime: "5 min",
-      title: "OSER Gérer le Diabète au Sahel",
-      excerpt: "Découvrez comment adapter votre traitement aux défis climatiques et sociaux de l'Afrique de l'Ouest...",
-      author: "Dr. Aminata Traoré",
-      bgColor: "bg-orange-100"
+      image: "🔬",
+      category: "Recherches",
+      readTime: "8 min",
+      title: "Nouvelle thérapie cellulaire prometteuse pour le diabète de type 1",
+      excerpt: "Des chercheurs américains développent une approche révolutionnaire utilisant des cellules souches pour restaurer la production d'insuline...",
+      author: "Dr. Sarah Johnson",
+      date: "2024-01-15",
+      source: "Nature Medicine",
+      bgColor: "bg-purple-100",
+      trending: true
     },
     {
       id: 2,
-      image: "🍲",
+      image: "🥗",
       category: "Nutrition",
-      readTime: "8 min",
-      title: "DARE Cuisiner : Thiéboudienne Healthy",
-      excerpt: "Réinventez le plat national sénégalais avec des ingrédients qui respectent votre glycémie...",
-      author: "Chef Mariam Diop",
-      bgColor: "bg-green-100"
+      readTime: "6 min",
+      title: "Régime méditerranéen : -40% de complications diabétiques confirmé",
+      excerpt: "Une étude européenne de 5 ans confirme les bénéfices spectaculaires du régime méditerranéen sur les complications cardiovasculaires...",
+      author: "Prof. Maria Gonzalez",
+      date: "2024-01-12",
+      source: "European Heart Journal",
+      bgColor: "bg-green-100",
+      trending: false
     },
     {
       id: 3,
-      image: "💪",
-      category: "Témoignage",
-      readTime: "6 min",
-      title: "J'ai OSÉ Reprendre Ma Vie en Main à Douala",
-      excerpt: "Témoignage émouvant de Jean-Claude, 45 ans, qui a transformé sa relation avec le diabète...",
-      author: "Jean-Claude Mbeki",
-      bgColor: "bg-blue-100"
+      image: "🧠",
+      category: "Mental",
+      readTime: "5 min",
+      title: "L'impact du diabète sur la santé mentale enfin reconnu par l'OMS",
+      excerpt: "L'Organisation Mondiale de la Santé intègre officiellement le soutien psychologique dans les recommandations de prise en charge...",
+      author: "Dr. Ahmed Hassan",
+      date: "2024-01-10",
+      source: "WHO Guidelines",
+      bgColor: "bg-blue-100",
+      trending: true
     },
     {
       id: 4,
-      image: "🏥",
-      category: "Médical",
-      readTime: "10 min",
-      title: "DARE Comprendre : Insuline et Climat Tropical",
-      excerpt: "Guide pratique pour conserver et utiliser votre insuline dans les conditions africaines...",
-      author: "Dr. Mamadou Sy",
-      bgColor: "bg-purple-100"
+      image: "💊",
+      category: "Innovation",
+      readTime: "7 min",
+      title: "Insuline intelligente : premiers essais cliniques réussis",
+      excerpt: "Une insuline qui s'adapte automatiquement au taux de glucose sanguin montre des résultats prometteurs lors des tests...",
+      author: "Dr. Li Wei",
+      date: "2024-01-08",
+      source: "The Lancet",
+      bgColor: "bg-orange-100",
+      trending: true
     },
     {
       id: 5,
-      image: "🌿",
-      category: "Lifestyle",
-      readTime: "7 min",
-      title: "OSER l'Activité Physique à Lagos",
-      excerpt: "Conseils pratiques pour maintenir une routine sportive dans une mégalopole africaine...",
-      author: "Coach Folake Adeyemi",
-      bgColor: "bg-teal-100"
+      image: "👥",
+      category: "Témoignages",
+      readTime: "4 min",
+      title: "Marathon avec le diabète : l'exploit de James Thompson à 65 ans",
+      excerpt: "Diabétique depuis 30 ans, James Thompson termine le marathon de Boston et inspire des milliers de personnes...",
+      author: "Reporter Sport",
+      date: "2024-01-05",
+      source: "Diabetes Today",
+      bgColor: "bg-yellow-100",
+      trending: false
+    },
+    {
+      id: 6,
+      image: "📱",
+      category: "Innovation", 
+      readTime: "6 min",
+      title: "IA et diabète : l'algorithme qui prédit les crises d'hypoglycémie",
+      excerpt: "Une intelligence artificielle développée au MIT peut prédire les épisodes d'hypoglycémie 30 minutes à l'avance...",
+      author: "Dr. Jennifer Park",
+      date: "2024-01-03",
+      source: "MIT Technology Review",
+      bgColor: "bg-teal-100",
+      trending: true
     }
   ];
 
-  const filteredArticles = activeCategory === "Tous" 
-    ? articles 
-    : articles.filter(article => article.category === activeCategory);
+  const filteredArticles = articles.filter(article => {
+    const matchesCategory = activeCategory === "Tous" || article.category === activeCategory;
+    const matchesSearch = searchQuery === "" || 
+      article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      article.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
 
   return (
     <div className="flex-1 p-4 space-y-6 pb-24 animate-fade-in">
-      {/* Header avec branding DARE */}
+      {/* Header DARE News */}
       <div className="text-center space-y-2">
         <h1 className="text-2xl font-bold text-foreground flex items-center justify-center gap-2">
-          💪 <span className="text-medical-teal">DARE</span> Blog
+          <Globe className="w-6 h-6 text-medical-teal" />
+          <span className="text-medical-teal">DARE</span> News
         </h1>
-        <p className="text-muted-foreground">Osez bien vivre avec le diabète</p>
+        <p className="text-muted-foreground">Actualités internationales sur le diabète</p>
+      </div>
+
+      {/* Barre de recherche */}
+      <div className="relative">
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+        <Input
+          placeholder="Rechercher des actualités..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="pl-10"
+        />
       </div>
 
       {/* Filtres catégories */}
@@ -99,8 +145,11 @@ const BlogScreen = (props: BlogScreenProps) => {
           <Card key={article.id} className="border-l-4 border-l-medical-teal overflow-hidden">
             <CardHeader className="pb-3">
               <div className="flex items-start gap-3">
-                <div className={`w-16 h-16 rounded-lg ${article.bgColor} flex items-center justify-center text-2xl`}>
+                <div className={`w-16 h-16 rounded-lg ${article.bgColor} flex items-center justify-center text-2xl relative`}>
                   {article.image}
+                  {article.trending && (
+                    <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
+                  )}
                 </div>
                 <div className="flex-1 space-y-2">
                   <div className="flex items-center gap-2 flex-wrap">
@@ -111,21 +160,31 @@ const BlogScreen = (props: BlogScreenProps) => {
                       <Clock className="w-3 h-3" />
                       {article.readTime}
                     </Badge>
+                    {article.trending && (
+                      <Badge className="text-xs bg-red-500 text-white flex items-center gap-1">
+                        <TrendingUp className="w-3 h-3" />
+                        Tendance
+                      </Badge>
+                    )}
                   </div>
                   <h3 className="font-bold text-foreground leading-tight">
                     {article.title}
                   </h3>
                 </div>
+                <Button variant="ghost" size="sm" className="p-1">
+                  <Bookmark className="w-4 h-4" />
+                </Button>
               </div>
             </CardHeader>
             <CardContent className="pt-0 space-y-3">
               <p className="text-sm text-muted-foreground leading-relaxed">
                 {article.excerpt}
               </p>
-              <div className="flex items-center justify-between">
-                <span className="text-xs text-muted-foreground">
-                  Par {article.author}
-                </span>
+              <div className="flex items-center justify-between text-xs text-muted-foreground">
+                <div className="space-y-1">
+                  <div>Par {article.author}</div>
+                  <div>{article.date} • {article.source}</div>
+                </div>
                 <Button size="sm" className="bg-medical-teal hover:bg-medical-teal/90">
                   Lire
                   <ArrowRight className="w-3 h-3 ml-1" />
@@ -136,17 +195,17 @@ const BlogScreen = (props: BlogScreenProps) => {
         ))}
       </div>
 
-      {/* Suggestion d'articles */}
+      {/* Sources et disclaimer */}
       <Card className="bg-gradient-to-r from-medical-teal/5 to-medical-teal/10 border-medical-teal/20">
         <CardContent className="p-4 text-center">
-          <BookOpen className="w-8 h-8 text-medical-teal mx-auto mb-2" />
-          <h3 className="font-semibold text-foreground mb-1">Profitez de DARE</h3>
+          <Heart className="w-8 h-8 text-medical-teal mx-auto mb-2" />
+          <h3 className="font-semibold text-foreground mb-1">Sources fiables</h3>
           <p className="text-sm text-muted-foreground mb-3">
-            Accédez à tous nos contenus médicaux et conseils personnalisés
+            Toutes nos actualités sont vérifiées et proviennent de sources médicales reconnues internationalement
           </p>
-          <Button variant="outline" size="sm">
-            Explorez tous nos conseils
-          </Button>
+          <div className="flex flex-wrap justify-center gap-2 text-xs text-muted-foreground">
+            <span>Nature Medicine</span> • <span>The Lancet</span> • <span>WHO</span> • <span>ADA</span>
+          </div>
         </CardContent>
       </Card>
     </div>

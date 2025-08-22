@@ -1,13 +1,15 @@
 import { useState } from "react";
-import { User, Phone, MapPin, Calendar, Users, Pill, Settings, Download, Shield, MessageSquare, PhoneCall, LogOut } from "lucide-react";
+import { User, Phone, MapPin, Calendar, Users, Pill, Settings, Download, Shield, MessageSquare, PhoneCall, LogOut, Scale, Camera } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
+import PhotoUploadModal from "@/components/modals/PhotoUploadModal";
+import WeightModal from "@/components/modals/WeightModal";
 
 interface ProfileScreenProps {}
 
@@ -16,15 +18,42 @@ const ProfileScreen = (props: ProfileScreenProps) => {
   const [notifications, setNotifications] = useState(true);
   const [dataSharing, setDataSharing] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
+  const [profilePhoto, setProfilePhoto] = useState<string | null>(null);
+  const [weight, setWeight] = useState<number>(75.2);
   const { signOut } = useAuth();
 
   return (
     <div className="flex-1 p-4 space-y-6 pb-24 animate-fade-in">
       {/* Header Profil */}
       <div className="text-center space-y-4">
-        <Avatar className="w-24 h-24 mx-auto bg-gradient-to-br from-gray-400 to-gray-600">
-          <AvatarFallback className="text-2xl text-white bg-transparent">👨</AvatarFallback>
-        </Avatar>
+        <div className="relative">
+          <PhotoUploadModal 
+            currentPhoto={profilePhoto}
+            onPhotoChange={setProfilePhoto}
+          >
+            <Avatar className="w-24 h-24 mx-auto bg-gradient-to-br from-gray-400 to-gray-600 cursor-pointer hover:opacity-80 transition-opacity">
+              {profilePhoto ? (
+                <AvatarImage src={profilePhoto} alt="Photo de profil" />
+              ) : (
+                <AvatarFallback className="text-2xl text-white bg-transparent">👨</AvatarFallback>
+              )}
+            </Avatar>
+          </PhotoUploadModal>
+          <Button
+            size="sm"
+            className="absolute -bottom-2 -right-2 h-8 w-8 rounded-full p-0"
+            asChild
+          >
+            <PhotoUploadModal 
+              currentPhoto={profilePhoto}
+              onPhotoChange={setProfilePhoto}
+            >
+              <span>
+                <Camera className="w-4 h-4" />
+              </span>
+            </PhotoUploadModal>
+          </Button>
+        </div>
         
         <div className="space-y-2">
           <h1 className="text-2xl font-bold text-foreground">Amadou Diallo</h1>
@@ -41,7 +70,7 @@ const ProfileScreen = (props: ProfileScreenProps) => {
         </div>
       </div>
 
-      {/* Statistiques rapides */}
+      {/* Statistiques rapides avec poids */}
       <div className="grid grid-cols-3 gap-3">
         <Card className="text-center p-3">
           <CardContent className="p-0">
@@ -49,12 +78,17 @@ const ProfileScreen = (props: ProfileScreenProps) => {
             <div className="text-xs text-muted-foreground">{t('profileScreen.yearsWithDare')}</div>
           </CardContent>
         </Card>
-        <Card className="text-center p-3">
-          <CardContent className="p-0">
-            <div className="text-2xl font-bold text-medical-teal">847</div>
-            <div className="text-xs text-muted-foreground">{t('profileScreen.glucoseMeasures')}</div>
-          </CardContent>
-        </Card>
+        <WeightModal currentWeight={weight} onWeightChange={setWeight}>
+          <Card className="text-center p-3 cursor-pointer hover:bg-muted/50 transition-colors">
+            <CardContent className="p-0">
+              <div className="text-2xl font-bold text-medical-teal flex items-center justify-center gap-1">
+                <Scale className="w-5 h-5" />
+                {weight}
+              </div>
+              <div className="text-xs text-muted-foreground">kg • Poids</div>
+            </CardContent>
+          </Card>
+        </WeightModal>
         <Card className="text-center p-3">
           <CardContent className="p-0">
             <div className="text-2xl font-bold text-medical-teal">91%</div>

@@ -130,13 +130,6 @@ const ChatInterface = ({ messages, onSendMessage, patientData }: ChatInterfacePr
             >
               <Send className="w-4 h-4" />
             </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              className="text-xs px-2"
-            >
-              🎤
-            </Button>
           </div>
         </div>
       </div>
