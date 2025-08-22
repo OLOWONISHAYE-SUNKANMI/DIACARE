@@ -130,7 +130,7 @@ const Index = () => {
       {/* Bouton flottant + */}
       <Button 
         onClick={handleQuickAdd}
-        className="fixed bottom-20 right-4 w-14 h-14 rounded-full bg-medical-teal hover:bg-medical-teal/90 shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 z-10"
+        className="fixed bottom-24 left-4 w-14 h-14 rounded-full bg-medical-teal hover:bg-medical-teal/90 shadow-xl hover:shadow-2xl transition-all duration-200 hover:scale-110 z-10 ring-4 ring-medical-teal/20"
         size="icon"
       >
         <Plus className="w-6 h-6" />
@@ -161,21 +161,28 @@ const Index = () => {
         📋 Candidatures
       </Button>
       
-      {/* Bouton dashboard médecin pour test */}
-      <Button 
-        onClick={() => setActiveTab("doctor-dashboard")}
-        className="fixed bottom-68 left-4 px-4 py-2 bg-medical-blue hover:bg-medical-blue/90 text-white shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 z-10 text-sm"
-      >
-        🩺 Dashboard Médecin
-      </Button>
-      
-      {/* Bouton accès patients pour test */}
-      <Button 
-        onClick={() => setActiveTab("patient-access")}
-        className="fixed bottom-84 left-4 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 z-10 text-sm"
-      >
-        🔐 Accès Patients
-      </Button>
+      {/* Boutons d'accès professionnel - Design amélioré */}
+      <div className="fixed bottom-24 right-4 flex flex-col gap-3 z-10">
+        <Button 
+          onClick={() => setActiveTab("doctor-dashboard")}
+          className="w-14 h-14 bg-medical-blue hover:bg-medical-blue/90 text-white shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 rounded-full group"
+          size="icon"
+        >
+          <div className="flex flex-col items-center">
+            <span className="text-lg">🩺</span>
+          </div>
+        </Button>
+        
+        <Button 
+          onClick={() => setActiveTab("patient-access")}
+          className="w-14 h-14 bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 rounded-full"
+          size="icon"
+        >
+          <div className="flex flex-col items-center">
+            <span className="text-lg">🔐</span>
+          </div>
+        </Button>
+      </div>
     </div>
   );
 };

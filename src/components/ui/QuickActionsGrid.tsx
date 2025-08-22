@@ -18,14 +18,14 @@ const QuickActionsGrid = ({ onActionPress }: QuickActionsGridProps) => {
     { 
       icon: BarChart3, 
       label: "Ajouter Glycémie", 
-      emoji: "📊", 
+      emoji: "🩸", 
       action: "glucose",
-      gradient: "from-blue-500 to-blue-600"
+      gradient: "from-medical-blue to-blue-600"
     },
     { 
       icon: Utensils, 
       label: "Journal des repas", 
-      emoji: "🍽️", 
+      emoji: "🥗", 
       action: "meal",
       gradient: "from-medical-green to-emerald-600"
     },
@@ -39,7 +39,7 @@ const QuickActionsGrid = ({ onActionPress }: QuickActionsGridProps) => {
     { 
       icon: Footprints, 
       label: "Activité", 
-      emoji: "🏃", 
+      emoji: "🏃‍♂️", 
       action: "activity",
       gradient: "from-orange-500 to-orange-600"
     },
@@ -67,14 +67,19 @@ const QuickActionsGrid = ({ onActionPress }: QuickActionsGridProps) => {
             >
               <CardContent className="p-0">
                 {/* Gradient header */}
-                <div className={`bg-gradient-to-br ${action.gradient} p-4 text-center`}>
-                  <div className="text-3xl mb-2">{action.emoji}</div>
-                  <Icon className="w-6 h-6 text-white mx-auto" />
+                <div className={`bg-gradient-to-br ${action.gradient} p-6 text-center relative overflow-hidden`}>
+                  <div className="absolute inset-0 bg-white/10 backdrop-blur-sm"></div>
+                  <div className="relative z-10">
+                    <div className="text-4xl mb-3 drop-shadow-lg">{action.emoji}</div>
+                    <div className="w-10 h-10 bg-white/30 rounded-full flex items-center justify-center mx-auto backdrop-blur-sm">
+                      <Icon className="w-5 h-5 text-white" />
+                    </div>
+                  </div>
                 </div>
                 
                 {/* Label */}
-                <div className="p-3 text-center">
-                  <p className="text-sm font-medium text-card-foreground leading-tight">
+                <div className="p-4 text-center">
+                  <p className="text-sm font-semibold text-card-foreground leading-tight">
                     {action.label}
                   </p>
                 </div>
