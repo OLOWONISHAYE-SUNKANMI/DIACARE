@@ -1396,6 +1396,16 @@ export type Database = {
         Args: { age: number }
         Returns: string
       }
+      get_community_reputation_stats: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          avg_score: number
+          top_score: number
+          total_helpful_messages: number
+          total_positive_reactions: number
+          total_users: number
+        }[]
+      }
       get_professional_schedule: {
         Args: {
           _end_date: string
@@ -1409,6 +1419,14 @@ export type Database = {
           end_time: string
           is_available: boolean
           start_time: string
+        }[]
+      }
+      get_user_reputation_rank: {
+        Args: { target_user_id: string }
+        Returns: {
+          total_users: number
+          user_rank: number
+          user_score: number
         }[]
       }
       get_user_role: {
