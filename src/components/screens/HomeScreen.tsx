@@ -22,6 +22,8 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
   const [showAddDose, setShowAddDose] = useState(false);
   const { getLatestReading, getTrend } = useGlucose();
   
+  console.log("Modal states - showAddMeasure:", showAddMeasure, "showAddDose:", showAddDose);
+  
   const latestReading = getLatestReading();
   const currentGlucose = latestReading?.value || 126;
 
@@ -49,8 +51,14 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
         {/* Actions Rapides - FONCTIONNELLES */}
         <ActionsRapides
           onTabChange={onTabChange}
-          onGlycemieClick={() => setShowAddMeasure(true)}
-          onMedicamentClick={() => setShowAddDose(true)}
+          onGlycemieClick={() => {
+            console.log("Setting showAddMeasure to true");
+            setShowAddMeasure(true);
+          }}
+          onMedicamentClick={() => {
+            console.log("Setting showAddDose to true"); 
+            setShowAddDose(true);
+          }}
         />
 
         {/* Predictive Alerts */}
