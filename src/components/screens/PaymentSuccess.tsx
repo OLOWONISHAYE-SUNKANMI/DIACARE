@@ -82,7 +82,7 @@ const PaymentSuccess: React.FC = () => {
   };
 
   const goToProfile = () => {
-    navigate('/profile');
+    navigate('/');
   };
 
   if (loading) {
