@@ -275,9 +275,8 @@ const AuthPage = () => {
           <div className="w-20 h-20 bg-gradient-medical rounded-full mx-auto mb-4 flex items-center justify-center shadow-lg">
             <Stethoscope className="w-10 h-10 text-primary-foreground" />
           </div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">{t('appName')}</h1>
-          <p className="text-muted-foreground mb-1">{t('appSlogan')}</p>
-          <p className="text-sm text-muted-foreground/80">{t('auth.appSlogan')}</p>
+          <h1 className="text-3xl font-bold text-foreground mb-4">{t('appName')}</h1>
+          <p className="text-lg font-medium text-muted-foreground mb-2">{t('appSlogan')}</p>
         </div>
 
         <Card className="shadow-xl">
