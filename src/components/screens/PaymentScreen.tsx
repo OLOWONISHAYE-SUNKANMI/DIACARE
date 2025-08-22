@@ -81,40 +81,33 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({ onBack, onPaymentSuccess 
     setIsLoading(true);
     
     try {
-      const response = await fetch('https://api-sandbox.afribapay.com/v1/pay/payin', {
-        method: 'POST',
-        headers: {
-          'Authorization': 'Bearer TEST_KEY_PLACEHOLDER', // Clé de test - remplacer quand vous aurez votre vraie clé sandbox AfribaPay
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(afribaPaymentData),
-      });
-
-      const result = await response.json();
+      // Mode test - simulation de paiement AfribaPay
+      console.log('Simulation paiement AfribaPay:', afribaPaymentData);
       
-      if (response.ok && result.status === 'success') {
-        // Rediriger vers la page de paiement AfribaPay
-        if (result.payment_url) {
-          window.location.href = result.payment_url;
-        } else {
-          setPaymentStep('success');
-          setTimeout(() => {
-            localStorage.removeItem('selectedPlan');
-            onPaymentSuccess();
-            toast({
-              title: "Paiement confirmé !",
-              description: `Bienvenue dans ${selectedPlan?.name || 'DiaCare Premium'}`,
-            });
-          }, 2000);
-        }
+      // Simuler un délai de traitement de 2 secondes
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // Simuler une réponse réussie
+      const simulatedSuccess = Math.random() > 0.1; // 90% de succès en test
+      
+      if (simulatedSuccess) {
+        setPaymentStep('success');
+        setTimeout(() => {
+          localStorage.removeItem('selectedPlan');
+          onPaymentSuccess();
+          toast({
+            title: "Paiement simulé confirmé !",
+            description: `Bienvenue dans ${selectedPlan?.name || 'DiaCare Premium'} (Mode Test)`,
+          });
+        }, 1000);
       } else {
-        throw new Error(result.message || 'Erreur de paiement');
+        throw new Error('Simulation d\'échec de paiement');
       }
     } catch (error) {
-      console.error('Erreur AfribaPay:', error);
+      console.error('Erreur simulation AfribaPay:', error);
       toast({
-        title: "Paiement échoué",
-        description: "Une erreur s'est produite lors du paiement. Veuillez réessayer.",
+        title: "Paiement échoué (Test)",
+        description: "Simulation d'échec de paiement. Réessayez.",
         variant: "destructive",
       });
     } finally {
