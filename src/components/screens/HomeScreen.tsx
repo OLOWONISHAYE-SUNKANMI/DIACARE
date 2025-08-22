@@ -12,6 +12,7 @@ import AddGlucoseModal from "@/components/modals/AddGlucoseModal";
 import MealModal from "@/components/modals/ScanMealModal";
 import MedicationModal from "@/components/modals/MedicationModal";
 import ActivityModal from "@/components/modals/ActivityModal";
+import useGlucoseData from "@/hooks/useGlucoseData";
 
 interface HomeScreenProps {
   onTabChange?: (tab: string) => void;
@@ -20,7 +21,10 @@ interface HomeScreenProps {
 const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
   const { t } = useTranslation();
   const [activeModal, setActiveModal] = useState<string | null>(null);
-  const currentGlucose = 126; // mg/dL
+  const { getLatestReading, getTrend } = useGlucoseData();
+  
+  const latestReading = getLatestReading();
+  const currentGlucose = latestReading?.value || 126;
 
   const challenges = [
     { letter: "D", challenge: t('homeScreen.measureGlucose'), completed: true },
@@ -39,8 +43,8 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
         {/* Glucose Widget */}
         <GlucoseWidget 
           currentGlucose={currentGlucose}
-          lastReading={t('homeScreen.lastReading')}
-          trend="stable"
+          lastReading={latestReading ? new Date(latestReading.timestamp).toLocaleString('fr-FR') : t('homeScreen.lastReading')}
+          trend={getTrend()}
         />
 
         {/* Quick Actions */}

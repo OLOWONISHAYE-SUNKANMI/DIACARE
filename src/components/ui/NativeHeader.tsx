@@ -52,10 +52,17 @@ const NativeHeader = ({ userName = "Amadou" }: NativeHeaderProps) => {
         </div>
       </div>
       
-      {/* Greeting personnalisé */}
-      <div className="text-white">
-        <p className="text-white/80 text-sm mb-1">Bonjour {userName} 👋</p>
-        <p className="text-lg font-semibold">Comment va votre diabète aujourd'hui ?</p>
+      {/* Mission et greeting */}
+      <div className="text-white space-y-3">
+        <div>
+          <p className="text-white/80 text-sm mb-1">Bonjour {userName} 👋</p>
+          <p className="text-lg font-semibold">Comment va votre diabète aujourd'hui ?</p>
+        </div>
+        <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+          <p className="text-white/90 text-sm leading-relaxed">
+            Notre mission est de vous aider à mieux comprendre et gérer votre diabète avec des outils adaptés à votre réalité.
+          </p>
+        </div>
       </div>
     </div>
   );

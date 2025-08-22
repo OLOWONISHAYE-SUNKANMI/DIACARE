@@ -7,6 +7,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import { Calendar, Clock } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import useGlucoseData from "@/hooks/useGlucoseData";
 
 interface AddGlucoseModalProps {
   isOpen: boolean;
@@ -20,6 +21,7 @@ const AddGlucoseModal = ({ isOpen, onClose }: AddGlucoseModalProps) => {
   const [context, setContext] = useState("fasting");
   const [notes, setNotes] = useState("");
   const { toast } = useToast();
+  const { addReading } = useGlucoseData();
 
   const handleSubmit = () => {
     if (!glucose) {
@@ -31,7 +33,25 @@ const AddGlucoseModal = ({ isOpen, onClose }: AddGlucoseModalProps) => {
       return;
     }
 
-    // Here you would save to your data store/database
+    // Determine timestamp
+    let timestamp: string;
+    if (time === "now") {
+      timestamp = new Date().toISOString();
+    } else {
+      const today = new Date();
+      const [hours, minutes] = customTime.split(':');
+      today.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+      timestamp = today.toISOString();
+    }
+
+    // Add the reading to our data store
+    addReading({
+      value: parseInt(glucose),
+      timestamp,
+      context,
+      notes: notes || undefined
+    });
+
     toast({
       title: "Glycémie enregistrée",
       description: `Glycémie de ${glucose} mg/dL ajoutée au carnet`,
