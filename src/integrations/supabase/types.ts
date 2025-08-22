@@ -695,6 +695,7 @@ export type Database = {
           payout_status: string | null
           platform_fee: number
           professional_id: string
+          professional_user_id: string
           teleconsultation_id: string
         }
         Insert: {
@@ -708,6 +709,7 @@ export type Database = {
           payout_status?: string | null
           platform_fee: number
           professional_id: string
+          professional_user_id: string
           teleconsultation_id: string
         }
         Update: {
@@ -721,6 +723,7 @@ export type Database = {
           payout_status?: string | null
           platform_fee?: number
           professional_id?: string
+          professional_user_id?: string
           teleconsultation_id?: string
         }
         Relationships: []
