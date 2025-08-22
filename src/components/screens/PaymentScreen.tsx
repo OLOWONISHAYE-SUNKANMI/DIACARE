@@ -58,7 +58,7 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({ onBack, onPaymentSuccess 
   const config = React.useMemo(() => ({
     public_key: 'FLWPUBK_TEST-VOTRE_CLE_ICI', // Remplacez par votre vraie clé publique Flutterwave
     tx_ref: `DIACARE-${Date.now()}`,
-    amount: convertedPrices?.amount || selectedPlan?.price_eur || 5000,
+    amount: convertedPrices?.amount || selectedPlan?.price_eur || 800, // 8€ par défaut
     currency: currency.currency,
     payment_options: 'card,mobilemoney,ussd',
     customer: {
@@ -75,7 +75,7 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({ onBack, onPaymentSuccess 
 
   const fwConfig = {
     ...config,
-    text: convertedPrices ? `Payer ${convertedPrices.formatted}` : `Payer ${((selectedPlan?.price_eur || 5000) / 100).toFixed(0)}€`,
+    text: convertedPrices ? `Payer ${convertedPrices.formatted}` : `Payer ${((selectedPlan?.price_eur || 800) / 100).toFixed(0)}€`,
     callback: (response: any) => {
       console.log(response);
         if (response.status === 'successful') {
@@ -156,7 +156,7 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({ onBack, onPaymentSuccess 
           </div>
           <h2 className="text-2xl font-bold text-medical-teal mb-2">{selectedPlan?.name || 'DiaCare Premium'}</h2>
           <p className="text-3xl font-bold text-foreground">
-            {convertedPrices ? convertedPrices.formatted : `${((selectedPlan?.price_eur || 5000) / 100).toFixed(0)}€`}
+            {convertedPrices ? convertedPrices.formatted : `${((selectedPlan?.price_eur || 800) / 100).toFixed(0)}€`}
           </p>
           <p className="text-muted-foreground">par mois</p>
           <Badge className="mt-2 bg-medical-green/10 text-medical-green border-medical-green/20">
@@ -227,7 +227,7 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({ onBack, onPaymentSuccess 
               <div className="flex justify-between text-sm">
                 <span>{selectedPlan?.name || 'DiaCare Premium'}</span>
                 <span className="font-semibold">
-                  {convertedPrices ? convertedPrices.formatted : `${((selectedPlan?.price_eur || 5000) / 100).toFixed(0)}€`}
+                  {convertedPrices ? convertedPrices.formatted : `${((selectedPlan?.price_eur || 800) / 100).toFixed(0)}€`}
                 </span>
               </div>
               <div className="flex justify-between text-sm text-muted-foreground">
@@ -244,7 +244,7 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({ onBack, onPaymentSuccess 
               <div className="flex justify-between font-semibold">
                 <span>Total</span>
                 <span>
-                  {convertedPrices ? convertedPrices.formatted : `${((selectedPlan?.price_eur || 5000) / 100).toFixed(0)}€`}
+                  {convertedPrices ? convertedPrices.formatted : `${((selectedPlan?.price_eur || 800) / 100).toFixed(0)}€`}
                 </span>
               </div>
             </div>
