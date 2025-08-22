@@ -206,9 +206,48 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Optimize repaints */
+/* Optimize repaints and fix layout issues */
 * {
   box-sizing: border-box;
+}
+
+/* Prevent layout overflow issues */
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
+}
+
+/* Container constraints */
+.container, .main-wrapper, [class*="mx-auto"] {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Fix positioned elements */
+.positioned-elements, [class*="absolute"], [class*="fixed"] {
+  position: relative;
+  z-index: auto;
+}
+
+/* Prevent card overflow */
+.card, [class*="card"] {
+  overflow: hidden;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Mobile layout fixes */
+@media (max-width: 640px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  /* Prevent horizontal scroll */
+  body {
+    overflow-x: hidden !important;
+  }
 }
 
 /* Loading states */

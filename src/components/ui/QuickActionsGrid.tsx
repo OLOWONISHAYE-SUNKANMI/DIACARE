@@ -62,12 +62,12 @@ const QuickActionsGrid = ({ onActionPress }: QuickActionsGridProps) => {
           return (
             <Card 
               key={index} 
-              className="bg-white shadow-lg border-0 rounded-2xl overflow-hidden transition-all active:scale-95 cursor-pointer"
+              className="bg-white shadow-lg border-0 rounded-2xl overflow-hidden transition-all active:scale-95 cursor-pointer w-full max-w-full"
               onClick={() => onActionPress(action.action)}
             >
               <CardContent className="p-0">
                 {/* Gradient header */}
-                <div className={`bg-gradient-to-br ${action.gradient} p-6 text-center relative overflow-hidden`}>
+                <div className={`bg-gradient-to-br ${action.gradient} p-6 text-center relative overflow-hidden w-full`}>
                   <div className="absolute inset-0 bg-white/10 backdrop-blur-sm"></div>
                   <div className="relative z-10">
                     <div className="text-4xl mb-3 drop-shadow-lg">{action.emoji}</div>

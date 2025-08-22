@@ -119,23 +119,25 @@ const Index = () => {
 
   return (
     <GlucoseProvider>
-      <div className="min-h-screen bg-background flex flex-col max-w-sm mx-auto relative overflow-hidden">
+      <div className="min-h-screen bg-background flex flex-col max-w-full w-full mx-auto relative overflow-hidden">
+        <div className="max-w-sm mx-auto w-full">
         <Header user={user} onLogout={handleLogout} isProfessional={isProfessional} professionalData={professionalData} />
-        <div className="flex-1 overflow-y-auto scrollbar-hide">
+        <div className="flex-1 overflow-y-auto scrollbar-hide max-w-full">
           {renderScreen()}
         </div>
         {activeTab !== "payment" && (
           <BottomNavigation activeTab={activeTab} onTabChange={setActiveTab} />
         )}
         
-        {/* Bouton flottant + */}
+        {/* Bouton flottant + - Fixed positioning */}
         <Button 
           onClick={handleQuickAdd}
-          className="fixed bottom-24 left-4 w-14 h-14 rounded-full bg-medical-teal hover:bg-medical-teal/90 shadow-xl hover:shadow-2xl transition-all duration-200 hover:scale-110 z-10 ring-4 ring-medical-teal/20"
+          className="fixed bottom-24 left-4 w-14 h-14 rounded-full bg-medical-teal hover:bg-medical-teal/90 shadow-xl hover:shadow-2xl transition-all duration-200 hover:scale-110 z-50 ring-4 ring-medical-teal/20"
           size="icon"
         >
           <Plus className="w-6 h-6" />
         </Button>
+        </div>
       </div>
     </GlucoseProvider>
   );

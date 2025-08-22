@@ -47,7 +47,7 @@ const GlucoseWidget = ({
   const glucoseStatus = getGlucoseStatus(currentGlucose);
 
   return (
-    <Card className="bg-white shadow-xl border-0 rounded-3xl mx-4 -mt-6 relative overflow-hidden">
+    <Card className="bg-white shadow-xl border-0 rounded-3xl mx-4 -mt-6 relative overflow-hidden max-w-full w-full">
       {/* Gradient accent */}
       <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-medical-green to-medical-teal"></div>
       

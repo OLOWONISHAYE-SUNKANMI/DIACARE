@@ -13,7 +13,7 @@ const Header = ({ user, onLogout, isProfessional, professionalData }: HeaderProp
   const { t } = useTranslation();
   
   return (
-    <header className="w-full mx-4 my-4 mb-0 rounded-lg shadow-lg overflow-hidden bg-card border border-border">
+    <header className="w-full max-w-full mx-4 my-4 mb-0 rounded-lg shadow-lg overflow-hidden bg-card border border-border">
       <div className="flex items-center justify-between py-6 px-6 bg-gradient-to-r from-medical-green to-medical-teal">
         <div className="text-center flex-1">
           <h1 className="text-3xl font-bold tracking-wide text-white">{t('appName')}</h1>
