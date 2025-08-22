@@ -84,7 +84,7 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({ onBack, onPaymentSuccess 
       const response = await fetch('https://api-sandbox.afribapay.com/v1/pay/payin', {
         method: 'POST',
         headers: {
-          'Authorization': 'Bearer VOTRE_CLE_API_SANDBOX', // À remplacer par votre clé API sandbox AfribaPay
+          'Authorization': 'Bearer TEST_KEY_PLACEHOLDER', // Clé de test - remplacer quand vous aurez votre vraie clé sandbox AfribaPay
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(afribaPaymentData),
