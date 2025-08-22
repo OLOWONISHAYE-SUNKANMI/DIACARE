@@ -12,7 +12,7 @@ import AddGlucoseModal from "@/components/modals/AddGlucoseModal";
 import MealModal from "@/components/modals/ScanMealModal";
 import MedicationModal from "@/components/modals/MedicationModal";
 import ActivityModal from "@/components/modals/ActivityModal";
-import useGlucoseData from "@/hooks/useGlucoseData";
+import { useGlucose } from "@/contexts/GlucoseContext";
 
 interface HomeScreenProps {
   onTabChange?: (tab: string) => void;
@@ -21,7 +21,7 @@ interface HomeScreenProps {
 const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
   const { t } = useTranslation();
   const [activeModal, setActiveModal] = useState<string | null>(null);
-  const { getLatestReading, getTrend } = useGlucoseData();
+  const { getLatestReading, getTrend } = useGlucose();
   
   const latestReading = getLatestReading();
   const currentGlucose = latestReading?.value || 126;

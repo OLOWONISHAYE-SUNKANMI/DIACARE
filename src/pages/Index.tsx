@@ -20,12 +20,12 @@ import ProfileScreen from "@/components/screens/ProfileScreen";
 import ConsultationRequest from "@/components/screens/ConsultationRequest";
 import ProfessionalDashboardNew from "@/components/ui/ProfessionalDashboardNew";
 import { RemindersScreen } from "@/components/screens/RemindersScreen";
-
 import HealthProfessionalScreen from "@/components/screens/HealthProfessionalScreen";
 import AdminDashboard from "@/components/screens/AdminDashboard";
 import { AdminApplicationReview } from "@/components/screens/AdminApplicationReview";
 import PatientAccessScreen from "@/components/screens/PatientAccessScreen";
 import { useAuth } from "@/contexts/AuthContext";
+import { GlucoseProvider } from "@/contexts/GlucoseContext";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("home");
@@ -118,24 +118,26 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col max-w-sm mx-auto relative overflow-hidden">
-      <Header user={user} onLogout={handleLogout} isProfessional={isProfessional} professionalData={professionalData} />
-      <div className="flex-1 overflow-y-auto scrollbar-hide">
-        {renderScreen()}
+    <GlucoseProvider>
+      <div className="min-h-screen bg-background flex flex-col max-w-sm mx-auto relative overflow-hidden">
+        <Header user={user} onLogout={handleLogout} isProfessional={isProfessional} professionalData={professionalData} />
+        <div className="flex-1 overflow-y-auto scrollbar-hide">
+          {renderScreen()}
+        </div>
+        {activeTab !== "payment" && (
+          <BottomNavigation activeTab={activeTab} onTabChange={setActiveTab} />
+        )}
+        
+        {/* Bouton flottant + */}
+        <Button 
+          onClick={handleQuickAdd}
+          className="fixed bottom-24 left-4 w-14 h-14 rounded-full bg-medical-teal hover:bg-medical-teal/90 shadow-xl hover:shadow-2xl transition-all duration-200 hover:scale-110 z-10 ring-4 ring-medical-teal/20"
+          size="icon"
+        >
+          <Plus className="w-6 h-6" />
+        </Button>
       </div>
-      {activeTab !== "payment" && (
-        <BottomNavigation activeTab={activeTab} onTabChange={setActiveTab} />
-      )}
-      
-      {/* Bouton flottant + */}
-      <Button 
-        onClick={handleQuickAdd}
-        className="fixed bottom-24 left-4 w-14 h-14 rounded-full bg-medical-teal hover:bg-medical-teal/90 shadow-xl hover:shadow-2xl transition-all duration-200 hover:scale-110 z-10 ring-4 ring-medical-teal/20"
-        size="icon"
-      >
-        <Plus className="w-6 h-6" />
-      </Button>
-    </div>
+    </GlucoseProvider>
   );
 };
 

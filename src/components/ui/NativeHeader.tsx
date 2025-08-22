@@ -31,14 +31,9 @@ const NativeHeader = ({ userName = "Amadou" }: NativeHeaderProps) => {
 
       {/* Header principal */}
       <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center backdrop-blur-sm">
-            <span className="text-xl font-bold text-white">💪</span>
-          </div>
-          <div>
-            <h1 className="text-2xl font-bold text-white">DARE</h1>
-            <p className="text-sm text-white/80">Diabetes Assistant</p>
-          </div>
+        <div>
+          <h1 className="text-2xl font-bold text-white">DARE</h1>
+          <p className="text-sm text-white/80">Diabetes Assistant</p>
         </div>
         
         {/* Icons natifs */}

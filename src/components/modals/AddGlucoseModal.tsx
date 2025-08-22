@@ -7,7 +7,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import { Calendar, Clock } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import useGlucoseData from "@/hooks/useGlucoseData";
+import { useGlucose } from "@/contexts/GlucoseContext";
 
 interface AddGlucoseModalProps {
   isOpen: boolean;
@@ -21,7 +21,7 @@ const AddGlucoseModal = ({ isOpen, onClose }: AddGlucoseModalProps) => {
   const [context, setContext] = useState("fasting");
   const [notes, setNotes] = useState("");
   const { toast } = useToast();
-  const { addReading } = useGlucoseData();
+  const { addReading } = useGlucose();
 
   const handleSubmit = () => {
     if (!glucose) {
