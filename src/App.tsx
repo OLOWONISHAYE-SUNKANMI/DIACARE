@@ -11,6 +11,7 @@ import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 import PaymentSuccess from "./components/screens/PaymentSuccess";
+import PaymentScreen from "./components/screens/PaymentScreen";
 import { ProfessionalRegistrationScreen } from "./components/screens/ProfessionalRegistrationScreen";
 
 const queryClient = new QueryClient({
@@ -36,6 +37,10 @@ const AppContent = () => {
       <BrowserRouter>
         <Routes>
           <Route path="/auth" element={<Auth />} />
+          <Route path="/payment" element={<PaymentScreen 
+            onBack={() => window.history.back()} 
+            onPaymentSuccess={() => window.location.href = '/payment-success'}
+          />} />
           <Route path="/payment-success" element={<PaymentSuccess />} />
           <Route path="/professional-registration" element={
             <ProtectedRoute>

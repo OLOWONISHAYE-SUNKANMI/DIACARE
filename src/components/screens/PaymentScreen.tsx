@@ -29,11 +29,21 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({ onBack, onPaymentSuccess 
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
+  // Get plan from localStorage
+  const selectedPlan = React.useMemo(() => {
+    try {
+      const plan = localStorage.getItem('selectedPlan');
+      return plan ? JSON.parse(plan) : null;
+    } catch {
+      return null;
+    }
+  }, []);
+
   // Configuration Flutterwave
   const config = {
     public_key: 'FLWPUBK_TEST-SANDBOXDEMOKEY-X', // Remplacer par votre clé publique
-    tx_ref: `DARE-${Date.now()}`,
-    amount: 5000,
+    tx_ref: `DIACARE-${Date.now()}`,
+    amount: selectedPlan?.price_eur || 5000,
     currency: 'XOF', // Franc CFA
     payment_options: 'card,mobilemoney,ussd',
     customer: {
@@ -42,34 +52,36 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({ onBack, onPaymentSuccess 
       name: formData.name,
     },
     customizations: {
-      title: 'DARE Premium',
-      description: 'Abonnement mensuel DARE Premium',
+      title: selectedPlan?.name || 'DiaCare Premium',
+      description: selectedPlan?.description || 'Abonnement mensuel DiaCare Premium',
       logo: 'https://assets.aceternity.com/demos/lila.jpg',
     },
   };
 
   const fwConfig = {
     ...config,
-    text: 'Payer 5 000 F CFA',
+    text: `Payer ${((selectedPlan?.price_eur || 5000) / 100).toFixed(0)}€`,
     callback: (response: any) => {
       console.log(response);
-      if (response.status === 'successful') {
-        setPaymentStep('success');
-        setTimeout(() => {
-          closePaymentModal();
-          onPaymentSuccess();
+        if (response.status === 'successful') {
+          setPaymentStep('success');
+          setTimeout(() => {
+            closePaymentModal();
+            // Clear stored plan
+            localStorage.removeItem('selectedPlan');
+            onPaymentSuccess();
+            toast({
+              title: "Paiement confirmé !",
+              description: `Bienvenue dans ${selectedPlan?.name || 'DiaCare Premium'}`,
+            });
+          }, 2000);
+        } else {
           toast({
-            title: "Paiement confirmé !",
-            description: "Bienvenue dans DARE Premium",
+            title: "Paiement échoué",
+            description: "Une erreur s'est produite lors du paiement",
+            variant: "destructive",
           });
-        }, 2000);
-      } else {
-        toast({
-          title: "Paiement échoué",
-          description: "Une erreur s'est produite lors du paiement",
-          variant: "destructive",
-        });
-      }
+        }
       closePaymentModal();
     },
     onClose: () => {
@@ -127,11 +139,11 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({ onBack, onPaymentSuccess 
           <div className="w-16 h-16 mx-auto bg-medical-teal/20 rounded-full flex items-center justify-center mb-4">
             <CreditCard className="w-8 h-8 text-medical-teal" />
           </div>
-          <h2 className="text-2xl font-bold text-medical-teal mb-2">DARE Premium</h2>
-          <p className="text-3xl font-bold text-foreground">5 000 <span className="text-lg">F CFA</span></p>
+          <h2 className="text-2xl font-bold text-medical-teal mb-2">{selectedPlan?.name || 'DiaCare Premium'}</h2>
+          <p className="text-3xl font-bold text-foreground">{((selectedPlan?.price_eur || 5000) / 100).toFixed(0)} <span className="text-lg">€</span></p>
           <p className="text-muted-foreground">par mois</p>
           <Badge className="mt-2 bg-medical-green/10 text-medical-green border-medical-green/20">
-            Essai gratuit 7 jours
+            Paiement sécurisé
           </Badge>
         </div>
 
@@ -190,21 +202,17 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({ onBack, onPaymentSuccess 
 
             <div className="bg-muted/50 rounded-lg p-3 space-y-2">
               <div className="flex justify-between text-sm">
-                <span>DARE Premium</span>
-                <span className="font-semibold">5 000 F CFA</span>
+                <span>{selectedPlan?.name || 'DiaCare Premium'}</span>
+                <span className="font-semibold">{((selectedPlan?.price_eur || 5000) / 100).toFixed(0)}€</span>
               </div>
               <div className="flex justify-between text-sm text-muted-foreground">
                 <span>Période</span>
                 <span>1 mois</span>
               </div>
-              <div className="flex justify-between text-sm text-medical-green">
-                <span>Essai gratuit</span>
-                <span>7 jours</span>
-              </div>
               <hr className="my-2" />
               <div className="flex justify-between font-semibold">
                 <span>Total</span>
-                <span>5 000 F CFA</span>
+                <span>{((selectedPlan?.price_eur || 5000) / 100).toFixed(0)}€</span>
               </div>
             </div>
 

@@ -187,10 +187,10 @@ const PlanSelection: React.FC<PlanSelectionProps> = ({ onPlanSelected, onClose }
 
           <div className="mt-6 p-4 bg-muted/50 rounded-lg">
             <div className="text-sm text-muted-foreground space-y-2">
-              <p className="font-medium">💳 Paiement sécurisé par Stripe</p>
-              <p>• Cartes bancaires acceptées (Visa, Mastercard, etc.)</p>
-              <p>• Paiement récurrent automatique</p>
-              <p>• Annulable à tout moment depuis votre profil</p>
+              <p className="font-medium">💳 Paiement sécurisé par Flutterwave</p>
+              <p>• Cartes bancaires (Visa, Mastercard, etc.)</p>
+              <p>• Mobile Money (Orange Money, MTN, Wave, etc.)</p>
+              <p>• Virements bancaires locaux</p>
               <p>• Code patient généré automatiquement après paiement</p>
             </div>
           </div>

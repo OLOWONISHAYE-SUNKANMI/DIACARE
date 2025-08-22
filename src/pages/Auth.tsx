@@ -174,24 +174,31 @@ const AuthPage = () => {
     try {
       setIsLoading(true);
       
-      // Create Stripe checkout session
-      const { data, error } = await supabase.functions.invoke('create-checkout', {
-        body: { planId }
-      });
+      // Get plan details first
+      const { data: planData, error: planError } = await supabase
+        .from('subscription_plans')
+        .select('*')
+        .eq('id', planId)
+        .single();
 
-      if (error) throw error;
-
-      if (data?.url) {
-        // Redirect to Stripe checkout
-        window.location.href = data.url;
-      } else {
-        throw new Error('URL de paiement non reçue');
+      if (planError || !planData) {
+        throw new Error('Plan non trouvé');
       }
+
+      // Close plan selection and redirect to payment with Flutterwave
+      setShowPlanSelection(false);
+      
+      // Store selected plan in localStorage for PaymentScreen
+      localStorage.setItem('selectedPlan', JSON.stringify(planData));
+      
+      // Navigate to payment page
+      navigate('/payment');
+      
     } catch (err: any) {
-      setError(err.message || 'Erreur lors de la création de la session de paiement');
+      setError(err.message || 'Erreur lors de la sélection du plan');
       toast({
         title: "Erreur",
-        description: "Impossible de créer la session de paiement",
+        description: err.message || "Impossible de traiter la sélection du plan",
         variant: "destructive",
       });
     } finally {
