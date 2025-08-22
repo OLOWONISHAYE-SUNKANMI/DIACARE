@@ -56,7 +56,7 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({ onBack, onPaymentSuccess 
 
   // Configuration Flutterwave
   const config = React.useMemo(() => ({
-    public_key: 'FLWPUBK_TEST-SANDBOXDEMOKEY-X', // Remplacer par votre clé publique
+    public_key: 'FLWPUBK_TEST-VOTRE_CLE_ICI', // Remplacez par votre vraie clé publique Flutterwave
     tx_ref: `DIACARE-${Date.now()}`,
     amount: convertedPrices?.amount || selectedPlan?.price_eur || 5000,
     currency: currency.currency,
