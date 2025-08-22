@@ -1,40 +1,64 @@
 import { BarChart3, TrendingUp, Calendar, Target, Clock } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine, Area, AreaChart, Legend } from 'recharts';
 
 const ChartsScreen = () => {
-  // Simulated glucose data points for the week
+  // Enhanced glucose data with timestamps and context
   const glucoseData = [
-    { time: 0, value: 95 },
-    { time: 20, value: 140 },
-    { time: 40, value: 180 },
-    { time: 60, value: 165 },
-    { time: 80, value: 120 },
-    { time: 100, value: 85 },
-    { time: 120, value: 110 },
-    { time: 140, value: 155 },
-    { time: 160, value: 190 },
-    { time: 180, value: 170 },
-    { time: 200, value: 130 },
-    { time: 220, value: 105 },
-    { time: 240, value: 88 },
-    { time: 260, value: 125 },
-    { time: 280, value: 145 },
-    { time: 300, value: 160 }
+    { time: "00:00", value: 95, hour: 0, formattedTime: "Minuit", context: "Jeûne" },
+    { time: "02:00", value: 140, hour: 2, formattedTime: "02h", context: "Post-repas" },
+    { time: "04:00", value: 180, hour: 4, formattedTime: "04h", context: "Post-repas" },
+    { time: "06:00", value: 165, hour: 6, formattedTime: "06h", context: "Matin" },
+    { time: "08:00", value: 120, hour: 8, formattedTime: "08h", context: "Petit-déj" },
+    { time: "10:00", value: 85, hour: 10, formattedTime: "10h", context: "Activité" },
+    { time: "12:00", value: 110, hour: 12, formattedTime: "Midi", context: "Déjeuner" },
+    { time: "14:00", value: 155, hour: 14, formattedTime: "14h", context: "Post-repas" },
+    { time: "16:00", value: 190, hour: 16, formattedTime: "16h", context: "Collation" },
+    { time: "18:00", value: 170, hour: 18, formattedTime: "18h", context: "Dîner" },
+    { time: "20:00", value: 130, hour: 20, formattedTime: "20h", context: "Post-repas" },
+    { time: "22:00", value: 105, hour: 22, formattedTime: "22h", context: "Soirée" }
   ];
 
-  // Generate SVG path for glucose curve
-  const generatePath = (data: typeof glucoseData) => {
-    const maxValue = 250;
-    const minValue = 50;
-    const width = 300;
-    const height = 150;
-    
-    return data.map((point, index) => {
-      const x = (point.time / 300) * width;
-      const y = height - ((point.value - minValue) / (maxValue - minValue)) * height;
-      return `${index === 0 ? 'M' : 'L'} ${x} ${y}`;
-    }).join(' ');
+  // Custom tooltip component
+  const CustomTooltip = ({ active, payload, label }: any) => {
+    if (active && payload && payload.length) {
+      const data = payload[0].payload;
+      return (
+        <div className="bg-card border border-border rounded-lg p-3 shadow-lg">
+          <p className="font-medium text-foreground">{`${data.formattedTime}`}</p>
+          <p className="text-sm text-muted-foreground">{`Contexte: ${data.context}`}</p>
+          <p className="text-lg font-bold" style={{ color: getGlucoseColor(data.value) }}>
+            {`${data.value} mg/dL`}
+          </p>
+        </div>
+      );
+    }
+    return null;
+  };
+
+  // Function to get glucose color based on value
+  const getGlucoseColor = (value: number) => {
+    if (value < 70) return "hsl(var(--glucose-very-low))";
+    if (value < 140) return "hsl(var(--glucose-target))";
+    if (value < 180) return "hsl(var(--glucose-limit-high))";
+    return "hsl(var(--glucose-very-high))";
+  };
+
+  // Custom dot component for glucose points
+  const CustomDot = (props: any) => {
+    const { cx, cy, payload } = props;
+    return (
+      <circle
+        cx={cx}
+        cy={cy}
+        r={4}
+        fill={getGlucoseColor(payload.value)}
+        stroke="white"
+        strokeWidth={2}
+        className="drop-shadow-sm"
+      />
+    );
   };
 
   const weeklyTrends = [
@@ -70,71 +94,85 @@ const ChartsScreen = () => {
           </Badge>
         </CardHeader>
         <CardContent className="space-y-4">
-          {/* CGM-style Chart */}
-          <div className="relative bg-gradient-to-b from-glucose-very-high via-glucose-limit-high via-glucose-target via-glucose-limit-low to-glucose-very-low rounded-lg h-40 overflow-hidden">
-            <svg 
-              className="absolute inset-0 w-full h-full" 
-              viewBox="0 0 300 150" 
-              preserveAspectRatio="none"
-            >
-              {/* Glucose curve */}
-              <path
-                d={generatePath(glucoseData)}
-                stroke="white"
-                strokeWidth="3"
-                fill="none"
-                className="drop-shadow-sm"
-              />
-              {/* Data points */}
-              {glucoseData.map((point, index) => {
-                const x = (point.time / 300) * 300;
-                const y = 150 - ((point.value - 50) / 200) * 150;
-                return (
-                  <circle
-                    key={index}
-                    cx={x}
-                    cy={y}
-                    r="2"
-                    fill="white"
-                    className="drop-shadow-sm"
-                  />
-                );
-              })}
-            </svg>
-            
-            {/* Zone labels */}
-            <div className="absolute top-2 left-2 text-white text-xs font-medium">
-              &gt;180 Élevé
-            </div>
-            <div className="absolute top-1/4 left-2 text-white text-xs font-medium">
-              140-180 Limite
-            </div>
-            <div className="absolute top-1/2 left-2 text-white text-xs font-medium">
-              70-140 Cible
-            </div>
-            <div className="absolute bottom-2 left-2 text-white text-xs font-medium">
-              &lt;70 Bas
-            </div>
-          </div>
-
-          {/* Legend */}
-          <div className="flex justify-between text-xs">
-            <div className="flex items-center space-x-1">
-              <div className="w-3 h-3 bg-glucose-very-high rounded"></div>
-              <span className="text-muted-foreground">Élevé &gt;180</span>
-            </div>
-            <div className="flex items-center space-x-1">
-              <div className="w-3 h-3 bg-glucose-limit-high rounded"></div>
-              <span className="text-muted-foreground">Limite 140-180</span>
-            </div>
-            <div className="flex items-center space-x-1">
-              <div className="w-3 h-3 bg-glucose-target rounded"></div>
-              <span className="text-muted-foreground">Cible 70-140</span>
-            </div>
-            <div className="flex items-center space-x-1">
-              <div className="w-3 h-3 bg-glucose-very-low rounded"></div>
-              <span className="text-muted-foreground">Bas &lt;70</span>
-            </div>
+          {/* Professional CGM-style Chart */}
+          <div className="h-80">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={glucoseData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                <XAxis 
+                  dataKey="time" 
+                  stroke="hsl(var(--muted-foreground))"
+                  fontSize={12}
+                  tickLine={false}
+                  axisLine={false}
+                />
+                <YAxis 
+                  domain={[50, 250]}
+                  stroke="hsl(var(--muted-foreground))"
+                  fontSize={12}
+                  tickLine={false}
+                  axisLine={false}
+                  label={{ value: 'mg/dL', angle: -90, position: 'insideLeft' }}
+                />
+                
+                {/* Reference lines for glucose zones */}
+                <ReferenceLine y={70} stroke="hsl(var(--glucose-very-low))" strokeDasharray="5 5" />
+                <ReferenceLine y={140} stroke="hsl(var(--glucose-target))" strokeDasharray="5 5" />
+                <ReferenceLine y={180} stroke="hsl(var(--glucose-limit-high))" strokeDasharray="5 5" />
+                
+                {/* Background zones */}
+                <defs>
+                  <linearGradient id="glucoseZones" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="hsl(var(--glucose-very-high))" stopOpacity={0.1} />
+                    <stop offset="25%" stopColor="hsl(var(--glucose-limit-high))" stopOpacity={0.1} />
+                    <stop offset="65%" stopColor="hsl(var(--glucose-target))" stopOpacity={0.2} />
+                    <stop offset="85%" stopColor="hsl(var(--glucose-limit-low))" stopOpacity={0.1} />
+                    <stop offset="100%" stopColor="hsl(var(--glucose-very-low))" stopOpacity={0.1} />
+                  </linearGradient>
+                </defs>
+                
+                <Area 
+                  type="monotone" 
+                  dataKey="value" 
+                  stroke="none" 
+                  fill="url(#glucoseZones)" 
+                />
+                
+                <Line 
+                  type="monotone" 
+                  dataKey="value" 
+                  stroke="hsl(var(--primary))" 
+                  strokeWidth={3}
+                  dot={<CustomDot />}
+                  activeDot={{ r: 6, stroke: "hsl(var(--primary))", strokeWidth: 2, fill: "white" }}
+                />
+                
+                <Tooltip content={<CustomTooltip />} />
+                
+                <Legend 
+                  content={() => (
+                    <div className="flex justify-center space-x-6 text-xs mt-4">
+                      <div className="flex items-center space-x-1">
+                        <div className="w-3 h-2 bg-glucose-very-high rounded"></div>
+                        <span className="text-muted-foreground">&gt;180 Élevé</span>
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <div className="w-3 h-2 bg-glucose-limit-high rounded"></div>
+                        <span className="text-muted-foreground">140-180 Limite</span>
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <div className="w-3 h-2 bg-glucose-target rounded"></div>
+                        <span className="text-muted-foreground">70-140 Cible</span>
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <div className="w-3 h-2 bg-glucose-very-low rounded"></div>
+                        <span className="text-muted-foreground">&lt;70 Bas</span>
+                      </div>
+                    </div>
+                  )}
+                />
+              </LineChart>
+            </ResponsiveContainer>
           </div>
         </CardContent>
       </Card>
