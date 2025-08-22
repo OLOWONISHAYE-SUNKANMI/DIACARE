@@ -135,54 +135,6 @@ const Index = () => {
       >
         <Plus className="w-6 h-6" />
       </Button>
-      
-      {/* Bouton candidature professionnelle */}
-      <Link to="/professional-registration">
-        <Button 
-          className="fixed bottom-20 left-4 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 z-10 text-sm"
-        >
-          🏥 Candidature Pro
-        </Button>
-      </Link>
-      
-      {/* Bouton admin temporaire pour test */}
-      <Button 
-        onClick={() => setActiveTab("admin")}
-        className="fixed bottom-36 left-4 px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 z-10 text-sm"
-      >
-        👨‍💼 Admin
-      </Button>
-      
-      {/* Bouton examen candidatures */}
-      <Button 
-        onClick={() => setActiveTab("admin-review")}
-        className="fixed bottom-52 left-4 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 z-10 text-sm"
-      >
-        📋 Candidatures
-      </Button>
-      
-      {/* Boutons d'accès professionnel - Design amélioré */}
-      <div className="fixed bottom-24 right-4 flex flex-col gap-3 z-10">
-        <Button 
-          onClick={() => setActiveTab("doctor-dashboard")}
-          className="w-14 h-14 bg-medical-blue hover:bg-medical-blue/90 text-white shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 rounded-full group"
-          size="icon"
-        >
-          <div className="flex flex-col items-center">
-            <span className="text-lg">🩺</span>
-          </div>
-        </Button>
-        
-        <Button 
-          onClick={() => setActiveTab("patient-access")}
-          className="w-14 h-14 bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 rounded-full"
-          size="icon"
-        >
-          <div className="flex flex-col items-center">
-            <span className="text-lg">🔐</span>
-          </div>
-        </Button>
-      </div>
     </div>
   );
 };
