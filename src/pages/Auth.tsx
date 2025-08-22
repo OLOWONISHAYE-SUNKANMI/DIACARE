@@ -281,7 +281,6 @@ const AuthPage = () => {
             <Tabs value={activeTab} onValueChange={setActiveTab}>
               <TabsList className="grid w-full grid-cols-3">
                 <TabsTrigger value="patient" className="text-xs">
-                  <Heart className="w-4 h-4 mr-1" />
                   Patient
                 </TabsTrigger>
                 <TabsTrigger value="professional" className="text-xs">
@@ -309,13 +308,6 @@ const AuthPage = () => {
               )}
 
               <TabsContent value="patient" className="mt-6">
-                <div className="text-center mb-4">
-                  <div className="w-12 h-12 bg-primary/10 rounded-full mx-auto mb-2 flex items-center justify-center">
-                    <Heart className="w-6 h-6 text-primary" />
-                  </div>
-                  <h3 className="font-semibold text-foreground">DiaCare Patient</h3>
-                  <p className="text-sm text-muted-foreground">8€/mois - Toutes les fonctionnalités + 10 consultations</p>
-                </div>
 
                 <div className="space-y-4">
                   <div className="grid grid-cols-2 gap-2">
