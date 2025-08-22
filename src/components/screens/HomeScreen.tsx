@@ -8,8 +8,8 @@ import NativeHeader from "@/components/ui/NativeHeader";
 import GlucoseWidget from "@/components/ui/GlucoseWidget";
 import ActionsRapides from "@/components/ui/ActionsRapides";
 import PredictiveAlerts from "@/components/ui/PredictiveAlerts";
-import AddGlucoseModal from "@/components/modals/AddGlucoseModal";
-import MedicationModal from "@/components/modals/MedicationModal";
+import SimpleGlucoseModal from "@/components/modals/SimpleGlucoseModal";
+import SimpleMedicationModal from "@/components/modals/SimpleMedicationModal";
 import { useGlucose } from "@/contexts/GlucoseContext";
 
 interface HomeScreenProps {
@@ -121,15 +121,15 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
         </div>
       </div>
 
-      {/* Modales Fonctionnelles */}
-      <AddGlucoseModal 
+      {/* Nouvelles Modales Simples */}
+      <SimpleGlucoseModal 
         isOpen={showAddMeasure} 
         onClose={() => {
           console.log("Closing glucose modal");
           setShowAddMeasure(false);
         }} 
       />
-      <MedicationModal 
+      <SimpleMedicationModal 
         isOpen={showAddDose} 
         onClose={() => {
           console.log("Closing medication modal");
