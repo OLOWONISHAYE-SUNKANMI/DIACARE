@@ -37,6 +37,7 @@ const AuthPage = () => {
 
   // États pour les formulaires - MOVED TO TOP
   const [activeTab, setActiveTab] = useState('patient');
+  const [patientMode, setPatientMode] = useState<'signin' | 'signup'>('signin');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -322,16 +323,16 @@ const AuthPage = () => {
                 <div className="space-y-4">
                   <div className="grid grid-cols-2 gap-2">
                     <Button 
-                      variant={activeTab === 'patient' ? 'default' : 'outline'} 
-                      onClick={() => setActiveTab('patient-signin')}
+                      variant={patientMode === 'signin' ? 'default' : 'outline'} 
+                      onClick={() => setPatientMode('signin')}
                       className="text-xs"
                     >
                       <LogIn className="w-4 h-4 mr-1" />
                       {t('auth.signInButton')}
                     </Button>
                     <Button 
-                      variant={activeTab === 'patient' ? 'outline' : 'outline'} 
-                      onClick={() => setActiveTab('patient-signup')}
+                      variant={patientMode === 'signup' ? 'default' : 'outline'} 
+                      onClick={() => setPatientMode('signup')}
                       className="text-xs"
                     >
                       <UserPlus className="w-4 h-4 mr-1" />
@@ -339,7 +340,7 @@ const AuthPage = () => {
                     </Button>
                   </div>
 
-                  {activeTab === 'patient-signin' && (
+                  {patientMode === 'signin' && (
                     <form onSubmit={handlePatientSignIn} className="space-y-4">
                       <div className="space-y-2">
                         <Label htmlFor="patient-signin-email">{t('auth.email')}</Label>
@@ -388,7 +389,7 @@ const AuthPage = () => {
                     </form>
                   )}
 
-                  {activeTab === 'patient-signup' && (
+                  {patientMode === 'signup' && (
                     <form onSubmit={handlePatientSignUp} className="space-y-4">
                       <div className="grid grid-cols-2 gap-2">
                         <div className="space-y-2">
