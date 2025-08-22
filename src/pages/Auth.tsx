@@ -19,7 +19,9 @@ import {
   UserPlus,
   LogIn,
   AlertCircle,
-  CheckCircle
+  CheckCircle,
+  Users,
+  Heart
 } from 'lucide-react';
 
 const AuthPage = () => {
@@ -42,30 +44,39 @@ const AuthPage = () => {
   }
 
   // États pour les formulaires
-  const [activeTab, setActiveTab] = useState('signin');
+  const [activeTab, setActiveTab] = useState('patient');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
-  // Données des formulaires
-  const [signInData, setSignInData] = useState({ email: '', password: '' });
-  const [signUpData, setSignUpData] = useState({ 
+  // Données des formulaires pour patient
+  const [patientSignInData, setPatientSignInData] = useState({ email: '', password: '' });
+  const [patientSignUpData, setPatientSignUpData] = useState({ 
     email: '', 
     password: '', 
     confirmPassword: '',
     firstName: '',
     lastName: ''
   });
+  
+  // Données pour professionnel
   const [professionalCode, setProfessionalCode] = useState('');
+  
+  // Données pour famille
+  const [familyData, setFamilyData] = useState({ 
+    patientCode: '',
+    familyEmail: '',
+    familyPassword: ''
+  });
 
-  const handleSignIn = async (e: React.FormEvent) => {
+  const handlePatientSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
 
     try {
-      const { error } = await signIn(signInData.email, signInData.password);
+      const { error } = await signIn(patientSignInData.email, patientSignInData.password);
       
       if (error) {
         if (error.message.includes('Invalid login credentials')) {
@@ -80,7 +91,7 @@ const AuthPage = () => {
 
       toast({
         title: "Connexion réussie !",
-        description: "Vous êtes maintenant connecté(e).",
+        description: "Bienvenue dans votre espace patient.",
       });
       
       navigate('/');
@@ -91,20 +102,20 @@ const AuthPage = () => {
     }
   };
 
-  const handleSignUp = async (e: React.FormEvent) => {
+  const handlePatientSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
     setSuccess(null);
 
     // Validation
-    if (signUpData.password !== signUpData.confirmPassword) {
+    if (patientSignUpData.password !== patientSignUpData.confirmPassword) {
       setError('Les mots de passe ne correspondent pas');
       setIsLoading(false);
       return;
     }
 
-    if (signUpData.password.length < 6) {
+    if (patientSignUpData.password.length < 6) {
       setError('Le mot de passe doit contenir au moins 6 caractères');
       setIsLoading(false);
       return;
@@ -112,11 +123,12 @@ const AuthPage = () => {
 
     try {
       const { error } = await signUp(
-        signUpData.email, 
-        signUpData.password,
+        patientSignUpData.email, 
+        patientSignUpData.password,
         {
-          first_name: signUpData.firstName,
-          last_name: signUpData.lastName
+          first_name: patientSignUpData.firstName,
+          last_name: patientSignUpData.lastName,
+          user_type: 'patient'
         }
       );
       
@@ -130,7 +142,7 @@ const AuthPage = () => {
       }
 
       setSuccess('Inscription réussie ! Vérifiez votre email pour confirmer votre compte.');
-      setSignUpData({ email: '', password: '', confirmPassword: '', firstName: '', lastName: '' });
+      setPatientSignUpData({ email: '', password: '', confirmPassword: '', firstName: '', lastName: '' });
       
       toast({
         title: "Inscription réussie !",
@@ -139,6 +151,34 @@ const AuthPage = () => {
       
     } catch (err: any) {
       setError('Une erreur est survenue lors de l\'inscription');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleFamilyAccess = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      // Pour l'accès famille, on pourrait implémenter une logique spéciale
+      // Pour l'instant, on utilise l'email/password standard
+      const { error } = await signIn(familyData.familyEmail, familyData.familyPassword);
+      
+      if (error) {
+        setError('Accès famille non autorisé. Vérifiez vos identifiants.');
+        return;
+      }
+
+      toast({
+        title: "Accès famille accordé !",
+        description: "Bienvenue dans l'espace famille.",
+      });
+      
+      navigate('/');
+    } catch (err: any) {
+      setError('Une erreur est survenue lors de l\'accès famille');
     } finally {
       setIsLoading(false);
     }
@@ -193,17 +233,17 @@ const AuthPage = () => {
           <CardContent>
             <Tabs value={activeTab} onValueChange={setActiveTab}>
               <TabsList className="grid w-full grid-cols-3">
-                <TabsTrigger value="signin" className="text-xs">
-                  <LogIn className="w-4 h-4 mr-1" />
-                  Connexion
-                </TabsTrigger>
-                <TabsTrigger value="signup" className="text-xs">
-                  <UserPlus className="w-4 h-4 mr-1" />
-                  Inscription
+                <TabsTrigger value="patient" className="text-xs">
+                  <Heart className="w-4 h-4 mr-1" />
+                  Patient
                 </TabsTrigger>
                 <TabsTrigger value="professional" className="text-xs">
                   <Stethoscope className="w-4 h-4 mr-1" />
-                  Pro
+                  Professionnel
+                </TabsTrigger>
+                <TabsTrigger value="family" className="text-xs">
+                  <Users className="w-4 h-4 mr-1" />
+                  Famille
                 </TabsTrigger>
               </TabsList>
 
@@ -221,132 +261,163 @@ const AuthPage = () => {
                 </Alert>
               )}
 
-              <TabsContent value="signin" className="mt-6">
-                <form onSubmit={handleSignIn} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="signin-email">Email</Label>
-                    <div className="relative">
-                      <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                      <Input
-                        id="signin-email"
-                        type="email"
-                        placeholder="votre@email.com"
-                        value={signInData.email}
-                        onChange={(e) => setSignInData(prev => ({ ...prev, email: e.target.value }))}
-                        className="pl-10"
-                        required
-                      />
-                    </div>
+              <TabsContent value="patient" className="mt-6">
+                <div className="text-center mb-4">
+                  <div className="w-12 h-12 bg-primary/10 rounded-full mx-auto mb-2 flex items-center justify-center">
+                    <Heart className="w-6 h-6 text-primary" />
                   </div>
+                  <h3 className="font-semibold text-foreground">Espace Patient</h3>
+                  <p className="text-sm text-muted-foreground">Gérez votre diabète au quotidien</p>
+                </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="signin-password">Mot de passe</Label>
-                    <div className="relative">
-                      <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                      <Input
-                        id="signin-password"
-                        type={showPassword ? "text" : "password"}
-                        placeholder="Votre mot de passe"
-                        value={signInData.password}
-                        onChange={(e) => setSignInData(prev => ({ ...prev, password: e.target.value }))}
-                        className="pl-10 pr-10"
-                        required
-                      />
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        className="absolute right-0 top-0 h-full px-3"
-                        onClick={() => setShowPassword(!showPassword)}
-                      >
-                        {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                      </Button>
-                    </div>
-                  </div>
-
-                  <Button type="submit" className="w-full" disabled={isLoading}>
-                    {isLoading ? 'Connexion...' : 'Se connecter'}
-                  </Button>
-                </form>
-              </TabsContent>
-
-              <TabsContent value="signup" className="mt-6">
-                <form onSubmit={handleSignUp} className="space-y-4">
+                <div className="space-y-4">
                   <div className="grid grid-cols-2 gap-2">
-                    <div className="space-y-2">
-                      <Label htmlFor="firstName">Prénom</Label>
-                      <Input
-                        id="firstName"
-                        placeholder="Prénom"
-                        value={signUpData.firstName}
-                        onChange={(e) => setSignUpData(prev => ({ ...prev, firstName: e.target.value }))}
-                        required
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="lastName">Nom</Label>
-                      <Input
-                        id="lastName"
-                        placeholder="Nom"
-                        value={signUpData.lastName}
-                        onChange={(e) => setSignUpData(prev => ({ ...prev, lastName: e.target.value }))}
-                        required
-                      />
-                    </div>
+                    <Button 
+                      variant={activeTab === 'patient' ? 'default' : 'outline'} 
+                      onClick={() => setActiveTab('patient-signin')}
+                      className="text-xs"
+                    >
+                      <LogIn className="w-4 h-4 mr-1" />
+                      Connexion
+                    </Button>
+                    <Button 
+                      variant={activeTab === 'patient' ? 'outline' : 'outline'} 
+                      onClick={() => setActiveTab('patient-signup')}
+                      className="text-xs"
+                    >
+                      <UserPlus className="w-4 h-4 mr-1" />
+                      Inscription
+                    </Button>
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="signup-email">Email</Label>
-                    <div className="relative">
-                      <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                      <Input
-                        id="signup-email"
-                        type="email"
-                        placeholder="votre@email.com"
-                        value={signUpData.email}
-                        onChange={(e) => setSignUpData(prev => ({ ...prev, email: e.target.value }))}
-                        className="pl-10"
-                        required
-                      />
-                    </div>
-                  </div>
+                  {activeTab === 'patient-signin' && (
+                    <form onSubmit={handlePatientSignIn} className="space-y-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="patient-signin-email">Email</Label>
+                        <div className="relative">
+                          <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                          <Input
+                            id="patient-signin-email"
+                            type="email"
+                            placeholder="votre@email.com"
+                            value={patientSignInData.email}
+                            onChange={(e) => setPatientSignInData(prev => ({ ...prev, email: e.target.value }))}
+                            className="pl-10"
+                            required
+                          />
+                        </div>
+                      </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="signup-password">Mot de passe</Label>
-                    <div className="relative">
-                      <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                      <Input
-                        id="signup-password"
-                        type={showPassword ? "text" : "password"}
-                        placeholder="Minimum 6 caractères"
-                        value={signUpData.password}
-                        onChange={(e) => setSignUpData(prev => ({ ...prev, password: e.target.value }))}
-                        className="pl-10"
-                        required
-                      />
-                    </div>
-                  </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="patient-signin-password">Mot de passe</Label>
+                        <div className="relative">
+                          <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                          <Input
+                            id="patient-signin-password"
+                            type={showPassword ? "text" : "password"}
+                            placeholder="Votre mot de passe"
+                            value={patientSignInData.password}
+                            onChange={(e) => setPatientSignInData(prev => ({ ...prev, password: e.target.value }))}
+                            className="pl-10 pr-10"
+                            required
+                          />
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            className="absolute right-0 top-0 h-full px-3"
+                            onClick={() => setShowPassword(!showPassword)}
+                          >
+                            {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                          </Button>
+                        </div>
+                      </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="confirm-password">Confirmer le mot de passe</Label>
-                    <div className="relative">
-                      <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                      <Input
-                        id="confirm-password"
-                        type={showPassword ? "text" : "password"}
-                        placeholder="Confirmez votre mot de passe"
-                        value={signUpData.confirmPassword}
-                        onChange={(e) => setSignUpData(prev => ({ ...prev, confirmPassword: e.target.value }))}
-                        className="pl-10"
-                        required
-                      />
-                    </div>
-                  </div>
+                      <Button type="submit" className="w-full" disabled={isLoading}>
+                        {isLoading ? 'Connexion...' : 'Se connecter'}
+                      </Button>
+                    </form>
+                  )}
 
-                  <Button type="submit" className="w-full" disabled={isLoading}>
-                    {isLoading ? 'Inscription...' : 'S\'inscrire'}
-                  </Button>
-                </form>
+                  {activeTab === 'patient-signup' && (
+                    <form onSubmit={handlePatientSignUp} className="space-y-4">
+                      <div className="grid grid-cols-2 gap-2">
+                        <div className="space-y-2">
+                          <Label htmlFor="patient-firstName">Prénom</Label>
+                          <Input
+                            id="patient-firstName"
+                            placeholder="Prénom"
+                            value={patientSignUpData.firstName}
+                            onChange={(e) => setPatientSignUpData(prev => ({ ...prev, firstName: e.target.value }))}
+                            required
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="patient-lastName">Nom</Label>
+                          <Input
+                            id="patient-lastName"
+                            placeholder="Nom"
+                            value={patientSignUpData.lastName}
+                            onChange={(e) => setPatientSignUpData(prev => ({ ...prev, lastName: e.target.value }))}
+                            required
+                          />
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="patient-signup-email">Email</Label>
+                        <div className="relative">
+                          <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                          <Input
+                            id="patient-signup-email"
+                            type="email"
+                            placeholder="votre@email.com"
+                            value={patientSignUpData.email}
+                            onChange={(e) => setPatientSignUpData(prev => ({ ...prev, email: e.target.value }))}
+                            className="pl-10"
+                            required
+                          />
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="patient-signup-password">Mot de passe</Label>
+                        <div className="relative">
+                          <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                          <Input
+                            id="patient-signup-password"
+                            type={showPassword ? "text" : "password"}
+                            placeholder="Minimum 6 caractères"
+                            value={patientSignUpData.password}
+                            onChange={(e) => setPatientSignUpData(prev => ({ ...prev, password: e.target.value }))}
+                            className="pl-10"
+                            required
+                          />
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="patient-confirm-password">Confirmer le mot de passe</Label>
+                        <div className="relative">
+                          <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                          <Input
+                            id="patient-confirm-password"
+                            type={showPassword ? "text" : "password"}
+                            placeholder="Confirmez votre mot de passe"
+                            value={patientSignUpData.confirmPassword}
+                            onChange={(e) => setPatientSignUpData(prev => ({ ...prev, confirmPassword: e.target.value }))}
+                            className="pl-10"
+                            required
+                          />
+                        </div>
+                      </div>
+
+                      <Button type="submit" className="w-full" disabled={isLoading}>
+                        {isLoading ? 'Inscription...' : 'S\'inscrire comme patient'}
+                      </Button>
+                    </form>
+                  )}
+                </div>
               </TabsContent>
 
               <TabsContent value="professional" className="mt-6">
@@ -354,8 +425,8 @@ const AuthPage = () => {
                   <div className="w-12 h-12 bg-medical-green-light rounded-full mx-auto mb-2 flex items-center justify-center">
                     <Stethoscope className="w-6 h-6 text-medical-green" />
                   </div>
-                  <h3 className="font-semibold text-foreground">Accès Professionnel</h3>
-                  <p className="text-sm text-muted-foreground">Utilisez votre code professionnel</p>
+                  <h3 className="font-semibold text-foreground">Professionnel de Santé</h3>
+                  <p className="text-sm text-muted-foreground">Accès aux outils professionnels</p>
                 </div>
 
                 <form onSubmit={handleProfessionalCodeLogin} className="space-y-4">
@@ -381,16 +452,102 @@ const AuthPage = () => {
                     className="w-full bg-medical-green hover:bg-medical-green/90" 
                     disabled={isLoading || professionalCode.length < 10}
                   >
-                    {isLoading ? 'Connexion...' : 'Accéder à l\'espace pro'}
+                    {isLoading ? 'Connexion...' : 'Accéder à l\'espace professionnel'}
                   </Button>
                 </form>
 
                 <Separator className="my-4" />
                 
                 <div className="text-center text-sm text-muted-foreground">
-                  Première fois ? 
+                  Pas encore inscrit ? 
                   <Button variant="link" className="p-0 ml-1 text-medical-green">
-                    Postuler comme professionnel
+                    Demander un accès professionnel
+                  </Button>
+                </div>
+              </TabsContent>
+
+              <TabsContent value="family" className="mt-6">
+                <div className="text-center mb-4">
+                  <div className="w-12 h-12 bg-secondary/20 rounded-full mx-auto mb-2 flex items-center justify-center">
+                    <Users className="w-6 h-6 text-secondary" />
+                  </div>
+                  <h3 className="font-semibold text-foreground">Accès Famille</h3>
+                  <p className="text-sm text-muted-foreground">Suivez un proche diabétique</p>
+                </div>
+
+                <form onSubmit={handleFamilyAccess} className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="patient-code">Code Patient</Label>
+                    <Input
+                      id="patient-code"
+                      type="text"
+                      placeholder="Code d'accès du patient"
+                      value={familyData.patientCode}
+                      onChange={(e) => setFamilyData(prev => ({ ...prev, patientCode: e.target.value.toUpperCase() }))}
+                      className="text-center font-mono"
+                      required
+                    />
+                    <p className="text-xs text-muted-foreground text-center">
+                      Code fourni par le patient
+                    </p>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="family-email">Votre Email</Label>
+                    <div className="relative">
+                      <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                      <Input
+                        id="family-email"
+                        type="email"
+                        placeholder="votre@email.com"
+                        value={familyData.familyEmail}
+                        onChange={(e) => setFamilyData(prev => ({ ...prev, familyEmail: e.target.value }))}
+                        className="pl-10"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="family-password">Mot de passe</Label>
+                    <div className="relative">
+                      <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                      <Input
+                        id="family-password"
+                        type={showPassword ? "text" : "password"}
+                        placeholder="Votre mot de passe"
+                        value={familyData.familyPassword}
+                        onChange={(e) => setFamilyData(prev => ({ ...prev, familyPassword: e.target.value }))}
+                        className="pl-10 pr-10"
+                        required
+                      />
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        className="absolute right-0 top-0 h-full px-3"
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                      </Button>
+                    </div>
+                  </div>
+
+                  <Button 
+                    type="submit" 
+                    className="w-full" 
+                    disabled={isLoading || !familyData.patientCode}
+                  >
+                    {isLoading ? 'Connexion...' : 'Accéder aux données famille'}
+                  </Button>
+                </form>
+
+                <Separator className="my-4" />
+                
+                <div className="text-center text-sm text-muted-foreground">
+                  Besoin d'aide ? 
+                  <Button variant="link" className="p-0 ml-1">
+                    Guide d'accès famille
                   </Button>
                 </div>
               </TabsContent>
