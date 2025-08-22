@@ -41,16 +41,18 @@ const SimpleActivityModal = ({ isOpen, onClose }: SimpleActivityModalProps) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto">
+    <div className="fixed inset-0 z-50">
       {/* Overlay */}
       <div 
-        className="fixed inset-0 bg-black/50 backdrop-blur-sm"
+        className="absolute inset-0 bg-black/50"
         onClick={onClose}
       />
       
-      {/* Modal - positioned in top third of screen */}
-      <div className="relative min-h-screen flex items-start justify-center pt-4">
-        <div className="relative bg-white rounded-xl p-6 shadow-2xl w-full max-w-md mx-4 mt-16">
+      {/* Modal - Simple top positioning */}
+      <div 
+        className="absolute top-20 left-1/2 transform -translate-x-1/2 bg-white rounded-xl p-6 shadow-2xl w-full max-w-md"
+        style={{ top: '120px' }}
+      >
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl font-semibold text-gray-900">
@@ -109,7 +111,6 @@ const SimpleActivityModal = ({ isOpen, onClose }: SimpleActivityModalProps) => {
             </Button>
           </div>
         </form>
-      </div>
       </div>
     </div>
   );
