@@ -10,6 +10,8 @@ import ActionsRapides from "@/components/ui/ActionsRapides";
 import PredictiveAlerts from "@/components/ui/PredictiveAlerts";
 import SimpleGlucoseModal from "@/components/modals/SimpleGlucoseModal";
 import SimpleMedicationModal from "@/components/modals/SimpleMedicationModal";
+import SimpleMealModal from "@/components/modals/SimpleMealModal";
+import SimpleActivityModal from "@/components/modals/SimpleActivityModal";
 import { useGlucose } from "@/contexts/GlucoseContext";
 
 interface HomeScreenProps {
@@ -20,6 +22,8 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
   const { t } = useTranslation();
   const [showAddMeasure, setShowAddMeasure] = useState(false);
   const [showAddDose, setShowAddDose] = useState(false);
+  const [showAddMeal, setShowAddMeal] = useState(false);
+  const [showAddActivity, setShowAddActivity] = useState(false);
   const { getLatestReading, getTrend } = useGlucose();
   
   console.log("Modal states - showAddMeasure:", showAddMeasure, "showAddDose:", showAddDose);
@@ -58,6 +62,14 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
           onMedicamentClick={() => {
             console.log("Setting showAddDose to true"); 
             setShowAddDose(true);
+          }}
+          onMealClick={() => {
+            console.log("Setting showAddMeal to true"); 
+            setShowAddMeal(true);
+          }}
+          onActivityClick={() => {
+            console.log("Setting showAddActivity to true"); 
+            setShowAddActivity(true);
           }}
         />
 
@@ -121,20 +133,22 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
         </div>
       </div>
 
-      {/* Nouvelles Modales Simples */}
+      {/* Toutes les Modales Simples */}
       <SimpleGlucoseModal 
         isOpen={showAddMeasure} 
-        onClose={() => {
-          console.log("Closing glucose modal");
-          setShowAddMeasure(false);
-        }} 
+        onClose={() => setShowAddMeasure(false)} 
       />
       <SimpleMedicationModal 
         isOpen={showAddDose} 
-        onClose={() => {
-          console.log("Closing medication modal");
-          setShowAddDose(false);
-        }} 
+        onClose={() => setShowAddDose(false)} 
+      />
+      <SimpleMealModal 
+        isOpen={showAddMeal} 
+        onClose={() => setShowAddMeal(false)} 
+      />
+      <SimpleActivityModal 
+        isOpen={showAddActivity} 
+        onClose={() => setShowAddActivity(false)} 
       />
     </div>
   );

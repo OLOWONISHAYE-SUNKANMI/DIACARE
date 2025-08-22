@@ -4,12 +4,16 @@ interface ActionsRapidesProps {
   onTabChange?: (tab: string) => void;
   onGlycemieClick?: () => void;
   onMedicamentClick?: () => void;
+  onMealClick?: () => void;
+  onActivityClick?: () => void;
 }
 
 const ActionsRapides: React.FC<ActionsRapidesProps> = ({ 
   onTabChange, 
   onGlycemieClick, 
-  onMedicamentClick 
+  onMedicamentClick,
+  onMealClick,
+  onActivityClick
 }) => {
   
   const handleGlycemieClick = () => {
@@ -18,18 +22,18 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
   };
   
   const handleRepasClick = () => {
-    console.log("Repas clicked - navigating to carnet");
-    onTabChange?.('carnet');
+    console.log("Repas clicked - opening meal modal");
+    onMealClick?.();
   };
   
   const handleMedicamentClick = () => {
-    console.log("Médicament clicked");
+    console.log("Médicament clicked - opening medication modal");
     onMedicamentClick?.();
   };
   
   const handleActiviteClick = () => {
-    console.log("Activité clicked - navigating to carnet");
-    onTabChange?.('carnet');
+    console.log("Activité clicked - opening activity modal");
+    onActivityClick?.();
   };
   
   const handleRappelsClick = () => {
