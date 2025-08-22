@@ -6,12 +6,10 @@ import { Button } from "@/components/ui/button";
 import { useTranslation } from 'react-i18next';
 import NativeHeader from "@/components/ui/NativeHeader";
 import GlucoseWidget from "@/components/ui/GlucoseWidget";
-import QuickActionsGrid from "@/components/ui/QuickActionsGrid";
+import ActionsRapides from "@/components/ui/ActionsRapides";
 import PredictiveAlerts from "@/components/ui/PredictiveAlerts";
 import AddGlucoseModal from "@/components/modals/AddGlucoseModal";
-import MealModal from "@/components/modals/ScanMealModal";
 import MedicationModal from "@/components/modals/MedicationModal";
-import ActivityModal from "@/components/modals/ActivityModal";
 import { useGlucose } from "@/contexts/GlucoseContext";
 
 interface HomeScreenProps {
@@ -20,10 +18,9 @@ interface HomeScreenProps {
 
 const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
   const { t } = useTranslation();
-  const [activeModal, setActiveModal] = useState<string | null>(null);
+  const [showAddMeasure, setShowAddMeasure] = useState(false);
+  const [showAddDose, setShowAddDose] = useState(false);
   const { getLatestReading, getTrend } = useGlucose();
-  
-  console.log("HomeScreen render, activeModal:", activeModal);
   
   const latestReading = getLatestReading();
   const currentGlucose = latestReading?.value || 126;
@@ -49,17 +46,12 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
           trend={getTrend()}
         />
 
-        {/* Quick Actions */}
-        <QuickActionsGrid onActionPress={(action) => {
-          console.log("Button clicked:", action);
-          if (action === "reminders") {
-            onTabChange?.("reminders");
-          } else {
-            console.log("Opening modal for:", action);
-            setActiveModal(action);
-            setTimeout(() => console.log("ActiveModal state:", action), 100);
-          }
-        }} />
+        {/* Actions Rapides - FONCTIONNELLES */}
+        <ActionsRapides
+          onTabChange={onTabChange}
+          onGlycemieClick={() => setShowAddMeasure(true)}
+          onMedicamentClick={() => setShowAddDose(true)}
+        />
 
         {/* Predictive Alerts */}
         <div className="px-4">
@@ -121,34 +113,14 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
         </div>
       </div>
 
-      {/* Action Modals */}
+      {/* Modales Fonctionnelles */}
       <AddGlucoseModal 
-        isOpen={activeModal === "glucose"} 
-        onClose={() => {
-          console.log("Closing glucose modal");
-          setActiveModal(null);
-        }} 
-      />
-      <MealModal 
-        isOpen={activeModal === "meal"} 
-        onClose={() => {
-          console.log("Closing meal modal");
-          setActiveModal(null);
-        }} 
+        isOpen={showAddMeasure} 
+        onClose={() => setShowAddMeasure(false)} 
       />
       <MedicationModal 
-        isOpen={activeModal === "medication"} 
-        onClose={() => {
-          console.log("Closing medication modal");
-          setActiveModal(null);
-        }} 
-      />
-      <ActivityModal 
-        isOpen={activeModal === "activity"} 
-        onClose={() => {
-          console.log("Closing activity modal");
-          setActiveModal(null);
-        }} 
+        isOpen={showAddDose} 
+        onClose={() => setShowAddDose(false)} 
       />
     </div>
   );
