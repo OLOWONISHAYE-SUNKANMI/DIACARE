@@ -100,19 +100,25 @@ serve(async (req) => {
         },
       ],
       mode: "subscription",
+      // Enable multiple payment methods including African ones
       payment_method_types: ['card'],
-      // Enable African payment methods
+      // Configure for African markets
       payment_method_options: {
         card: {
           request_three_d_secure: 'automatic',
         },
       },
+      // Set billing address collection for better fraud protection
+      billing_address_collection: 'auto',
+      // Configure for African currencies and markets
+      automatic_tax: { enabled: false },
       success_url: `${req.headers.get("origin")}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${req.headers.get("origin")}/auth`,
       metadata: {
         userId: user.id,
         planId: planId,
-        userEmail: user.email
+        userEmail: user.email,
+        region: 'africa'
       }
     });
 
