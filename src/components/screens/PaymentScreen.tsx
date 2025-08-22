@@ -216,9 +216,9 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({ onBack, onPaymentSuccess 
               </div>
             </div>
 
-            <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-              <Shield className="w-4 h-4" />
-              <span>Paiement sécurisé par Flutterwave</span>
+            <div className="flex items-center space-x-2 text-sm">
+              <Shield className="w-4 h-4 text-orange-500" />
+              <span className="text-orange-600 font-medium">Paiement sécurisé par Flutterwave</span>
             </div>
           </CardContent>
         </Card>
@@ -234,8 +234,11 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({ onBack, onPaymentSuccess 
             disabled={!isFormValid}
           />
 
-          <div className="bg-medical-teal/5 rounded-lg p-4">
-            <h4 className="font-semibold text-medical-teal mb-2">Méthodes de paiement acceptées</h4>
+          <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
+            <h4 className="font-semibold text-orange-700 mb-2 flex items-center">
+              <Shield className="w-4 h-4 mr-2" />
+              Méthodes de paiement acceptées
+            </h4>
             <div className="text-sm text-muted-foreground space-y-1">
               <p>📱 Orange Money</p>
               <p>📱 MTN Money</p>
