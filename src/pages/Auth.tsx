@@ -552,8 +552,31 @@ const AuthPage = () => {
           </CardContent>
         </Card>
 
-        <div className="text-center mt-6 text-sm text-muted-foreground">
-          En vous connectant, vous acceptez nos conditions d'utilisation
+        <div className="text-center mt-6 space-y-3">
+          <div className="text-sm text-muted-foreground">
+            En vous connectant, vous acceptez nos{" "}
+            <Button variant="link" className="p-0 text-sm underline text-primary">
+              Conditions d'utilisation
+            </Button>
+            {" "}et notre{" "}
+            <Button variant="link" className="p-0 text-sm underline text-primary">
+              Politique de confidentialité
+            </Button>
+          </div>
+          
+          <div className="flex justify-center gap-6 text-xs text-muted-foreground">
+            <Button variant="link" className="p-0 text-xs text-muted-foreground hover:text-foreground">
+              Privacy Policy
+            </Button>
+            <span>•</span>
+            <Button variant="link" className="p-0 text-xs text-muted-foreground hover:text-foreground">
+              Terms of Use
+            </Button>
+            <span>•</span>
+            <Button variant="link" className="p-0 text-xs text-muted-foreground hover:text-foreground">
+              Support
+            </Button>
+          </div>
         </div>
       </div>
     </div>
