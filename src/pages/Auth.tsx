@@ -8,6 +8,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Separator } from '@/components/ui/separator';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate, Navigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useToast } from '@/hooks/use-toast';
 import PlanSelection from '@/components/PlanSelection';
 import LanguageSwitcher from '@/components/ui/LanguageSwitcher';
@@ -31,6 +32,7 @@ const AuthPage = () => {
   const { user, signIn, signUp, signInWithProfessionalCode, loading } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   // États pour les formulaires - MOVED TO TOP
   const [activeTab, setActiveTab] = useState('patient');
@@ -82,9 +84,9 @@ const AuthPage = () => {
       
       if (error) {
         if (error.message.includes('Invalid login credentials')) {
-          setError('Email ou mot de passe incorrect');
+          setError(t('auth.invalidCredentials'));
         } else if (error.message.includes('Email not confirmed')) {
-          setError('Veuillez confirmer votre email avant de vous connecter');
+          setError(t('auth.emailNotConfirmed'));
         } else {
           setError(error.message);
         }
@@ -92,13 +94,13 @@ const AuthPage = () => {
       }
 
       toast({
-        title: "Connexion réussie !",
-        description: "Bienvenue dans votre espace patient.",
+        title: t('auth.loginSuccess'),
+        description: t('auth.welcomePatient'),
       });
       
       navigate('/');
     } catch (err: any) {
-      setError('Une erreur est survenue lors de la connexion');
+      setError(t('auth.connectionError'));
     } finally {
       setIsLoading(false);
     }
@@ -112,13 +114,13 @@ const AuthPage = () => {
 
     // Validation
     if (patientSignUpData.password !== patientSignUpData.confirmPassword) {
-      setError('Les mots de passe ne correspondent pas');
+      setError(t('auth.passwordMismatch'));
       setIsLoading(false);
       return;
     }
 
     if (patientSignUpData.password.length < 6) {
-      setError('Le mot de passe doit contenir au moins 6 caractères');
+      setError(t('auth.passwordTooShort'));
       setIsLoading(false);
       return;
     }
@@ -136,7 +138,7 @@ const AuthPage = () => {
       
       if (error) {
         if (error.message.includes('User already registered')) {
-          setError('Un compte existe déjà avec cette adresse email');
+          setError(t('auth.userAlreadyExists'));
         } else {
           setError(error.message);
         }
@@ -146,20 +148,20 @@ const AuthPage = () => {
       if (needsSubscription) {
         // Show plan selection after successful signup
         setShowPlanSelection(true);
-        setSuccess('Inscription réussie ! Choisissez maintenant votre forfait DiaCare.');
+        setSuccess(t('auth.registrationSuccess') + ' ' + t('auth.choosePlan'));
       } else {
-        setSuccess('Inscription réussie ! Vérifiez votre email pour confirmer votre compte.');
+        setSuccess(t('auth.registrationSuccess') + ' ' + t('auth.confirmEmail'));
       }
       
       setPatientSignUpData({ email: '', password: '', confirmPassword: '', firstName: '', lastName: '' });
       
       toast({
-        title: "Inscription réussie !",
-        description: needsSubscription ? "Choisissez votre forfait DiaCare" : "Vérifiez votre email pour confirmer votre compte.",
+        title: t('auth.registrationSuccess'),
+        description: needsSubscription ? t('auth.choosePlan') : t('auth.confirmEmail'),
       });
       
     } catch (err: any) {
-      setError('Une erreur est survenue lors de l\'inscription');
+      setError(t('auth.registrationError'));
     } finally {
       setIsLoading(false);
     }
@@ -200,7 +202,7 @@ const AuthPage = () => {
     setError(null);
 
     if (!familyData.patientCode || familyData.patientCode.length < 6) {
-      setError('Veuillez entrer un code patient valide');
+      setError(t('auth.invalidPatientCode'));
       setIsLoading(false);
       return;
     }
@@ -209,15 +211,15 @@ const AuthPage = () => {
       // Logique d'accès famille avec code patient uniquement
       // Pas besoin d'inscription, juste validation du code
       toast({
-        title: "Accès famille accordé !",
-        description: "Bienvenue dans l'espace famille DiaCare.",
+        title: t('auth.familyAccessGranted'),
+        description: t('auth.welcomeFamily'),
       });
       
       // Pour l'instant, redirection vers l'accueil
       // À terme, redirection vers interface famille
       navigate('/');
     } catch (err: any) {
-      setError('Code patient invalide ou expiré');
+      setError(t('auth.invalidOrExpiredCode'));
     } finally {
       setIsLoading(false);
     }
@@ -237,13 +239,13 @@ const AuthPage = () => {
       }
 
       toast({
-        title: "Connexion professionnelle réussie !",
-        description: "Bienvenue dans votre espace professionnel.",
+        title: t('auth.professionalLoginSuccess'),
+        description: t('auth.welcomeProfessional'),
       });
       
       navigate('/');
     } catch (err: any) {
-      setError('Une erreur est survenue lors de la connexion');
+      setError(t('auth.connectionError'));
     } finally {
       setIsLoading(false);
     }
@@ -271,15 +273,15 @@ const AuthPage = () => {
           <div className="w-20 h-20 bg-gradient-medical rounded-full mx-auto mb-4 flex items-center justify-center shadow-lg">
             <Stethoscope className="w-10 h-10 text-primary-foreground" />
           </div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">DARE</h1>
-          <p className="text-muted-foreground">Diabète Africain & Ressources d'Excellence</p>
+          <h1 className="text-3xl font-bold text-foreground mb-2">{t('appName')}</h1>
+          <p className="text-muted-foreground">{t('auth.appSlogan')}</p>
         </div>
 
         <Card className="shadow-xl">
           <CardHeader className="text-center pb-4">
-            <CardTitle className="text-xl">Connexion</CardTitle>
+            <CardTitle className="text-xl">{t('auth.signInTitle')}</CardTitle>
             <CardDescription>
-              Accédez à votre compte DARE
+              {t('auth.description')}
             </CardDescription>
           </CardHeader>
           
@@ -287,15 +289,15 @@ const AuthPage = () => {
             <Tabs value={activeTab} onValueChange={setActiveTab}>
               <TabsList className="grid w-full grid-cols-3">
                 <TabsTrigger value="patient" className="text-xs">
-                  Patient
+                  {t('auth.patient')}
                 </TabsTrigger>
                 <TabsTrigger value="professional" className="text-xs">
                   <Stethoscope className="w-4 h-4 mr-1" />
-                  Professionnel
+                  {t('auth.professional')}
                 </TabsTrigger>
                 <TabsTrigger value="family" className="text-xs">
                   <Users className="w-4 h-4 mr-1" />
-                  Famille
+                  {t('auth.family')}
                 </TabsTrigger>
               </TabsList>
 
@@ -323,7 +325,7 @@ const AuthPage = () => {
                       className="text-xs"
                     >
                       <LogIn className="w-4 h-4 mr-1" />
-                      Connexion
+                      {t('auth.signInButton')}
                     </Button>
                     <Button 
                       variant={activeTab === 'patient' ? 'outline' : 'outline'} 
@@ -331,20 +333,20 @@ const AuthPage = () => {
                       className="text-xs"
                     >
                       <UserPlus className="w-4 h-4 mr-1" />
-                      Inscription
+                      {t('auth.signUpButton')}
                     </Button>
                   </div>
 
                   {activeTab === 'patient-signin' && (
                     <form onSubmit={handlePatientSignIn} className="space-y-4">
                       <div className="space-y-2">
-                        <Label htmlFor="patient-signin-email">Email</Label>
+                        <Label htmlFor="patient-signin-email">{t('auth.email')}</Label>
                         <div className="relative">
                           <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                           <Input
                             id="patient-signin-email"
                             type="email"
-                            placeholder="votre@email.com"
+                            placeholder={t('auth.emailPlaceholder')}
                             value={patientSignInData.email}
                             onChange={(e) => setPatientSignInData(prev => ({ ...prev, email: e.target.value }))}
                             className="pl-10"
@@ -354,13 +356,13 @@ const AuthPage = () => {
                       </div>
 
                       <div className="space-y-2">
-                        <Label htmlFor="patient-signin-password">Mot de passe</Label>
+                        <Label htmlFor="patient-signin-password">{t('auth.password')}</Label>
                         <div className="relative">
                           <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                           <Input
                             id="patient-signin-password"
                             type={showPassword ? "text" : "password"}
-                            placeholder="Votre mot de passe"
+                            placeholder={t('auth.password')}
                             value={patientSignInData.password}
                             onChange={(e) => setPatientSignInData(prev => ({ ...prev, password: e.target.value }))}
                             className="pl-10 pr-10"
@@ -379,7 +381,7 @@ const AuthPage = () => {
                       </div>
 
                       <Button type="submit" className="w-full" disabled={isLoading}>
-                        {isLoading ? 'Connexion...' : 'Se connecter'}
+                        {isLoading ? t('auth.connecting') : t('auth.signIn')}
                       </Button>
                     </form>
                   )}
@@ -388,20 +390,20 @@ const AuthPage = () => {
                     <form onSubmit={handlePatientSignUp} className="space-y-4">
                       <div className="grid grid-cols-2 gap-2">
                         <div className="space-y-2">
-                          <Label htmlFor="patient-firstName">Prénom</Label>
+                          <Label htmlFor="patient-firstName">{t('auth.firstName')}</Label>
                           <Input
                             id="patient-firstName"
-                            placeholder="Prénom"
+                            placeholder={t('auth.firstName')}
                             value={patientSignUpData.firstName}
                             onChange={(e) => setPatientSignUpData(prev => ({ ...prev, firstName: e.target.value }))}
                             required
                           />
                         </div>
                         <div className="space-y-2">
-                          <Label htmlFor="patient-lastName">Nom</Label>
+                          <Label htmlFor="patient-lastName">{t('auth.lastName')}</Label>
                           <Input
                             id="patient-lastName"
-                            placeholder="Nom"
+                            placeholder={t('auth.lastName')}
                             value={patientSignUpData.lastName}
                             onChange={(e) => setPatientSignUpData(prev => ({ ...prev, lastName: e.target.value }))}
                             required
@@ -410,13 +412,13 @@ const AuthPage = () => {
                       </div>
 
                       <div className="space-y-2">
-                        <Label htmlFor="patient-signup-email">Email</Label>
+                        <Label htmlFor="patient-signup-email">{t('auth.email')}</Label>
                         <div className="relative">
                           <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                           <Input
                             id="patient-signup-email"
                             type="email"
-                            placeholder="votre@email.com"
+                            placeholder={t('auth.emailPlaceholder')}
                             value={patientSignUpData.email}
                             onChange={(e) => setPatientSignUpData(prev => ({ ...prev, email: e.target.value }))}
                             className="pl-10"
@@ -426,13 +428,13 @@ const AuthPage = () => {
                       </div>
 
                       <div className="space-y-2">
-                        <Label htmlFor="patient-signup-password">Mot de passe</Label>
+                        <Label htmlFor="patient-signup-password">{t('auth.password')}</Label>
                         <div className="relative">
                           <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                           <Input
                             id="patient-signup-password"
                             type={showPassword ? "text" : "password"}
-                            placeholder="Minimum 6 caractères"
+                            placeholder={t('auth.passwordMinLength')}
                             value={patientSignUpData.password}
                             onChange={(e) => setPatientSignUpData(prev => ({ ...prev, password: e.target.value }))}
                             className="pl-10"
@@ -442,13 +444,13 @@ const AuthPage = () => {
                       </div>
 
                       <div className="space-y-2">
-                        <Label htmlFor="patient-confirm-password">Confirmer le mot de passe</Label>
+                        <Label htmlFor="patient-confirm-password">{t('auth.confirmPassword')}</Label>
                         <div className="relative">
                           <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                           <Input
                             id="patient-confirm-password"
                             type={showPassword ? "text" : "password"}
-                            placeholder="Confirmez votre mot de passe"
+                            placeholder={t('auth.confirmPasswordPlaceholder')}
                             value={patientSignUpData.confirmPassword}
                             onChange={(e) => setPatientSignUpData(prev => ({ ...prev, confirmPassword: e.target.value }))}
                             className="pl-10"
@@ -458,7 +460,7 @@ const AuthPage = () => {
                       </div>
 
                       <Button type="submit" className="w-full" disabled={isLoading}>
-                        {isLoading ? 'Inscription...' : 'S\'inscrire comme patient'}
+                        {isLoading ? t('auth.registering') : t('auth.signUp')}
                       </Button>
                     </form>
                   )}
@@ -476,11 +478,11 @@ const AuthPage = () => {
 
                 <form onSubmit={handleProfessionalCodeLogin} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="professional-code">Code Professionnel</Label>
+                    <Label htmlFor="professional-code">{t('auth.professionalCode')}</Label>
                     <Input
                       id="professional-code"
                       type="text"
-                      placeholder="ENDO-SN-2847"
+                      placeholder={t('auth.professionalCodePlaceholder')}
                       value={professionalCode}
                       onChange={(e) => setProfessionalCode(e.target.value.toUpperCase())}
                       className="text-center font-mono text-lg"
@@ -497,16 +499,16 @@ const AuthPage = () => {
                     className="w-full bg-medical-green hover:bg-medical-green/90" 
                     disabled={isLoading || professionalCode.length < 10}
                   >
-                    {isLoading ? 'Connexion...' : 'Accéder à l\'espace professionnel'}
+                    {isLoading ? t('auth.connecting') : t('auth.professionalAccess')}
                   </Button>
                 </form>
 
                 <Separator className="my-4" />
                 
                 <div className="text-center text-sm text-muted-foreground">
-                  Pas encore inscrit ? 
+                  {t('auth.professionalNotRegistered')}
                   <Button variant="link" className="p-0 ml-1 text-medical-green">
-                    Demander un accès professionnel
+                    {t('auth.requestProfessionalAccess')}
                   </Button>
                 </div>
               </TabsContent>
@@ -515,18 +517,18 @@ const AuthPage = () => {
 
                 <form onSubmit={handleFamilyAccess} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="patient-code">Code Patient</Label>
+                    <Label htmlFor="patient-code">{t('auth.patientCode')}</Label>
                     <Input
                       id="patient-code"
                       type="text"
-                      placeholder="Code d'accès du patient"
+                      placeholder={t('auth.patientCodePlaceholder')}
                       value={familyData.patientCode}
                       onChange={(e) => setFamilyData(prev => ({ ...prev, patientCode: e.target.value.toUpperCase() }))}
                       className="text-center font-mono text-lg"
                       required
                     />
                     <p className="text-xs text-muted-foreground text-center">
-                      Code fourni par le patient
+                      {t('auth.codeProvidedByPatient')}
                     </p>
                   </div>
 
@@ -535,16 +537,16 @@ const AuthPage = () => {
                     className="w-full" 
                     disabled={isLoading || !familyData.patientCode}
                   >
-                    {isLoading ? 'Connexion...' : 'Accéder à l\'espace famille'}
+                    {isLoading ? t('auth.connecting') : t('auth.familyAccess')}
                   </Button>
                 </form>
 
                 <Separator className="my-4" />
                 
                 <div className="text-center text-sm text-muted-foreground">
-                  Besoin d'aide ? 
+                  {t('auth.needHelp')}
                   <Button variant="link" className="p-0 ml-1">
-                    Guide d'accès famille
+                    {t('auth.familyAccessGuide')}
                   </Button>
                 </div>
               </TabsContent>
@@ -554,27 +556,27 @@ const AuthPage = () => {
 
         <div className="text-center mt-6 space-y-3">
           <div className="text-sm text-muted-foreground">
-            En vous connectant, vous acceptez nos{" "}
+            {t('auth.termsAcceptance')}{" "}
             <Button variant="link" className="p-0 text-sm underline text-primary">
-              Conditions d'utilisation
+              {t('auth.termsOfUse')}
             </Button>
-            {" "}et notre{" "}
+            {" "}{t('auth.and')}{" "}
             <Button variant="link" className="p-0 text-sm underline text-primary">
-              Politique de confidentialité
+              {t('auth.privacyPolicy')}
             </Button>
           </div>
           
           <div className="flex justify-center gap-6 text-xs text-muted-foreground">
             <Button variant="link" className="p-0 text-xs text-muted-foreground hover:text-foreground">
-              Privacy Policy
+              {t('auth.privacyPolicy')}
             </Button>
             <span>•</span>
             <Button variant="link" className="p-0 text-xs text-muted-foreground hover:text-foreground">
-              Terms of Use
+              {t('auth.termsOfUse')}
             </Button>
             <span>•</span>
             <Button variant="link" className="p-0 text-xs text-muted-foreground hover:text-foreground">
-              Support
+              {t('auth.support')}
             </Button>
           </div>
         </div>
