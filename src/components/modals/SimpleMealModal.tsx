@@ -47,8 +47,8 @@ const SimpleMealModal = ({ isOpen, onClose }: SimpleMealModalProps) => {
         onClick={onClose}
       />
       
-      {/* Modal */}
-      <div className="fixed top-32 left-4 right-4 z-50 bg-white rounded-xl p-6 shadow-xl max-w-md mx-auto">
+      {/* Modal positioned at Actions Rapides level */}
+      <div className="fixed top-[250px] left-4 right-4 z-50 bg-white rounded-xl p-6 shadow-2xl max-w-md mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl font-semibold text-gray-900">
