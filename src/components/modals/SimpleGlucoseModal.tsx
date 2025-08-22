@@ -49,7 +49,7 @@ const SimpleGlucoseModal = ({ isOpen, onClose }: SimpleGlucoseModalProps) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <div className="fixed inset-0 z-50 flex items-start justify-center pt-20">
       {/* Overlay */}
       <div 
         className="fixed inset-0 bg-black/50 backdrop-blur-sm"
@@ -57,7 +57,7 @@ const SimpleGlucoseModal = ({ isOpen, onClose }: SimpleGlucoseModalProps) => {
       />
       
       {/* Modal */}
-      <div className="relative bg-white rounded-xl p-6 w-full max-w-md mx-4 shadow-xl">
+      <div className="relative bg-white rounded-xl p-6 w-full max-w-md mx-4 shadow-xl mt-4">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl font-semibold text-gray-900">
