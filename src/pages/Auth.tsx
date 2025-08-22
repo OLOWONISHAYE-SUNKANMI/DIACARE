@@ -65,9 +65,7 @@ const AuthPage = () => {
   
   // Données pour famille
   const [familyData, setFamilyData] = useState({ 
-    patientCode: '',
-    familyEmail: '',
-    familyPassword: ''
+    patientCode: ''
   });
 
   const handlePatientSignIn = async (e: React.FormEvent) => {
@@ -161,24 +159,25 @@ const AuthPage = () => {
     setIsLoading(true);
     setError(null);
 
-    try {
-      // Pour l'accès famille, on pourrait implémenter une logique spéciale
-      // Pour l'instant, on utilise l'email/password standard
-      const { error } = await signIn(familyData.familyEmail, familyData.familyPassword);
-      
-      if (error) {
-        setError('Accès famille non autorisé. Vérifiez vos identifiants.');
-        return;
-      }
+    if (!familyData.patientCode || familyData.patientCode.length < 6) {
+      setError('Veuillez entrer un code patient valide');
+      setIsLoading(false);
+      return;
+    }
 
+    try {
+      // Logique d'accès famille avec code patient uniquement
+      // Pas besoin d'inscription, juste validation du code
       toast({
         title: "Accès famille accordé !",
-        description: "Bienvenue dans l'espace famille.",
+        description: "Bienvenue dans l'espace famille DiaCare.",
       });
       
+      // Pour l'instant, redirection vers l'accueil
+      // À terme, redirection vers interface famille
       navigate('/');
     } catch (err: any) {
-      setError('Une erreur est survenue lors de l\'accès famille');
+      setError('Code patient invalide ou expiré');
     } finally {
       setIsLoading(false);
     }
@@ -266,8 +265,8 @@ const AuthPage = () => {
                   <div className="w-12 h-12 bg-primary/10 rounded-full mx-auto mb-2 flex items-center justify-center">
                     <Heart className="w-6 h-6 text-primary" />
                   </div>
-                  <h3 className="font-semibold text-foreground">Espace Patient</h3>
-                  <p className="text-sm text-muted-foreground">Gérez votre diabète au quotidien</p>
+                  <h3 className="font-semibold text-foreground">DiaCare Patient</h3>
+                  <p className="text-sm text-muted-foreground">8€/mois - Toutes les fonctionnalités + 10 consultations</p>
                 </div>
 
                 <div className="space-y-4">
@@ -471,8 +470,11 @@ const AuthPage = () => {
                   <div className="w-12 h-12 bg-secondary/20 rounded-full mx-auto mb-2 flex items-center justify-center">
                     <Users className="w-6 h-6 text-secondary" />
                   </div>
-                  <h3 className="font-semibold text-foreground">Accès Famille</h3>
-                  <p className="text-sm text-muted-foreground">Suivez un proche diabétique</p>
+                  <h3 className="font-semibold text-foreground">DiaCare Famille</h3>
+                  <p className="text-sm text-muted-foreground">10€/mois - Forfait familial pour 3 membres</p>
+                  <div className="mt-2 text-xs text-muted-foreground">
+                    Accès au dossier patient • Alertes • Pas de DiaCare Chat
+                  </div>
                 </div>
 
                 <form onSubmit={handleFamilyAccess} className="space-y-4">
@@ -484,53 +486,12 @@ const AuthPage = () => {
                       placeholder="Code d'accès du patient"
                       value={familyData.patientCode}
                       onChange={(e) => setFamilyData(prev => ({ ...prev, patientCode: e.target.value.toUpperCase() }))}
-                      className="text-center font-mono"
+                      className="text-center font-mono text-lg"
                       required
                     />
                     <p className="text-xs text-muted-foreground text-center">
-                      Code fourni par le patient
+                      Code fourni par le patient DiaCare Famille
                     </p>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="family-email">Votre Email</Label>
-                    <div className="relative">
-                      <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                      <Input
-                        id="family-email"
-                        type="email"
-                        placeholder="votre@email.com"
-                        value={familyData.familyEmail}
-                        onChange={(e) => setFamilyData(prev => ({ ...prev, familyEmail: e.target.value }))}
-                        className="pl-10"
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="family-password">Mot de passe</Label>
-                    <div className="relative">
-                      <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                      <Input
-                        id="family-password"
-                        type={showPassword ? "text" : "password"}
-                        placeholder="Votre mot de passe"
-                        value={familyData.familyPassword}
-                        onChange={(e) => setFamilyData(prev => ({ ...prev, familyPassword: e.target.value }))}
-                        className="pl-10 pr-10"
-                        required
-                      />
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        className="absolute right-0 top-0 h-full px-3"
-                        onClick={() => setShowPassword(!showPassword)}
-                      >
-                        {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                      </Button>
-                    </div>
                   </div>
 
                   <Button 
