@@ -21,8 +21,21 @@ const PaymentSuccess: React.FC = () => {
 
   useEffect(() => {
     const sessionId = searchParams.get('session_id');
+    const testMode = searchParams.get('test_mode'); // Pour détecter le mode test
+    
     if (sessionId) {
       verifyPayment(sessionId);
+    } else if (testMode === 'true') {
+      // Mode test - simuler une réponse réussie
+      setPatientCode('TEST123');
+      setSubscriptionDetails({
+        current_period_end: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
+      });
+      setLoading(false);
+      toast({
+        title: "Paiement confirmé !",
+        description: "Votre abonnement DiaCare est maintenant actif (Mode Test).",
+      });
     } else {
       setError('Session ID manquant');
       setLoading(false);

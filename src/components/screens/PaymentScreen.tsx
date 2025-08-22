@@ -94,11 +94,8 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({ onBack, onPaymentSuccess 
         setPaymentStep('success');
         setTimeout(() => {
           localStorage.removeItem('selectedPlan');
-          onPaymentSuccess();
-          toast({
-            title: "Paiement simulé confirmé !",
-            description: `Bienvenue dans ${selectedPlan?.name || 'DiaCare Premium'} (Mode Test)`,
-          });
+          // Rediriger vers payment-success avec le paramètre test_mode
+          window.location.href = '/payment-success?test_mode=true';
         }, 1000);
       } else {
         throw new Error('Simulation d\'échec de paiement');
