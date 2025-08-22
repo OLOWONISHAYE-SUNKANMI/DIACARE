@@ -520,10 +520,7 @@ const AuthPage = () => {
                   <Button 
                     variant="link" 
                     className="p-0 ml-1 text-medical-green"
-                    onClick={() => {
-                      // Ouvrir le lien vers le formulaire de demande d'accès professionnel
-                      window.open('https://forms.gle/professionalaccess', '_blank');
-                    }}
+                    onClick={() => setProfessionalAccessModalOpen(true)}
                   >
                     {t('auth.requestProfessionalAccess')}
                   </Button>
