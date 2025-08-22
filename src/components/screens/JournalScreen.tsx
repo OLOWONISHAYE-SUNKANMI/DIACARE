@@ -1,12 +1,14 @@
 
 import { useState } from "react";
-import { BookOpen, PenTool, AlertTriangle, CheckCircle, XCircle, TrendingUp, Clock, Syringe, X } from "lucide-react";
+import { BookOpen, PenTool, AlertTriangle, CheckCircle, XCircle, TrendingUp, Clock, Syringe, X, Droplets, Plus } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useToast } from "@/hooks/use-toast";
+import AddGlucoseModal from "@/components/modals/AddGlucoseModal";
+import InsulinInjectionModal from "@/components/modals/InsulinInjectionModal";
 
 interface JournalScreenProps {
   showAlert: boolean;
@@ -15,12 +17,23 @@ interface JournalScreenProps {
 
 const JournalScreen = ({ showAlert, setShowAlert }: JournalScreenProps) => {
   const [selectedPeriod, setSelectedPeriod] = useState("today");
+  const [isGlucoseModalOpen, setIsGlucoseModalOpen] = useState(false);
+  const [isInsulinModalOpen, setIsInsulinModalOpen] = useState(false);
   const { toast } = useToast();
 
-  const handleNewEntry = () => {
+  const handleGlucoseEntry = (glucoseData: any) => {
+    console.log("Nouvelle entrée glycémie:", glucoseData);
     toast({
-      title: "Nouvelle entrée",
-      description: "Redirection vers le formulaire de saisie",
+      title: "Glycémie enregistrée",
+      description: `${glucoseData.value} mg/dL - ${glucoseData.context}`,
+    });
+  };
+
+  const handleInsulinEntry = (insulinData: any) => {
+    console.log("Nouvelle injection insuline:", insulinData);
+    toast({
+      title: "Injection enregistrée",
+      description: `${insulinData.insulinType} ${insulinData.dose}UI`,
     });
   };
 
@@ -115,14 +128,26 @@ const JournalScreen = ({ showAlert, setShowAlert }: JournalScreenProps) => {
         </Alert>
       )}
 
-      {/* Bouton Nouvelle Entrée */}
-      <Button 
-        className="w-full bg-medical-teal hover:bg-medical-teal/90 text-white font-medium py-3 transition-all hover:scale-105 transform duration-200"
-        onClick={handleNewEntry}
-      >
-        <PenTool className="w-5 h-5 mr-2" />
-        📝 Nouvelle entrée glycémie/insuline
-      </Button>
+      {/* Boutons Nouvelles Entrées */}
+      <div className="grid grid-cols-2 gap-3">
+        <AddGlucoseModal onGlucoseAdd={handleGlucoseEntry}>
+          <Button 
+            className="w-full bg-medical-teal hover:bg-medical-teal/90 text-white font-medium py-3 transition-all hover:scale-105 transform duration-200"
+          >
+            <Droplets className="w-5 h-5 mr-2" />
+            Glycémie
+          </Button>
+        </AddGlucoseModal>
+
+        <InsulinInjectionModal onInsulinAdd={handleInsulinEntry}>
+          <Button 
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 transition-all hover:scale-105 transform duration-200"
+          >
+            <Syringe className="w-5 h-5 mr-2" />
+            Insuline
+          </Button>
+        </InsulinInjectionModal>
+      </div>
 
       {/* Filtres de période */}
       <Card className="border-medical-teal/20">

@@ -4,31 +4,31 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { Calendar, Clock } from "lucide-react";
+import { Syringe, Clock, Calendar } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { useGlucose } from "@/contexts/GlucoseContext";
 
-interface AddGlucoseModalProps {
+interface InsulinInjectionModalProps {
   children: React.ReactNode;
-  onGlucoseAdd: (data: any) => void;
+  onInsulinAdd: (data: any) => void;
 }
 
-const AddGlucoseModal = ({ children, onGlucoseAdd }: AddGlucoseModalProps) => {
+const InsulinInjectionModal = ({ children, onInsulinAdd }: InsulinInjectionModalProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [glucose, setGlucose] = useState("");
+  const [insulinType, setInsulinType] = useState("");
+  const [dose, setDose] = useState("");
   const [time, setTime] = useState("now");
   const [customTime, setCustomTime] = useState("");
-  const [context, setContext] = useState("fasting");
+  const [site, setSite] = useState("");
   const [notes, setNotes] = useState("");
   const { toast } = useToast();
-  const { addReading } = useGlucose();
 
   const handleSubmit = () => {
-    if (!glucose) {
+    if (!insulinType || !dose) {
       toast({
         title: "Erreur",
-        description: "Veuillez saisir une valeur de glycémie",
+        description: "Veuillez remplir tous les champs obligatoires",
         variant: "destructive",
       });
       return;
@@ -45,38 +45,45 @@ const AddGlucoseModal = ({ children, onGlucoseAdd }: AddGlucoseModalProps) => {
       timestamp = today.toISOString();
     }
 
-    // Add the reading to our data store
-    addReading({
-      value: parseInt(glucose),
+    const injectionData = {
+      insulinType,
+      dose: parseFloat(dose),
       timestamp,
-      context,
+      site,
       notes: notes || undefined
-    });
+    };
 
-    // Call the callback with the data
-    onGlucoseAdd({
-      value: parseInt(glucose),
-      timestamp,
-      context,
-      notes
+    onInsulinAdd(injectionData);
+
+    toast({
+      title: "Injection enregistrée",
+      description: `${insulinType} ${dose}UI injecté`,
     });
 
     // Reset form
-    setGlucose("");
+    setInsulinType("");
+    setDose("");
     setTime("now");
     setCustomTime("");
-    setContext("fasting");
+    setSite("");
     setNotes("");
     setIsOpen(false);
   };
 
-  const contextOptions = [
-    { value: "fasting", label: "À jeun", emoji: "🌅" },
-    { value: "before-meal", label: "Avant repas", emoji: "🍽️" },
-    { value: "after-meal-1h", label: "Après repas (1h)", emoji: "🍽️" },
-    { value: "after-meal-2h", label: "Après repas (2h)", emoji: "🍽️" },
-    { value: "bedtime", label: "Avant coucher", emoji: "😴" },
-    { value: "night", label: "Nocturne", emoji: "🌙" },
+  const insulinTypes = [
+    { value: "lantus", label: "Lantus (insuline lente)" },
+    { value: "humalog", label: "Humalog (rapide)" },
+    { value: "novolog", label: "NovoLog (rapide)" },
+    { value: "levemir", label: "Levemir (lente)" },
+    { value: "tresiba", label: "Tresiba (ultra-lente)" },
+    { value: "other", label: "Autre" }
+  ];
+
+  const injectionSites = [
+    { value: "abdomen", label: "Abdomen", emoji: "🔵" },
+    { value: "thigh", label: "Cuisse", emoji: "🟢" },
+    { value: "arm", label: "Bras", emoji: "🟡" },
+    { value: "buttock", label: "Fesse", emoji: "🟣" }
   ];
 
   return (
@@ -87,26 +94,44 @@ const AddGlucoseModal = ({ children, onGlucoseAdd }: AddGlucoseModalProps) => {
       <DialogContent className="max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center space-x-2">
-            <span className="text-2xl">📊</span>
-            <span>Nouvelle Mesure Glycémique</span>
+            <Syringe className="w-5 h-5 text-blue-600" />
+            <span>Nouvelle Injection d'Insuline</span>
           </DialogTitle>
         </DialogHeader>
 
         <div className="space-y-6">
           <div className="space-y-2">
-            <Label htmlFor="glucose">Valeur glycémie (mg/dL)</Label>
+            <Label htmlFor="insulin-type">Type d'insuline *</Label>
+            <Select value={insulinType} onValueChange={setInsulinType}>
+              <SelectTrigger>
+                <SelectValue placeholder="Sélectionner le type d'insuline" />
+              </SelectTrigger>
+              <SelectContent>
+                {insulinTypes.map((type) => (
+                  <SelectItem key={type.value} value={type.value}>
+                    {type.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="dose">Dose (UI) *</Label>
             <Input
-              id="glucose"
+              id="dose"
               type="number"
-              placeholder="Ex: 120"
-              value={glucose}
-              onChange={(e) => setGlucose(e.target.value)}
+              placeholder="Ex: 20"
+              value={dose}
+              onChange={(e) => setDose(e.target.value)}
               className="text-lg text-center"
+              step="0.5"
+              min="0"
             />
           </div>
 
           <div className="space-y-3">
-            <Label>Heure de mesure</Label>
+            <Label>Heure d'injection</Label>
             <RadioGroup value={time} onValueChange={setTime}>
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="now" id="now" />
@@ -135,14 +160,14 @@ const AddGlucoseModal = ({ children, onGlucoseAdd }: AddGlucoseModalProps) => {
           </div>
 
           <div className="space-y-3">
-            <Label>Contexte de mesure</Label>
-            <RadioGroup value={context} onValueChange={setContext}>
-              {contextOptions.map((option) => (
-                <div key={option.value} className="flex items-center space-x-2">
-                  <RadioGroupItem value={option.value} id={option.value} />
-                  <Label htmlFor={option.value} className="flex items-center space-x-2">
-                    <span className="text-lg">{option.emoji}</span>
-                    <span>{option.label}</span>
+            <Label>Site d'injection</Label>
+            <RadioGroup value={site} onValueChange={setSite}>
+              {injectionSites.map((siteOption) => (
+                <div key={siteOption.value} className="flex items-center space-x-2">
+                  <RadioGroupItem value={siteOption.value} id={siteOption.value} />
+                  <Label htmlFor={siteOption.value} className="flex items-center space-x-2">
+                    <span className="text-lg">{siteOption.emoji}</span>
+                    <span>{siteOption.label}</span>
                   </Label>
                 </div>
               ))}
@@ -153,7 +178,7 @@ const AddGlucoseModal = ({ children, onGlucoseAdd }: AddGlucoseModalProps) => {
             <Label htmlFor="notes">Notes (optionnel)</Label>
             <Textarea
               id="notes"
-              placeholder="Ajoutez vos observations..."
+              placeholder="Observations, rotation des sites, etc..."
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               rows={3}
@@ -164,7 +189,7 @@ const AddGlucoseModal = ({ children, onGlucoseAdd }: AddGlucoseModalProps) => {
             <Button variant="outline" onClick={() => setIsOpen(false)} className="flex-1">
               Annuler
             </Button>
-            <Button onClick={handleSubmit} className="flex-1">
+            <Button onClick={handleSubmit} className="flex-1 bg-blue-600 hover:bg-blue-700">
               Enregistrer
             </Button>
           </div>
@@ -174,4 +199,4 @@ const AddGlucoseModal = ({ children, onGlucoseAdd }: AddGlucoseModalProps) => {
   );
 };
 
-export default AddGlucoseModal;
+export default InsulinInjectionModal;
