@@ -9,6 +9,8 @@ import { Separator } from '@/components/ui/separator';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate, Navigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
+import PlanSelection from '@/components/PlanSelection';
+import { supabase } from '@/integrations/supabase/client';
 import { 
   Mail, 
   Lock, 
@@ -49,6 +51,7 @@ const AuthPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const [showPlanSelection, setShowPlanSelection] = useState(false);
 
   // Données des formulaires pour patient
   const [patientSignInData, setPatientSignInData] = useState({ email: '', password: '' });
@@ -120,7 +123,7 @@ const AuthPage = () => {
     }
 
     try {
-      const { error } = await signUp(
+      const { error, needsSubscription } = await signUp(
         patientSignUpData.email, 
         patientSignUpData.password,
         {
@@ -139,16 +142,52 @@ const AuthPage = () => {
         return;
       }
 
-      setSuccess('Inscription réussie ! Vérifiez votre email pour confirmer votre compte.');
+      if (needsSubscription) {
+        // Show plan selection after successful signup
+        setShowPlanSelection(true);
+        setSuccess('Inscription réussie ! Choisissez maintenant votre forfait DiaCare.');
+      } else {
+        setSuccess('Inscription réussie ! Vérifiez votre email pour confirmer votre compte.');
+      }
+      
       setPatientSignUpData({ email: '', password: '', confirmPassword: '', firstName: '', lastName: '' });
       
       toast({
         title: "Inscription réussie !",
-        description: "Vérifiez votre email pour confirmer votre compte.",
+        description: needsSubscription ? "Choisissez votre forfait DiaCare" : "Vérifiez votre email pour confirmer votre compte.",
       });
       
     } catch (err: any) {
       setError('Une erreur est survenue lors de l\'inscription');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handlePlanSelected = async (planId: string) => {
+    try {
+      setIsLoading(true);
+      
+      // Create Stripe checkout session
+      const { data, error } = await supabase.functions.invoke('create-checkout', {
+        body: { planId }
+      });
+
+      if (error) throw error;
+
+      if (data?.url) {
+        // Redirect to Stripe checkout
+        window.location.href = data.url;
+      } else {
+        throw new Error('URL de paiement non reçue');
+      }
+    } catch (err: any) {
+      setError(err.message || 'Erreur lors de la création de la session de paiement');
+      toast({
+        title: "Erreur",
+        description: "Impossible de créer la session de paiement",
+        variant: "destructive",
+      });
     } finally {
       setIsLoading(false);
     }
@@ -209,6 +248,15 @@ const AuthPage = () => {
     }
   };
 
+  // Show plan selection modal if needed
+  if (showPlanSelection) {
+    return (
+      <PlanSelection 
+        onPlanSelected={handlePlanSelected}
+        onClose={() => setShowPlanSelection(false)}
+      />
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-medical-blue-light via-background to-medical-green-light flex items-center justify-center p-4">

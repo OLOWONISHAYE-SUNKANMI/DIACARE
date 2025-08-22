@@ -944,6 +944,45 @@ export type Database = {
           },
         ]
       }
+      subscription_plans: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          features: Json
+          id: string
+          is_active: boolean | null
+          max_consultations_per_month: number | null
+          max_family_members: number | null
+          name: string
+          price_eur: number
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          features?: Json
+          id?: string
+          is_active?: boolean | null
+          max_consultations_per_month?: number | null
+          max_family_members?: number | null
+          name: string
+          price_eur: number
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          features?: Json
+          id?: string
+          is_active?: boolean | null
+          max_consultations_per_month?: number | null
+          max_family_members?: number | null
+          name?: string
+          price_eur?: number
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       support_sessions: {
         Row: {
           created_at: string
@@ -1250,6 +1289,59 @@ export type Database = {
         }
         Relationships: []
       }
+      user_subscriptions: {
+        Row: {
+          consultations_used: number | null
+          created_at: string | null
+          current_period_end: string | null
+          current_period_start: string | null
+          id: string
+          patient_code: string | null
+          plan_id: string
+          status: string | null
+          stripe_customer_id: string | null
+          stripe_subscription_id: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          consultations_used?: number | null
+          created_at?: string | null
+          current_period_end?: string | null
+          current_period_start?: string | null
+          id?: string
+          patient_code?: string | null
+          plan_id: string
+          status?: string | null
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          consultations_used?: number | null
+          created_at?: string | null
+          current_period_end?: string | null
+          current_period_start?: string | null
+          id?: string
+          patient_code?: string | null
+          plan_id?: string
+          status?: string | null
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_subscriptions_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "subscription_plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -1286,6 +1378,10 @@ export type Database = {
         Returns: Json
       }
       generate_patient_access_code: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
+      generate_patient_code: {
         Args: Record<PropertyKey, never>
         Returns: string
       }

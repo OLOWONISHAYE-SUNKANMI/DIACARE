@@ -6,7 +6,7 @@ interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
-  signUp: (email: string, password: string, metadata?: any) => Promise<{ error: any }>;
+  signUp: (email: string, password: string, metadata?: any) => Promise<{ error: any; needsSubscription?: boolean }>;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
   signInWithProfessionalCode: (code: string) => Promise<{ error: any }>;
   signOut: () => Promise<{ error: any }>;
@@ -85,7 +85,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signUp = async (email: string, password: string, metadata?: any) => {
     const redirectUrl = `${window.location.origin}/`;
     
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -94,7 +94,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
     });
     
-    return { error };
+    // For patient signups, indicate that subscription selection is needed
+    const needsSubscription = metadata?.user_type === 'patient';
+    
+    return { error, needsSubscription };
   };
 
   const signIn = async (email: string, password: string) => {

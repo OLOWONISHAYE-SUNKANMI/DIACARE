@@ -9,6 +9,7 @@ import { ProtectedRoute } from "@/components/ProtectedRoute";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
+import PaymentSuccess from "./components/screens/PaymentSuccess";
 import { ProfessionalRegistrationScreen } from "./components/screens/ProfessionalRegistrationScreen";
 
 const queryClient = new QueryClient();
@@ -23,6 +24,7 @@ const App = () => (
           <BrowserRouter>
             <Routes>
               <Route path="/auth" element={<Auth />} />
+              <Route path="/payment-success" element={<PaymentSuccess />} />
               <Route path="/professional-registration" element={
                 <ProtectedRoute>
                   <ProfessionalRegistrationScreen />
