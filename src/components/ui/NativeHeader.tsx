@@ -36,28 +36,33 @@ const NativeHeader = ({ userName = "Amadou" }: NativeHeaderProps) => {
           <p className="text-sm text-white/80">Diabetes Assistant</p>
         </div>
         
-        {/* Icons natifs */}
+        {/* Icons natifs avec fonctionnalités */}
         <div className="flex gap-3">
-          <button className="w-11 h-11 bg-white/20 rounded-2xl flex items-center justify-center backdrop-blur-sm active:scale-95 transition-transform">
+          <button 
+            className="w-11 h-11 bg-white/20 rounded-2xl flex items-center justify-center backdrop-blur-sm active:scale-95 transition-transform"
+            onClick={() => {
+              // Fonction notifications - à implémenter selon besoins
+              alert("Notifications - Fonctionnalité en développement");
+            }}
+          >
             <Bell className="w-5 h-5 text-white" />
           </button>
-          <button className="w-11 h-11 bg-white/20 rounded-2xl flex items-center justify-center backdrop-blur-sm active:scale-95 transition-transform">
+          <button 
+            className="w-11 h-11 bg-white/20 rounded-2xl flex items-center justify-center backdrop-blur-sm active:scale-95 transition-transform"
+            onClick={() => {
+              // Fonction paramètres - à implémenter selon besoins  
+              alert("Paramètres - Fonctionnalité en développement");
+            }}
+          >
             <Settings className="w-5 h-5 text-white" />
           </button>
         </div>
       </div>
       
-      {/* Mission et greeting */}
-      <div className="text-white space-y-3">
-        <div>
-          <p className="text-white/80 text-sm mb-1">Bonjour {userName} 👋</p>
-          <p className="text-lg font-semibold">Comment va votre diabète aujourd'hui ?</p>
-        </div>
-        <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
-          <p className="text-white/90 text-sm leading-relaxed">
-            Notre mission est de vous aider à mieux comprendre et gérer votre diabète avec des outils adaptés à votre réalité.
-          </p>
-        </div>
+      {/* Greeting personnalisé */}
+      <div className="text-white">
+        <p className="text-white/80 text-sm mb-1">Bonjour {userName} 👋</p>
+        <p className="text-lg font-semibold">Comment va votre diabète aujourd'hui ?</p>
       </div>
     </div>
   );

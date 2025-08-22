@@ -61,7 +61,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
           <PredictiveAlerts />
         </div>
 
-        {/* Mission DARE - Mobile Native */}
+        {/* Mission DARE */}
         <div className="px-4">
           <Card className="bg-white shadow-lg border-0 rounded-2xl overflow-hidden">
             <CardHeader className="bg-gradient-to-r from-medical-green to-medical-teal text-white">
@@ -72,29 +72,10 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
                 <span>{t('homeScreen.mission')}</span>
               </CardTitle>
             </CardHeader>
-            <CardContent className="p-4 space-y-3">
-              <div className="grid grid-cols-2 gap-3">
-                <div className="text-center p-3 rounded-xl bg-medical-green-light">
-                  <div className="w-10 h-10 rounded-full bg-medical-green text-white flex items-center justify-center font-bold text-lg mx-auto mb-2">D</div>
-                  <p className="text-xs font-medium text-card-foreground">{t('homeScreen.diabetes')}</p>
-                  <p className="text-xs text-muted-foreground">{t('homeScreen.management')}</p>
-                </div>
-                <div className="text-center p-3 rounded-xl bg-medical-teal-light">
-                  <div className="w-10 h-10 rounded-full bg-medical-teal text-white flex items-center justify-center font-bold text-lg mx-auto mb-2">A</div>
-                  <p className="text-xs font-medium text-card-foreground">{t('homeScreen.awareness')}</p>
-                  <p className="text-xs text-muted-foreground">{t('homeScreen.education')}</p>
-                </div>
-                <div className="text-center p-3 rounded-xl bg-blue-50">
-                  <div className="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold text-lg mx-auto mb-2">R</div>
-                  <p className="text-xs font-medium text-card-foreground">{t('homeScreen.routine')}</p>
-                  <p className="text-xs text-muted-foreground">{t('homeScreen.daily')}</p>
-                </div>
-                <div className="text-center p-3 rounded-xl bg-purple-50">
-                  <div className="w-10 h-10 rounded-full bg-purple-500 text-white flex items-center justify-center font-bold text-lg mx-auto mb-2">E</div>
-                  <p className="text-xs font-medium text-card-foreground">{t('homeScreen.empowerment')}</p>
-                  <p className="text-xs text-muted-foreground">{t('homeScreen.control')}</p>
-                </div>
-              </div>
+            <CardContent className="p-6">
+              <p className="text-card-foreground text-sm leading-relaxed">
+                Notre mission est de vous aider à mieux comprendre et gérer votre diabète avec des outils adaptés à votre réalité.
+              </p>
             </CardContent>
           </Card>
         </div>
