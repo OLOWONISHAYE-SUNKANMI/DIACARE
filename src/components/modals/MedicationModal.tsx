@@ -14,6 +14,7 @@ interface MedicationModalProps {
 }
 
 const MedicationModal = ({ isOpen, onClose }: MedicationModalProps) => {
+  console.log("MedicationModal render - isOpen:", isOpen);
   const [medicationType, setMedicationType] = useState("");
   const [dose, setDose] = useState("");
   const [time, setTime] = useState("");

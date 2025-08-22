@@ -15,6 +15,7 @@ interface AddGlucoseModalProps {
 }
 
 const AddGlucoseModal = ({ isOpen, onClose }: AddGlucoseModalProps) => {
+  console.log("AddGlucoseModal render - isOpen:", isOpen);
   const [glucose, setGlucose] = useState("");
   const [time, setTime] = useState("now");
   const [customTime, setCustomTime] = useState("");

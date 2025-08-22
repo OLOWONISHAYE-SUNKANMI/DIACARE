@@ -124,11 +124,17 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
       {/* Modales Fonctionnelles */}
       <AddGlucoseModal 
         isOpen={showAddMeasure} 
-        onClose={() => setShowAddMeasure(false)} 
+        onClose={() => {
+          console.log("Closing glucose modal");
+          setShowAddMeasure(false);
+        }} 
       />
       <MedicationModal 
         isOpen={showAddDose} 
-        onClose={() => setShowAddDose(false)} 
+        onClose={() => {
+          console.log("Closing medication modal");
+          setShowAddDose(false);
+        }} 
       />
     </div>
   );
