@@ -909,6 +909,41 @@ export type Database = {
         }
         Relationships: []
       }
+      reminder_logs: {
+        Row: {
+          action_type: string
+          id: string
+          logged_at: string
+          notes: string | null
+          reminder_id: string
+          user_id: string
+        }
+        Insert: {
+          action_type: string
+          id?: string
+          logged_at?: string
+          notes?: string | null
+          reminder_id: string
+          user_id: string
+        }
+        Update: {
+          action_type?: string
+          id?: string
+          logged_at?: string
+          notes?: string | null
+          reminder_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reminder_logs_reminder_id_fkey"
+            columns: ["reminder_id"]
+            isOneToOne: false
+            referencedRelation: "user_reminders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       session_participants: {
         Row: {
           attended: boolean | null
@@ -1180,6 +1215,51 @@ export type Database = {
           description?: string | null
           earned_at?: string
           id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_reminders: {
+        Row: {
+          created_at: string
+          days_of_week: number[]
+          description: string | null
+          dose_amount: string | null
+          dose_unit: string | null
+          id: string
+          is_active: boolean
+          reminder_type: string
+          scheduled_time: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          days_of_week?: number[]
+          description?: string | null
+          dose_amount?: string | null
+          dose_unit?: string | null
+          id?: string
+          is_active?: boolean
+          reminder_type: string
+          scheduled_time: string
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          days_of_week?: number[]
+          description?: string | null
+          dose_amount?: string | null
+          dose_unit?: string | null
+          id?: string
+          is_active?: boolean
+          reminder_type?: string
+          scheduled_time?: string
+          title?: string
+          updated_at?: string
           user_id?: string
         }
         Relationships: []
