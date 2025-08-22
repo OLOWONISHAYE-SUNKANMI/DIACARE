@@ -41,15 +41,15 @@ const SimpleActivityModal = ({ isOpen, onClose }: SimpleActivityModalProps) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50">
+    <>
       {/* Overlay */}
       <div 
-        className="fixed inset-0 bg-black/50 backdrop-blur-sm"
+        className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
         onClick={onClose}
       />
       
       {/* Modal */}
-      <div className="fixed top-24 left-1/2 transform -translate-x-1/2 bg-white rounded-xl p-6 w-full max-w-md mx-4 shadow-xl">
+      <div className="fixed top-32 left-4 right-4 z-50 bg-white rounded-xl p-6 shadow-xl max-w-md mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl font-semibold text-gray-900">
@@ -109,7 +109,7 @@ const SimpleActivityModal = ({ isOpen, onClose }: SimpleActivityModalProps) => {
           </div>
         </form>
       </div>
-    </div>
+    </>
   );
 };
 
