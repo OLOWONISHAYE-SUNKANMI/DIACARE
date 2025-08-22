@@ -49,6 +49,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
 
         {/* Quick Actions */}
         <QuickActionsGrid onActionPress={(action) => {
+          console.log("Action pressed:", action); // Debug log
           if (action === "reminders") {
             onTabChange?.("reminders");
           } else {
