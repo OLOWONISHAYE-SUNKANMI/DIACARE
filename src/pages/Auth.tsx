@@ -31,21 +31,7 @@ const AuthPage = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  // Show loading first
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-medical-blue-light via-background to-medical-green-light">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
-
-  // Redirect if already authenticated
-  if (user) {
-    return <Navigate to="/" replace />;
-  }
-
-  // États pour les formulaires
+  // États pour les formulaires - MOVED TO TOP
   const [activeTab, setActiveTab] = useState('patient');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -70,6 +56,20 @@ const AuthPage = () => {
   const [familyData, setFamilyData] = useState({ 
     patientCode: ''
   });
+
+  // Show loading first
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-medical-blue-light via-background to-medical-green-light">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
+  // Redirect if already authenticated
+  if (user) {
+    return <Navigate to="/" replace />;
+  }
 
   const handlePatientSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
