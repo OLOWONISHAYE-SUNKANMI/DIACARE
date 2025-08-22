@@ -139,7 +139,7 @@ export const fr = {
     }
   },
 
-  // Blog/News Screen
+  // Blog/News Screen - COMPLETE
   blog: {
     title: "DARE News",
     subtitle: "Actualités et conseils sur le diabète",
@@ -149,13 +149,73 @@ export const fr = {
     source: "Source",
     publishedOn: "Publié le",
     saveArticle: "Sauvegarder l'article",
+    search: "Rechercher...",
+    all: "Tous",
     categories: {
+      all: "Tous",
+      research: "Recherches", 
       nutrition: "Nutrition",
+      mental: "Mental",
+      innovation: "Innovation",
+      testimonials: "Témoignages",
       technology: "Technologie",
-      research: "Recherche",
       lifestyle: "Mode de vie",
       treatment: "Traitement"
-    }
+    },
+    readingTime: "min",
+    trending: "Tendance",
+    internationalNews: "Actualités internationales sur le diabète",
+    searchNews: "Rechercher des actualités...",
+    by: "Par",
+    saveArticleBtn: "Sauvegarder",
+    fullSource: "Source complète",
+    reliableSources: "Sources fiables",
+    verifiedNews: "Toutes nos actualités sont vérifiées et proviennent de sources médicales reconnues internationalement"
+  },
+
+  // Activities
+  activities: {
+    walking: "Marche",
+    running: "Course/Jogging", 
+    cycling: "Vélo",
+    dancing: "Danse",
+    weightlifting: "Musculation",
+    swimming: "Natation",
+    soccer: "Football",
+    basketball: "Basketball",
+    selectActivity: "Sélectionnez une activité",
+    intensity: {
+      light: "Légère",
+      moderate: "Modérée", 
+      intense: "Intense"
+    },
+    duration: "Durée (minutes)",
+    caloriesBurned: "Calories brûlées",
+    addActivity: "Ajouter activité",
+    activityRecorded: "Activité enregistrée"
+  },
+
+  // Glucose contexts
+  glucoseContext: {
+    fasting: "À jeun",
+    beforeMeal: "Avant repas",
+    afterMeal: "Après repas",
+    bedtime: "Avant coucher",
+    random: "Aléatoire",
+    exercise: "Après exercice"
+  },
+
+  // Modals and forms
+  modals: {
+    selectValue: "Sélectionnez une valeur",
+    enterValue: "Veuillez saisir une valeur de glycémie",
+    time: "Heure",
+    now: "Maintenant",
+    custom: "Personnalisé",
+    context: "Contexte",
+    notes: "Notes (optionnel)",
+    duration: "Durée",
+    minutes: "minutes"
   },
   
   // Authentication

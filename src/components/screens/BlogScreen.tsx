@@ -4,16 +4,25 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useTranslation } from 'react-i18next';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
 interface BlogScreenProps {}
 
 const BlogScreen = (props: BlogScreenProps) => {
-  const [activeCategory, setActiveCategory] = useState("Tous");
+  const { t } = useTranslation();
+  const [activeCategory, setActiveCategory] = useState(t('blog.categories.all'));
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedArticle, setSelectedArticle] = useState<typeof articles[0] | null>(null);
 
-  const categories = ["Tous", "Recherches", "Nutrition", "Mental", "Innovation", "Témoignages"];
+  const categories = [
+    t('blog.categories.all'), 
+    t('blog.categories.research'), 
+    t('blog.categories.nutrition'), 
+    t('blog.categories.mental'), 
+    t('blog.categories.innovation'), 
+    t('blog.categories.testimonials')
+  ];
 
   const articles = [
     {

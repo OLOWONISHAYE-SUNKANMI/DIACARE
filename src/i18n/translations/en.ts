@@ -139,7 +139,7 @@ export const en = {
     }
   },
 
-  // Blog/News Screen
+  // Blog/News Screen - COMPLETE
   blog: {
     title: "DARE News",
     subtitle: "News and advice on diabetes",
@@ -149,13 +149,73 @@ export const en = {
     source: "Source",
     publishedOn: "Published on",
     saveArticle: "Save article",
+    search: "Search...",
+    all: "All",
     categories: {
-      nutrition: "Nutrition",
-      technology: "Technology",
+      all: "All",
       research: "Research",
+      nutrition: "Nutrition", 
+      mental: "Mental",
+      innovation: "Innovation",
+      testimonials: "Testimonials",
+      technology: "Technology",
       lifestyle: "Lifestyle",
       treatment: "Treatment"
-    }
+    },
+    readingTime: "min",
+    trending: "Trending",
+    internationalNews: "International diabetes news",
+    searchNews: "Search news...",
+    by: "By",
+    saveArticleBtn: "Save",
+    fullSource: "Full source",
+    reliableSources: "Reliable sources",
+    verifiedNews: "All our news is verified and comes from internationally recognized medical sources"
+  },
+
+  // Activities
+  activities: {
+    walking: "Walking",
+    running: "Running/Jogging",
+    cycling: "Cycling", 
+    dancing: "Dancing",
+    weightlifting: "Weight Training",
+    swimming: "Swimming",
+    soccer: "Soccer",
+    basketball: "Basketball",
+    selectActivity: "Select an activity",
+    intensity: {
+      light: "Light",
+      moderate: "Moderate",
+      intense: "Intense"
+    },
+    duration: "Duration (minutes)",
+    caloriesBurned: "Calories burned",
+    addActivity: "Add activity",
+    activityRecorded: "Activity recorded"
+  },
+
+  // Glucose contexts
+  glucoseContext: {
+    fasting: "Fasting",
+    beforeMeal: "Before meal",
+    afterMeal: "After meal", 
+    bedtime: "Bedtime",
+    random: "Random",
+    exercise: "After exercise"
+  },
+
+  // Modals and forms
+  modals: {
+    selectValue: "Select a value",
+    enterValue: "Please enter a glucose value",
+    time: "Time",
+    now: "Now",
+    custom: "Custom", 
+    context: "Context",
+    notes: "Notes (optional)",
+    duration: "Duration",
+    minutes: "minutes"
   },
   
   // Authentication
