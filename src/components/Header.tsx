@@ -1,6 +1,6 @@
 import { Heart } from "lucide-react";
 import { useTranslation } from 'react-i18next';
-import LanguageSwitcher from './ui/LanguageSwitcher';
+import LanguageToggle from './ui/LanguageToggle';
 
 interface HeaderProps {
   user?: any;
@@ -21,8 +21,8 @@ const Header = ({ user, onLogout, isProfessional, professionalData }: HeaderProp
             {t('appDescription')}
           </p>
         </div>
-        <div className="ml-4">
-          <LanguageSwitcher />
+        <div className="ml-4 flex items-center space-x-3">
+          <LanguageToggle />
         </div>
       </div>
     </header>

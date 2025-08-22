@@ -7,6 +7,7 @@ import { Slider } from "@/components/ui/slider";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useToast } from "@/hooks/use-toast";
+import { useTranslation } from 'react-i18next';
 
 interface DosesScreenProps {
   glucoseValue: number;
@@ -27,6 +28,7 @@ const DosesScreen = ({
 }: DosesScreenProps) => {
   const [calculatedDose, setCalculatedDose] = useState({ correction: 0, meal: 0, total: 0 });
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   // Insulin calculation logic
   useEffect(() => {
@@ -46,8 +48,8 @@ const DosesScreen = ({
 
   const handleMarkInjected = (type: string) => {
     toast({
-      title: "Injection marquée",
-      description: `${type} marqué comme injecté avec succès`,
+      title: t('doses.injectionMarked'),
+      description: `${type} ${t('doses.injectionSuccess')}`,
     });
   };
 
@@ -68,9 +70,9 @@ const DosesScreen = ({
       <div className="text-center space-y-2">
         <h2 className="text-2xl font-bold text-foreground flex items-center justify-center space-x-2">
           <Pill className="w-6 h-6 text-medical-teal" />
-          <span>Doses</span>
+          <span>{t('doses.title')}</span>
         </h2>
-        <p className="text-muted-foreground">Gérez vos doses d'insuline</p>
+        <p className="text-muted-foreground">{t('doses.subtitle')}</p>
       </div>
 
       {/* Insulin Reminder Alert */}
@@ -99,11 +101,11 @@ const DosesScreen = ({
           <CardTitle className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <Pill className="w-5 h-5 text-medical-teal" />
-              <span className="text-foreground">Lantus (Basale)</span>
+              <span className="text-foreground">{t('doses.lantus')}</span>
             </div>
             <Badge className="bg-success text-success-foreground">
               <CheckCircle className="w-3 h-3 mr-1" />
-              Actif
+              {t('doses.active')}
             </Badge>
           </CardTitle>
         </CardHeader>

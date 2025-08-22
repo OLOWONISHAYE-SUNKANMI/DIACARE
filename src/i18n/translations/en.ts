@@ -15,7 +15,147 @@ export const en = {
     journal: "Journal",
     blog: "Blog",
     family: "Family",
-    profile: "Profile"
+    profile: "Profile",
+    reminders: "Reminders"
+  },
+
+  // Journal Screen
+  journal: {
+    title: "Journal",
+    subtitle: "Detailed tracking of your glucose levels and injections",
+    glucose: "Glucose",
+    insulin: "Insulin",
+    newEntry: "New entry",
+    insulinReminder: "Insulin Reminder",
+    filters: {
+      today: "Today",
+      week: "7 days",
+      month: "30 days"
+    },
+    context: {
+      beforeMeal: "Before meal",
+      afterMeal: "After meal",
+      fasting: "Fasting",
+      bedtime: "Bedtime"
+    },
+    status: {
+      target: "In target",
+      slightlyHigh: "Slightly high",
+      high: "High",
+      low: "Low"
+    },
+    weeklyStats: {
+      title: "Weekly summary",
+      inTarget: "In target",
+      onTimeInjections: "On-time injections",
+      avgGlucose: "Average glucose"
+    },
+    advice: {
+      title: "💡 Personalized DARE advice",
+      example: "Excellent adherence this week! Your late afternoon glucose levels are slightly elevated. Consider adjusting your 3 PM snack or advancing your Humalog injection by 10 minutes."
+    },
+    injected: "Injected at",
+    missed: "Missed injection"
+  },
+
+  // Charts Screen
+  charts: {
+    title: "Charts",
+    subtitle: "Analysis of your glucose data",
+    glucoseAnalysis: "Glucose Analysis",
+    timeInRange: "Time in Range",
+    weeklyTrends: "Weekly Trends",
+    last7Days: "Last 7 days",
+    zones: {
+      veryHigh: "High",
+      high: "Above",
+      target: "Target",
+      low: "Low"
+    },
+    stats: {
+      average: "Average",
+      variability: "Variability",
+      estimatedHbA1c: "Estimated HbA1c",
+      peakMax: "Peak Max"
+    },
+    objective: "Goal: >70% in target",
+    percentageByDay: "Percentage of time in target per day"
+  },
+
+  // Doses Screen
+  doses: {
+    title: "Doses",
+    subtitle: "Manage your insulin doses",
+    lantus: "Lantus (Basal)",
+    humalog: "Humalog (Rapid)",
+    active: "Active",
+    pending: "Pending",
+    usualDose: "Usual dose",
+    scheduledTime: "Scheduled time",
+    lastInjection: "Last injection",
+    markAsInjected: "Mark as injected",
+    currentGlucose: "Current glucose (mg/dL)",
+    mealCarbs: "Meal carbs",
+    calculatedDose: "Calculated Dose",
+    correction: "Correction",
+    meal: "Meal",
+    total: "Total",
+    scheduleInjection: "Schedule injection",
+    missedInjection: "Missed Injection",
+    ignore: "Ignore",
+    injectNow: "Inject now",
+    history7Days: "7-day history",
+    adherence: "adherence",
+    injectionMarked: "Injection marked",
+    injectionSuccess: "marked as injected successfully",
+    injectionsPer: "Injections completed / scheduled per day"
+  },
+
+  // Reminders Screen
+  reminders: {
+    title: "My Reminders",
+    subtitle: "Manage your reminders for insulin, medications, tests and more",
+    newReminder: "New Reminder",
+    upcomingReminders: "Upcoming reminders (2h)",
+    today: "Today",
+    allReminders: "All reminders",
+    noReminders: "No reminders configured",
+    noRemindersDesc: "Create your first reminder to never forget your treatments",
+    createReminder: "Create reminder",
+    dose: "Dose",
+    soon: "Soon",
+    done: "Done",
+    deleteConfirm: "Are you sure you want to delete this reminder?",
+    days: {
+      everyday: "Every day",
+      weekdays: "Mon-Fri",
+      monday: "Mon",
+      tuesday: "Tue",
+      wednesday: "Wed",
+      thursday: "Thu",
+      friday: "Fri",
+      saturday: "Sat",
+      sunday: "Sun"
+    }
+  },
+
+  // Blog/News Screen
+  blog: {
+    title: "DARE News",
+    subtitle: "News and advice on diabetes",
+    readMore: "Read",
+    readFull: "Read full article",
+    author: "Author",
+    source: "Source",
+    publishedOn: "Published on",
+    saveArticle: "Save article",
+    categories: {
+      nutrition: "Nutrition",
+      technology: "Technology",
+      research: "Research",
+      lifestyle: "Lifestyle",
+      treatment: "Treatment"
+    }
   },
   
   // Authentication

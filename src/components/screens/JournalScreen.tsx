@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useToast } from "@/hooks/use-toast";
+import { useTranslation } from 'react-i18next';
 import AddGlucoseModal from "@/components/modals/AddGlucoseModal";
 import InsulinInjectionModal from "@/components/modals/InsulinInjectionModal";
 
@@ -20,11 +21,12 @@ const JournalScreen = ({ showAlert, setShowAlert }: JournalScreenProps) => {
   const [isGlucoseModalOpen, setIsGlucoseModalOpen] = useState(false);
   const [isInsulinModalOpen, setIsInsulinModalOpen] = useState(false);
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   const handleGlucoseEntry = (glucoseData: any) => {
     console.log("Nouvelle entrée glycémie:", glucoseData);
     toast({
-      title: "Glycémie enregistrée",
+      title: t('journal.glucose') + " " + t('common.save'),
       description: `${glucoseData.value} mg/dL - ${glucoseData.context}`,
     });
   };
@@ -32,7 +34,7 @@ const JournalScreen = ({ showAlert, setShowAlert }: JournalScreenProps) => {
   const handleInsulinEntry = (insulinData: any) => {
     console.log("Nouvelle injection insuline:", insulinData);
     toast({
-      title: "Injection enregistrée",
+      title: t('journal.insulin') + " " + t('common.save'),
       description: `${insulinData.insulinType} ${insulinData.dose}UI`,
     });
   };
@@ -105,17 +107,17 @@ const JournalScreen = ({ showAlert, setShowAlert }: JournalScreenProps) => {
       <div className="text-center space-y-2">
         <h2 className="text-2xl font-bold text-foreground flex items-center justify-center space-x-2">
           <BookOpen className="w-6 h-6 text-medical-teal" />
-          <span>Carnet</span>
+          <span>{t('journal.title')}</span>
         </h2>
-        <p className="text-muted-foreground">Suivi détaillé de vos glycémies et injections</p>
+        <p className="text-muted-foreground">{t('journal.subtitle')}</p>
       </div>
 
       {/* Rappel Insuline */}
       {showAlert && (
-        <Alert className="border-red-200 bg-red-50 animate-scale-in">
+          <Alert className="border-red-200 bg-red-50 animate-scale-in">
           <AlertTriangle className="h-4 w-4 text-red-600" />
           <AlertDescription className="text-red-800 pr-8">
-            <strong>Rappel Insuline</strong> - 19h00 Lantus 20UI
+            <strong>{t('journal.insulinReminder')}</strong> - 19h00 Lantus 20UI
           </AlertDescription>
           <Button
             variant="ghost"
@@ -135,7 +137,7 @@ const JournalScreen = ({ showAlert, setShowAlert }: JournalScreenProps) => {
             className="w-full bg-medical-teal hover:bg-medical-teal/90 text-white font-medium py-3 transition-all hover:scale-105 transform duration-200"
           >
             <Droplets className="w-5 h-5 mr-2" />
-            Glycémie
+            {t('journal.glucose')}
           </Button>
         </AddGlucoseModal>
 
@@ -144,7 +146,7 @@ const JournalScreen = ({ showAlert, setShowAlert }: JournalScreenProps) => {
             className="w-full bg-medical-blue hover:bg-medical-blue/90 text-white font-medium py-3 transition-all hover:scale-105 transform duration-200"
           >
             <Syringe className="w-5 h-5 mr-2" />
-            Insuline
+            {t('journal.insulin')}
           </Button>
         </InsulinInjectionModal>
       </div>
@@ -162,19 +164,19 @@ const JournalScreen = ({ showAlert, setShowAlert }: JournalScreenProps) => {
               value="today" 
               className="data-[state=on]:bg-medical-teal data-[state=on]:text-white"
             >
-              Aujourd'hui
+              {t('journal.filters.today')}
             </ToggleGroupItem>
             <ToggleGroupItem 
               value="week" 
               className="data-[state=on]:bg-medical-teal data-[state=on]:text-white"
             >
-              7 jours
+              {t('journal.filters.week')}
             </ToggleGroupItem>
             <ToggleGroupItem 
               value="month" 
               className="data-[state=on]:bg-medical-teal data-[state=on]:text-white"
             >
-              30 jours
+              {t('journal.filters.month')}
             </ToggleGroupItem>
           </ToggleGroup>
         </CardContent>
@@ -225,8 +227,8 @@ const JournalScreen = ({ showAlert, setShowAlert }: JournalScreenProps) => {
                         <Clock className="w-3 h-3" />
                         <span>
                           {entry.insulin.status === "injected" 
-                            ? `Injecté à ${entry.insulin.injectionTime}`
-                            : "Injection manquée"
+                            ? `${t('journal.injected')} ${entry.insulin.injectionTime}`
+                            : t('journal.missed')
                           }
                         </span>
                       </div>
@@ -251,25 +253,25 @@ const JournalScreen = ({ showAlert, setShowAlert }: JournalScreenProps) => {
         <CardHeader>
           <CardTitle className="text-lg font-semibold text-foreground flex items-center space-x-2">
             <TrendingUp className="w-5 h-5 text-medical-teal" />
-            <span>Résumé hebdomadaire</span>
+            <span>{t('journal.weeklyStats.title')}</span>
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 gap-4">
             <div className="flex items-center justify-between p-3 bg-emerald-50 rounded-lg border border-emerald-200">
-              <span className="text-emerald-800 font-medium">Dans la cible</span>
+              <span className="text-emerald-800 font-medium">{t('journal.weeklyStats.inTarget')}</span>
               <Badge variant="secondary" className="bg-emerald-100 text-emerald-800">
                 68% (16/24)
               </Badge>
             </div>
             <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg border border-blue-200">
-              <span className="text-blue-800 font-medium">Injections à temps</span>
+              <span className="text-blue-800 font-medium">{t('journal.weeklyStats.onTimeInjections')}</span>
               <Badge variant="secondary" className="bg-blue-100 text-blue-800">
                 91% (21/23)
               </Badge>
             </div>
             <div className="flex items-center justify-between p-3 bg-purple-50 rounded-lg border border-purple-200">
-              <span className="text-purple-800 font-medium">Moyenne glycémique</span>
+              <span className="text-purple-800 font-medium">{t('journal.weeklyStats.avgGlucose')}</span>
               <Badge variant="secondary" className="bg-purple-100 text-purple-800">
                 132 mg/dL
               </Badge>
@@ -286,10 +288,9 @@ const JournalScreen = ({ showAlert, setShowAlert }: JournalScreenProps) => {
               <BookOpen className="w-4 h-4 text-white" />
             </div>
             <div>
-              <h4 className="font-semibold text-medical-teal mb-2">💡 Conseil DARE personnalisé</h4>
+              <h4 className="font-semibold text-medical-teal mb-2">{t('journal.advice.title')}</h4>
               <p className="text-sm text-foreground/80">
-                Excellente adherence cette semaine ! Vos glycémies en fin d'après-midi sont légèrement élevées. 
-                Considérez ajuster votre collation de 15h ou anticiper votre injection de Humalog de 10 minutes.
+                {t('journal.advice.example')}
               </p>
             </div>
           </div>

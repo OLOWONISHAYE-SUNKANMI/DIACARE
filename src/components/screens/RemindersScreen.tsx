@@ -7,6 +7,7 @@ import { Plus, Clock, Edit, Trash2, CheckCircle, Timer, X } from 'lucide-react';
 import { useReminders, Reminder } from '@/hooks/useReminders';
 import { CreateReminderModal } from '@/components/modals/CreateReminderModal';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import { useTranslation } from 'react-i18next';
 
 interface ReminderCardProps {
   reminder: Reminder;
@@ -152,6 +153,7 @@ const ReminderCard: React.FC<ReminderCardProps> = ({
 };
 
 export const RemindersScreen: React.FC = () => {
+  const { t } = useTranslation();
   const {
     reminders,
     loading,

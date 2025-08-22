@@ -15,7 +15,147 @@ export const fr = {
     journal: "Carnet",
     blog: "Blog",
     family: "Famille",
-    profile: "Profil"
+    profile: "Profil",
+    reminders: "Rappels"
+  },
+
+  // Journal Screen
+  journal: {
+    title: "Carnet",
+    subtitle: "Suivi détaillé de vos glycémies et injections",
+    glucose: "Glycémie",
+    insulin: "Insuline",
+    newEntry: "Nouvelle entrée",
+    insulinReminder: "Rappel Insuline",
+    filters: {
+      today: "Aujourd'hui",
+      week: "7 jours",
+      month: "30 jours"
+    },
+    context: {
+      beforeMeal: "Avant repas",
+      afterMeal: "Après repas",
+      fasting: "À jeun",
+      bedtime: "Coucher"
+    },
+    status: {
+      target: "Dans la cible",
+      slightlyHigh: "Légèrement élevé",
+      high: "Élevé",
+      low: "Bas"
+    },
+    weeklyStats: {
+      title: "Résumé hebdomadaire",
+      inTarget: "Dans la cible",
+      onTimeInjections: "Injections à temps",
+      avgGlucose: "Moyenne glycémique"
+    },
+    advice: {
+      title: "💡 Conseil DARE personnalisé",
+      example: "Excellente adherence cette semaine ! Vos glycémies en fin d'après-midi sont légèrement élevées. Considérez ajuster votre collation de 15h ou anticiper votre injection de Humalog de 10 minutes."
+    },
+    injected: "Injecté à",
+    missed: "Injection manquée"
+  },
+
+  // Charts Screen
+  charts: {
+    title: "Graphiques",
+    subtitle: "Analyse de vos données glycémiques",
+    glucoseAnalysis: "Analyse Glycémique",
+    timeInRange: "Temps dans la Cible",
+    weeklyTrends: "Tendances Hebdomadaires",
+    last7Days: "7 derniers jours",
+    zones: {
+      veryHigh: "Élevé",
+      high: "Limite",
+      target: "Cible",
+      low: "Bas"
+    },
+    stats: {
+      average: "Moyenne",
+      variability: "Variabilité",
+      estimatedHbA1c: "HbA1c estimé",
+      peakMax: "Pic Max"
+    },
+    objective: "Objectif : >70% dans la cible",
+    percentageByDay: "Pourcentage de temps dans la cible par jour"
+  },
+
+  // Doses Screen
+  doses: {
+    title: "Doses",
+    subtitle: "Gérez vos doses d'insuline",
+    lantus: "Lantus (Basale)",
+    humalog: "Humalog (Rapide)",
+    active: "Actif",
+    pending: "En attente",
+    usualDose: "Dose habituelle",
+    scheduledTime: "Heure programmée",
+    lastInjection: "Dernière injection",
+    markAsInjected: "Marquer comme injecté",
+    currentGlucose: "Glycémie actuelle (mg/dL)",
+    mealCarbs: "Glucides du repas",
+    calculatedDose: "Dose Calculée",
+    correction: "Correction",
+    meal: "Repas",
+    total: "Total",
+    scheduleInjection: "Programmer injection",
+    missedInjection: "Injection Manquée",
+    ignore: "Ignorer",
+    injectNow: "Injecter maintenant",
+    history7Days: "Historique 7 jours",
+    adherence: "observance",
+    injectionMarked: "Injection marquée",
+    injectionSuccess: "marqué comme injecté avec succès",
+    injectionsPer: "Injections réalisées / programmées par jour"
+  },
+
+  // Reminders Screen
+  reminders: {
+    title: "Mes Rappels",
+    subtitle: "Gérez vos rappels pour insuline, médicaments, tests et plus",
+    newReminder: "Nouveau Rappel",
+    upcomingReminders: "Rappels à venir (2h)",
+    today: "Aujourd'hui",
+    allReminders: "Tous les rappels",
+    noReminders: "Aucun rappel configuré",
+    noRemindersDesc: "Créez votre premier rappel pour ne jamais oublier vos traitements",
+    createReminder: "Créer un rappel",
+    dose: "Dose",
+    soon: "Bientôt",
+    done: "Fait",
+    deleteConfirm: "Êtes-vous sûr de vouloir supprimer ce rappel ?",
+    days: {
+      everyday: "Tous les jours",
+      weekdays: "Lun-Ven",
+      monday: "Lun",
+      tuesday: "Mar",
+      wednesday: "Mer",
+      thursday: "Jeu",
+      friday: "Ven",
+      saturday: "Sam",
+      sunday: "Dim"
+    }
+  },
+
+  // Blog/News Screen
+  blog: {
+    title: "DARE News",
+    subtitle: "Actualités et conseils sur le diabète",
+    readMore: "Lire",
+    readFull: "Lire l'article complet",
+    author: "Auteur",
+    source: "Source",
+    publishedOn: "Publié le",
+    saveArticle: "Sauvegarder l'article",
+    categories: {
+      nutrition: "Nutrition",
+      technology: "Technologie",
+      research: "Recherche",
+      lifestyle: "Mode de vie",
+      treatment: "Traitement"
+    }
   },
   
   // Authentication

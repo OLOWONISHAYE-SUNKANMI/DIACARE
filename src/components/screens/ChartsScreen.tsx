@@ -1,9 +1,11 @@
 import { BarChart3, TrendingUp, Calendar, Target, Clock } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { useTranslation } from 'react-i18next';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine, Area, AreaChart, Legend } from 'recharts';
 
 const ChartsScreen = () => {
+  const { t } = useTranslation();
   // Enhanced glucose data with timestamps and context
   const glucoseData = [
     { time: "00:00", value: 95, hour: 0, formattedTime: "Minuit", context: "Jeûne" },
@@ -76,9 +78,9 @@ const ChartsScreen = () => {
       <div className="text-center space-y-2">
         <h2 className="text-2xl font-bold text-foreground flex items-center justify-center space-x-2">
           <BarChart3 className="w-6 h-6 text-medical-teal" />
-          <span>Graphiques</span>
+          <span>{t('charts.title')}</span>
         </h2>
-        <p className="text-muted-foreground">Analyse de vos données glycémiques</p>
+        <p className="text-muted-foreground">{t('charts.subtitle')}</p>
       </div>
 
       {/* Glucose Analysis Chart */}
