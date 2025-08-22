@@ -517,7 +517,14 @@ const AuthPage = () => {
                 
                 <div className="text-center text-sm text-muted-foreground">
                   {t('auth.professionalNotRegistered')}
-                  <Button variant="link" className="p-0 ml-1 text-medical-green">
+                  <Button 
+                    variant="link" 
+                    className="p-0 ml-1 text-medical-green"
+                    onClick={() => {
+                      // Ouvrir le lien vers le formulaire de demande d'accès professionnel
+                      window.open('https://forms.gle/professionalaccess', '_blank');
+                    }}
+                  >
                     {t('auth.requestProfessionalAccess')}
                   </Button>
                 </div>
