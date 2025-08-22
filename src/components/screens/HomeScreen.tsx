@@ -44,7 +44,13 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
         />
 
         {/* Quick Actions */}
-        <QuickActionsGrid onActionPress={setActiveModal} />
+        <QuickActionsGrid onActionPress={(action) => {
+          if (action === "reminders") {
+            onTabChange?.("reminders");
+          } else {
+            setActiveModal(action);
+          }
+        }} />
 
         {/* Predictive Alerts */}
         <div className="px-4">

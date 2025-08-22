@@ -19,6 +19,7 @@ import FamilyScreen from "@/components/screens/FamilyScreen";
 import ProfileScreen from "@/components/screens/ProfileScreen";
 import ConsultationRequest from "@/components/screens/ConsultationRequest";
 import ProfessionalDashboardNew from "@/components/ui/ProfessionalDashboardNew";
+import { RemindersScreen } from "@/components/screens/RemindersScreen";
 
 import HealthProfessionalScreen from "@/components/screens/HealthProfessionalScreen";
 import AdminDashboard from "@/components/screens/AdminDashboard";
@@ -103,6 +104,8 @@ const Index = () => {
         );
       case "patient-access":
         return <PatientAccessScreen />;
+      case "reminders":
+        return <RemindersScreen />;
       default:
         return <HomeScreen onTabChange={setActiveTab} />;
     }

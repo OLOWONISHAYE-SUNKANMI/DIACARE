@@ -14,6 +14,60 @@ export type Database = {
   }
   public: {
     Tables: {
+      activity_entries: {
+        Row: {
+          activity_name: string
+          activity_time: string
+          activity_type: string
+          calories_per_minute: number | null
+          created_at: string
+          distance_km: number | null
+          duration_minutes: number
+          heart_rate_avg: number | null
+          id: string
+          intensity: string
+          notes: string | null
+          steps_count: number | null
+          total_calories_burned: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          activity_name: string
+          activity_time?: string
+          activity_type: string
+          calories_per_minute?: number | null
+          created_at?: string
+          distance_km?: number | null
+          duration_minutes: number
+          heart_rate_avg?: number | null
+          id?: string
+          intensity: string
+          notes?: string | null
+          steps_count?: number | null
+          total_calories_burned?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          activity_name?: string
+          activity_time?: string
+          activity_type?: string
+          calories_per_minute?: number | null
+          created_at?: string
+          distance_km?: number | null
+          duration_minutes?: number
+          heart_rate_avg?: number | null
+          id?: string
+          intensity?: string
+          notes?: string | null
+          steps_count?: number | null
+          total_calories_burned?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       admin_notifications: {
         Row: {
           created_at: string
@@ -321,6 +375,60 @@ export type Database = {
           },
         ]
       }
+      daily_summaries: {
+        Row: {
+          avg_glucose: number | null
+          created_at: string
+          glucose_readings_count: number | null
+          id: string
+          net_calories: number | null
+          summary_date: string
+          total_activities: number | null
+          total_calories_burned: number | null
+          total_calories_consumed: number | null
+          total_carbs: number | null
+          total_exercise_minutes: number | null
+          total_meals: number | null
+          total_steps: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avg_glucose?: number | null
+          created_at?: string
+          glucose_readings_count?: number | null
+          id?: string
+          net_calories?: number | null
+          summary_date: string
+          total_activities?: number | null
+          total_calories_burned?: number | null
+          total_calories_consumed?: number | null
+          total_carbs?: number | null
+          total_exercise_minutes?: number | null
+          total_meals?: number | null
+          total_steps?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avg_glucose?: number | null
+          created_at?: string
+          glucose_readings_count?: number | null
+          id?: string
+          net_calories?: number | null
+          summary_date?: string
+          total_activities?: number | null
+          total_calories_burned?: number | null
+          total_calories_consumed?: number | null
+          total_carbs?: number | null
+          total_exercise_minutes?: number | null
+          total_meals?: number | null
+          total_steps?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       data_sharing_preferences: {
         Row: {
           created_at: string
@@ -429,6 +537,78 @@ export type Database = {
           response_time_minutes?: number | null
           updated_at?: string
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      meal_entries: {
+        Row: {
+          calories_per_100g: number | null
+          carbs_per_100g: number
+          created_at: string
+          fat_per_100g: number | null
+          fiber_per_100g: number | null
+          id: string
+          meal_name: string
+          meal_time: string
+          meal_type: string
+          notes: string | null
+          portion_grams: number
+          protein_per_100g: number | null
+          sugar_per_100g: number | null
+          total_calories: number | null
+          total_carbs: number | null
+          total_fat: number | null
+          total_fiber: number | null
+          total_protein: number | null
+          total_sugar: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          calories_per_100g?: number | null
+          carbs_per_100g?: number
+          created_at?: string
+          fat_per_100g?: number | null
+          fiber_per_100g?: number | null
+          id?: string
+          meal_name: string
+          meal_time?: string
+          meal_type: string
+          notes?: string | null
+          portion_grams?: number
+          protein_per_100g?: number | null
+          sugar_per_100g?: number | null
+          total_calories?: number | null
+          total_carbs?: number | null
+          total_fat?: number | null
+          total_fiber?: number | null
+          total_protein?: number | null
+          total_sugar?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          calories_per_100g?: number | null
+          carbs_per_100g?: number
+          created_at?: string
+          fat_per_100g?: number | null
+          fiber_per_100g?: number | null
+          id?: string
+          meal_name?: string
+          meal_time?: string
+          meal_type?: string
+          notes?: string | null
+          portion_grams?: number
+          protein_per_100g?: number | null
+          sugar_per_100g?: number | null
+          total_calories?: number | null
+          total_carbs?: number | null
+          total_fat?: number | null
+          total_fiber?: number | null
+          total_protein?: number | null
+          total_sugar?: number | null
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -1569,6 +1749,10 @@ export type Database = {
       test_webhook: {
         Args: { webhook_type: string }
         Returns: boolean
+      }
+      update_daily_summary_for_user: {
+        Args: { _date: string; _user_id: string }
+        Returns: undefined
       }
       update_user_activity: {
         Args: { _activity_type: string; _user_id: string }

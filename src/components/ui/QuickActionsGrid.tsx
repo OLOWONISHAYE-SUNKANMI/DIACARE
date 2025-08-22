@@ -1,4 +1,4 @@
-import { BarChart3, Utensils, Pill, Footprints } from "lucide-react";
+import { BarChart3, Utensils, Pill, Footprints, Clock } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
 interface QuickAction {
@@ -42,6 +42,13 @@ const QuickActionsGrid = ({ onActionPress }: QuickActionsGridProps) => {
       emoji: "🏃", 
       action: "activity",
       gradient: "from-orange-500 to-orange-600"
+    },
+    { 
+      icon: Clock, 
+      label: "Rappels", 
+      emoji: "⏰", 
+      action: "reminders",
+      gradient: "from-purple-500 to-purple-600"
     },
   ];
 
