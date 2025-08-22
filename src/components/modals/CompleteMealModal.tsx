@@ -51,29 +51,52 @@ const CompleteMealModal = ({ isOpen, onClose }: CompleteMealModalProps) => {
     onClose();
   };
 
-  // Scanner de codes-barres (simulation)
+  // Scanner de codes-barres (simulation complète)
   const handleBarcodeScanning = async () => {
     try {
       setLoading(true);
-      setCurrentStep('nutrition');
       
-      // Simulation d'un scan réussi
-      setTimeout(() => {
-        setMealData({
+      // Simulation d'un scanner de code-barres réaliste
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      
+      // Base de données de produits simulée
+      const products = [
+        {
           name: 'Coca-Cola 33cl',
           carbs: 35,
           calories: 139,
           proteins: 0,
           fats: 0,
           portion: 330
-        });
-        
-        toast({
-          title: "Code-barres scanné",
-          description: "Produit trouvé dans la base de données",
-        });
-        setLoading(false);
-      }, 2000);
+        },
+        {
+          name: 'Pain de mie complet',
+          carbs: 43,
+          calories: 247,
+          proteins: 13,
+          fats: 3.5,
+          portion: 100
+        },
+        {
+          name: 'Yaourt nature',
+          carbs: 5,
+          calories: 61,
+          proteins: 5,
+          fats: 3.2,
+          portion: 125
+        }
+      ];
+      
+      // Sélection aléatoire d'un produit
+      const randomProduct = products[Math.floor(Math.random() * products.length)];
+      
+      setMealData(randomProduct);
+      setCurrentStep('nutrition');
+      
+      toast({
+        title: "Code-barres scanné ✓",
+        description: `${randomProduct.name} ajouté avec succès`,
+      });
       
     } catch (error) {
       console.error('Erreur scan:', error);
@@ -82,6 +105,7 @@ const CompleteMealModal = ({ isOpen, onClose }: CompleteMealModalProps) => {
         description: "Impossible de scanner le code-barres",
         variant: "destructive"
       });
+    } finally {
       setLoading(false);
     }
   };
@@ -156,24 +180,30 @@ const CompleteMealModal = ({ isOpen, onClose }: CompleteMealModalProps) => {
     }
   };
 
-  // Analyse IA de l'image (simulation)
+  // Analyse IA de l'image (simulation avancée)
   const analyzeImageWithAI = async (imageData: string) => {
-    // Simulation d'analyse IA
+    // Simulation d'analyse IA avancée
+    const mealTypes = [
+      { name: 'Salade César', carbs: 12, calories: 180, proteins: 15, fats: 8 },
+      { name: 'Pâtes Bolognaise', carbs: 55, calories: 420, proteins: 18, fats: 12 },
+      { name: 'Sandwich Jambon', carbs: 32, calories: 280, proteins: 20, fats: 9 },
+      { name: 'Riz aux légumes', carbs: 45, calories: 320, proteins: 8, fats: 5 },
+      { name: 'Pizza Margherita', carbs: 38, calories: 380, proteins: 16, fats: 14 }
+    ];
+    
     setTimeout(() => {
+      const randomMeal = mealTypes[Math.floor(Math.random() * mealTypes.length)];
+      
       setMealData({
-        name: 'Repas analysé par IA',
-        carbs: 45,
-        calories: 320,
-        proteins: 12,
-        fats: 8,
-        portion: 150
+        ...randomMeal,
+        portion: 200
       });
       
       toast({
-        title: "Image analysée",
-        description: "Évaluation nutritionnelle générée",
+        title: "Image analysée par IA ✓",
+        description: `${randomMeal.name} détecté`,
       });
-    }, 2000);
+    }, 3000);
   };
 
   // Saisie manuelle
@@ -252,9 +282,7 @@ const CompleteMealModal = ({ isOpen, onClose }: CompleteMealModalProps) => {
               
               <div className="space-y-3">
                 <button
-                  onClick={() => {
-                    handleBarcodeScanning();
-                  }}
+                  onClick={handleBarcodeScanning}
                   disabled={loading}
                   className="w-full p-4 border-2 border-blue-200 rounded-xl hover:border-blue-300 transition-colors flex items-center space-x-3"
                 >
@@ -263,14 +291,12 @@ const CompleteMealModal = ({ isOpen, onClose }: CompleteMealModalProps) => {
                   </div>
                   <div className="text-left">
                     <h3 className="font-semibold text-gray-900">Scanner Code-Barres</h3>
-                    <p className="text-sm text-gray-600">Scannez l'emballage du produit (démo)</p>
+                    <p className="text-sm text-gray-600">Simulation de scan de produits</p>
                   </div>
                 </button>
 
                 <button
-                  onClick={() => {
-                    handlePhotoCapture();
-                  }}
+                  onClick={handlePhotoCapture}
                   disabled={loading}
                   className="w-full p-4 border-2 border-green-200 rounded-xl hover:border-green-300 transition-colors flex items-center space-x-3"
                 >
@@ -279,7 +305,7 @@ const CompleteMealModal = ({ isOpen, onClose }: CompleteMealModalProps) => {
                   </div>
                   <div className="text-left">
                     <h3 className="font-semibold text-gray-900">Prendre une Photo</h3>
-                    <p className="text-sm text-gray-600">Photographiez votre repas</p>
+                    <p className="text-sm text-gray-600">Analyse IA du repas</p>
                   </div>
                 </button>
 
@@ -402,13 +428,17 @@ const CompleteMealModal = ({ isOpen, onClose }: CompleteMealModalProps) => {
             </div>
           )}
 
-          {/* Loader */}
+          {/* Loader avec messages contextuels */}
           {loading && (
             <div className="text-center py-8">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-              <p className="text-gray-600">
-                {currentStep === 'barcode' ? 'Scan en cours...' : 
-                 currentStep === 'photo' ? 'Analyse en cours...' : 'Chargement...'}
+              <p className="text-gray-600 font-medium">
+                {currentStep === 'select' && loading ? 'Initialisation du scanner...' : 
+                 capturedImage ? 'Analyse IA en cours...' : 'Traitement...'}
+              </p>
+              <p className="text-sm text-gray-500 mt-2">
+                {currentStep === 'select' && loading ? 'Recherche dans la base de données' : 
+                 capturedImage ? 'Identification des aliments' : 'Veuillez patienter'}
               </p>
             </div>
           )}
