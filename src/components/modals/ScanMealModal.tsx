@@ -15,6 +15,7 @@ interface MealModalProps {
 }
 
 const MealModal: React.FC<MealModalProps> = ({ isOpen, onClose }) => {
+  console.log("MealModal rendered with isOpen:", isOpen);
   const { toast } = useToast();
   const [activeOption, setActiveOption] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");

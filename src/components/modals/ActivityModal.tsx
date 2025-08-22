@@ -13,6 +13,7 @@ interface ActivityModalProps {
 }
 
 const ActivityModal = ({ isOpen, onClose }: ActivityModalProps) => {
+  console.log("ActivityModal rendered with isOpen:", isOpen);
   const [activityType, setActivityType] = useState("");
   const [duration, setDuration] = useState([30]);
   const [intensity, setIntensity] = useState([2]);
