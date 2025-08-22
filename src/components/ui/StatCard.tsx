@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
+import { DollarSign, Users, Clock, AlertCircle, LucideIcon } from 'lucide-react';
 
 interface StatCardProps {
   icon: string;
@@ -8,7 +9,19 @@ interface StatCardProps {
   color: 'orange' | 'green' | 'blue' | 'purple';
 }
 
+const getIconComponent = (iconStr: string): LucideIcon => {
+  const iconMap: Record<string, LucideIcon> = {
+    '👥': Users,
+    '💰': DollarSign,
+    '📅': Users,
+    '⏱️': Clock,
+    '⏳': AlertCircle,
+  };
+  return iconMap[iconStr] || Users;
+};
+
 const StatCard = ({ icon, title, value, color }: StatCardProps) => {
+  const IconComponent = getIconComponent(icon);
   const getColorClasses = (color: string) => {
     const colorMap = {
       orange: 'bg-orange-50 border-orange-200 text-orange-700',
@@ -33,8 +46,8 @@ const StatCard = ({ icon, title, value, color }: StatCardProps) => {
     <Card className={`border-2 ${getColorClasses(color)} hover:shadow-md transition-all duration-200`}>
       <CardContent className="p-4">
         <div className="flex items-center gap-3">
-          <div className={`w-12 h-12 ${getIconBg(color)} rounded-full flex items-center justify-center text-xl`}>
-            {icon}
+          <div className={`w-12 h-12 ${getIconBg(color)} rounded-full flex items-center justify-center`}>
+            <IconComponent className="w-6 h-6" />
           </div>
           <div>
             <p className="text-sm text-muted-foreground">{title}</p>

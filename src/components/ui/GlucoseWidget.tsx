@@ -1,4 +1,4 @@
-import { Activity, Calendar, TrendingUp, TrendingDown, Minus } from "lucide-react";
+import { Activity, Calendar, TrendingUp, TrendingDown, Minus, AlertTriangle, CheckCircle } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
 interface GlucoseWidgetProps {
@@ -15,24 +15,24 @@ const GlucoseWidget = ({
   const getGlucoseStatus = (value: number) => {
     if (value < 70) return { 
       status: "low", 
-      color: "text-red-500", 
-      bgColor: "bg-red-50", 
+      color: "text-destructive", 
+      bgColor: "bg-destructive/10", 
       message: "Glycémie basse",
-      emoji: "⚠️"
+      icon: <AlertTriangle className="w-4 h-4" />
     };
     if (value <= 180) return { 
       status: "normal", 
       color: "text-medical-green", 
       bgColor: "bg-medical-green-light", 
       message: "Dans la normale",
-      emoji: "✅"
+      icon: <CheckCircle className="w-4 h-4" />
     };
     return { 
       status: "high", 
-      color: "text-orange-500", 
-      bgColor: "bg-orange-50", 
+      color: "text-warning", 
+      bgColor: "bg-warning/10", 
       message: "Glycémie élevée",
-      emoji: "⚠️"
+      icon: <AlertTriangle className="w-4 h-4" />
     };
   };
 
@@ -70,7 +70,7 @@ const GlucoseWidget = ({
             
             {/* Status badge */}
             <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium ${glucoseStatus.bgColor} ${glucoseStatus.color}`}>
-              <span>{glucoseStatus.emoji}</span>
+              {glucoseStatus.icon}
               <span>{glucoseStatus.message}</span>
             </div>
           </div>

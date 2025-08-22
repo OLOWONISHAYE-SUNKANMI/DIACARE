@@ -1,4 +1,5 @@
 import { Card, CardContent } from '@/components/ui/card';
+import { DollarSign, UserCheck, Stethoscope, Clock, AlertCircle, LucideIcon } from 'lucide-react';
 
 interface MetricCardProps {
   icon: string;
@@ -8,7 +9,18 @@ interface MetricCardProps {
   color: 'green' | 'blue' | 'purple' | 'orange';
 }
 
+const getIconComponent = (iconStr: string): LucideIcon => {
+  const iconMap: Record<string, LucideIcon> = {
+    '💰': DollarSign,
+    '👨‍⚕️': UserCheck,
+    '🩺': Stethoscope,
+    '⏳': Clock,
+  };
+  return iconMap[iconStr] || Stethoscope;
+};
+
 const MetricCard = ({ icon, title, value, change, color }: MetricCardProps) => {
+  const IconComponent = getIconComponent(icon);
   const getColorClasses = (color: string) => {
     const colorMap = {
       green: 'border-green-200 bg-green-50',
@@ -36,7 +48,9 @@ const MetricCard = ({ icon, title, value, change, color }: MetricCardProps) => {
               {change}
             </p>
           </div>
-          <div className="text-3xl">{icon}</div>
+          <div className="flex items-center justify-center">
+            <IconComponent className="w-8 h-8" />
+          </div>
         </div>
       </CardContent>
     </Card>
