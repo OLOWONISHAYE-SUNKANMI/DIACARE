@@ -40,7 +40,7 @@ const SimpleMealModal = ({ isOpen, onClose }: SimpleMealModalProps) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-20">
+    <div className="fixed inset-0 z-50">
       {/* Overlay */}
       <div 
         className="fixed inset-0 bg-black/50 backdrop-blur-sm"
@@ -48,7 +48,7 @@ const SimpleMealModal = ({ isOpen, onClose }: SimpleMealModalProps) => {
       />
       
       {/* Modal */}
-      <div className="relative bg-white rounded-xl p-6 w-full max-w-md mx-4 shadow-xl mt-4">
+      <div className="fixed top-24 left-1/2 transform -translate-x-1/2 bg-white rounded-xl p-6 w-full max-w-md mx-4 shadow-xl">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl font-semibold text-gray-900">
