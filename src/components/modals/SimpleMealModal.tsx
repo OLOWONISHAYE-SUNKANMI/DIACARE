@@ -40,15 +40,16 @@ const SimpleMealModal = ({ isOpen, onClose }: SimpleMealModalProps) => {
   };
 
   return (
-    <>
+    <div className="fixed inset-0 z-50 overflow-y-auto">
       {/* Overlay */}
       <div 
-        className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
+        className="fixed inset-0 bg-black/50 backdrop-blur-sm"
         onClick={onClose}
       />
       
-      {/* Modal positioned at Actions Rapides level */}
-      <div className="fixed top-[250px] left-4 right-4 z-50 bg-white rounded-xl p-6 shadow-2xl max-w-md mx-auto">
+      {/* Modal - positioned in top third of screen */}
+      <div className="relative min-h-screen flex items-start justify-center pt-4">
+        <div className="relative bg-white rounded-xl p-6 shadow-2xl w-full max-w-md mx-4 mt-16">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl font-semibold text-gray-900">
@@ -103,7 +104,8 @@ const SimpleMealModal = ({ isOpen, onClose }: SimpleMealModalProps) => {
           </div>
         </form>
       </div>
-    </>
+      </div>
+    </div>
   );
 };
 
