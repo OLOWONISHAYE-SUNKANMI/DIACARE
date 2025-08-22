@@ -10,6 +10,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate, Navigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 import PlanSelection from '@/components/PlanSelection';
+import LanguageSwitcher from '@/components/ui/LanguageSwitcher';
 import { supabase } from '@/integrations/supabase/client';
 import { 
   Mail, 
@@ -260,6 +261,11 @@ const AuthPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-medical-blue-light via-background to-medical-green-light flex items-center justify-center p-4">
+      {/* Language Selector - Top Right */}
+      <div className="fixed top-4 right-4 z-50">
+        <LanguageSwitcher />
+      </div>
+      
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <div className="w-20 h-20 bg-gradient-medical rounded-full mx-auto mb-4 flex items-center justify-center shadow-lg">
