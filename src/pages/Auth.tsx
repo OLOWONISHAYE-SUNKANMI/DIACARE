@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { useToast } from '@/hooks/use-toast';
 import PlanSelection from '@/components/PlanSelection';
 import LanguageSwitcher from '@/components/ui/LanguageSwitcher';
+import { LegalModal } from '@/components/modals/LegalModal';
 import { supabase } from '@/integrations/supabase/client';
 import { 
   Mail, 
@@ -41,6 +42,7 @@ const AuthPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [showPlanSelection, setShowPlanSelection] = useState(false);
+  const [legalModal, setLegalModal] = useState<'terms' | 'privacy' | null>(null);
 
   // Données des formulaires pour patient
   const [patientSignInData, setPatientSignInData] = useState({ email: '', password: '' });
@@ -274,7 +276,8 @@ const AuthPage = () => {
             <Stethoscope className="w-10 h-10 text-primary-foreground" />
           </div>
           <h1 className="text-3xl font-bold text-foreground mb-2">{t('appName')}</h1>
-          <p className="text-muted-foreground">{t('auth.appSlogan')}</p>
+          <p className="text-muted-foreground mb-1">{t('appSlogan')}</p>
+          <p className="text-sm text-muted-foreground/80">{t('auth.appSlogan')}</p>
         </div>
 
         <Card className="shadow-xl">
@@ -557,21 +560,37 @@ const AuthPage = () => {
         <div className="text-center mt-6 space-y-3">
           <div className="text-sm text-muted-foreground">
             {t('auth.termsAcceptance')}{" "}
-            <Button variant="link" className="p-0 text-sm underline text-primary">
+            <Button 
+              variant="link" 
+              className="p-0 text-sm underline text-primary"
+              onClick={() => setLegalModal('terms')}
+            >
               {t('auth.termsOfUse')}
             </Button>
             {" "}{t('auth.and')}{" "}
-            <Button variant="link" className="p-0 text-sm underline text-primary">
+            <Button 
+              variant="link" 
+              className="p-0 text-sm underline text-primary"
+              onClick={() => setLegalModal('privacy')}
+            >
               {t('auth.privacyPolicy')}
             </Button>
           </div>
           
           <div className="flex justify-center gap-6 text-xs text-muted-foreground">
-            <Button variant="link" className="p-0 text-xs text-muted-foreground hover:text-foreground">
+            <Button 
+              variant="link" 
+              className="p-0 text-xs text-muted-foreground hover:text-foreground"
+              onClick={() => setLegalModal('privacy')}
+            >
               {t('auth.privacyPolicy')}
             </Button>
             <span>•</span>
-            <Button variant="link" className="p-0 text-xs text-muted-foreground hover:text-foreground">
+            <Button 
+              variant="link" 
+              className="p-0 text-xs text-muted-foreground hover:text-foreground"
+              onClick={() => setLegalModal('terms')}
+            >
               {t('auth.termsOfUse')}
             </Button>
             <span>•</span>
@@ -581,6 +600,13 @@ const AuthPage = () => {
           </div>
         </div>
       </div>
+
+      {/* Legal Modals */}
+      <LegalModal 
+        isOpen={legalModal !== null}
+        onClose={() => setLegalModal(null)}
+        type={legalModal || 'terms'}
+      />
     </div>
   );
 };

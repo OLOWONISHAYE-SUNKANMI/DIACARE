@@ -2,6 +2,7 @@ export const fr = {
   // App general
   appName: "DARE",
   appDescription: "Diabetes Awareness, Routine & Empowerment",
+  appSlogan: "La première plateforme de gestion et suivi du diabète en Afrique",
   
   // Navigation
   nav: {
@@ -271,5 +272,113 @@ export const fr = {
     typing: "en train d'écrire...",
     messageSent: "Message envoyé",
     messageShared: "Votre message a été partagé avec la communauté DARE"
+  },
+
+  // Legal
+  legal: {
+    termsTitle: "Conditions d'Utilisation",
+    termsDescription: "Veuillez lire attentivement nos conditions d'utilisation",
+    privacyTitle: "Politique de Confidentialité",
+    privacyDescription: "Découvrez comment nous protégeons vos données personnelles",
+    termsContent: `
+      <h3>1. Acceptation des Conditions</h3>
+      <p>En utilisant DARE (Diabète Africain & Ressources d'Excellence), vous acceptez les présentes conditions d'utilisation.</p>
+      
+      <h3>2. Description du Service</h3>
+      <p>DARE est la première plateforme de gestion et suivi du diabète en Afrique, offrant :</p>
+      <ul>
+        <li>Suivi personnalisé de la glycémie</li>
+        <li>Gestion des médicaments et rappels</li>
+        <li>Téléconsultations avec des professionnels de santé</li>
+        <li>Communauté de soutien</li>
+        <li>Outils d'analyse et de prédiction</li>
+      </ul>
+      
+      <h3>3. Compte Utilisateur</h3>
+      <p>Vous êtes responsable de maintenir la confidentialité de votre compte et mot de passe.</p>
+      
+      <h3>4. Utilisation Acceptable</h3>
+      <p>Vous vous engagez à :</p>
+      <ul>
+        <li>Fournir des informations exactes</li>
+        <li>Respecter les autres utilisateurs</li>
+        <li>Ne pas partager d'informations médicales d'autrui</li>
+        <li>Utiliser la plateforme à des fins légales uniquement</li>
+      </ul>
+      
+      <h3>5. Données de Santé</h3>
+      <p>Vos données de santé sont strictement confidentielles et ne sont partagées qu'avec votre consentement explicite.</p>
+      
+      <h3>6. Téléconsultations</h3>
+      <p>Les consultations médicales sont fournies par des professionnels certifiés. Elles ne remplacent pas les soins d'urgence.</p>
+      
+      <h3>7. Limitation de Responsabilité</h3>
+      <p>DARE fournit des outils d'aide à la gestion du diabète mais ne remplace pas un avis médical professionnel.</p>
+      
+      <h3>8. Résiliation</h3>
+      <p>Vous pouvez supprimer votre compte à tout moment. Nous nous réservons le droit de suspendre des comptes en cas de violation.</p>
+      
+      <h3>9. Modifications</h3>
+      <p>Nous nous réservons le droit de modifier ces conditions avec préavis.</p>
+      
+      <h3>10. Contact</h3>
+      <p>Pour toute question : support@dare-africa.com</p>
+    `,
+    privacyContent: `
+      <h3>1. Collecte des Données</h3>
+      <p>Nous collectons les données que vous nous fournissez :</p>
+      <ul>
+        <li>Informations d'inscription (nom, email, téléphone)</li>
+        <li>Données de santé (glycémie, médicaments, symptômes)</li>
+        <li>Données d'utilisation de la plateforme</li>
+      </ul>
+      
+      <h3>2. Utilisation des Données</h3>
+      <p>Vos données sont utilisées pour :</p>
+      <ul>
+        <li>Personnaliser votre expérience</li>
+        <li>Fournir des analyses et recommandations</li>
+        <li>Faciliter les téléconsultations</li>
+        <li>Améliorer nos services</li>
+      </ul>
+      
+      <h3>3. Protection des Données</h3>
+      <p>Nous utilisons des technologies de chiffrement avancées et respectons les standards RGPD et ISO 27001.</p>
+      
+      <h3>4. Partage des Données</h3>
+      <p>Vos données ne sont JAMAIS vendues. Elles peuvent être partagées uniquement :</p>
+      <ul>
+        <li>Avec votre consentement explicite</li>
+        <li>Avec les professionnels de santé que vous autorisez</li>
+        <li>En cas d'obligation légale</li>
+      </ul>
+      
+      <h3>5. Données Anonymisées</h3>
+      <p>Nous pouvons utiliser des données anonymisées pour la recherche médicale et l'amélioration des soins du diabète en Afrique.</p>
+      
+      <h3>6. Vos Droits</h3>
+      <p>Vous avez le droit de :</p>
+      <ul>
+        <li>Accéder à vos données</li>
+        <li>Corriger des informations incorrectes</li>
+        <li>Supprimer votre compte et vos données</li>
+        <li>Exporter vos données</li>
+        <li>Limiter l'utilisation de vos données</li>
+      </ul>
+      
+      <h3>7. Conservation des Données</h3>
+      <p>Vos données sont conservées tant que votre compte est actif, puis supprimées dans les 30 jours suivant la fermeture.</p>
+      
+      <h3>8. Cookies</h3>
+      <p>Nous utilisons des cookies essentiels pour le fonctionnement de la plateforme et des cookies d'analyse avec votre consentement.</p>
+      
+      <h3>9. Transferts Internationaux</h3>
+      <p>Vos données sont hébergées en Afrique. Tout transfert international respecte les accords de protection des données.</p>
+      
+      <h3>10. Contact DPO</h3>
+      <p>Pour toute question sur vos données : dpo@dare-africa.com</p>
+      
+      <p><strong>Dernière mise à jour :</strong> Décembre 2024</p>
+    `
   }
 };
