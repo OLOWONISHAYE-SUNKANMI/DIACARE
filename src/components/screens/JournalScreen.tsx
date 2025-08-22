@@ -141,7 +141,7 @@ const JournalScreen = ({ showAlert, setShowAlert }: JournalScreenProps) => {
 
         <InsulinInjectionModal onInsulinAdd={handleInsulinEntry}>
           <Button 
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 transition-all hover:scale-105 transform duration-200"
+            className="w-full bg-medical-blue hover:bg-medical-blue/90 text-white font-medium py-3 transition-all hover:scale-105 transform duration-200"
           >
             <Syringe className="w-5 h-5 mr-2" />
             Insuline
