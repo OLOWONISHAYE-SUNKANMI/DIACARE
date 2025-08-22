@@ -1,0 +1,23 @@
+{
+  "appId": "app.lovable.4f4a1ae960884353aad89b1aee7bc73e",
+  "appName": "dare-your-health",
+  "webDir": "dist",
+  "server": {
+    "url": "https://4f4a1ae9-6088-4353-aad8-9b1aee7bc73e.lovableproject.com?forceHideBadge=true",
+    "cleartext": true
+  },
+  "plugins": {
+    "Camera": {
+      "permissions": [
+        "camera",
+        "photos",
+        "microphone"
+      ]
+    },
+    "BarcodeScanner": {
+      "permissions": [
+        "camera"
+      ]
+    }
+  }
+}

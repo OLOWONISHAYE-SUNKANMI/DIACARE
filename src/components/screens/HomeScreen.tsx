@@ -10,7 +10,7 @@ import ActionsRapides from "@/components/ui/ActionsRapides";
 import PredictiveAlerts from "@/components/ui/PredictiveAlerts";
 import SimpleGlucoseModal from "@/components/modals/SimpleGlucoseModal";
 import SimpleMedicationModal from "@/components/modals/SimpleMedicationModal";
-import SimpleMealModal from "@/components/modals/SimpleMealModal";
+import CompleteMealModal from "@/components/modals/CompleteMealModal";
 import SimpleActivityModal from "@/components/modals/SimpleActivityModal";
 import { useGlucose } from "@/contexts/GlucoseContext";
 
@@ -142,7 +142,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
         isOpen={showAddDose} 
         onClose={() => setShowAddDose(false)} 
       />
-      <SimpleMealModal 
+      <CompleteMealModal 
         isOpen={showAddMeal} 
         onClose={() => setShowAddMeal(false)} 
       />
