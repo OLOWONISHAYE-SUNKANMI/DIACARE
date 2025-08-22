@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { FlutterWaveButton, closePaymentModal } from 'flutterwave-react-v3';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -54,35 +53,52 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({ onBack, onPaymentSuccess 
     setCurrency(currencyInfo);
   };
 
-  // Configuration Flutterwave
-  const config = React.useMemo(() => ({
-    public_key: 'FLWPUBK_TEST-VOTRE_CLE_ICI', // Remplacez par votre vraie clé publique Flutterwave
-    tx_ref: `DIACARE-${Date.now()}`,
+  // Configuration AfribaPay
+  const afribaPaymentData = React.useMemo(() => ({
     amount: convertedPrices?.amount || selectedPlan?.price_eur || 800, // 8€ par défaut
     currency: currency.currency,
-    payment_options: 'card,mobilemoney,ussd',
+    reference: `DIACARE-${Date.now()}`,
+    description: selectedPlan?.description || 'Abonnement mensuel DiaCare Premium',
     customer: {
       email: formData.email,
-      phone_number: formData.phone_number,
+      phone: formData.phone_number,
       name: formData.name,
     },
-    customizations: {
-      title: selectedPlan?.name || 'DiaCare Premium',
-      description: selectedPlan?.description || 'Abonnement mensuel DiaCare Premium',
-      logo: 'https://assets.aceternity.com/demos/lila.jpg',
-    },
+    callback_url: window.location.origin + '/payment-success',
+    return_url: window.location.origin + '/payment-success',
   }), [convertedPrices, selectedPlan, currency, formData]);
 
-  const fwConfig = {
-    ...config,
-    text: convertedPrices ? `Payer ${convertedPrices.formatted}` : `Payer ${((selectedPlan?.price_eur || 800) / 100).toFixed(0)}€`,
-    callback: (response: any) => {
-      console.log(response);
-        if (response.status === 'successful') {
+  const handleAfribaPayment = async () => {
+    if (!isFormValid || !selectedCountry) {
+      toast({
+        title: "Informations manquantes",
+        description: "Veuillez remplir tous les champs requis",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsLoading(true);
+    
+    try {
+      const response = await fetch('https://api-sandbox.afribapay.com/v1/pay/payin', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer YOUR_AFRIBA_TEST_KEY', // À remplacer par votre clé test AfribaPay
+        },
+        body: JSON.stringify(afribaPaymentData),
+      });
+
+      const result = await response.json();
+      
+      if (response.ok && result.status === 'success') {
+        // Rediriger vers la page de paiement AfribaPay
+        if (result.payment_url) {
+          window.location.href = result.payment_url;
+        } else {
           setPaymentStep('success');
           setTimeout(() => {
-            closePaymentModal();
-            // Clear stored plan
             localStorage.removeItem('selectedPlan');
             onPaymentSuccess();
             toast({
@@ -90,18 +106,20 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({ onBack, onPaymentSuccess 
               description: `Bienvenue dans ${selectedPlan?.name || 'DiaCare Premium'}`,
             });
           }, 2000);
-        } else {
-          toast({
-            title: "Paiement échoué",
-            description: "Une erreur s'est produite lors du paiement",
-            variant: "destructive",
-          });
         }
-      closePaymentModal();
-    },
-    onClose: () => {
-      console.log('Payment modal closed');
-    },
+      } else {
+        throw new Error(result.message || 'Erreur de paiement');
+      }
+    } catch (error) {
+      console.error('Erreur AfribaPay:', error);
+      toast({
+        title: "Paiement échoué",
+        description: "Une erreur s'est produite lors du paiement. Veuillez réessayer.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleInputChange = (field: keyof PaymentFormData, value: string) => {
@@ -174,7 +192,7 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({ onBack, onPaymentSuccess 
           <CardHeader>
             <CardTitle className="text-lg">Informations de paiement</CardTitle>
             <p className="text-sm text-muted-foreground">
-              Paiement sécurisé via Flutterwave
+              Paiement sécurisé via AfribaPay
             </p>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -251,21 +269,23 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({ onBack, onPaymentSuccess 
 
             <div className="flex items-center space-x-2 text-sm">
               <Shield className="w-4 h-4 text-orange-500" />
-              <span className="text-orange-600 font-medium">Paiement sécurisé par Flutterwave</span>
+              <span className="text-orange-600 font-medium">Paiement sécurisé par AfribaPay</span>
             </div>
           </CardContent>
         </Card>
 
         <div className="space-y-4">
-          <FlutterWaveButton
-            {...fwConfig}
+          <Button
+            onClick={handleAfribaPayment}
+            disabled={!isFormValid || !selectedCountry || isLoading}
             className={`w-full py-3 px-4 rounded-md font-medium transition-all duration-200 ${
               isFormValid 
                 ? 'bg-medical-teal hover:bg-medical-teal/90 text-white' 
                 : 'bg-muted text-muted-foreground cursor-not-allowed'
             }`}
-            disabled={!isFormValid || !selectedCountry}
-          />
+          >
+            {isLoading ? 'Traitement...' : (convertedPrices ? `Payer ${convertedPrices.formatted}` : `Payer ${((selectedPlan?.price_eur || 800) / 100).toFixed(0)}€`)}
+          </Button>
 
           <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
             <h4 className="font-semibold text-orange-700 mb-2 flex items-center">
