@@ -512,16 +512,6 @@ const AuthPage = () => {
               </TabsContent>
 
               <TabsContent value="family" className="mt-6">
-                <div className="text-center mb-4">
-                  <div className="w-12 h-12 bg-secondary/20 rounded-full mx-auto mb-2 flex items-center justify-center">
-                    <Users className="w-6 h-6 text-secondary" />
-                  </div>
-                  <h3 className="font-semibold text-foreground">DiaCare Famille</h3>
-                  <p className="text-sm text-muted-foreground">10€/mois - Forfait familial pour 3 membres</p>
-                  <div className="mt-2 text-xs text-muted-foreground">
-                    Accès au dossier patient • Alertes • Pas de DiaCare Chat
-                  </div>
-                </div>
 
                 <form onSubmit={handleFamilyAccess} className="space-y-4">
                   <div className="space-y-2">
@@ -536,7 +526,7 @@ const AuthPage = () => {
                       required
                     />
                     <p className="text-xs text-muted-foreground text-center">
-                      Code fourni par le patient DiaCare Famille
+                      Code fourni par le patient
                     </p>
                   </div>
 
@@ -545,7 +535,7 @@ const AuthPage = () => {
                     className="w-full" 
                     disabled={isLoading || !familyData.patientCode}
                   >
-                    {isLoading ? 'Connexion...' : 'Accéder aux données famille'}
+                    {isLoading ? 'Connexion...' : 'Accéder à l\'espace famille'}
                   </Button>
                 </form>
 
