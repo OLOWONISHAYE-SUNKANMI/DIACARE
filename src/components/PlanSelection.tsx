@@ -142,16 +142,6 @@ const PlanSelection: React.FC<PlanSelectionProps> = ({ onPlanSelected, onClose }
                         </div>
                       )) : null}
                       
-                      {!isPatientPlan && (
-                        <div className="flex items-center gap-3">
-                          <div className="w-5 h-5 rounded-full bg-success/20 flex items-center justify-center flex-shrink-0">
-                            <Check className="w-3 h-3 text-success" />
-                          </div>
-                          <span className="text-sm text-foreground">
-                            Jusqu'à {plan.max_family_members} membres de famille
-                          </span>
-                        </div>
-                      )}
                     </div>
 
                     <div className="pt-4 border-t">

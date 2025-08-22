@@ -229,8 +229,13 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({ onBack, onPaymentSuccess 
           <div className="bg-medical-teal/5 rounded-lg p-4">
             <h4 className="font-semibold text-medical-teal mb-2">Méthodes de paiement acceptées</h4>
             <div className="text-sm text-muted-foreground space-y-1">
-              <p>💳 Cartes bancaires (Visa, Mastercard)</p>
-              <p>📱 Mobile Money (Orange, MTN, Airtel, etc.)</p>
+              <p>📱 Orange Money</p>
+              <p>📱 MTN Money</p>
+              <p>📱 Wave</p>
+              <p>📱 Djamo</p>
+              <p>📱 M-Pesa</p>
+              <p>📱 Airtel Money</p>
+              <p>💳 Visa & Mastercard</p>
               <p>🏦 Virements bancaires et USSD</p>
             </div>
           </div>
