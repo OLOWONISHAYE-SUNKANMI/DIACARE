@@ -49,11 +49,13 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
 
         {/* Quick Actions */}
         <QuickActionsGrid onActionPress={(action) => {
-          console.log("Action pressed:", action); // Debug log
+          console.log("Action pressed:", action, "Setting activeModal to:", action);
           if (action === "reminders") {
             onTabChange?.("reminders");
           } else {
+            console.log("Before setActiveModal, current activeModal:", activeModal);
             setActiveModal(action);
+            console.log("After setActiveModal called");
           }
         }} />
 
