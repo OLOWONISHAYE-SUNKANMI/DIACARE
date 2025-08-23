@@ -57,8 +57,7 @@ export const ProfessionalAccessModal = ({ isOpen, onClose }: ProfessionalAccessM
           professional_type: formData.profession,
           license_number: formData.licenseNumber,
           institution: formData.institution,
-          country: 'FR',
-          status: 'pending'
+          country: 'FR'
         });
 
       if (error) throw error;
@@ -181,7 +180,6 @@ export const ProfessionalAccessModal = ({ isOpen, onClose }: ProfessionalAccessM
               value={formData.motivation}
               onChange={(e) => setFormData({ ...formData, motivation: e.target.value })}
               placeholder={t('professionalAccess.motivationPlaceholder')}
-              required
             />
           </div>
 
