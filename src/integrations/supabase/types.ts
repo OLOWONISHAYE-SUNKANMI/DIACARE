@@ -217,6 +217,36 @@ export type Database = {
           },
         ]
       }
+      chat_messages: {
+        Row: {
+          consultation_id: string
+          created_at: string
+          id: string
+          message: string
+          sender_id: string
+          sender_role: string
+          updated_at: string
+        }
+        Insert: {
+          consultation_id: string
+          created_at?: string
+          id?: string
+          message: string
+          sender_id: string
+          sender_role: string
+          updated_at?: string
+        }
+        Update: {
+          consultation_id?: string
+          created_at?: string
+          id?: string
+          message?: string
+          sender_id?: string
+          sender_role?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       community_challenges: {
         Row: {
           challenge_type: Database["public"]["Enums"]["challenge_type"]

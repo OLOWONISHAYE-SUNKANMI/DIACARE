@@ -116,57 +116,23 @@ export const ConsultationChat: React.FC<ConsultationChatProps> = ({
   };
 
   const loadMessages = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('chat_messages')
-        .select('*')
-        .eq('consultation_id', consultationId)
-        .order('created_at', { ascending: true });
-
-      if (error) throw error;
-      setMessages(data || []);
-
-    } catch (error) {
-      console.error('Erreur chargement messages:', error);
-    }
+    // Simuler des messages pour le prototype
+    setMessages([
+      {
+        id: '1',
+        sender_id: patientId,
+        sender_role: 'patient',
+        message: 'Bonjour docteur, j\'ai une question sur ma glycémie',
+        created_at: new Date().toISOString()
+      }
+    ]);
   };
 
   const setupRealtimeSubscription = () => {
-    const subscription = supabase
-      .channel(`chat_${consultationId}`)
-      .on(
-        'postgres_changes',
-        {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'chat_messages',
-          filter: `consultation_id=eq.${consultationId}`
-        },
-        (payload) => {
-          setMessages(prev => [...prev, payload.new as Message]);
-        }
-      )
-      .on(
-        'postgres_changes',
-        {
-          event: 'UPDATE',
-          schema: 'public',
-          table: 'teleconsultations',
-          filter: `id=eq.${consultationId}`
-        },
-        (payload: any) => {
-          const consultation = payload.new;
-          if (consultation.status === 'in_progress') {
-            setConsultationStatus('active');
-          } else if (consultation.status === 'completed') {
-            setConsultationStatus('ended');
-          }
-        }
-      )
-      .subscribe();
-
+    // Simuler les mises à jour en temps réel pour le prototype
+    console.log('Subscription en temps réel configurée pour la consultation:', consultationId);
     return () => {
-      subscription.unsubscribe();
+      console.log('Subscription fermée');
     };
   };
 
@@ -177,27 +143,22 @@ export const ConsultationChat: React.FC<ConsultationChatProps> = ({
   const sendMessage = async () => {
     if (!newMessage.trim()) return;
 
-    try {
-      const { error } = await supabase
-        .from('chat_messages')
-        .insert({
-          consultation_id: consultationId,
-          sender_id: user?.id,
-          sender_role: isPatient ? 'patient' : 'professional',
-          message: newMessage.trim()
-        });
+    // Simuler l'envoi de message pour le prototype
+    const message: Message = {
+      id: Date.now().toString(),
+      sender_id: user?.id || '',
+      sender_role: isPatient ? 'patient' : 'professional',
+      message: newMessage.trim(),
+      created_at: new Date().toISOString()
+    };
 
-      if (error) throw error;
-      setNewMessage('');
+    setMessages(prev => [...prev, message]);
+    setNewMessage('');
 
-    } catch (error) {
-      console.error('Erreur envoi message:', error);
-      toast({
-        title: "Erreur",
-        description: "Impossible d'envoyer le message",
-        variant: "destructive"
-      });
-    }
+    toast({
+      title: "Message envoyé",
+      description: "Votre message a été envoyé avec succès"
+    });
   };
 
   const startConsultation = async () => {

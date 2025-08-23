@@ -12,6 +12,7 @@ import { PatientManagement } from "@/components/ui/PatientManagement";
 import { QuickActions } from "@/components/ui/QuickActions";
 import { CostBreakdownByProfessional } from "@/components/ui/CostBredownByProfessional";
 import { ProfessionalNotificationCenter } from "@/components/ui/ProfessionalNotificationCenter";
+import { ProfessionalConsultationDashboard } from "@/components/ui/ProfessionalConsultationDashboard";
 
 interface DemoUser {
   id: string;
@@ -192,14 +193,7 @@ export const ProfessionalDashboard = () => {
           </TabsContent>
 
           <TabsContent value="consultations">
-            <Card>
-              <CardHeader>
-                <CardTitle>Planning des consultations</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">Interface de planning en cours de développement...</p>
-              </CardContent>
-            </Card>
+            <ProfessionalConsultationDashboard professionalId={demoUser.id} />
           </TabsContent>
 
           <TabsContent value="earnings">
