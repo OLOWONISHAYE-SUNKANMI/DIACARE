@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import Select from 'react-select';
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -28,6 +28,15 @@ export const ProfessionalAccessModal = ({ isOpen, onClose }: ProfessionalAccessM
     motivation: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const professionOptions = [
+    { value: 'doctor', label: t('professionalAccess.doctor') },
+    { value: 'nurse', label: t('professionalAccess.nurse') },
+    { value: 'diabetologist', label: t('professionalAccess.diabetologist') },
+    { value: 'nutritionist', label: t('professionalAccess.nutritionist') },
+    { value: 'pharmacist', label: t('professionalAccess.pharmacist') },
+    { value: 'other', label: t('professionalAccess.other') }
+  ];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -131,19 +140,52 @@ export const ProfessionalAccessModal = ({ isOpen, onClose }: ProfessionalAccessM
 
           <div>
             <Label htmlFor="profession">{t('professionalAccess.profession')}</Label>
-            <Select onValueChange={(value) => setFormData({ ...formData, profession: value })}>
-              <SelectTrigger>
-                <SelectValue placeholder={t('professionalAccess.selectProfession')} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="doctor">{t('professionalAccess.doctor')}</SelectItem>
-                <SelectItem value="nurse">{t('professionalAccess.nurse')}</SelectItem>
-                <SelectItem value="diabetologist">{t('professionalAccess.diabetologist')}</SelectItem>
-                <SelectItem value="nutritionist">{t('professionalAccess.nutritionist')}</SelectItem>
-                <SelectItem value="pharmacist">{t('professionalAccess.pharmacist')}</SelectItem>
-                <SelectItem value="other">{t('professionalAccess.other')}</SelectItem>
-              </SelectContent>
-            </Select>
+            <Select
+              value={professionOptions.find(option => option.value === formData.profession)}
+              onChange={(selectedOption) => 
+                setFormData({ ...formData, profession: selectedOption?.value || '' })
+              }
+              options={professionOptions}
+              placeholder={t('professionalAccess.selectProfession')}
+              menuPortalTarget={document.body}
+              styles={{
+                menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+                control: (base) => ({
+                  ...base,
+                  minHeight: '40px',
+                  border: '1px solid hsl(var(--border))',
+                  borderRadius: '6px',
+                  backgroundColor: 'hsl(var(--background))',
+                  '&:hover': {
+                    borderColor: 'hsl(var(--border))',
+                  },
+                }),
+                menu: (base) => ({
+                  ...base,
+                  backgroundColor: 'hsl(var(--background))',
+                  border: '1px solid hsl(var(--border))',
+                }),
+                option: (base, state) => ({
+                  ...base,
+                  backgroundColor: state.isFocused 
+                    ? 'hsl(var(--accent))' 
+                    : 'hsl(var(--background))',
+                  color: 'hsl(var(--foreground))',
+                  '&:hover': {
+                    backgroundColor: 'hsl(var(--accent))',
+                  },
+                }),
+                singleValue: (base) => ({
+                  ...base,
+                  color: 'hsl(var(--foreground))',
+                }),
+                placeholder: (base) => ({
+                  ...base,
+                  color: 'hsl(var(--muted-foreground))',
+                }),
+              }}
+              classNamePrefix="react-select"
+            />
           </div>
 
           <div>
