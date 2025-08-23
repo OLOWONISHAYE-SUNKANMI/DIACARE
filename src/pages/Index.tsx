@@ -24,6 +24,9 @@ import HealthProfessionalScreen from "@/components/screens/HealthProfessionalScr
 import AdminDashboard from "@/components/screens/AdminDashboard";
 import { AdminApplicationReview } from "@/components/screens/AdminApplicationReview";
 import PatientAccessScreen from "@/components/screens/PatientAccessScreen";
+import ProfessionalRequestDashboard from "@/components/screens/ProfessionalRequestDashboard";
+import PatientAccessInterface from "@/components/ui/PatientAccessInterface";
+import CalendarScheduler from "@/components/ui/CalendarScheduler";
 import { useAuth } from "@/contexts/AuthContext";
 import { GlucoseProvider } from "@/contexts/GlucoseContext";
 
@@ -95,6 +98,8 @@ const Index = () => {
         return <ConsultationRequest />;
       case "professional-dashboard-new":
         return <ProfessionalDashboardNew />;
+      case "professional-requests":
+        return <ProfessionalRequestDashboard professionalId={professionalData?.id} />;
       case "payment":
         return (
           <PaymentScreen 
@@ -104,6 +109,12 @@ const Index = () => {
         );
       case "patient-access":
         return <PatientAccessScreen />;
+      case "patient-access-interface":
+        return <PatientAccessInterface />;
+      case "calendar":
+        return <CalendarScheduler professionalId={professionalData?.id} />;
+      case "patient-calendar":
+        return <CalendarScheduler patientView={true} />;
       case "reminders":
         return <RemindersScreen />;
       default:
