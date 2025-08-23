@@ -71,23 +71,23 @@ export const PatientManagement = () => {
       switch (type) {
         case 'view':
           console.log('Ouverture du dossier patient...');
-          popupWindow = window.open(`/patient/${patientId}?code=${patientCode}`, 'patientFile', popupOptions);
+          popupWindow = window.open(`data:text/html,<html><head><title>Dossier Patient - ${selectedAction.patientName}</title></head><body style="font-family:Arial,sans-serif;padding:20px;"><h1>Dossier Patient</h1><h2>${selectedAction.patientName}</h2><p>Code Patient: ${patientCode}</p><p>ID: ${patientId}</p><p>Cette fenêtre simule l'accès au dossier patient complet.</p></body></html>`, 'patientFile', popupOptions);
           break;
         case 'message':
           console.log('Ouverture de la messagerie...');
-          popupWindow = window.open(`/chat/${patientId}?code=${patientCode}`, 'patientMessage', 'width=800,height=600,scrollbars=yes,resizable=yes,toolbar=no,menubar=no,location=no,status=no');
+          popupWindow = window.open(`data:text/html,<html><head><title>Messagerie - ${selectedAction.patientName}</title></head><body style="font-family:Arial,sans-serif;padding:20px;"><h1>Messagerie</h1><h2>Conversation avec ${selectedAction.patientName}</h2><p>Code Patient: ${patientCode}</p><div style="border:1px solid #ccc;padding:10px;margin:10px 0;border-radius:5px;">Interface de messagerie sécurisée</div></body></html>`, 'patientMessage', 'width=800,height=600,scrollbars=yes,resizable=yes,toolbar=no,menubar=no,location=no,status=no');
           break;
         case 'teleconsultation':
           console.log('Ouverture de la téléconsultation...');
-          popupWindow = window.open(`/teleconsultation/${patientId}?code=${patientCode}`, 'teleconsultation', 'width=1400,height=900,scrollbars=yes,resizable=yes,toolbar=no,menubar=no,location=no,status=no');
+          popupWindow = window.open(`data:text/html,<html><head><title>Téléconsultation - ${selectedAction.patientName}</title></head><body style="font-family:Arial,sans-serif;padding:20px;background:#f0f0f0;"><h1>Téléconsultation</h1><h2>Session avec ${selectedAction.patientName}</h2><p>Code Patient: ${patientCode}</p><div style="background:#000;color:#fff;padding:20px;text-align:center;margin:20px 0;border-radius:10px;">🎥 Interface vidéo de téléconsultation</div></body></html>`, 'teleconsultation', 'width=1400,height=900,scrollbars=yes,resizable=yes,toolbar=no,menubar=no,location=no,status=no');
           break;
         case 'call':
           console.log('Ouverture de l\'interface d\'appel...');
-          popupWindow = window.open(`/call-interface/${patientId}?code=${patientCode}`, 'callInterface', 'width=400,height=300,scrollbars=no,resizable=no,toolbar=no,menubar=no,location=no,status=no');
+          popupWindow = window.open(`data:text/html,<html><head><title>Appel - ${selectedAction.patientName}</title></head><body style="font-family:Arial,sans-serif;padding:20px;text-align:center;background:#e8f5e8;"><h1>Interface d'Appel</h1><h2>${selectedAction.patientName}</h2><p>Code: ${patientCode}</p><div style="background:#4CAF50;color:white;padding:15px;margin:20px;border-radius:50px;cursor:pointer;">📞 Composer le numéro</div></body></html>`, 'callInterface', 'width=400,height=300,scrollbars=no,resizable=no,toolbar=no,menubar=no,location=no,status=no');
           break;
         case 'edit':
           console.log('Ouverture du mode édition...');
-          popupWindow = window.open(`/patient/${patientId}/edit?code=${patientCode}`, 'editProfile', popupOptions);
+          popupWindow = window.open(`data:text/html,<html><head><title>Édition - ${selectedAction.patientName}</title></head><body style="font-family:Arial,sans-serif;padding:20px;"><h1>Édition du Profil</h1><h2>${selectedAction.patientName}</h2><p>Code Patient: ${patientCode}</p><form style="margin:20px 0;"><label>Nom: <input type="text" value="${selectedAction.patientName}" style="margin:5px;padding:5px;"></label><br><br><label>Notes: <textarea style="margin:5px;padding:5px;width:300px;height:100px;"></textarea></label></form></body></html>`, 'editProfile', popupOptions);
           break;
       }
 
