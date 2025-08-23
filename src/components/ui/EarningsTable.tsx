@@ -15,16 +15,16 @@ interface Earning {
 }
 
 export const EarningsTable = () => {
-  // Données de démo
+  // Données de démo pour un endocrinologue (600 F CFA par consultation)
   const earnings: Earning[] = [
     {
       id: "1",
       date: "2024-01-15",
       patient: "Marie D.",
-      consultationType: "Téléconsultation",
-      amount: 5000,
-      platformFee: 500,
-      netAmount: 4500,
+      consultationType: "Consultation endocrinologie",
+      amount: 600,
+      platformFee: 60,
+      netAmount: 540,
       status: "paid"
     },
     {
@@ -32,19 +32,19 @@ export const EarningsTable = () => {
       date: "2024-01-14",
       patient: "Pierre M.",
       consultationType: "Suivi diabète",
-      amount: 7500,
-      platformFee: 750,
-      netAmount: 6750,
+      amount: 600,
+      platformFee: 60,
+      netAmount: 540,
       status: "paid"
     },
     {
       id: "3",
       date: "2024-01-13",
       patient: "Sophie L.",
-      consultationType: "Consultation urgente",
-      amount: 10000,
-      platformFee: 1000,
-      netAmount: 9000,
+      consultationType: "Consultation endocrinologie",
+      amount: 600,
+      platformFee: 60,
+      netAmount: 540,
       status: "processing"
     },
     {
@@ -52,10 +52,30 @@ export const EarningsTable = () => {
       date: "2024-01-12",
       patient: "Jean B.",
       consultationType: "Téléconsultation",
-      amount: 5000,
-      platformFee: 500,
-      netAmount: 4500,
+      amount: 600,
+      platformFee: 60,
+      netAmount: 540,
       status: "pending"
+    },
+    {
+      id: "5",
+      date: "2024-01-11",
+      patient: "Anne C.",
+      consultationType: "Consultation endocrinologie",
+      amount: 600,
+      platformFee: 60,
+      netAmount: 540,
+      status: "paid"
+    },
+    {
+      id: "6",
+      date: "2024-01-10",
+      patient: "Michel R.",
+      consultationType: "Suivi hormonal",
+      amount: 600,
+      platformFee: 60,
+      netAmount: 540,
+      status: "paid"
     }
   ];
 
