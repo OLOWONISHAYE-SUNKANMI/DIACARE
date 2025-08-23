@@ -202,23 +202,38 @@ export const PatientManagement = () => {
                             align="end" 
                             className="z-50 bg-background border shadow-lg"
                           >
-                            <DropdownMenuItem className="cursor-pointer">
+                            <DropdownMenuItem 
+                              className="cursor-pointer"
+                              onClick={() => window.open(`/patient/${patient.id}`, '_blank')}
+                            >
                               <Eye className="mr-2 h-4 w-4" />
                               Voir le dossier
                             </DropdownMenuItem>
-                            <DropdownMenuItem className="cursor-pointer">
+                            <DropdownMenuItem 
+                              className="cursor-pointer"
+                              onClick={() => window.open(`/chat/${patient.id}`, '_blank')}
+                            >
                               <MessageSquare className="mr-2 h-4 w-4" />
                               Envoyer un message
                             </DropdownMenuItem>
-                            <DropdownMenuItem className="cursor-pointer">
+                            <DropdownMenuItem 
+                              className="cursor-pointer"
+                              onClick={() => window.open(`/teleconsultation/${patient.id}`, '_blank')}
+                            >
                               <Video className="mr-2 h-4 w-4" />
                               Téléconsultation
                             </DropdownMenuItem>
-                            <DropdownMenuItem className="cursor-pointer">
+                            <DropdownMenuItem 
+                              className="cursor-pointer"
+                              onClick={() => window.location.href = `tel:+33123456789`}
+                            >
                               <Phone className="mr-2 h-4 w-4" />
                               Appeler
                             </DropdownMenuItem>
-                            <DropdownMenuItem className="cursor-pointer">
+                            <DropdownMenuItem 
+                              className="cursor-pointer"
+                              onClick={() => window.open(`/patient/${patient.id}/edit`, '_blank')}
+                            >
                               <Edit className="mr-2 h-4 w-4" />
                               Modifier le profil
                             </DropdownMenuItem>
