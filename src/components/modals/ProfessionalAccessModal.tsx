@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import Select from 'react-select';
+import { ProfessionSelectionModal } from "./ProfessionSelectionModal";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -28,15 +28,19 @@ export const ProfessionalAccessModal = ({ isOpen, onClose }: ProfessionalAccessM
     motivation: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isProfessionModalOpen, setIsProfessionModalOpen] = useState(false);
 
-  const professionOptions = [
-    { value: 'doctor', label: t('professionalAccess.doctor') },
-    { value: 'nurse', label: t('professionalAccess.nurse') },
-    { value: 'diabetologist', label: t('professionalAccess.diabetologist') },
-    { value: 'nutritionist', label: t('professionalAccess.nutritionist') },
-    { value: 'pharmacist', label: t('professionalAccess.pharmacist') },
-    { value: 'other', label: t('professionalAccess.other') }
-  ];
+  const getProfessionLabel = (value: string) => {
+    const options = {
+      'doctor': t('professionalAccess.doctor'),
+      'nurse': t('professionalAccess.nurse'),
+      'diabetologist': t('professionalAccess.diabetologist'),
+      'nutritionist': t('professionalAccess.nutritionist'),
+      'pharmacist': t('professionalAccess.pharmacist'),
+      'other': t('professionalAccess.other')
+    };
+    return options[value as keyof typeof options] || '';
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -140,74 +144,14 @@ export const ProfessionalAccessModal = ({ isOpen, onClose }: ProfessionalAccessM
 
           <div>
             <Label htmlFor="profession">{t('professionalAccess.profession')}</Label>
-            <Select
-              value={professionOptions.find(option => option.value === formData.profession) || null}
-              onChange={(selectedOption) => 
-                setFormData({ ...formData, profession: selectedOption?.value || '' })
-              }
-              options={professionOptions}
-              placeholder={t('professionalAccess.selectProfession')}
-              menuPortalTarget={document.body}
-              menuPosition="fixed"
-              isSearchable={false}
-              styles={{
-                menuPortal: (base) => ({ 
-                  ...base, 
-                  zIndex: 9999 
-                }),
-                control: (base, state) => ({
-                  ...base,
-                  minHeight: '40px',
-                  border: `1px solid ${state.isFocused ? 'hsl(var(--ring))' : 'hsl(var(--border))'}`,
-                  borderRadius: '6px',
-                  backgroundColor: 'hsl(var(--background))',
-                  boxShadow: state.isFocused ? '0 0 0 2px hsl(var(--ring))' : 'none',
-                  cursor: 'pointer',
-                  '&:hover': {
-                    borderColor: 'hsl(var(--border))',
-                  },
-                }),
-                menu: (base) => ({
-                  ...base,
-                  backgroundColor: 'hsl(var(--popover))',
-                  border: '1px solid hsl(var(--border))',
-                  borderRadius: '6px',
-                  boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-                }),
-                option: (base, state) => ({
-                  ...base,
-                  backgroundColor: state.isFocused 
-                    ? 'hsl(var(--accent))' 
-                    : 'transparent',
-                  color: 'hsl(var(--popover-foreground))',
-                  cursor: 'pointer',
-                  padding: '8px 12px',
-                  '&:hover': {
-                    backgroundColor: 'hsl(var(--accent))',
-                  },
-                  '&:active': {
-                    backgroundColor: 'hsl(var(--accent))',
-                  }
-                }),
-                singleValue: (base) => ({
-                  ...base,
-                  color: 'hsl(var(--foreground))',
-                }),
-                placeholder: (base) => ({
-                  ...base,
-                  color: 'hsl(var(--muted-foreground))',
-                }),
-                indicatorSeparator: () => ({ display: 'none' }),
-                dropdownIndicator: (base) => ({
-                  ...base,
-                  color: 'hsl(var(--muted-foreground))',
-                  '&:hover': {
-                    color: 'hsl(var(--foreground))',
-                  }
-                })
-              }}
-              classNamePrefix="react-select"
-            />
+            <div
+              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background cursor-pointer hover:bg-accent/50 transition-colors"
+              onClick={() => setIsProfessionModalOpen(true)}
+            >
+              <span className={formData.profession ? "text-foreground" : "text-muted-foreground"}>
+                {formData.profession ? getProfessionLabel(formData.profession) : t('professionalAccess.selectProfession')}
+              </span>
+            </div>
           </div>
 
           <div>
@@ -250,6 +194,13 @@ export const ProfessionalAccessModal = ({ isOpen, onClose }: ProfessionalAccessM
             </Button>
           </div>
         </form>
+
+        <ProfessionSelectionModal
+          isOpen={isProfessionModalOpen}
+          onClose={() => setIsProfessionModalOpen(false)}
+          selectedValue={formData.profession}
+          onSelect={(value) => setFormData({ ...formData, profession: value })}
+        />
       </DialogContent>
     </Dialog>
   );

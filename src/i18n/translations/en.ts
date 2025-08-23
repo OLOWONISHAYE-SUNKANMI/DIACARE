@@ -373,7 +373,9 @@ export const en = {
     thisWeek: "This week",
     thisMonth: "This month",
     mg_dl: "mg/dL",
-    mmol_l: "mmol/L"
+    mmol_l: "mmol/L",
+    send: "Send",
+    sending: "Sending..."
   },
 
   // Notifications
