@@ -11,6 +11,7 @@ import { EarningsTable } from "@/components/ui/EarningsTable";
 import { PatientManagement } from "@/components/ui/PatientManagement";
 import { QuickActions } from "@/components/ui/QuickActions";
 import { CostBreakdownByProfessional } from "@/components/ui/CostBredownByProfessional";
+import { ProfessionalNotificationCenter } from "@/components/ui/ProfessionalNotificationCenter";
 
 interface DemoUser {
   id: string;
@@ -87,6 +88,7 @@ export const ProfessionalDashboard = () => {
               </div>
             </div>
             <div className="flex items-center space-x-2">
+              <ProfessionalNotificationCenter professionalId={demoUser.id} />
               <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
                 🚀 Mode Demo
               </Badge>
