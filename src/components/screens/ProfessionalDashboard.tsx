@@ -7,6 +7,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Calendar, Users, FileText, Settings, LogOut, Stethoscope, Clock, TrendingUp } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import { EarningsTable } from "@/components/ui/EarningsTable";
+import { PatientManagement } from "@/components/ui/PatientManagement";
 
 interface DemoUser {
   id: string;
@@ -122,10 +124,11 @@ export const ProfessionalDashboard = () => {
 
         {/* Main Content */}
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="overview">Vue d'ensemble</TabsTrigger>
             <TabsTrigger value="patients">Patients</TabsTrigger>
             <TabsTrigger value="consultations">Consultations</TabsTrigger>
+            <TabsTrigger value="earnings">Revenus</TabsTrigger>
             <TabsTrigger value="settings">Paramètres</TabsTrigger>
           </TabsList>
 
@@ -196,14 +199,7 @@ export const ProfessionalDashboard = () => {
           </TabsContent>
 
           <TabsContent value="patients">
-            <Card>
-              <CardHeader>
-                <CardTitle>Gestion des patients</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">Interface de gestion des patients en cours de développement...</p>
-              </CardContent>
-            </Card>
+            <PatientManagement />
           </TabsContent>
 
           <TabsContent value="consultations">
@@ -215,6 +211,10 @@ export const ProfessionalDashboard = () => {
                 <p className="text-muted-foreground">Interface de planning en cours de développement...</p>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="earnings">
+            <EarningsTable />
           </TabsContent>
 
           <TabsContent value="settings">
