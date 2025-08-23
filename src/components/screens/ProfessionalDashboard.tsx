@@ -10,7 +10,7 @@ import { toast } from "@/hooks/use-toast";
 import { EarningsTable } from "@/components/ui/EarningsTable";
 import { PatientManagement } from "@/components/ui/PatientManagement";
 import { QuickActions } from "@/components/ui/QuickActions";
-import { CostBreakdownByProfessional } from "@/components/ui/CostBredownByProfessional";
+
 import { ProfessionalNotificationCenter } from "@/components/ui/ProfessionalNotificationCenter";
 import { ProfessionalConsultationDashboard } from "@/components/ui/ProfessionalConsultationDashboard";
 
@@ -199,7 +199,17 @@ export const ProfessionalDashboard = () => {
           <TabsContent value="earnings">
             <div className="space-y-6">
               <EarningsTable />
-              <CostBreakdownByProfessional />
+              <Card>
+                <CardHeader>
+                  <CardTitle>Revenus par consultation</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">
+                    Les revenus sont calculés automatiquement selon les tarifs par profession définis dans le système. 
+                    Chaque consultation terminée ajoute le montant correspondant à vos revenus.
+                  </p>
+                </CardContent>
+              </Card>
             </div>
           </TabsContent>
 
