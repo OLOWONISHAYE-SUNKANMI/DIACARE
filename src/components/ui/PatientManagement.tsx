@@ -53,33 +53,53 @@ export const PatientManagement = () => {
   };
 
   const handlePatientCodeSubmit = () => {
-    if (!patientCode.trim() || !selectedAction) return;
+    if (!patientCode.trim() || !selectedAction) {
+      console.log('Code patient vide ou action non sélectionnée');
+      return;
+    }
 
-    // Ici vous pourriez ajouter une validation du code patient
-    console.log(`Code patient: ${patientCode} pour ${selectedAction.patientName}`);
+    console.log(`Tentative d'ouverture: ${selectedAction.type} pour ${selectedAction.patientName} avec le code: ${patientCode}`);
 
     const { type, patientId } = selectedAction;
 
     // Options pour les fenêtres pop-up
     const popupOptions = 'width=1200,height=800,scrollbars=yes,resizable=yes,toolbar=no,menubar=no,location=no,status=no';
 
-    switch (type) {
-      case 'view':
-        window.open(`/patient/${patientId}?code=${patientCode}`, 'patientFile', popupOptions);
-        break;
-      case 'message':
-        window.open(`/chat/${patientId}?code=${patientCode}`, 'patientMessage', 'width=800,height=600,scrollbars=yes,resizable=yes,toolbar=no,menubar=no,location=no,status=no');
-        break;
-      case 'teleconsultation':
-        window.open(`/teleconsultation/${patientId}?code=${patientCode}`, 'teleconsultation', 'width=1400,height=900,scrollbars=yes,resizable=yes,toolbar=no,menubar=no,location=no,status=no');
-        break;
-      case 'call':
-        // Pour l'appel, on ouvre une petite fenêtre de confirmation
-        window.open(`/call-interface/${patientId}?code=${patientCode}`, 'callInterface', 'width=400,height=300,scrollbars=no,resizable=no,toolbar=no,menubar=no,location=no,status=no');
-        break;
-      case 'edit':
-        window.open(`/patient/${patientId}/edit?code=${patientCode}`, 'editProfile', popupOptions);
-        break;
+    try {
+      let popupWindow;
+      
+      switch (type) {
+        case 'view':
+          console.log('Ouverture du dossier patient...');
+          popupWindow = window.open(`/patient/${patientId}?code=${patientCode}`, 'patientFile', popupOptions);
+          break;
+        case 'message':
+          console.log('Ouverture de la messagerie...');
+          popupWindow = window.open(`/chat/${patientId}?code=${patientCode}`, 'patientMessage', 'width=800,height=600,scrollbars=yes,resizable=yes,toolbar=no,menubar=no,location=no,status=no');
+          break;
+        case 'teleconsultation':
+          console.log('Ouverture de la téléconsultation...');
+          popupWindow = window.open(`/teleconsultation/${patientId}?code=${patientCode}`, 'teleconsultation', 'width=1400,height=900,scrollbars=yes,resizable=yes,toolbar=no,menubar=no,location=no,status=no');
+          break;
+        case 'call':
+          console.log('Ouverture de l\'interface d\'appel...');
+          popupWindow = window.open(`/call-interface/${patientId}?code=${patientCode}`, 'callInterface', 'width=400,height=300,scrollbars=no,resizable=no,toolbar=no,menubar=no,location=no,status=no');
+          break;
+        case 'edit':
+          console.log('Ouverture du mode édition...');
+          popupWindow = window.open(`/patient/${patientId}/edit?code=${patientCode}`, 'editProfile', popupOptions);
+          break;
+      }
+
+      if (popupWindow) {
+        console.log('Fenêtre pop-up ouverte avec succès');
+        popupWindow.focus();
+      } else {
+        console.error('Échec d\'ouverture de la fenêtre pop-up - vérifiez les paramètres de blocage des pop-ups');
+        alert('La fenêtre pop-up a été bloquée. Veuillez autoriser les pop-ups pour ce site.');
+      }
+    } catch (error) {
+      console.error('Erreur lors de l\'ouverture de la fenêtre pop-up:', error);
     }
 
     setIsPatientCodeModalOpen(false);
