@@ -7,6 +7,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Calendar } from "@/components/ui/calendar";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Users, Calendar as CalendarIcon, FileText, MessageSquare, Clock, MoreVertical, Eye, Phone, Edit, UserPlus, Video } from "lucide-react";
 
 interface Patient {
@@ -32,6 +35,53 @@ interface Consultation {
 
 export const PatientManagement = () => {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
+  const [isPatientCodeModalOpen, setIsPatientCodeModalOpen] = useState(false);
+  const [patientCode, setPatientCode] = useState('');
+  const [selectedAction, setSelectedAction] = useState<{
+    type: 'view' | 'message' | 'teleconsultation' | 'call' | 'edit';
+    patientId: string;
+    patientName: string;
+  } | null>(null);
+
+  const handlePatientAction = (
+    action: 'view' | 'message' | 'teleconsultation' | 'call' | 'edit',
+    patientId: string,
+    patientName: string
+  ) => {
+    setSelectedAction({ type: action, patientId, patientName });
+    setIsPatientCodeModalOpen(true);
+  };
+
+  const handlePatientCodeSubmit = () => {
+    if (!patientCode.trim() || !selectedAction) return;
+
+    // Ici vous pourriez ajouter une validation du code patient
+    console.log(`Code patient: ${patientCode} pour ${selectedAction.patientName}`);
+
+    const { type, patientId } = selectedAction;
+
+    switch (type) {
+      case 'view':
+        window.open(`/patient/${patientId}?code=${patientCode}`, '_blank');
+        break;
+      case 'message':
+        window.open(`/chat/${patientId}?code=${patientCode}`, '_blank');
+        break;
+      case 'teleconsultation':
+        window.open(`/teleconsultation/${patientId}?code=${patientCode}`, '_blank');
+        break;
+      case 'call':
+        window.location.href = `tel:+33123456789`;
+        break;
+      case 'edit':
+        window.open(`/patient/${patientId}/edit?code=${patientCode}`, '_blank');
+        break;
+    }
+
+    setIsPatientCodeModalOpen(false);
+    setPatientCode('');
+    setSelectedAction(null);
+  };
 
   // Données de démo
   const patients: Patient[] = [
@@ -204,35 +254,35 @@ export const PatientManagement = () => {
                           >
                             <DropdownMenuItem 
                               className="cursor-pointer"
-                              onClick={() => window.open(`/patient/${patient.id}`, '_blank')}
+                              onClick={() => handlePatientAction('view', patient.id, patient.name)}
                             >
                               <Eye className="mr-2 h-4 w-4" />
                               Voir le dossier
                             </DropdownMenuItem>
                             <DropdownMenuItem 
                               className="cursor-pointer"
-                              onClick={() => window.open(`/chat/${patient.id}`, '_blank')}
+                              onClick={() => handlePatientAction('message', patient.id, patient.name)}
                             >
                               <MessageSquare className="mr-2 h-4 w-4" />
                               Envoyer un message
                             </DropdownMenuItem>
                             <DropdownMenuItem 
                               className="cursor-pointer"
-                              onClick={() => window.open(`/teleconsultation/${patient.id}`, '_blank')}
+                              onClick={() => handlePatientAction('teleconsultation', patient.id, patient.name)}
                             >
                               <Video className="mr-2 h-4 w-4" />
                               Téléconsultation
                             </DropdownMenuItem>
                             <DropdownMenuItem 
                               className="cursor-pointer"
-                              onClick={() => window.location.href = `tel:+33123456789`}
+                              onClick={() => handlePatientAction('call', patient.id, patient.name)}
                             >
                               <Phone className="mr-2 h-4 w-4" />
                               Appeler
                             </DropdownMenuItem>
                             <DropdownMenuItem 
                               className="cursor-pointer"
-                              onClick={() => window.open(`/patient/${patient.id}/edit`, '_blank')}
+                              onClick={() => handlePatientAction('edit', patient.id, patient.name)}
                             >
                               <Edit className="mr-2 h-4 w-4" />
                               Modifier le profil
@@ -396,6 +446,52 @@ export const PatientManagement = () => {
           </div>
         </TabsContent>
       </Tabs>
+
+      {/* Modal pour saisir le code patient */}
+      <Dialog open={isPatientCodeModalOpen} onOpenChange={setIsPatientCodeModalOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Code patient requis</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label>
+                Veuillez saisir le code patient pour accéder aux informations de{' '}
+                <span className="font-semibold">{selectedAction?.patientName}</span>
+              </Label>
+              <Input
+                type="text"
+                placeholder="Code patient (ex: ABC123)"
+                value={patientCode}
+                onChange={(e) => setPatientCode(e.target.value.toUpperCase())}
+                onKeyPress={(e) => {
+                  if (e.key === 'Enter') {
+                    handlePatientCodeSubmit();
+                  }
+                }}
+              />
+            </div>
+            <div className="flex justify-end space-x-2">
+              <Button 
+                variant="outline" 
+                onClick={() => {
+                  setIsPatientCodeModalOpen(false);
+                  setPatientCode('');
+                  setSelectedAction(null);
+                }}
+              >
+                Annuler
+              </Button>
+              <Button 
+                onClick={handlePatientCodeSubmit}
+                disabled={!patientCode.trim()}
+              >
+                Accéder
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
