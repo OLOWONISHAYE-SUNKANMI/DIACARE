@@ -13,6 +13,7 @@ import { useToast } from '@/hooks/use-toast';
 import PlanSelection from '@/components/PlanSelection';
 import LanguageSwitcher from '@/components/ui/LanguageSwitcher';
 import { LegalModal } from '@/components/modals/LegalModal';
+import { ProfessionalAccessModal } from '@/components/modals/ProfessionalAccessModal';
 import { supabase } from '@/integrations/supabase/client';
 import { 
   Mail, 
@@ -38,6 +39,7 @@ const AuthPage = () => {
   // États pour les formulaires - MOVED TO TOP
   const [activeTab, setActiveTab] = useState('patient');
   const [patientMode, setPatientMode] = useState<'signin' | 'signup'>('signin');
+  const [professionalAccessModalOpen, setProfessionalAccessModalOpen] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -617,6 +619,11 @@ const AuthPage = () => {
         isOpen={legalModal !== null}
         onClose={() => setLegalModal(null)}
         type={legalModal || 'terms'}
+      />
+
+      <ProfessionalAccessModal 
+        isOpen={professionalAccessModalOpen}
+        onClose={() => setProfessionalAccessModalOpen(false)}
       />
     </div>
   );

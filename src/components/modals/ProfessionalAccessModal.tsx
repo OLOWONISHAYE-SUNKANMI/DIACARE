@@ -35,18 +35,17 @@ export const ProfessionalAccessModal = ({ isOpen, onClose }: ProfessionalAccessM
 
     try {
       const { error } = await supabase
-        .from('professional_access_requests')
+        .from('professional_applications')
         .insert({
           first_name: formData.firstName,
           last_name: formData.lastName,
           email: formData.email,
           phone: formData.phone,
-          profession: formData.profession,
+          professional_type: formData.profession,
           license_number: formData.licenseNumber,
           institution: formData.institution,
-          motivation: formData.motivation,
-          status: 'pending',
-          created_at: new Date().toISOString()
+          country: 'FR',
+          status: 'pending'
         });
 
       if (error) throw error;
