@@ -141,39 +141,53 @@ export const ProfessionalAccessModal = ({ isOpen, onClose }: ProfessionalAccessM
           <div>
             <Label htmlFor="profession">{t('professionalAccess.profession')}</Label>
             <Select
-              value={professionOptions.find(option => option.value === formData.profession)}
+              value={professionOptions.find(option => option.value === formData.profession) || null}
               onChange={(selectedOption) => 
                 setFormData({ ...formData, profession: selectedOption?.value || '' })
               }
               options={professionOptions}
               placeholder={t('professionalAccess.selectProfession')}
               menuPortalTarget={document.body}
+              menuPosition="fixed"
+              isSearchable={false}
               styles={{
-                menuPortal: (base) => ({ ...base, zIndex: 9999 }),
-                control: (base) => ({
+                menuPortal: (base) => ({ 
+                  ...base, 
+                  zIndex: 9999 
+                }),
+                control: (base, state) => ({
                   ...base,
                   minHeight: '40px',
-                  border: '1px solid hsl(var(--border))',
+                  border: `1px solid ${state.isFocused ? 'hsl(var(--ring))' : 'hsl(var(--border))'}`,
                   borderRadius: '6px',
                   backgroundColor: 'hsl(var(--background))',
+                  boxShadow: state.isFocused ? '0 0 0 2px hsl(var(--ring))' : 'none',
+                  cursor: 'pointer',
                   '&:hover': {
                     borderColor: 'hsl(var(--border))',
                   },
                 }),
                 menu: (base) => ({
                   ...base,
-                  backgroundColor: 'hsl(var(--background))',
+                  backgroundColor: 'hsl(var(--popover))',
                   border: '1px solid hsl(var(--border))',
+                  borderRadius: '6px',
+                  boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
                 }),
                 option: (base, state) => ({
                   ...base,
                   backgroundColor: state.isFocused 
                     ? 'hsl(var(--accent))' 
-                    : 'hsl(var(--background))',
-                  color: 'hsl(var(--foreground))',
+                    : 'transparent',
+                  color: 'hsl(var(--popover-foreground))',
+                  cursor: 'pointer',
+                  padding: '8px 12px',
                   '&:hover': {
                     backgroundColor: 'hsl(var(--accent))',
                   },
+                  '&:active': {
+                    backgroundColor: 'hsl(var(--accent))',
+                  }
                 }),
                 singleValue: (base) => ({
                   ...base,
@@ -183,6 +197,14 @@ export const ProfessionalAccessModal = ({ isOpen, onClose }: ProfessionalAccessM
                   ...base,
                   color: 'hsl(var(--muted-foreground))',
                 }),
+                indicatorSeparator: () => ({ display: 'none' }),
+                dropdownIndicator: (base) => ({
+                  ...base,
+                  color: 'hsl(var(--muted-foreground))',
+                  '&:hover': {
+                    color: 'hsl(var(--foreground))',
+                  }
+                })
               }}
               classNamePrefix="react-select"
             />
