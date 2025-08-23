@@ -255,47 +255,73 @@ export const PatientManagement = () => {
                       <TableCell>{patient.lastGlucose}</TableCell>
                       <TableCell>{getStatusBadge(patient.status)}</TableCell>
                       <TableCell>
-                        <DropdownMenu>
+                        <DropdownMenu modal={false}>
                           <DropdownMenuTrigger asChild>
-                            <Button size="sm" variant="outline" className="h-8 w-8 p-0">
+                            <Button 
+                              size="sm" 
+                              variant="outline" 
+                              className="h-8 w-8 p-0 hover:bg-accent"
+                            >
                               <MoreVertical className="h-4 w-4" />
                             </Button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent 
                             align="end" 
-                            className="z-50 bg-background border shadow-lg"
+                            className="z-[100] min-w-48 bg-background border border-border shadow-md rounded-md p-1"
+                            side="bottom"
+                            sideOffset={4}
                           >
                             <DropdownMenuItem 
-                              className="cursor-pointer"
-                              onClick={() => handlePatientAction('view', patient.id, patient.name)}
+                              className="cursor-pointer hover:bg-accent hover:text-accent-foreground rounded-sm px-2 py-1.5 text-sm"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                handlePatientAction('view', patient.id, patient.name);
+                              }}
                             >
                               <Eye className="mr-2 h-4 w-4" />
                               Voir le dossier
                             </DropdownMenuItem>
                             <DropdownMenuItem 
-                              className="cursor-pointer"
-                              onClick={() => handlePatientAction('message', patient.id, patient.name)}
+                              className="cursor-pointer hover:bg-accent hover:text-accent-foreground rounded-sm px-2 py-1.5 text-sm"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                handlePatientAction('message', patient.id, patient.name);
+                              }}
                             >
                               <MessageSquare className="mr-2 h-4 w-4" />
                               Envoyer un message
                             </DropdownMenuItem>
                             <DropdownMenuItem 
-                              className="cursor-pointer"
-                              onClick={() => handlePatientAction('teleconsultation', patient.id, patient.name)}
+                              className="cursor-pointer hover:bg-accent hover:text-accent-foreground rounded-sm px-2 py-1.5 text-sm"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                handlePatientAction('teleconsultation', patient.id, patient.name);
+                              }}
                             >
                               <Video className="mr-2 h-4 w-4" />
                               Téléconsultation
                             </DropdownMenuItem>
                             <DropdownMenuItem 
-                              className="cursor-pointer"
-                              onClick={() => handlePatientAction('call', patient.id, patient.name)}
+                              className="cursor-pointer hover:bg-accent hover:text-accent-foreground rounded-sm px-2 py-1.5 text-sm"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                handlePatientAction('call', patient.id, patient.name);
+                              }}
                             >
                               <Phone className="mr-2 h-4 w-4" />
                               Appeler
                             </DropdownMenuItem>
                             <DropdownMenuItem 
-                              className="cursor-pointer"
-                              onClick={() => handlePatientAction('edit', patient.id, patient.name)}
+                              className="cursor-pointer hover:bg-accent hover:text-accent-foreground rounded-sm px-2 py-1.5 text-sm"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                handlePatientAction('edit', patient.id, patient.name);
+                              }}
                             >
                               <Edit className="mr-2 h-4 w-4" />
                               Modifier le profil
