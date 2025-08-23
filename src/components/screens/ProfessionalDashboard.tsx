@@ -10,6 +10,7 @@ import { toast } from "@/hooks/use-toast";
 import { EarningsTable } from "@/components/ui/EarningsTable";
 import { PatientManagement } from "@/components/ui/PatientManagement";
 import { QuickActions } from "@/components/ui/QuickActions";
+import { CostBreakdownByProfessional } from "@/components/ui/CostBredownByProfessional";
 
 interface DemoUser {
   id: string;
@@ -200,7 +201,10 @@ export const ProfessionalDashboard = () => {
           </TabsContent>
 
           <TabsContent value="earnings">
-            <EarningsTable />
+            <div className="space-y-6">
+              <EarningsTable />
+              <CostBreakdownByProfessional />
+            </div>
           </TabsContent>
 
           <TabsContent value="settings">
