@@ -268,18 +268,26 @@ const AuthPage = () => {
     setError(null);
 
     try {
-      // Créer un utilisateur de test temporaire avec un email valide
-      const testEmail = 'testprofessional@gmail.com';
-      const testPassword = 'testpro123456';
+      // Pour le mode test, on utilise un email simple et on contourne la vérification
+      const testEmail = 'testpro@lovable.dev';
+      const testPassword = 'testtest123';
       
-      // D'abord essayer de se connecter avec l'utilisateur de test existant
-      const { error: signInError } = await supabase.auth.signInWithPassword({
+      // D'abord essayer de se connecter directement
+      const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
         email: testEmail,
         password: testPassword,
       });
 
       if (signInError && signInError.message.includes('Invalid login credentials')) {
-        // Si l'utilisateur n'existe pas, le créer
+        // Si l'utilisateur n'existe pas, informer l'utilisateur qu'il faut d'abord désactiver la confirmation d'email
+        setError('Pour le mode test, vous devez d\'abord désactiver la confirmation d\'email dans Supabase : Authentication > Settings > "Enable email confirmations" = OFF');
+        return;
+      } else if (signInError && signInError.message.includes('Email not confirmed')) {
+        // Si l'email n'est pas confirmé, informer l'utilisateur
+        setError('Pour le mode test, désactivez la confirmation d\'email dans Supabase : Authentication > Settings > "Enable email confirmations" = OFF, puis réessayez');
+        return;
+      } else if (signInError) {
+        // Pour toute autre erreur, essayer de créer l'utilisateur
         const { error: signUpError } = await supabase.auth.signUp({
           email: testEmail,
           password: testPassword,
@@ -289,30 +297,37 @@ const AuthPage = () => {
               last_name: 'Professional',
               user_type: 'professional',
               specialty: 'doctor'
-            }
+            },
+            emailRedirectTo: window.location.origin
           }
         });
 
         if (signUpError) {
+          if (signUpError.message.includes('Email not confirmed')) {
+            setError('Mode test : Désactivez "Enable email confirmations" dans Supabase Authentication Settings, puis réessayez');
+            return;
+          }
           throw signUpError;
         }
 
-        // Essayer de se connecter à nouveau
+        // Essayer de se connecter à nouveau après inscription
         const { error: retrySignInError } = await supabase.auth.signInWithPassword({
           email: testEmail,
           password: testPassword,
         });
 
         if (retrySignInError) {
+          if (retrySignInError.message.includes('Email not confirmed')) {
+            setError('Mode test : Allez dans Supabase Dashboard > Authentication > Settings et désactivez "Enable email confirmations"');
+            return;
+          }
           throw retrySignInError;
         }
-      } else if (signInError) {
-        throw signInError;
       }
 
       toast({
         title: "🧪 Mode Test Activé",
-        description: "Connexion en tant que professionnel de test",
+        description: "Connexion en tant que professionnel de test réussie !",
       });
       
       navigate('/');
