@@ -263,6 +263,66 @@ const AuthPage = () => {
     }
   };
 
+  const handleTestProfessionalAccess = async () => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      // Créer un utilisateur de test temporaire
+      const testEmail = 'test-pro@example.com';
+      const testPassword = 'testpro123';
+      
+      // D'abord essayer de se connecter avec l'utilisateur de test existant
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email: testEmail,
+        password: testPassword,
+      });
+
+      if (signInError && signInError.message.includes('Invalid login credentials')) {
+        // Si l'utilisateur n'existe pas, le créer
+        const { error: signUpError } = await supabase.auth.signUp({
+          email: testEmail,
+          password: testPassword,
+          options: {
+            data: {
+              first_name: 'Dr Test',
+              last_name: 'Professional',
+              user_type: 'professional',
+              specialty: 'doctor'
+            }
+          }
+        });
+
+        if (signUpError) {
+          throw signUpError;
+        }
+
+        // Essayer de se connecter à nouveau
+        const { error: retrySignInError } = await supabase.auth.signInWithPassword({
+          email: testEmail,
+          password: testPassword,
+        });
+
+        if (retrySignInError) {
+          throw retrySignInError;
+        }
+      } else if (signInError) {
+        throw signInError;
+      }
+
+      toast({
+        title: "🧪 Mode Test Activé",
+        description: "Connexion en tant que professionnel de test",
+      });
+      
+      navigate('/');
+    } catch (err: any) {
+      setError('Erreur mode test: ' + err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   // Show plan selection modal if needed
   if (showPlanSelection) {
     return (
@@ -506,12 +566,27 @@ const AuthPage = () => {
                     </p>
                   </div>
 
+                  <Button type="submit" className="w-full" disabled={isLoading}>
+                    {isLoading ? t('auth.connecting') : t('auth.professionalLogin')}
+                  </Button>
+                  
+                  <div className="relative my-4">
+                    <div className="absolute inset-0 flex items-center">
+                      <Separator className="w-full" />
+                    </div>
+                    <div className="relative flex justify-center text-xs uppercase">
+                      <span className="bg-background px-2 text-muted-foreground">Mode Test</span>
+                    </div>
+                  </div>
+                  
                   <Button 
-                    type="submit" 
-                    className="w-full bg-medical-green hover:bg-medical-green/90" 
-                    disabled={isLoading || professionalCode.length < 10}
+                    type="button" 
+                    variant="outline" 
+                    className="w-full" 
+                    onClick={handleTestProfessionalAccess}
+                    disabled={isLoading}
                   >
-                    {isLoading ? t('auth.connecting') : t('auth.professionalAccess')}
+                    🧪 Accès Test Professionnel
                   </Button>
                 </form>
 
