@@ -6,7 +6,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Calendar } from "@/components/ui/calendar";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Users, Calendar as CalendarIcon, FileText, MessageSquare, Clock } from "lucide-react";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Users, Calendar as CalendarIcon, FileText, MessageSquare, Clock, MoreVertical, Eye, Phone, Edit, UserPlus, Video } from "lucide-react";
 
 interface Patient {
   id: string;
@@ -191,14 +192,38 @@ export const PatientManagement = () => {
                       <TableCell>{patient.lastGlucose}</TableCell>
                       <TableCell>{getStatusBadge(patient.status)}</TableCell>
                       <TableCell>
-                        <div className="flex space-x-2">
-                          <Button size="sm" variant="outline">
-                            <FileText className="h-4 w-4" />
-                          </Button>
-                          <Button size="sm" variant="outline">
-                            <MessageSquare className="h-4 w-4" />
-                          </Button>
-                        </div>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button size="sm" variant="outline" className="h-8 w-8 p-0">
+                              <MoreVertical className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent 
+                            align="end" 
+                            className="z-50 bg-background border shadow-lg"
+                          >
+                            <DropdownMenuItem className="cursor-pointer">
+                              <Eye className="mr-2 h-4 w-4" />
+                              Voir le dossier
+                            </DropdownMenuItem>
+                            <DropdownMenuItem className="cursor-pointer">
+                              <MessageSquare className="mr-2 h-4 w-4" />
+                              Envoyer un message
+                            </DropdownMenuItem>
+                            <DropdownMenuItem className="cursor-pointer">
+                              <Video className="mr-2 h-4 w-4" />
+                              Téléconsultation
+                            </DropdownMenuItem>
+                            <DropdownMenuItem className="cursor-pointer">
+                              <Phone className="mr-2 h-4 w-4" />
+                              Appeler
+                            </DropdownMenuItem>
+                            <DropdownMenuItem className="cursor-pointer">
+                              <Edit className="mr-2 h-4 w-4" />
+                              Modifier le profil
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -266,16 +291,38 @@ export const PatientManagement = () => {
                       <TableCell>{consultation.duration}</TableCell>
                       <TableCell>{getConsultationStatusBadge(consultation.status)}</TableCell>
                       <TableCell>
-                        <div className="flex space-x-2">
-                          {consultation.status === 'scheduled' && (
-                            <Button size="sm" variant="outline">
-                              Commencer
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button size="sm" variant="outline" className="h-8 w-8 p-0">
+                              <MoreVertical className="h-4 w-4" />
                             </Button>
-                          )}
-                          <Button size="sm" variant="outline">
-                            Détails
-                          </Button>
-                        </div>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent 
+                            align="end" 
+                            className="z-50 bg-background border shadow-lg"
+                          >
+                            {consultation.status === 'scheduled' && (
+                              <DropdownMenuItem className="cursor-pointer">
+                                <Video className="mr-2 h-4 w-4" />
+                                Commencer la consultation
+                              </DropdownMenuItem>
+                            )}
+                            <DropdownMenuItem className="cursor-pointer">
+                              <Eye className="mr-2 h-4 w-4" />
+                              Voir les détails
+                            </DropdownMenuItem>
+                            <DropdownMenuItem className="cursor-pointer">
+                              <Edit className="mr-2 h-4 w-4" />
+                              Modifier
+                            </DropdownMenuItem>
+                            {consultation.status === 'scheduled' && (
+                              <DropdownMenuItem className="cursor-pointer text-red-600">
+                                <Clock className="mr-2 h-4 w-4" />
+                                Annuler
+                              </DropdownMenuItem>
+                            )}
+                          </DropdownMenuContent>
+                        </DropdownMenu>
                       </TableCell>
                     </TableRow>
                   ))}
