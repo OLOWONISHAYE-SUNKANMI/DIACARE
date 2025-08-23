@@ -60,21 +60,25 @@ export const PatientManagement = () => {
 
     const { type, patientId } = selectedAction;
 
+    // Options pour les fenêtres pop-up
+    const popupOptions = 'width=1200,height=800,scrollbars=yes,resizable=yes,toolbar=no,menubar=no,location=no,status=no';
+
     switch (type) {
       case 'view':
-        window.open(`/patient/${patientId}?code=${patientCode}`, '_blank');
+        window.open(`/patient/${patientId}?code=${patientCode}`, 'patientFile', popupOptions);
         break;
       case 'message':
-        window.open(`/chat/${patientId}?code=${patientCode}`, '_blank');
+        window.open(`/chat/${patientId}?code=${patientCode}`, 'patientMessage', 'width=800,height=600,scrollbars=yes,resizable=yes,toolbar=no,menubar=no,location=no,status=no');
         break;
       case 'teleconsultation':
-        window.open(`/teleconsultation/${patientId}?code=${patientCode}`, '_blank');
+        window.open(`/teleconsultation/${patientId}?code=${patientCode}`, 'teleconsultation', 'width=1400,height=900,scrollbars=yes,resizable=yes,toolbar=no,menubar=no,location=no,status=no');
         break;
       case 'call':
-        window.location.href = `tel:+33123456789`;
+        // Pour l'appel, on ouvre une petite fenêtre de confirmation
+        window.open(`/call-interface/${patientId}?code=${patientCode}`, 'callInterface', 'width=400,height=300,scrollbars=no,resizable=no,toolbar=no,menubar=no,location=no,status=no');
         break;
       case 'edit':
-        window.open(`/patient/${patientId}/edit?code=${patientCode}`, '_blank');
+        window.open(`/patient/${patientId}/edit?code=${patientCode}`, 'editProfile', popupOptions);
         break;
     }
 
