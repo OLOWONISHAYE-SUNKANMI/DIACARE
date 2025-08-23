@@ -268,9 +268,9 @@ const AuthPage = () => {
     setError(null);
 
     try {
-      // Créer un utilisateur de test temporaire
-      const testEmail = 'test-pro@example.com';
-      const testPassword = 'testpro123';
+      // Créer un utilisateur de test temporaire avec un email valide
+      const testEmail = 'testprofessional@gmail.com';
+      const testPassword = 'testpro123456';
       
       // D'abord essayer de se connecter avec l'utilisateur de test existant
       const { error: signInError } = await supabase.auth.signInWithPassword({
