@@ -373,7 +373,9 @@ export const fr = {
     thisWeek: "Cette semaine",
     thisMonth: "Ce mois",
     mg_dl: "mg/dL",
-    mmol_l: "mmol/L"
+    mmol_l: "mmol/L",
+    send: "Envoyer",
+    sending: "Envoi en cours..."
   },
 
   // Notifications
@@ -472,6 +474,30 @@ export const fr = {
     typing: "en train d'écrire...",
     messageSent: "Message envoyé",
     messageShared: "Votre message a été partagé avec la communauté DARE"
+  },
+
+  // Professional Access
+  professionalAccess: {
+    title: "Demande d'Accès Professionnel",
+    firstName: "Prénom",
+    lastName: "Nom",
+    email: "Email",
+    phone: "Téléphone",
+    profession: "Profession",
+    selectProfession: "Sélectionnez votre profession",
+    doctor: "Médecin",
+    nurse: "Infirmier/ère",
+    diabetologist: "Diabétologue",
+    nutritionist: "Nutritionniste",
+    pharmacist: "Pharmacien/ne",
+    other: "Autre",
+    licenseNumber: "Numéro de licence",
+    institution: "Établissement",
+    motivation: "Motivation",
+    motivationPlaceholder: "Expliquez pourquoi vous souhaitez accéder à DARE...",
+    requestSent: "Demande envoyée",
+    requestSentDescription: "Votre demande d'accès professionnel a été envoyée avec succès",
+    requestError: "Erreur lors de l'envoi de la demande"
   },
 
   // Legal
