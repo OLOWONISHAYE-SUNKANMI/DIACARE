@@ -101,6 +101,51 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_model_parameters: {
+        Row: {
+          carb_ratio: number | null
+          created_at: string
+          diabetes_duration_years: number | null
+          hba1c_last: number | null
+          id: string
+          insulin_sensitivity_factor: number | null
+          last_calibrated_at: string | null
+          model_version: string | null
+          target_glucose: number | null
+          updated_at: string
+          user_id: string
+          weight_kg: number | null
+        }
+        Insert: {
+          carb_ratio?: number | null
+          created_at?: string
+          diabetes_duration_years?: number | null
+          hba1c_last?: number | null
+          id?: string
+          insulin_sensitivity_factor?: number | null
+          last_calibrated_at?: string | null
+          model_version?: string | null
+          target_glucose?: number | null
+          updated_at?: string
+          user_id: string
+          weight_kg?: number | null
+        }
+        Update: {
+          carb_ratio?: number | null
+          created_at?: string
+          diabetes_duration_years?: number | null
+          hba1c_last?: number | null
+          id?: string
+          insulin_sensitivity_factor?: number | null
+          last_calibrated_at?: string | null
+          model_version?: string | null
+          target_glucose?: number | null
+          updated_at?: string
+          user_id?: string
+          weight_kg?: number | null
+        }
+        Relationships: []
+      }
       anonymous_community_stats: {
         Row: {
           age_group: string | null
@@ -540,6 +585,45 @@ export type Database = {
         }
         Relationships: []
       }
+      insulin_injections: {
+        Row: {
+          created_at: string
+          dose_units: number
+          id: string
+          injection_site: string | null
+          injection_time: string
+          insulin_brand: string | null
+          insulin_type: string
+          notes: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          dose_units: number
+          id?: string
+          injection_site?: string | null
+          injection_time?: string
+          insulin_brand?: string | null
+          insulin_type: string
+          notes?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          dose_units?: number
+          id?: string
+          injection_site?: string | null
+          injection_time?: string
+          insulin_brand?: string | null
+          insulin_type?: string
+          notes?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       meal_entries: {
         Row: {
           calories_per_100g: number | null
@@ -714,6 +798,54 @@ export type Database = {
           mentor_id?: string | null
           notes?: string | null
           paired_at?: string | null
+        }
+        Relationships: []
+      }
+      predictive_alerts: {
+        Row: {
+          acknowledged_at: string | null
+          actual_outcome: string | null
+          alert_time: string
+          alert_type: string
+          created_at: string
+          factors_contributing: Json | null
+          id: string
+          predicted_glucose_range: string | null
+          recommended_actions: string[] | null
+          resolved_at: string | null
+          risk_percentage: number | null
+          severity: string
+          user_id: string
+        }
+        Insert: {
+          acknowledged_at?: string | null
+          actual_outcome?: string | null
+          alert_time?: string
+          alert_type: string
+          created_at?: string
+          factors_contributing?: Json | null
+          id?: string
+          predicted_glucose_range?: string | null
+          recommended_actions?: string[] | null
+          resolved_at?: string | null
+          risk_percentage?: number | null
+          severity: string
+          user_id: string
+        }
+        Update: {
+          acknowledged_at?: string | null
+          actual_outcome?: string | null
+          alert_time?: string
+          alert_type?: string
+          created_at?: string
+          factors_contributing?: Json | null
+          id?: string
+          predicted_glucose_range?: string | null
+          recommended_actions?: string[] | null
+          resolved_at?: string | null
+          risk_percentage?: number | null
+          severity?: string
+          user_id?: string
         }
         Relationships: []
       }
