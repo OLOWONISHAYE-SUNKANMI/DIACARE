@@ -9,6 +9,7 @@ import { Calendar, Users, FileText, Settings, LogOut, Stethoscope, Clock, Trendi
 import { toast } from "@/hooks/use-toast";
 import { EarningsTable } from "@/components/ui/EarningsTable";
 import { PatientManagement } from "@/components/ui/PatientManagement";
+import { QuickActions } from "@/components/ui/QuickActions";
 
 interface DemoUser {
   id: string;
@@ -176,23 +177,8 @@ export const ProfessionalDashboard = () => {
                     Actions rapides
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-3">
-                  <Button className="w-full justify-start" variant="outline">
-                    <Calendar className="h-4 w-4 mr-2" />
-                    Programmer une consultation
-                  </Button>
-                  <Button className="w-full justify-start" variant="outline">
-                    <FileText className="h-4 w-4 mr-2" />
-                    Générer un rapport
-                  </Button>
-                  <Button className="w-full justify-start" variant="outline">
-                    <Users className="h-4 w-4 mr-2" />
-                    Ajouter un patient
-                  </Button>
-                  <Button className="w-full justify-start" variant="outline">
-                    <Settings className="h-4 w-4 mr-2" />
-                    Paramètres du compte
-                  </Button>
+                <CardContent>
+                  <QuickActions />
                 </CardContent>
               </Card>
             </div>
