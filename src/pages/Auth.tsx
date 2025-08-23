@@ -278,36 +278,41 @@ const AuthPage = () => {
         password: testPassword,
       });
 
-      if (signInError && signInError.message.includes('Invalid login credentials')) {
-        // Si l'utilisateur n'existe pas, informer l'utilisateur qu'il faut d'abord désactiver la confirmation d'email
-        setError('Pour le mode test, vous devez d\'abord désactiver la confirmation d\'email dans Supabase : Authentication > Settings > "Enable email confirmations" = OFF');
-        return;
-      } else if (signInError && signInError.message.includes('Email not confirmed')) {
-        // Si l'email n'est pas confirmé, informer l'utilisateur
-        setError('Pour le mode test, désactivez la confirmation d\'email dans Supabase : Authentication > Settings > "Enable email confirmations" = OFF, puis réessayez');
-        return;
-      } else if (signInError) {
-        // Pour toute autre erreur, essayer de créer l'utilisateur
-        const { error: signUpError } = await supabase.auth.signUp({
-          email: testEmail,
-          password: testPassword,
-          options: {
-            data: {
-              first_name: 'Dr Test',
-              last_name: 'Professional',
-              user_type: 'professional',
-              specialty: 'doctor'
-            },
-            emailRedirectTo: window.location.origin
-          }
-        });
+      if (signInError) {
+        if (signInError.message.includes('Email signups are disabled') || signInError.message.includes('Email logins are disabled')) {
+          setError('Mode test : Activez les inscriptions email dans Supabase : Authentication > Settings > "Enable email signups" = ON');
+          return;
+        } else if (signInError.message.includes('Email not confirmed')) {
+          setError('Mode test : Désactivez "Enable email confirmations" dans Supabase : Authentication > Settings');
+          return;
+        } else if (signInError.message.includes('Invalid login credentials')) {
+          // L'utilisateur n'existe pas, essayer de le créer
+          const { error: signUpError } = await supabase.auth.signUp({
+            email: testEmail,
+            password: testPassword,
+            options: {
+              data: {
+                first_name: 'Dr Test',
+                last_name: 'Professional',
+                user_type: 'professional',
+                specialty: 'doctor'
+              },
+              emailRedirectTo: window.location.origin
+            }
+          });
 
-        if (signUpError) {
-          if (signUpError.message.includes('Email not confirmed')) {
-            setError('Mode test : Désactivez "Enable email confirmations" dans Supabase Authentication Settings, puis réessayez');
-            return;
+          if (signUpError) {
+            if (signUpError.message.includes('Email signups are disabled')) {
+              setError('Mode test : Activez "Enable email signups" dans Supabase Authentication Settings');
+              return;
+            } else if (signUpError.message.includes('Email not confirmed')) {
+              setError('Mode test : Désactivez "Enable email confirmations" dans Supabase Authentication Settings');
+              return;
+            }
+            throw signUpError;
           }
-          throw signUpError;
+        } else {
+          throw signInError;
         }
 
         // Essayer de se connecter à nouveau après inscription
