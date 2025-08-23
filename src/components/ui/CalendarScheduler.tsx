@@ -73,9 +73,7 @@ const CalendarScheduler: React.FC<CalendarSchedulerProps> = ({
           amount_charged,
           professional_id,
           patient_id,
-          consultation_notes,
-          patient:profiles!teleconsultations_patient_id_fkey(first_name, last_name),
-          professional:professional_applications!teleconsultations_professional_id_fkey(first_name, last_name)
+          consultation_notes
         `)
         .gte('scheduled_at', startOfMonth.toISOString())
         .lte('scheduled_at', endOfMonth.toISOString());
@@ -95,13 +93,13 @@ const CalendarScheduler: React.FC<CalendarSchedulerProps> = ({
       const calendarEvents: CalendarEvent[] = (data || []).map(consultation => ({
         id: consultation.id,
         title: patientView 
-          ? `Dr. ${consultation.professional?.first_name || 'Professional'} ${consultation.professional?.last_name || ''}`
-          : `${consultation.patient?.first_name || 'Patient'} ${consultation.patient?.last_name || ''}`,
+          ? `Consultation - ${t('calendar.professional')}`
+          : `Consultation - ${t('calendar.patient')}`,
         start_date: consultation.scheduled_at,
         end_date: new Date(new Date(consultation.scheduled_at).getTime() + 30 * 60000).toISOString(), // 30 min duration
         type: 'consultation',
         status: consultation.status,
-        patient_name: `${consultation.patient?.first_name || ''} ${consultation.patient?.last_name || ''}`,
+        patient_name: t('calendar.patient'),
         amount: consultation.amount_charged,
         notes: consultation.consultation_notes
       }));

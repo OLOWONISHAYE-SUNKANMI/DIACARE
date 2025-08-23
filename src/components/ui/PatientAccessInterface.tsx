@@ -16,7 +16,8 @@ import {
   Copy,
   Eye,
   EyeOff,
-  QrCode
+  QrCode,
+  Video
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
@@ -426,7 +427,7 @@ const PatientAccessInterface: React.FC<PatientAccessInterfaceProps> = ({
               onClick={startVideoCall}
               className="bg-green-600 hover:bg-green-700 text-white"
             >
-              <VideoCallInterface className="w-4 h-4 mr-2" />
+              <Video className="w-4 h-4 mr-2" />
               {t('buttons.startVideoCall')}
             </Button>
           </div>
