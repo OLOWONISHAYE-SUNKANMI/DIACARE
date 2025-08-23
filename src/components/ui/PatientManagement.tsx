@@ -7,10 +7,11 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Calendar } from "@/components/ui/calendar";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Users, Calendar as CalendarIcon, FileText, MessageSquare, Clock, MoreVertical, Eye, Phone, Edit, UserPlus, Video } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+import { Users, Calendar as CalendarIcon, FileText, MessageSquare, Clock, MoreVertical, Eye, Phone, Edit, UserPlus, Video, Send } from "lucide-react";
 
 interface Patient {
   id: string;
@@ -42,6 +43,14 @@ export const PatientManagement = () => {
     patientId: string;
     patientName: string;
   } | null>(null);
+  
+  // Modal states
+  const [isPatientFileOpen, setIsPatientFileOpen] = useState(false);
+  const [isMessageModalOpen, setIsMessageModalOpen] = useState(false);
+  const [isTeleconsultationOpen, setIsTeleconsultationOpen] = useState(false);
+  const [isCallModalOpen, setIsCallModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [activePatient, setActivePatient] = useState<Patient | null>(null);
 
   const handlePatientAction = (
     action: 'view' | 'message' | 'teleconsultation' | 'call' | 'edit',
@@ -54,54 +63,34 @@ export const PatientManagement = () => {
 
   const handlePatientCodeSubmit = () => {
     if (!patientCode.trim() || !selectedAction) {
-      console.log('Code patient vide ou action non sélectionnée');
       return;
     }
 
-    console.log(`Tentative d'ouverture: ${selectedAction.type} pour ${selectedAction.patientName} avec le code: ${patientCode}`);
+    const patient = patients.find(p => p.id === selectedAction.patientId);
+    if (!patient) return;
 
-    const { type, patientId } = selectedAction;
+    setActivePatient(patient);
 
-    // Options pour les fenêtres pop-up
-    const popupOptions = 'width=1200,height=800,scrollbars=yes,resizable=yes,toolbar=no,menubar=no,location=no,status=no';
-
-    try {
-      let popupWindow;
-      
-      switch (type) {
-        case 'view':
-          console.log('Ouverture du dossier patient...');
-          popupWindow = window.open(`data:text/html,<html><head><title>Dossier Patient - ${selectedAction.patientName}</title></head><body style="font-family:Arial,sans-serif;padding:20px;"><h1>Dossier Patient</h1><h2>${selectedAction.patientName}</h2><p>Code Patient: ${patientCode}</p><p>ID: ${patientId}</p><p>Cette fenêtre simule l'accès au dossier patient complet.</p></body></html>`, 'patientFile', popupOptions);
-          break;
-        case 'message':
-          console.log('Ouverture de la messagerie...');
-          popupWindow = window.open(`data:text/html,<html><head><title>Messagerie - ${selectedAction.patientName}</title></head><body style="font-family:Arial,sans-serif;padding:20px;"><h1>Messagerie</h1><h2>Conversation avec ${selectedAction.patientName}</h2><p>Code Patient: ${patientCode}</p><div style="border:1px solid #ccc;padding:10px;margin:10px 0;border-radius:5px;">Interface de messagerie sécurisée</div></body></html>`, 'patientMessage', 'width=800,height=600,scrollbars=yes,resizable=yes,toolbar=no,menubar=no,location=no,status=no');
-          break;
-        case 'teleconsultation':
-          console.log('Ouverture de la téléconsultation...');
-          popupWindow = window.open(`data:text/html,<html><head><title>Téléconsultation - ${selectedAction.patientName}</title></head><body style="font-family:Arial,sans-serif;padding:20px;background:#f0f0f0;"><h1>Téléconsultation</h1><h2>Session avec ${selectedAction.patientName}</h2><p>Code Patient: ${patientCode}</p><div style="background:#000;color:#fff;padding:20px;text-align:center;margin:20px 0;border-radius:10px;">🎥 Interface vidéo de téléconsultation</div></body></html>`, 'teleconsultation', 'width=1400,height=900,scrollbars=yes,resizable=yes,toolbar=no,menubar=no,location=no,status=no');
-          break;
-        case 'call':
-          console.log('Ouverture de l\'interface d\'appel...');
-          popupWindow = window.open(`data:text/html,<html><head><title>Appel - ${selectedAction.patientName}</title></head><body style="font-family:Arial,sans-serif;padding:20px;text-align:center;background:#e8f5e8;"><h1>Interface d'Appel</h1><h2>${selectedAction.patientName}</h2><p>Code: ${patientCode}</p><div style="background:#4CAF50;color:white;padding:15px;margin:20px;border-radius:50px;cursor:pointer;">📞 Composer le numéro</div></body></html>`, 'callInterface', 'width=400,height=300,scrollbars=no,resizable=no,toolbar=no,menubar=no,location=no,status=no');
-          break;
-        case 'edit':
-          console.log('Ouverture du mode édition...');
-          popupWindow = window.open(`data:text/html,<html><head><title>Édition - ${selectedAction.patientName}</title></head><body style="font-family:Arial,sans-serif;padding:20px;"><h1>Édition du Profil</h1><h2>${selectedAction.patientName}</h2><p>Code Patient: ${patientCode}</p><form style="margin:20px 0;"><label>Nom: <input type="text" value="${selectedAction.patientName}" style="margin:5px;padding:5px;"></label><br><br><label>Notes: <textarea style="margin:5px;padding:5px;width:300px;height:100px;"></textarea></label></form></body></html>`, 'editProfile', popupOptions);
-          break;
-      }
-
-      if (popupWindow) {
-        console.log('Fenêtre pop-up ouverte avec succès');
-        popupWindow.focus();
-      } else {
-        console.error('Échec d\'ouverture de la fenêtre pop-up - vérifiez les paramètres de blocage des pop-ups');
-        alert('La fenêtre pop-up a été bloquée. Veuillez autoriser les pop-ups pour ce site.');
-      }
-    } catch (error) {
-      console.error('Erreur lors de l\'ouverture de la fenêtre pop-up:', error);
+    // Ouvrir le modal approprié selon le type d'action
+    switch (selectedAction.type) {
+      case 'view':
+        setIsPatientFileOpen(true);
+        break;
+      case 'message':
+        setIsMessageModalOpen(true);
+        break;
+      case 'teleconsultation':
+        setIsTeleconsultationOpen(true);
+        break;
+      case 'call':
+        setIsCallModalOpen(true);
+        break;
+      case 'edit':
+        setIsEditModalOpen(true);
+        break;
     }
 
+    // Fermer le modal de code patient
     setIsPatientCodeModalOpen(false);
     setPatientCode('');
     setSelectedAction(null);
@@ -476,6 +465,9 @@ export const PatientManagement = () => {
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle>Code patient requis</DialogTitle>
+            <DialogDescription>
+              Veuillez saisir le code patient pour accéder aux informations sécurisées
+            </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
             <div className="space-y-2">
@@ -511,6 +503,258 @@ export const PatientManagement = () => {
                 disabled={!patientCode.trim()}
               >
                 Accéder
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Modal Dossier Patient */}
+      <Dialog open={isPatientFileOpen} onOpenChange={setIsPatientFileOpen}>
+        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Dossier Patient - {activePatient?.name}</DialogTitle>
+            <DialogDescription>
+              Consultation complète du dossier médical
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-6">
+            {activePatient && (
+              <>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label className="text-sm font-medium">Nom du patient</Label>
+                    <p className="text-lg font-semibold">{activePatient.name}</p>
+                  </div>
+                  <div>
+                    <Label className="text-sm font-medium">Type de diabète</Label>
+                    <p>{activePatient.diabetesType}</p>
+                  </div>
+                  <div>
+                    <Label className="text-sm font-medium">Dernière glycémie</Label>
+                    <p>{activePatient.lastGlucose}</p>
+                  </div>
+                  <div>
+                    <Label className="text-sm font-medium">Statut</Label>
+                    <div>{getStatusBadge(activePatient.status)}</div>
+                  </div>
+                </div>
+                <div>
+                  <Label className="text-sm font-medium">Notes médicales</Label>
+                  <div className="mt-2 p-3 bg-muted rounded-lg">
+                    <p>{activePatient.notes}</p>
+                  </div>
+                </div>
+                <div>
+                  <Label className="text-sm font-medium">Dernière consultation</Label>
+                  <p>{new Date(activePatient.lastConsultation).toLocaleDateString('fr-FR')}</p>
+                  {activePatient.nextAppointment && (
+                    <>
+                      <Label className="text-sm font-medium mt-2 block">Prochain rendez-vous</Label>
+                      <p>{new Date(activePatient.nextAppointment).toLocaleDateString('fr-FR')}</p>
+                    </>
+                  )}
+                </div>
+              </>
+            )}
+            <div className="flex justify-end">
+              <Button onClick={() => setIsPatientFileOpen(false)}>
+                Fermer
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Modal Message */}
+      <Dialog open={isMessageModalOpen} onOpenChange={setIsMessageModalOpen}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Envoyer un message à {activePatient?.name}</DialogTitle>
+            <DialogDescription>
+              Messagerie sécurisée patient-professionnel
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="message-subject">Sujet</Label>
+              <Input id="message-subject" placeholder="Objet du message" />
+            </div>
+            <div>
+              <Label htmlFor="message-content">Message</Label>
+              <Textarea 
+                id="message-content"
+                placeholder="Tapez votre message ici..."
+                className="min-h-32"
+              />
+            </div>
+            <div className="flex justify-end space-x-2">
+              <Button variant="outline" onClick={() => setIsMessageModalOpen(false)}>
+                Annuler
+              </Button>
+              <Button>
+                <Send className="mr-2 h-4 w-4" />
+                Envoyer
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Modal Téléconsultation */}
+      <Dialog open={isTeleconsultationOpen} onOpenChange={setIsTeleconsultationOpen}>
+        <DialogContent className="max-w-4xl">
+          <DialogHeader>
+            <DialogTitle>Téléconsultation avec {activePatient?.name}</DialogTitle>
+            <DialogDescription>
+              Interface de consultation vidéo sécurisée
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="aspect-video bg-muted rounded-lg flex items-center justify-center">
+              <div className="text-center">
+                <Video className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
+                <p className="text-lg font-medium">Interface vidéo</p>
+                <p className="text-sm text-muted-foreground">La consultation vidéo apparaîtrait ici</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label className="text-sm font-medium">Patient</Label>
+                <p>{activePatient?.name}</p>
+              </div>
+              <div>
+                <Label className="text-sm font-medium">Durée prévue</Label>
+                <p>30 minutes</p>
+              </div>
+            </div>
+            <div>
+              <Label htmlFor="consultation-notes">Notes de consultation</Label>
+              <Textarea 
+                id="consultation-notes"
+                placeholder="Notez les points importants de la consultation..."
+                className="min-h-24"
+              />
+            </div>
+            <div className="flex justify-between">
+              <Button variant="outline" onClick={() => setIsTeleconsultationOpen(false)}>
+                Fermer
+              </Button>
+              <div className="space-x-2">
+                <Button variant="outline">
+                  <Phone className="mr-2 h-4 w-4" />
+                  Audio uniquement
+                </Button>
+                <Button>
+                  <Video className="mr-2 h-4 w-4" />
+                  Démarrer la vidéo
+                </Button>
+              </div>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Modal Appel */}
+      <Dialog open={isCallModalOpen} onOpenChange={setIsCallModalOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Appeler {activePatient?.name}</DialogTitle>
+            <DialogDescription>
+              Interface d'appel téléphonique
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 text-center">
+            <div className="mx-auto w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center">
+              <Phone className="h-8 w-8 text-primary" />
+            </div>
+            <div>
+              <p className="font-medium text-lg">{activePatient?.name}</p>
+              <p className="text-muted-foreground">Prêt à composer le numéro</p>
+            </div>
+            <div>
+              <Label htmlFor="phone-notes">Notes d'appel</Label>
+              <Textarea 
+                id="phone-notes"
+                placeholder="Notez l'objet de l'appel..."
+                className="min-h-20"
+              />
+            </div>
+            <div className="flex justify-center space-x-2">
+              <Button variant="outline" onClick={() => setIsCallModalOpen(false)}>
+                Annuler
+              </Button>
+              <Button className="bg-green-600 hover:bg-green-700">
+                <Phone className="mr-2 h-4 w-4" />
+                Composer
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Modal Édition du profil */}
+      <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Modifier le profil - {activePatient?.name}</DialogTitle>
+            <DialogDescription>
+              Édition des informations du patient
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            {activePatient && (
+              <>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="edit-name">Nom du patient</Label>
+                    <Input id="edit-name" defaultValue={activePatient.name} />
+                  </div>
+                  <div>
+                    <Label htmlFor="edit-diabetes-type">Type de diabète</Label>
+                    <Input id="edit-diabetes-type" defaultValue={activePatient.diabetesType} />
+                  </div>
+                </div>
+                <div>
+                  <Label htmlFor="edit-status">Statut</Label>
+                  <select 
+                    id="edit-status" 
+                    className="w-full p-2 border rounded-md"
+                    defaultValue={activePatient.status}
+                  >
+                    <option value="stable">Stable</option>
+                    <option value="attention">Attention</option>
+                    <option value="amélioration">Amélioration</option>
+                  </select>
+                </div>
+                <div>
+                  <Label htmlFor="edit-glucose">Dernière glycémie</Label>
+                  <Input id="edit-glucose" defaultValue={activePatient.lastGlucose} />
+                </div>
+                <div>
+                  <Label htmlFor="edit-notes">Notes médicales</Label>
+                  <Textarea 
+                    id="edit-notes"
+                    defaultValue={activePatient.notes}
+                    className="min-h-32"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="edit-next-appointment">Prochain rendez-vous</Label>
+                  <Input 
+                    id="edit-next-appointment"
+                    type="date"
+                    defaultValue={activePatient.nextAppointment}
+                  />
+                </div>
+              </>
+            )}
+            <div className="flex justify-end space-x-2">
+              <Button variant="outline" onClick={() => setIsEditModalOpen(false)}>
+                Annuler
+              </Button>
+              <Button>
+                Enregistrer les modifications
               </Button>
             </div>
           </div>
