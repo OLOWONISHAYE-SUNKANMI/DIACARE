@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import BottomNavigation from "@/components/BottomNavigation";
 import PaymentScreen from "@/components/screens/PaymentScreen";
-import ProfessionalDashboard from "@/components/screens/ProfessionalDashboard";
+import { ProfessionalDashboard } from "@/components/screens/ProfessionalDashboard";
 import DoctorDashboard from "@/components/screens/DoctorDashboard";
 import TeleconsultationBooking from "@/components/screens/TeleconsultationBooking";
 import HomeScreen from "@/components/screens/HomeScreen";

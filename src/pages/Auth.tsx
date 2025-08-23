@@ -268,74 +268,26 @@ const AuthPage = () => {
     setError(null);
 
     try {
-      // Pour le mode test, on utilise un email simple et on contourne la vérification
-      const testEmail = 'testpro@lovable.dev';
-      const testPassword = 'testtest123';
-      
-      // D'abord essayer de se connecter directement
-      const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
-        email: testEmail,
-        password: testPassword,
-      });
-
-      if (signInError) {
-        if (signInError.message.includes('Email signups are disabled') || signInError.message.includes('Email logins are disabled')) {
-          setError('Mode test : Activez les inscriptions email dans Supabase : Authentication > Settings > "Enable email signups" = ON');
-          return;
-        } else if (signInError.message.includes('Email not confirmed')) {
-          setError('Mode test : Désactivez "Enable email confirmations" dans Supabase : Authentication > Settings');
-          return;
-        } else if (signInError.message.includes('Invalid login credentials')) {
-          // L'utilisateur n'existe pas, essayer de le créer
-          const { error: signUpError } = await supabase.auth.signUp({
-            email: testEmail,
-            password: testPassword,
-            options: {
-              data: {
-                first_name: 'Dr Test',
-                last_name: 'Professional',
-                user_type: 'professional',
-                specialty: 'doctor'
-              },
-              emailRedirectTo: window.location.origin
-            }
-          });
-
-          if (signUpError) {
-            if (signUpError.message.includes('Email signups are disabled')) {
-              setError('Mode test : Activez "Enable email signups" dans Supabase Authentication Settings');
-              return;
-            } else if (signUpError.message.includes('Email not confirmed')) {
-              setError('Mode test : Désactivez "Enable email confirmations" dans Supabase Authentication Settings');
-              return;
-            }
-            throw signUpError;
-          }
-        } else {
-          throw signInError;
-        }
-
-        // Essayer de se connecter à nouveau après inscription
-        const { error: retrySignInError } = await supabase.auth.signInWithPassword({
-          email: testEmail,
-          password: testPassword,
-        });
-
-        if (retrySignInError) {
-          if (retrySignInError.message.includes('Email not confirmed')) {
-            setError('Mode test : Allez dans Supabase Dashboard > Authentication > Settings et désactivez "Enable email confirmations"');
-            return;
-          }
-          throw retrySignInError;
-        }
-      }
-
+      // Bypass direct vers l'interface professionnelle
       toast({
-        title: "🧪 Mode Test Activé",
-        description: "Connexion en tant que professionnel de test réussie !",
+        title: "🚀 Mode Demo Activé",
+        description: "Redirection vers l'interface professionnelle",
       });
       
-      navigate('/');
+      // Simuler un utilisateur professionnel connecté
+      localStorage.setItem('demo_professional_mode', 'true');
+      localStorage.setItem('demo_user_data', JSON.stringify({
+        id: 'demo-prof-001',
+        email: 'demo@professional.com',
+        user_metadata: {
+          first_name: 'Dr Demo',
+          last_name: 'Professional',
+          specialty: 'Endocrinologie'
+        }
+      }));
+      
+      // Rediriger vers le tableau de bord professionnel
+      navigate('/professional-dashboard');
     } catch (err: any) {
       setError('Erreur mode test: ' + err.message);
     } finally {

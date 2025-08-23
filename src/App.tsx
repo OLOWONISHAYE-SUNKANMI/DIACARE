@@ -12,6 +12,7 @@ import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 import PaymentSuccess from "./components/screens/PaymentSuccess";
 import PaymentScreen from "./components/screens/PaymentScreen";
+import { ProfessionalDashboard } from "./components/screens/ProfessionalDashboard";
 import { ProfessionalRegistrationScreen } from "./components/screens/ProfessionalRegistrationScreen";
 
 const queryClient = new QueryClient({
@@ -47,6 +48,7 @@ const AppContent = () => {
               <ProfessionalRegistrationScreen />
             </ProtectedRoute>
           } />
+          <Route path="/professional-dashboard" element={<ProfessionalDashboard />} />
           <Route path="/" element={
             <ProtectedRoute>
               <Index />
