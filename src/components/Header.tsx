@@ -20,9 +20,6 @@ const Header = ({ user, onLogout, isProfessional, professionalData }: HeaderProp
       <div className="flex items-center justify-between py-4 px-4 pb-3">
         <div className="text-center flex-1">
           <h1 className="text-2xl font-bold tracking-wide text-white">{t('appName')}</h1>
-          <p className="text-xs text-white/90 tracking-wide font-medium">
-            {t('appDescription')}
-          </p>
         </div>
         <div className="ml-4 flex items-center space-x-2">
           <Button

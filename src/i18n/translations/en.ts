@@ -1,7 +1,7 @@
 export const en = {
   // App general
-  appName: "DARE",
-  appDescription: "Diabetes Awareness, Routine & Empowerment",
+  appName: "DiabCare",
+  appDescription: "",
   appSlogan: "The first diabetes management and monitoring platform in Africa",
   
   // Navigation
@@ -51,7 +51,7 @@ export const en = {
       avgGlucose: "Average glucose"
     },
     advice: {
-      title: "💡 Personalized DARE advice",
+      title: "💡 Personalized DiabCare advice",
       example: "Excellent adherence this week! Your late afternoon glucose levels are slightly elevated. Consider adjusting your 3 PM snack or advancing your Humalog injection by 10 minutes."
     },
     injected: "Injected at",
@@ -141,7 +141,7 @@ export const en = {
 
   // Blog/News Screen - COMPLETE
   blog: {
-    title: "DARE News",
+    title: "DiabCare News",
     subtitle: "News and advice on diabetes",
     readMore: "Read",
     readFull: "Read full article",
@@ -232,7 +232,7 @@ export const en = {
     loading: "Loading...",
     signInTitle: "Sign In",
     signUpTitle: "Sign Up",
-    description: "Access your DARE account",
+    description: "Access your DiabCare account",
     appSlogan: "African Diabetes & Excellence Resources",
     patient: "Patient",
     professional: "Professional",
@@ -390,10 +390,10 @@ export const en = {
 
   // Home Screen
   homeScreen: {
-    mission: "DARE Mission",
+    mission: "DiabCare Mission",
     
-    darePackage: "DARE Package",
-    completePlan: "DARE Complete",
+    darePackage: "DiabCare Package",
+    completePlan: "DiabCare Complete",
     premium: "PREMIUM",
     monthlyPrice: "CFA F/month",
     healthPriceless: "Your health is priceless",
@@ -402,8 +402,8 @@ export const en = {
     clarityCharts: "Clarity-style charts",
     advancedCalculator: "Advanced dose calculator",
     familySupport: "Family support",
-    aiAssistant: "DARE AI Assistant",
-    startTracking: "Start my DARE tracking",
+    aiAssistant: "DiabCare AI Assistant",
+    startTracking: "Start my DiabCare tracking",
     freeTrial: "✨ 7-day free trial",
     cancelAnytime: "Cancel anytime • Support included",
     lastReading: "Today 2:30 PM",
@@ -420,7 +420,7 @@ export const en = {
   // Profile Screen
   profileScreen: {
     years: "years old",
-    yearsWithDare: "Years with DARE",
+    yearsWithDare: "Years with DiabCare",
     glucoseMeasures: "Glucose measurements",
     adherence: "Adherence",
     personalInfo: "Personal Information",
@@ -458,7 +458,7 @@ export const en = {
 
   // Chat Screen
   chatScreen: {
-    title: "DARE Chat",
+    title: "DiabCare Chat",
     membersConnected: "members connected",
     successesThisWeek: "💚 142 successes this week",
     inTargetZone: "🎯 89% in target zone",
@@ -469,7 +469,7 @@ export const en = {
     typingMessage: "Write your supportive message...",
     typing: "typing...",
     messageSent: "Message sent",
-    messageShared: "Your message was shared with the DARE community"
+    messageShared: "Your message was shared with the DiabCare community"
   },
 
   // Legal
@@ -480,10 +480,10 @@ export const en = {
     privacyDescription: "Learn how we protect your personal data",
     termsContent: `
       <h3>1. Acceptance of Terms</h3>
-      <p>By using DARE (Diabetes Awareness, Routine & Empowerment), you accept these terms of use.</p>
+      <p>By using DiabCare (Diabetes Awareness, Routine & Empowerment), you accept these terms of use.</p>
       
       <h3>2. Service Description</h3>
-      <p>DARE is the first diabetes management and monitoring platform in Africa, offering:</p>
+      <p>DiabCare is the first diabetes management and monitoring platform in Africa, offering:</p>
       <ul>
         <li>Personalized glucose monitoring</li>
         <li>Medication management and reminders</li>
@@ -504,16 +504,16 @@ export const en = {
     getStarted: "Get Started",
     languageSelection: {
       title: "Choose your language",
-      description: "Select your preferred language to use DARE"
+      description: "Select your preferred language to use DiabCare"
     },
     welcome: {
-      title: "Welcome to DARE",
+      title: "Welcome to DiabCare",
       subtitle: "The first African diabetes management platform",
       description: "We're excited to accompany you on your health journey"
     },
     profile: {
       title: "Set up your profile",
-      subtitle: "Help us personalize your DARE experience",
+      subtitle: "Help us personalize your DiabCare experience",
       description: "This information will help us provide you with tailored care",
       namePlaceholder: "Enter your first name",
       userType: "I am a..."
@@ -530,9 +530,9 @@ export const en = {
       remindersDesc: "Adaptive reminders based on your habits"
     },
     features: {
-      title: "Discover DARE",
+      title: "Discover DiabCare",
       subtitle: "All the features to manage your diabetes",
-      description: "Here's what DARE can do for you",
+      description: "Here's what DiabCare can do for you",
       glucose: "Glucose monitoring",
       reminders: "Smart reminders",
       consultation: "Teleconsultations", 
@@ -548,7 +548,7 @@ export const en = {
     },
     completion: {
       title: "Setup complete!",
-      description: "Your DARE account is ready to use"
+      description: "Your DiabCare account is ready to use"
     }
   },
 

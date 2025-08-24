@@ -1,7 +1,7 @@
 export const fr = {
   // App general
-  appName: "DARE",
-  appDescription: "Diabetes Awareness, Routine & Empowerment",
+  appName: "DiabCare",
+  appDescription: "",
   appSlogan: "La première plateforme de gestion et suivi du diabète en Afrique",
   
   // Navigation
@@ -51,7 +51,7 @@ export const fr = {
       avgGlucose: "Moyenne glycémique"
     },
     advice: {
-      title: "💡 Conseil DARE personnalisé",
+      title: "💡 Conseil DiabCare personnalisé",
       example: "Excellente adherence cette semaine ! Vos glycémies en fin d'après-midi sont légèrement élevées. Considérez ajuster votre collation de 15h ou anticiper votre injection de Humalog de 10 minutes."
     },
     injected: "Injecté à",
@@ -141,7 +141,7 @@ export const fr = {
 
   // Blog/News Screen - COMPLETE
   blog: {
-    title: "DARE News",
+    title: "DiabCare News",
     subtitle: "Actualités et conseils sur le diabète",
     readMore: "Lire",
     readFull: "Lire l'article complet",
@@ -232,7 +232,7 @@ export const fr = {
     loading: "Chargement...",
     signInTitle: "Connexion",
     signUpTitle: "Inscription",
-    description: "Accédez à votre compte DARE",
+    description: "Accédez à votre compte DiabCare",
     appSlogan: "Diabète Africain & Ressources d'Excellence",
     patient: "Patient",
     professional: "Professionnel",
@@ -390,10 +390,10 @@ export const fr = {
 
   // Home Screen
   homeScreen: {
-    mission: "Mission DARE",
+    mission: "Mission DiabCare",
     
-    darePackage: "Forfait DARE",
-    completePlan: "DARE Complet",
+    darePackage: "Forfait DiabCare",
+    completePlan: "DiabCare Complet",
     premium: "PREMIUM",
     monthlyPrice: "F CFA/mois",
     healthPriceless: "Votre santé n'a pas de prix",
@@ -402,8 +402,8 @@ export const fr = {
     clarityCharts: "Graphiques style Clarity",
     advancedCalculator: "Calculateur doses avancé",
     familySupport: "Support familial",
-    aiAssistant: "Assistant IA DARE",
-    startTracking: "Commencer mon suivi DARE",
+    aiAssistant: "Assistant IA DiabCare",
+    startTracking: "Commencer mon suivi DiabCare",
     freeTrial: "✨ Essai gratuit 7 jours",
     cancelAnytime: "Annulable à tout moment • Support inclus",
     lastReading: "Aujourd'hui 14:30",
@@ -420,7 +420,7 @@ export const fr = {
   // Profile Screen
   profileScreen: {
     years: "ans",
-    yearsWithDare: "Années avec DARE",
+    yearsWithDare: "Années avec DiabCare",
     glucoseMeasures: "Mesures glycémie",
     adherence: "Observance",
     personalInfo: "Informations Personnelles",
@@ -458,7 +458,7 @@ export const fr = {
 
   // Chat Screen
   chatScreen: {
-    title: "DARE Chat",
+    title: "DiabCare Chat",
     membersConnected: "membres connectés",
     successesThisWeek: "💚 142 succès cette semaine",
     inTargetZone: "🎯 89% dans la zone cible",
@@ -469,7 +469,7 @@ export const fr = {
     typingMessage: "Écrivez votre message de soutien...",
     typing: "en train d'écrire...",
     messageSent: "Message envoyé",
-    messageShared: "Votre message a été partagé avec la communauté DARE"
+    messageShared: "Votre message a été partagé avec la communauté DiabCare"
   },
 
   // Professional Access
@@ -490,7 +490,7 @@ export const fr = {
     licenseNumber: "Numéro de licence",
     institution: "Établissement",
     motivation: "Motivation",
-    motivationPlaceholder: "Expliquez pourquoi vous souhaitez accéder à DARE...",
+    motivationPlaceholder: "Expliquez pourquoi vous souhaitez accéder à DiabCare...",
     requestSent: "Demande envoyée",
     requestSentDescription: "Votre demande d'accès professionnel a été envoyée avec succès",
     requestError: "Erreur lors de l'envoi de la demande"
@@ -503,16 +503,16 @@ export const fr = {
     getStarted: "Commencer",
     languageSelection: {
       title: "Choisissez votre langue",
-      description: "Sélectionnez votre langue préférée pour utiliser DARE"
+      description: "Sélectionnez votre langue préférée pour utiliser DiabCare"
     },
     welcome: {
-      title: "Bienvenue dans DARE",
+      title: "Bienvenue dans DiabCare",
       subtitle: "La première plateforme africaine de gestion du diabète",
       description: "Nous sommes ravis de vous accompagner dans votre parcours de santé"
     },
     profile: {
       title: "Configurez votre profil",
-      subtitle: "Aidez-nous à personnaliser votre expérience DARE",
+      subtitle: "Aidez-nous à personnaliser votre expérience DiabCare",
       description: "Ces informations nous permettront de vous offrir un suivi adapté",
       namePlaceholder: "Entrez votre prénom",
       userType: "Je suis un(e)..."
@@ -529,9 +529,9 @@ export const fr = {
       remindersDesc: "Rappels adaptatifs basés sur vos habitudes"
     },
     features: {
-      title: "Découvrez DARE",
+      title: "Découvrez DiabCare",
       subtitle: "Toutes les fonctionnalités pour gérer votre diabète",
-      description: "Voici ce que DARE peut faire pour vous",
+      description: "Voici ce que DiabCare peut faire pour vous",
       glucose: "Suivi glycémique",
       reminders: "Rappels intelligents", 
       consultation: "Téléconsultations",
@@ -547,7 +547,7 @@ export const fr = {
     },
     completion: {
       title: "Configuration terminée !",
-      description: "Votre compte DARE est prêt à l'emploi"
+      description: "Votre compte DiabCare est prêt à l'emploi"
     }
   },
 
@@ -563,10 +563,10 @@ export const fr = {
     privacyDescription: "Découvrez comment nous protégeons vos données personnelles",
     termsContent: `
       <h3>1. Acceptation des Conditions</h3>
-      <p>En utilisant DARE (Diabète Africain & Ressources d'Excellence), vous acceptez les présentes conditions d'utilisation.</p>
+      <p>En utilisant DiabCare (Diabète Africain & Ressources d'Excellence), vous acceptez les présentes conditions d'utilisation.</p>
       
       <h3>2. Description du Service</h3>
-      <p>DARE est la première plateforme de gestion et suivi du diabète en Afrique, offrant :</p>
+      <p>DiabCare est la première plateforme de gestion et suivi du diabète en Afrique, offrant :</p>
       <ul>
         <li>Suivi personnalisé de la glycémie</li>
         <li>Gestion des médicaments et rappels</li>
@@ -594,7 +594,7 @@ export const fr = {
       <p>Les consultations médicales sont fournies par des professionnels certifiés. Elles ne remplacent pas les soins d'urgence.</p>
       
       <h3>7. Limitation de Responsabilité</h3>
-      <p>DARE fournit des outils d'aide à la gestion du diabète mais ne remplace pas un avis médical professionnel.</p>
+      <p>DiabCare fournit des outils d'aide à la gestion du diabète mais ne remplace pas un avis médical professionnel.</p>
       
       <h3>8. Résiliation</h3>
       <p>Vous pouvez supprimer votre compte à tout moment. Nous nous réservons le droit de suspendre des comptes en cas de violation.</p>
