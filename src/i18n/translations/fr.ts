@@ -391,7 +391,7 @@ export const fr = {
   // Home Screen
   homeScreen: {
     mission: "Mission DARE",
-    todaysChallenges: "Défis Aujourd'hui",
+    
     darePackage: "Forfait DARE",
     completePlan: "DARE Complet",
     premium: "PREMIUM",
@@ -415,10 +415,6 @@ export const fr = {
     daily: "Quotidien",
     empowerment: "Empowerment",
     control: "Contrôle",
-    measureGlucose: "Mesurer la glycémie 3x aujourd'hui",
-    takeMedication: "Prendre ses médicaments à l'heure",
-    physicalActivity: "30 min d'activité physique",
-    noteObservations: "Noter ses observations"
   },
 
   // Profile Screen
