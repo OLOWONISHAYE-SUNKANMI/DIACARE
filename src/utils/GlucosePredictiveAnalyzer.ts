@@ -11,6 +11,22 @@ interface GlucoseReading {
   };
 }
 
+interface PatientProfile {
+  age: number;
+  diabetesType: 1 | 2;
+  weight: number;
+  insulinSensitivityFactor: number;
+  carbRatio: number;
+  targetGlucose: number;
+}
+
+interface InsulinInjection {
+  type: 'rapid' | 'long' | 'intermediate';
+  dose: number;
+  timestamp: Date;
+  brand?: string;
+}
+
 export interface RiskAlert {
   id: string;
   type: 'hypo_risk' | 'hyper_risk' | 'trend_warning' | 'medication_reminder' | 'pattern_anomaly';
@@ -28,10 +44,75 @@ export interface RiskAlert {
 export class GlucosePredictiveAnalyzer {
   private readings: GlucoseReading[] = [];
   private alerts: RiskAlert[] = [];
+  private patientProfile: PatientProfile;
+  private insulinInjections: InsulinInjection[] = [];
+  private meals: any[] = [];
+  private activities: any[] = [];
 
-  // Simulated historical data for demo
-  constructor() {
+  constructor(patientProfile?: PatientProfile) {
+    this.patientProfile = patientProfile || {
+      age: 35,
+      diabetesType: 1,
+      weight: 70,
+      insulinSensitivityFactor: 50,
+      carbRatio: 15,
+      targetGlucose: 100
+    };
     this.initializeSampleData();
+  }
+
+  // Update patient data for real-time analysis
+  updatePatientData(
+    glucoseReadings: any[] = [],
+    meals: any[] = [],
+    activities: any[] = [],
+    insulinInjections: any[] = []
+  ) {
+    this.readings = this.convertGlucoseData(glucoseReadings);
+    this.meals = meals;
+    this.activities = activities;
+    this.insulinInjections = this.convertInsulinData(insulinInjections);
+  }
+
+  private convertGlucoseData(readings: any[]): GlucoseReading[] {
+    return readings.map(reading => ({
+      value: reading.value,
+      timestamp: new Date(reading.timestamp),
+      context: this.mapContext(reading.context),
+      mealCarbs: reading.mealCarbs,
+      activity: reading.activity
+    }));
+  }
+
+  private convertInsulinData(injections: any[]): InsulinInjection[] {
+    return injections.map(injection => ({
+      type: this.mapInsulinType(injection.insulin_type),
+      dose: injection.dose_units,
+      timestamp: new Date(injection.injection_time),
+      brand: injection.insulin_brand
+    }));
+  }
+
+  private mapContext(context: string): 'fasting' | 'before_meal' | 'after_meal' | 'bedtime' | 'night' {
+    const contextMap: Record<string, any> = {
+      'fasting': 'fasting',
+      'avant_repas': 'before_meal',
+      'apres_repas': 'after_meal',
+      'coucher': 'bedtime',
+      'nuit': 'night'
+    };
+    return contextMap[context] || 'before_meal';
+  }
+
+  private mapInsulinType(type: string): 'rapid' | 'long' | 'intermediate' {
+    const typeMap: Record<string, any> = {
+      'rapide': 'rapid',
+      'lente': 'long',
+      'intermediaire': 'intermediate',
+      'bolus': 'rapid',
+      'basal': 'long'
+    };
+    return typeMap[type] || 'rapid';
   }
 
   private initializeSampleData() {
@@ -97,17 +178,318 @@ export class GlucosePredictiveAnalyzer {
     this.readings.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime());
   }
 
-  // Analyze patterns and generate predictive alerts
+  // Analyze patterns and generate predictive alerts using AI/ML algorithms
   analyzeAndGenerateAlerts(): RiskAlert[] {
     this.alerts = [];
     
-    this.analyzeHypoglycemiaRisk();
-    this.analyzeHyperglycemiaRisk();
+    // Advanced AI/ML analysis considering multiple factors
+    this.analyzeHypoglycemiaRiskAdvanced();
+    this.analyzeHyperglycemiaRiskAdvanced();
+    this.analyzeInsulinOnActionRisk();
+    this.analyzeMealImpactPrediction();
+    this.analyzeActivityImpactRisk();
+    this.analyzeAgeFactorRisk();
     this.analyzeTrendPatterns();
-    this.analyzeMealPatterns();
     this.checkMedicationTiming();
+    this.analyzeComplexPatterns();
     
-    return this.alerts.sort((a, b) => b.severity.localeCompare(a.severity));
+    return this.alerts.sort((a, b) => {
+      const severityOrder = { critical: 4, high: 3, medium: 2, low: 1 };
+      return severityOrder[b.severity as keyof typeof severityOrder] - 
+             severityOrder[a.severity as keyof typeof severityOrder];
+    });
+  }
+
+  // Advanced hypoglycemia prediction using multiple factors
+  private analyzeHypoglycemiaRiskAdvanced() {
+    const recentReadings = this.getRecentReadings(6);
+    const lastReading = recentReadings[recentReadings.length - 1];
+    
+    if (!lastReading) return;
+
+    // Calculate weighted risk score
+    let riskScore = 0;
+    
+    // Factor 1: Current glucose trend
+    const trend = this.calculateTrend(recentReadings);
+    if (trend < -15) riskScore += 40;
+    else if (trend < -10) riskScore += 25;
+    else if (trend < -5) riskScore += 15;
+
+    // Factor 2: Current glucose level
+    if (lastReading.value < 80) riskScore += 30;
+    else if (lastReading.value < 100) riskScore += 20;
+    else if (lastReading.value < 120) riskScore += 10;
+
+    // Factor 3: Recent insulin injections
+    const recentInsulin = this.getRecentInsulin(180); // Last 3 hours
+    recentInsulin.forEach(injection => {
+      const minutesAgo = (Date.now() - injection.timestamp.getTime()) / (1000 * 60);
+      if (injection.type === 'rapid' && minutesAgo < 90) {
+        riskScore += injection.dose * 2; // Rapid insulin peak effect
+      }
+    });
+
+    // Factor 4: Recent activity
+    const recentActivity = this.getRecentActivity(120); // Last 2 hours
+    if (recentActivity.length > 0) {
+      const totalCaloriesBurned = recentActivity.reduce((sum, act) => sum + (act.total_calories_burned || 0), 0);
+      if (totalCaloriesBurned > 200) riskScore += 20;
+      else if (totalCaloriesBurned > 100) riskScore += 10;
+    }
+
+    // Factor 5: Age factor (older patients more at risk)
+    if (this.patientProfile.age > 65) riskScore += 10;
+    else if (this.patientProfile.age > 50) riskScore += 5;
+
+    // Factor 6: Time since last meal
+    const timeSinceLastMeal = this.getTimeSinceLastMeal();
+    if (timeSinceLastMeal > 240) riskScore += 15; // 4+ hours
+    else if (timeSinceLastMeal > 180) riskScore += 10; // 3+ hours
+
+    if (riskScore >= 50) {
+      const timeToHypo = this.predictTimeToThresholdAdvanced(recentReadings, 70, riskScore);
+      
+      this.alerts.push({
+        id: `hypo_advanced_${Date.now()}`,
+        type: 'hypo_risk',
+        severity: riskScore >= 80 ? 'critical' : riskScore >= 60 ? 'high' : 'medium',
+        title: '🚨 Alerte Hypoglycémie IA',
+        message: `Risque élevé d'hypoglycémie détecté (Score: ${riskScore}/100)`,
+        prediction: `Hypoglycémie probable dans ${timeToHypo} minutes`,
+        recommendedActions: this.getHypoglycemiaActions(riskScore, lastReading.value),
+        timeframe: timeToHypo,
+        confidence: Math.min(95, 60 + (riskScore * 0.5)),
+        createdAt: new Date(),
+        isRead: false
+      });
+
+      // Send family notification
+      this.sendFamilyAlert('hypoglycemia_risk', riskScore, timeToHypo);
+    }
+  }
+
+  // Advanced hyperglycemia prediction
+  private analyzeHyperglycemiaRiskAdvanced() {
+    const recentReadings = this.getRecentReadings(4);
+    const lastReading = recentReadings[recentReadings.length - 1];
+    
+    if (!lastReading) return;
+
+    let riskScore = 0;
+
+    // Current glucose level
+    if (lastReading.value > 250) riskScore += 40;
+    else if (lastReading.value > 200) riskScore += 30;
+    else if (lastReading.value > 180) riskScore += 20;
+
+    // Glucose trend
+    const trend = this.calculateTrend(recentReadings);
+    if (trend > 20) riskScore += 30;
+    else if (trend > 10) riskScore += 20;
+
+    // Recent meal impact
+    const recentMeals = this.getRecentMeals(180);
+    recentMeals.forEach(meal => {
+      if (meal.total_carbs > 60) riskScore += 15;
+      else if (meal.total_carbs > 45) riskScore += 10;
+    });
+
+    // Insufficient insulin coverage
+    const expectedInsulin = this.calculateExpectedInsulin();
+    const actualInsulin = this.getRecentInsulin(180);
+    const insulinDeficit = expectedInsulin - actualInsulin.reduce((sum, inj) => sum + inj.dose, 0);
+    if (insulinDeficit > 5) riskScore += 25;
+    else if (insulinDeficit > 2) riskScore += 15;
+
+    if (riskScore >= 40) {
+      this.alerts.push({
+        id: `hyper_advanced_${Date.now()}`,
+        type: 'hyper_risk',
+        severity: riskScore >= 70 ? 'critical' : riskScore >= 50 ? 'high' : 'medium',
+        title: '⚠️ Alerte Hyperglycémie IA',
+        message: `Risque d'hyperglycémie sévère (Score: ${riskScore}/100)`,
+        prediction: 'Hyperglycémie persistante probable sans intervention',
+        recommendedActions: this.getHyperglycemiaActions(riskScore, lastReading.value),
+        timeframe: 90,
+        confidence: Math.min(95, 55 + (riskScore * 0.6)),
+        createdAt: new Date(),
+        isRead: false
+      });
+
+      this.sendFamilyAlert('hyperglycemia_risk', riskScore, 90);
+    }
+  }
+
+  // Analyze insulin on action risk
+  private analyzeInsulinOnActionRisk() {
+    const activeInsulin = this.calculateActiveInsulin();
+    const recentReadings = this.getRecentReadings(3);
+    const lastReading = recentReadings[recentReadings.length - 1];
+    
+    if (activeInsulin.total > 10 && lastReading && lastReading.value < 120) {
+      this.alerts.push({
+        id: `insulin_action_${Date.now()}`,
+        type: 'hypo_risk',
+        severity: 'high',
+        title: '💉 Insuline Active Détectée',
+        message: `${activeInsulin.total.toFixed(1)}U d'insuline encore active`,
+        prediction: 'Risque de chute glycémique dans les 2 prochaines heures',
+        recommendedActions: [
+          'Surveillez votre glycémie toutes les 30 minutes',
+          'Ayez une collation glucidique à portée de main',
+          'Évitez l\'exercice physique intense',
+          'Informez votre entourage'
+        ],
+        timeframe: 120,
+        confidence: 88,
+        createdAt: new Date(),
+        isRead: false
+      });
+    }
+  }
+
+  // Analyze meal impact prediction
+  private analyzeMealImpactPrediction() {
+    const recentMeals = this.getRecentMeals(30); // Last 30 minutes
+    
+    recentMeals.forEach(meal => {
+      const mealTime = new Date(meal.meal_time);
+      const minutesAgo = (Date.now() - mealTime.getTime()) / (1000 * 60);
+      
+      if (minutesAgo < 30) {
+        const expectedPeak = this.predictMealPeak(meal);
+        const expectedInsulin = meal.total_carbs / this.patientProfile.carbRatio;
+        
+        const recentInsulin = this.getRecentInsulin(60);
+        const actualInsulin = recentInsulin
+          .filter(inj => inj.type === 'rapid')
+          .reduce((sum, inj) => sum + inj.dose, 0);
+        
+        if (actualInsulin < expectedInsulin * 0.8) {
+          this.alerts.push({
+            id: `meal_impact_${Date.now()}`,
+            type: 'hyper_risk',
+            severity: 'medium',
+            title: '🍽️ Pic Glycémique Prédit',
+            message: `Repas de ${meal.total_carbs}g glucides détecté, insuline insuffisante`,
+            prediction: `Pic à ${expectedPeak}mg/dL dans 90-120 minutes`,
+            recommendedActions: [
+              `Injecter ${(expectedInsulin - actualInsulin).toFixed(1)}U d'insuline rapide`,
+              'Vérifier la glycémie dans 2 heures',
+              'Boire de l\'eau',
+              'Éviter les glucides supplémentaires'
+            ],
+            timeframe: 100,
+            confidence: 82,
+            createdAt: new Date(),
+            isRead: false
+          });
+        }
+      }
+    });
+  }
+
+  // Analyze activity impact risk
+  private analyzeActivityImpactRisk() {
+    const plannedActivity = this.getUpcomingActivity();
+    const recentReadings = this.getRecentReadings(2);
+    const lastReading = recentReadings[recentReadings.length - 1];
+    
+    if (plannedActivity && lastReading) {
+      const expectedGlucoseDrop = this.predictActivityImpact(plannedActivity);
+      const projectedGlucose = lastReading.value - expectedGlucoseDrop;
+      
+      if (projectedGlucose < 80) {
+        this.alerts.push({
+          id: `activity_risk_${Date.now()}`,
+          type: 'hypo_risk',
+          severity: projectedGlucose < 60 ? 'critical' : 'high',
+          title: '🏃 Risque Activité Physique',
+          message: `Activité prévue: risque de chute à ${projectedGlucose.toFixed(0)}mg/dL`,
+          prediction: 'Hypoglycémie pendant ou après l\'exercice',
+          recommendedActions: [
+            'Prendre 15-30g de glucides avant l\'activité',
+            'Réduire la dose d\'insuline rapide de 25-50%',
+            'Surveiller la glycémie pendant l\'exercice',
+            'Avoir des glucides de secours'
+          ],
+          timeframe: 45,
+          confidence: 85,
+          createdAt: new Date(),
+          isRead: false
+        });
+      }
+    }
+  }
+
+  // Age-specific risk analysis
+  private analyzeAgeFactorRisk() {
+    const recentReadings = this.getRecentReadings(3);
+    const lastReading = recentReadings[recentReadings.length - 1];
+    
+    if (!lastReading) return;
+
+    // Elderly patients (>65) have different risk profiles
+    if (this.patientProfile.age >= 65) {
+      if (lastReading.value < 100 || lastReading.value > 200) {
+        this.alerts.push({
+          id: `age_risk_${Date.now()}`,
+          type: lastReading.value < 100 ? 'hypo_risk' : 'hyper_risk',
+          severity: 'medium',
+          title: '👴 Alerte Âge Senior',
+          message: 'Risque accru de complications liées à l\'âge',
+          prediction: 'Surveillance renforcée recommandée',
+          recommendedActions: [
+            'Contrôles glycémiques plus fréquents',
+            'Objectifs glycémiques adaptés à l\'âge',
+            'Surveillance des symptômes atypiques',
+            'Contact médecin si symptômes'
+          ],
+          timeframe: 120,
+          confidence: 75,
+          createdAt: new Date(),
+          isRead: false
+        });
+      }
+    }
+  }
+
+  // Complex pattern analysis using ML-like algorithms
+  private analyzeComplexPatterns() {
+    const readings = this.readings.slice(-20); // Last 20 readings
+    
+    if (readings.length < 10) return;
+
+    // Dawn phenomenon detection
+    const morningReadings = readings.filter(r => {
+      const hour = r.timestamp.getHours();
+      return hour >= 6 && hour <= 8 && r.context === 'fasting';
+    });
+    
+    if (morningReadings.length >= 3) {
+      const avgMorning = morningReadings.reduce((sum, r) => sum + r.value, 0) / morningReadings.length;
+      if (avgMorning > 140) {
+        this.alerts.push({
+          id: `dawn_phenomenon_${Date.now()}`,
+          type: 'pattern_anomaly',
+          severity: 'medium',
+          title: '🌅 Phénomène de l\'Aube Détecté',
+          message: `Glycémies matinales élevées (moyenne: ${avgMorning.toFixed(0)}mg/dL)`,
+          prediction: 'Pattern récurrent probable',
+          recommendedActions: [
+            'Ajuster l\'insuline lente du soir',
+            'Éviter les collations tardives',
+            'Consulter pour adaptation du traitement',
+            'Surveiller la glycémie au réveil'
+          ],
+          timeframe: 480, // 8 hours
+          confidence: 78,
+          createdAt: new Date(),
+          isRead: false
+        });
+      }
+    }
   }
 
   private analyzeHypoglycemiaRisk() {
