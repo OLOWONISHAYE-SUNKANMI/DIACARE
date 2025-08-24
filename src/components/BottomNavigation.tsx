@@ -22,9 +22,9 @@ const BottomNavigation = ({ activeTab, onTabChange }: BottomNavigationProps) => 
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-card border-t border-border pb-safe-area-inset-bottom">
-      <div className="px-2 py-2 pt-3">
-        <div className="flex justify-around">
+    <nav className="fixed bottom-0 left-0 right-0 bg-card border-t border-border pb-safe-area-inset-bottom overflow-hidden">
+      <div className="px-1 sm:px-2 py-1 sm:py-2 pt-2 sm:pt-3">
+        <div className="flex justify-around items-center min-h-0 overflow-x-auto scrollbar-hide">
           {tabs.map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
@@ -33,14 +33,15 @@ const BottomNavigation = ({ activeTab, onTabChange }: BottomNavigationProps) => 
               <button
                 key={tab.id}
                 onClick={() => onTabChange(tab.id)}
-                className={`flex flex-col items-center justify-center p-2 rounded-lg transition-all duration-200 ${
+                className={`flex flex-col items-center justify-center p-1.5 sm:p-2 rounded-lg transition-all duration-200 min-w-0 flex-shrink-0 ${
                   isActive
                     ? "bg-medical-green-light text-medical-green"
                     : "text-muted-foreground hover:text-foreground hover:bg-accent"
                 }`}
+                style={{ minWidth: '44px' }}
               >
-                <Icon className={`w-5 h-5 mb-1 ${isActive ? "scale-110" : ""}`} />
-                <span className="text-xs font-medium">{tab.label}</span>
+                <Icon className={`w-4 h-4 sm:w-5 sm:h-5 mb-0.5 sm:mb-1 flex-shrink-0 ${isActive ? "scale-110" : ""}`} />
+                <span className="text-[10px] sm:text-xs font-medium leading-tight truncate max-w-full text-center">{tab.label}</span>
               </button>
             );
           })}

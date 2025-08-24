@@ -33,12 +33,12 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
 
 
   return (
-    <div className="flex-1 bg-gray-50 min-h-screen pb-24">
+    <div className="flex-1 bg-gray-50 min-h-screen pb-20 sm:pb-24 overflow-x-hidden">
       {/* Native Header */}
       <NativeHeader userName="Amadou" />
 
       {/* Main Content */}
-      <div className="space-y-6">
+      <div className="space-y-4 sm:space-y-6 pb-4">
         {/* Glucose Widget */}
         <GlucoseWidget 
           currentGlucose={currentGlucose}
@@ -68,23 +68,23 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
         />
 
         {/* Predictive Alerts */}
-        <div className="px-4">
+        <div className="px-3 sm:px-4">
           <PredictiveAlerts />
         </div>
 
-        {/* Mission DARE */}
-        <div className="px-4">
-          <Card className="bg-white shadow-lg border-0 rounded-2xl overflow-hidden">
-            <CardHeader className="bg-gradient-to-r from-medical-green to-medical-teal text-white">
-              <CardTitle className="text-lg flex items-center space-x-2">
-                <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm">
-                  <Target className="w-5 h-5 text-white" />
+        {/* Mission DiabCare */}
+        <div className="px-3 sm:px-4">
+          <Card className="bg-white shadow-lg border-0 rounded-xl sm:rounded-2xl overflow-hidden">
+            <CardHeader className="bg-gradient-to-r from-medical-green to-medical-teal text-white p-4 sm:p-6">
+              <CardTitle className="text-base sm:text-lg flex items-center space-x-2">
+                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm flex-shrink-0">
+                  <Target className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                 </div>
-                <span>{t('homeScreen.mission')}</span>
+                <span className="leading-tight">{t('homeScreen.mission')}</span>
               </CardTitle>
             </CardHeader>
-            <CardContent className="p-6">
-              <p className="text-card-foreground text-sm leading-relaxed">
+            <CardContent className="p-4 sm:p-6">
+              <p className="text-card-foreground text-sm sm:text-base leading-relaxed">
                 Notre mission est de vous aider à mieux comprendre et gérer votre diabète avec des outils adaptés à votre réalité.
               </p>
             </CardContent>
