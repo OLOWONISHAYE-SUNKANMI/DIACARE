@@ -13,7 +13,7 @@ export const en = {
     chat: "Chat",
     assistant: "Assistant",
     journal: "Journal",
-    blog: "Blog",
+    blog: "News",
     family: "Family",
     profile: "Profile",
     reminders: "Reminders"

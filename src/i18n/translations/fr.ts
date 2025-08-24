@@ -13,7 +13,7 @@ export const fr = {
     chat: "Chat",
     assistant: "Assistant",
     journal: "Carnet",
-    blog: "Blog",
+    blog: "Journal",
     family: "Famille",
     profile: "Profil",
     reminders: "Rappels"
