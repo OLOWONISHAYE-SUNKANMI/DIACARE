@@ -17,6 +17,7 @@ const BlogScreen = (props: BlogScreenProps) => {
 
   const categories = [
     t('blog.categories.all'), 
+    "Guides",
     t('blog.categories.research'), 
     t('blog.categories.nutrition'), 
     t('blog.categories.mental'), 
@@ -25,6 +26,318 @@ const BlogScreen = (props: BlogScreenProps) => {
   ];
 
   const articles = [
+    {
+      id: 7,
+      image: "🍽️",
+      category: "Guides",
+      readTime: "15 min",
+      title: "Guide d'alimentation pour personnes diabétiques",
+      excerpt: "Guide complet pour une alimentation équilibrée et adaptée au diabète. Découvrez les aliments recommandés, les portions, et les stratégies nutritionnelles...",
+      content: `# Guide d'alimentation pour personnes diabétiques
+
+## Introduction
+Une alimentation équilibrée est la pierre angulaire de la gestion du diabète. Ce guide vous fournit les bases pour adopter de bonnes habitudes alimentaires qui vous aideront à contrôler votre glycémie tout en maintenant une qualité de vie optimale.
+
+## Principes de base
+
+### 1. Répartition des macronutriments
+- **Glucides** : 45-65% de l'apport énergétique total
+- **Protéines** : 15-20% de l'apport énergétique total  
+- **Lipides** : 20-35% de l'apport énergétique total
+
+### 2. Index glycémique
+Privilégiez les aliments à index glycémique bas ou modéré :
+- **IG bas (< 55)** : Légumes verts, légumineuses, quinoa, avoine
+- **IG modéré (55-70)** : Pain complet, riz brun, patate douce
+- **IG élevé (> 70)** : À limiter - pain blanc, pomme de terre, sucre
+
+## Aliments recommandés
+
+### Légumes (à volonté)
+- Brocolis, épinards, courgettes, aubergines
+- Tomates, poivrons, concombres
+- Chou-fleur, haricots verts, asperges
+
+### Protéines de qualité
+- Poissons gras : saumon, maquereau, sardines
+- Volaille sans peau : poulet, dinde
+- Légumineuses : lentilles, pois chiches, haricots
+- Œufs (avec modération)
+- Tofu et produits à base de soja
+
+### Glucides complexes
+- Quinoa, avoine, orge
+- Pain complet, pâtes complètes
+- Riz brun, légumineuses
+- Patate douce (avec modération)
+
+### Bonnes graisses
+- Huile d'olive, avocat
+- Noix, amandes, graines
+- Poissons gras
+
+## Aliments à limiter
+
+### Sucres simples
+- Sucreries, pâtisseries, sodas
+- Fruits très sucrés en excès
+- Miel, sirop d'érable (occasionnellement)
+
+### Graisses saturées
+- Viandes grasses, charcuterie
+- Fromages gras, beurre en excès
+- Aliments frits, fast-food
+
+## Stratégies pratiques
+
+### Planification des repas
+1. **Méthode de l'assiette** :
+   - 1/2 assiette : légumes non féculents
+   - 1/4 assiette : protéines maigres
+   - 1/4 assiette : glucides complexes
+
+2. **Horaires réguliers** : 3 repas + 1-2 collations si nécessaire
+
+3. **Contrôle des portions** :
+   - Utilisez des assiettes plus petites
+   - Pesez vos aliments au début pour apprendre
+   - Écoutez vos signaux de satiété
+
+### Gestion des envies
+- Buvez de l'eau avant les repas
+- Incluez des fibres à chaque repas
+- Préparez des collations saines à l'avance
+- Mangez lentement et en pleine conscience
+
+## Conseils spécifiques par type de diabète
+
+### Type 1
+- Comptage des glucides pour ajuster l'insuline
+- Attention aux hypoglycémies pendant l'exercice
+- Resucrage adapté en cas d'hypoglycémie
+
+### Type 2
+- Perte de poids si nécessaire (5-10%)
+- Activité physique régulière après les repas
+- Surveillance de la tension artérielle
+
+## Hydratation
+- 1,5 à 2 litres d'eau par jour
+- Évitez les boissons sucrées
+- Thé et café sans sucre autorisés
+- Attention à l'alcool (avec modération et jamais à jeun)
+
+## Compléments et vitamines
+Consultez votre médecin avant de prendre :
+- Vitamine D (souvent carencée)
+- Magnésium
+- Oméga-3
+- Chrome (controverse scientifique)
+
+## Conclusion
+Une alimentation adaptée au diabète n'est pas restrictive mais équilibrée. Elle permet de profiter des plaisirs de la table tout en maintenant une glycémie stable. N'hésitez pas à consulter un nutritionniste spécialisé pour un plan personnalisé.`,
+      author: "Dr. Marie Dubois, Nutritionniste",
+      date: "2024-01-20",
+      source: "Guide DARE",
+      bgColor: "bg-green-100",
+      trending: true
+    },
+    {
+      id: 8,
+      image: "📚",
+      category: "Guides", 
+      readTime: "20 min",
+      title: "Guide complet sur le diabète de type 1 et type 2",
+      excerpt: "Tout ce que vous devez savoir sur le diabète : définitions, symptômes, traitements, complications et gestion au quotidien...",
+      content: `# Guide complet sur le diabète de type 1 et type 2
+
+## Qu'est-ce que le diabète ?
+
+Le diabète est une maladie chronique caractérisée par une hyperglycémie (taux de sucre élevé dans le sang) due à un défaut de sécrétion ou d'action de l'insuline. Il existe plusieurs types de diabète, mais les plus fréquents sont les types 1 et 2.
+
+## Diabète de type 1
+
+### Définition
+Le diabète de type 1 est une maladie auto-immune où le système immunitaire détruit les cellules bêta du pancréas qui produisent l'insuline. Il représente 5-10% des cas de diabète.
+
+### Caractéristiques
+- **Début** : Généralement avant 30 ans, souvent dans l'enfance
+- **Évolution** : Rapide, en quelques semaines ou mois
+- **Hérédité** : Faible composante génétique (3-5% de risque familial)
+- **Poids** : Souvent poids normal ou maigreur
+
+### Symptômes
+Les "4P" classiques :
+- **Polyurie** : urines abondantes et fréquentes
+- **Polydipsie** : soif intense
+- **Polyphagie** : faim excessive
+- **Perte de poids** rapide et inexpliquée
+
+Autres symptômes :
+- Fatigue extrême
+- Vision floue
+- Infections récurrentes
+- Haleine fruitée (cétose)
+
+### Diagnostic
+- **Glycémie à jeun** ≥ 1,26 g/L (7 mmol/L) à deux reprises
+- **Glycémie aléatoire** ≥ 2 g/L (11,1 mmol/L) avec symptômes
+- **HbA1c** ≥ 6,5% (48 mmol/mol)
+- **Test de tolérance au glucose** : glycémie ≥ 2 g/L à 2h
+
+### Traitement
+**Insulinothérapie obligatoire** :
+- Insuline basale (lente) : couvre les besoins de base
+- Insuline prandiale (rapide) : couvre les repas
+- Schémas possibles : stylos, pompe à insuline
+
+**Surveillance** :
+- Glycémie 4-6 fois/jour minimum
+- HbA1c tous les 3 mois (objectif < 7%)
+- Surveillance des complications
+
+## Diabète de type 2
+
+### Définition
+Le diabète de type 2 résulte d'une résistance à l'insuline et/ou d'un déficit de sécrétion insulinique. Il représente 90-95% des cas de diabète.
+
+### Caractéristiques
+- **Début** : Généralement après 40 ans (de plus en plus jeune)
+- **Évolution** : Progressive, souvent asymptomatique au début
+- **Hérédité** : Forte composante génétique (30-40% de risque familial)
+- **Poids** : Souvent surpoids ou obésité (80% des cas)
+
+### Facteurs de risque
+- Âge > 45 ans
+- Surpoids/obésité (IMC > 25)
+- Antécédents familiaux de diabète
+- Sédentarité
+- Hypertension artérielle
+- Dyslipidémie
+- Antécédent de diabète gestationnel
+- Syndrome des ovaires polykystiques (SOPK)
+- Origine ethnique (africaine, hispanique, asiatique)
+
+### Symptômes
+Souvent asymptomatique au début, puis :
+- Fatigue
+- Soif modérée
+- Urines fréquentes
+- Infections récurrentes (mycoses, cystites)
+- Cicatrisation lente
+- Vision floue
+
+### Diagnostic
+Mêmes critères que le type 1, mais évolution plus lente.
+
+### Traitements
+
+**1. Mesures hygiéno-diététiques (première ligne)**
+- Perte de poids (5-10% du poids initial)
+- Alimentation équilibrée
+- Activité physique régulière (150 min/semaine)
+- Arrêt du tabac
+
+**2. Médicaments oraux**
+- **Metformine** : première intention, diminue la production hépatique de glucose
+- **Sulfamides hypoglycémiants** : stimulent la sécrétion d'insuline
+- **Glinides** : stimulation rapide de l'insuline
+- **Inhibiteurs des alpha-glucosidases** : ralentissent l'absorption des glucides
+- **Glitazones** : améliorent la sensibilité à l'insuline
+- **Inhibiteurs DPP-4** : augmentent l'insuline et diminuent le glucagon
+- **Agonistes du GLP-1** : injectables, effet sur la satiété
+
+**3. Insuline (si échec des autres traitements)**
+
+## Complications communes
+
+### Complications aiguës
+**Hypoglycémie** (< 0,70 g/L) :
+- Symptômes : tremblements, sueurs, palpitations, confusion
+- Traitement : 15g de glucides rapides (3 morceaux de sucre)
+
+**Hyperglycémie sévère** :
+- Type 1 : acidocétose diabétique (urgence)
+- Type 2 : coma hyperosmolaire (urgence)
+
+### Complications chroniques
+**Microvasculaires** :
+- **Rétinopathie** : atteinte des vaisseaux de la rétine
+- **Néphropathie** : atteinte des reins
+- **Neuropathie** : atteinte des nerfs (pieds, mains)
+
+**Macrovasculaires** :
+- Infarctus du myocarde (risque x2-4)
+- Accident vasculaire cérébral
+- Artérite des membres inférieurs
+
+**Autres** :
+- Pied diabétique
+- Infections récurrentes
+- Troubles de l'érection
+
+## Prévention des complications
+
+### Contrôle glycémique
+- **Objectif HbA1c** : < 7% (personnalisable selon l'âge et les comorbidités)
+- **Autosurveillance** régulière
+- **Adaptation thérapeutique** selon les résultats
+
+### Contrôle des facteurs de risque cardiovasculaire
+- **Tension artérielle** : < 140/90 mmHg (< 130/80 si possible)
+- **Cholestérol** : LDL < 1g/L (< 0,7g/L si haut risque)
+- **Arrêt du tabac** impératif
+
+### Surveillance régulière
+- **Ophtalmologique** : fond d'œil annuel
+- **Néphrologique** : créatinine et microalbuminurie annuelles
+- **Podologique** : examen des pieds régulier
+- **Cardiologique** : ECG, échodoppler si nécessaire
+
+## Vivre avec le diabète
+
+### Au quotidien
+- **Alimentation** : équilibrée, régulière, adaptée
+- **Activité physique** : 30 min/jour minimum
+- **Gestion du stress** : techniques de relaxation
+- **Sommeil** : 7-8h/nuit, qualité importante
+
+### Situations particulières
+- **Voyage** : prévoir médicaments, ordonnances
+- **Maladie** : surveillance renforcée, adaptation traitement
+- **Grossesse** : suivi spécialisé, objectifs glycémiques stricts
+- **Sport** : adaptation insuline/alimentation selon l'effort
+
+### Éducation thérapeutique
+- Programmes d'éducation en groupe ou individuels
+- Apprentissage de l'autogestion
+- Soutien psychologique si nécessaire
+- Associations de patients
+
+## Innovations et perspectives
+
+### Technologies
+- **Capteurs de glucose continu** : surveillance sans piqûres
+- **Pompes à insuline** intelligentes
+- **Pancréas artificiel** : en développement
+- **Applications mobiles** : aide à la gestion
+
+### Recherche
+- **Thérapies cellulaires** : transplantation d'îlots, cellules souches
+- **Immunothérapies** : prévention du type 1
+- **Médicaments innovants** : nouvelles classes thérapeutiques
+
+## Conclusion
+
+Le diabète est une maladie complexe mais gérable. Une prise en charge précoce et adaptée, associée à une bonne hygiène de vie, permet de prévenir les complications et de maintenir une qualité de vie optimale. L'éducation du patient et le soutien de l'équipe soignante sont essentiels pour une gestion réussie à long terme.
+
+N'hésitez jamais à poser des questions à votre équipe médicale et à participer activement à votre prise en charge.`,
+      author: "Dr. Pierre Martin, Endocrinologue",
+      date: "2024-01-18",
+      source: "Guide DARE",
+      bgColor: "bg-blue-100",
+      trending: true
+    },
     {
       id: 1,
       image: "🔬",
