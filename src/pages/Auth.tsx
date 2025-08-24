@@ -31,7 +31,7 @@ import {
 } from 'lucide-react';
 
 const AuthPage = () => {
-  const { user, signIn, signUp, signInWithProfessionalCode, loading } = useAuth();
+  const { user, signIn, signUp, signInWithProfessionalCode, loading, isTestMode } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
   const { t } = useTranslation();
@@ -213,6 +213,40 @@ const AuthPage = () => {
     setIsLoading(true);
     setError(null);
 
+    // In test mode, accept any code or auto-generate
+    if (isTestMode) {
+      try {
+        // Generate test patient access code if needed
+        const testCode = familyData.patientCode || 'TEST123';
+        
+        // Create a test patient access code in the database
+        const { error: codeError } = await supabase
+          .from('patient_access_codes')
+          .upsert({
+            user_id: user?.id,
+            access_code: testCode,
+            expires_at: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 days
+            is_active: true
+          });
+
+        if (codeError) {
+          console.log('Code creation error (test mode):', codeError);
+        }
+
+        toast({
+          title: "🧪 Mode Test Activé",
+          description: "Accès famille autorisé en mode test",
+        });
+        
+        navigate('/');
+        return;
+      } catch (err: any) {
+        console.log('Test mode error:', err);
+        // Continue with normal flow in case of error
+      }
+    }
+
+    // Normal validation for non-test mode
     if (!familyData.patientCode || familyData.patientCode.length < 6) {
       setError(t('auth.invalidPatientCode'));
       setIsLoading(false);
@@ -220,15 +254,32 @@ const AuthPage = () => {
     }
 
     try {
-      // Logique d'accès famille avec code patient uniquement
-      // Pas besoin d'inscription, juste validation du code
+      // Verify patient code exists and is active
+      const { data: patientCode, error: verifyError } = await supabase
+        .from('patient_access_codes')
+        .select('*')
+        .eq('access_code', familyData.patientCode)
+        .eq('is_active', true)
+        .single();
+
+      if (verifyError || !patientCode) {
+        setError(t('auth.invalidOrExpiredCode'));
+        setIsLoading(false);
+        return;
+      }
+
+      // Check if code is expired
+      if (new Date() > new Date(patientCode.expires_at)) {
+        setError(t('auth.codeExpired'));
+        setIsLoading(false);
+        return;
+      }
+
       toast({
         title: t('auth.familyAccessGranted'),
         description: t('auth.welcomeFamily'),
       });
       
-      // Pour l'instant, redirection vers l'accueil
-      // À terme, redirection vers interface famille
       navigate('/');
     } catch (err: any) {
       setError(t('auth.invalidOrExpiredCode'));
@@ -584,21 +635,21 @@ const AuthPage = () => {
                     <Input
                       id="patient-code"
                       type="text"
-                      placeholder={t('auth.patientCodePlaceholder')}
+                      placeholder={isTestMode ? "TEST123 (Mode Test)" : t('auth.patientCodePlaceholder')}
                       value={familyData.patientCode}
                       onChange={(e) => setFamilyData(prev => ({ ...prev, patientCode: e.target.value.toUpperCase() }))}
                       className="text-center font-mono text-lg"
-                      required
+                      required={!isTestMode}
                     />
                     <p className="text-xs text-muted-foreground text-center">
-                      {t('auth.codeProvidedByPatient')}
+                      {isTestMode ? "🧪 En mode test, n'importe quel code fonctionne" : t('auth.codeProvidedByPatient')}
                     </p>
                   </div>
 
                   <Button 
                     type="submit" 
                     className="w-full" 
-                    disabled={isLoading || !familyData.patientCode}
+                    disabled={isLoading || (!isTestMode && !familyData.patientCode)}
                   >
                     {isLoading ? t('auth.connecting') : t('auth.familyAccess')}
                   </Button>
