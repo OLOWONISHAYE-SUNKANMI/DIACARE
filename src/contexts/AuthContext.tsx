@@ -65,6 +65,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => subscription.unsubscribe();
   }, []);
 
+  // Handle test mode authentication
+  useEffect(() => {
+    if (isTestMode && !user) {
+      // Create a test user object
+      const testUser = {
+        id: 'test-user-id',
+        email: 'test@dare.com',
+        user_metadata: {
+          first_name: 'Test',
+          last_name: 'User'
+        }
+      } as any;
+      
+      setUser(testUser);
+      setHasSubscription(true);
+    }
+  }, [isTestMode, user]);
+
   const checkProfessionalStatus = async (userId: string) => {
     try {
       // Check if user has professional profile  
@@ -193,8 +211,28 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const newTestMode = !isTestMode;
     setIsTestMode(newTestMode);
     localStorage.setItem('dare-test-mode', newTestMode.toString());
+    
     if (newTestMode) {
-      setHasSubscription(true); // In test mode, simulate having subscription
+      setHasSubscription(true);
+      // Create test user if not already authenticated
+      if (!user) {
+        const testUser = {
+          id: 'test-user-id',
+          email: 'test@dare.com',
+          user_metadata: {
+            first_name: 'Test',
+            last_name: 'User'
+          }
+        } as any;
+        setUser(testUser);
+      }
+    } else {
+      // If disabling test mode and user is test user, sign out
+      if (user?.id === 'test-user-id') {
+        setUser(null);
+        setSession(null);
+        setHasSubscription(false);
+      }
     }
   };
 
