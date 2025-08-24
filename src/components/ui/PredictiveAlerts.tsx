@@ -4,8 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { glucoseAnalyzer } from '@/utils/GlucosePredictiveAnalyzer';
-import type { RiskAlert } from '@/utils/GlucosePredictiveAnalyzer';
+import { predictiveAnalyzer } from '@/utils/SimplifiedPredictiveAnalyzer';
+import type { RiskAlert } from '@/utils/SimplifiedPredictiveAnalyzer';
 
 interface PredictiveAlertsProps {
   className?: string;
@@ -18,7 +18,7 @@ const PredictiveAlerts: React.FC<PredictiveAlertsProps> = ({ className = "" }) =
   useEffect(() => {
     // Simulate loading and analysis
     setTimeout(() => {
-      const newAlerts = glucoseAnalyzer.analyzeAndGenerateAlerts();
+      const newAlerts = predictiveAnalyzer.analyzeAndGenerateAlerts();
       setAlerts(newAlerts);
       setLoading(false);
     }, 1500);
@@ -46,12 +46,12 @@ const PredictiveAlerts: React.FC<PredictiveAlertsProps> = ({ className = "" }) =
   };
 
   const handleMarkAsRead = (alertId: string) => {
-    glucoseAnalyzer.markAlertAsRead(alertId);
+    predictiveAnalyzer.markAlertAsRead(alertId);
     setAlerts(prev => prev.filter(alert => alert.id !== alertId));
   };
 
   const handleDismissAll = () => {
-    alerts.forEach(alert => glucoseAnalyzer.markAlertAsRead(alert.id));
+    alerts.forEach(alert => predictiveAnalyzer.markAlertAsRead(alert.id));
     setAlerts([]);
   };
 
@@ -72,7 +72,7 @@ const PredictiveAlerts: React.FC<PredictiveAlertsProps> = ({ className = "" }) =
   }
 
   const activeAlerts = alerts.filter(alert => !alert.isRead);
-  const stats = glucoseAnalyzer.getAlertStats();
+  const stats = predictiveAnalyzer.getAlertStats();
 
   return (
     <div className={`space-y-4 ${className}`}>

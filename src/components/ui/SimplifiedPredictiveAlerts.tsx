@@ -6,13 +6,13 @@ import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Progress } from '@/components/ui/progress';
 import { Separator } from '@/components/ui/separator';
-import { useAdvancedPredictiveAlerts } from '@/hooks/useAdvancedPredictiveAlerts';
+import { useSimplifiedPredictiveAlerts } from '@/hooks/useSimplifiedPredictiveAlerts';
 
-interface AdvancedPredictiveAlertsProps {
+interface SimplifiedPredictiveAlertsProps {
   className?: string;
 }
 
-const AdvancedPredictiveAlerts: React.FC<AdvancedPredictiveAlertsProps> = ({ className = "" }) => {
+const SimplifiedPredictiveAlerts: React.FC<SimplifiedPredictiveAlertsProps> = ({ className = "" }) => {
   const {
     alerts,
     loading,
@@ -20,8 +20,9 @@ const AdvancedPredictiveAlerts: React.FC<AdvancedPredictiveAlertsProps> = ({ cla
     triggerAnalysis,
     markAlertAsRead,
     dismissAllAlerts,
-    triggerEmergencyAlert
-  } = useAdvancedPredictiveAlerts();
+    triggerEmergencyAlert,
+    getFamilyNotifications
+  } = useSimplifiedPredictiveAlerts();
 
   const getSeverityColor = (severity: string) => {
     switch (severity) {
@@ -51,6 +52,8 @@ const AdvancedPredictiveAlerts: React.FC<AdvancedPredictiveAlertsProps> = ({ cla
     return { level: 'Faible', color: 'text-blue-600' };
   };
 
+  const familyNotifications = getFamilyNotifications();
+
   if (loading) {
     return (
       <Card className={`bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200 ${className}`}>
@@ -65,9 +68,9 @@ const AdvancedPredictiveAlerts: React.FC<AdvancedPredictiveAlertsProps> = ({ cla
           <div className="mt-4 space-y-2">
             <div className="flex items-center justify-between text-xs text-blue-600">
               <span>Analyse des patterns glycémiques</span>
-              <span>78%</span>
+              <span>85%</span>
             </div>
-            <Progress value={78} className="h-1" />
+            <Progress value={85} className="h-1" />
           </div>
         </CardContent>
       </Card>
@@ -90,10 +93,10 @@ const AdvancedPredictiveAlerts: React.FC<AdvancedPredictiveAlertsProps> = ({ cla
                 <Brain className="w-6 h-6" />
               </div>
               <div>
-                <span className="text-lg font-bold">IA Prédictive Avancée</span>
+                <span className="text-lg font-bold">IA Prédictive Multi-facteurs</span>
                 <div className="flex items-center space-x-2 text-sm opacity-90">
                   <Zap className="w-4 h-4" />
-                  <span>Machine Learning • Multi-facteurs</span>
+                  <span>Glycémie • Repas • Insuline • Âge • Activités</span>
                 </div>
               </div>
             </div>
@@ -105,7 +108,7 @@ const AdvancedPredictiveAlerts: React.FC<AdvancedPredictiveAlertsProps> = ({ cla
                 className="text-white hover:bg-white/20"
               >
                 <Brain className="w-4 h-4 mr-1" />
-                Actualiser
+                Analyser
               </Button>
               {activeAlerts.length > 0 && (
                 <Button 
@@ -124,7 +127,7 @@ const AdvancedPredictiveAlerts: React.FC<AdvancedPredictiveAlertsProps> = ({ cla
           <div className="grid grid-cols-4 gap-4 text-center">
             <div>
               <div className="text-2xl font-bold">{activeAlerts.length}</div>
-              <div className="text-xs opacity-90">Alertes Actives</div>
+              <div className="text-xs opacity-90">Alertes IA</div>
             </div>
             <div>
               <div className="text-2xl font-bold text-red-200">{criticalAlerts}</div>
@@ -141,28 +144,26 @@ const AdvancedPredictiveAlerts: React.FC<AdvancedPredictiveAlertsProps> = ({ cla
           </div>
 
           {/* Patient Profile Info */}
-          {patientProfile && (
-            <div className="mt-4 pt-3 border-t border-white/20">
-              <div className="grid grid-cols-4 gap-2 text-xs">
-                <div>
-                  <div className="opacity-75">Âge</div>
-                  <div className="font-semibold">{patientProfile.age} ans</div>
-                </div>
-                <div>
-                  <div className="opacity-75">Type</div>
-                  <div className="font-semibold">DT{patientProfile.diabetesType}</div>
-                </div>
-                <div>
-                  <div className="opacity-75">Ratio G/I</div>
-                  <div className="font-semibold">1/{patientProfile.carbRatio}</div>
-                </div>
-                <div>
-                  <div className="opacity-75">Cible</div>
-                  <div className="font-semibold">{patientProfile.targetGlucose}mg/dL</div>
-                </div>
+          <div className="mt-4 pt-3 border-t border-white/20">
+            <div className="grid grid-cols-4 gap-2 text-xs">
+              <div>
+                <div className="opacity-75">Âge</div>
+                <div className="font-semibold">{patientProfile.age} ans</div>
+              </div>
+              <div>
+                <div className="opacity-75">Type</div>
+                <div className="font-semibold">DT{patientProfile.diabetesType}</div>
+              </div>
+              <div>
+                <div className="opacity-75">Ratio G/I</div>
+                <div className="font-semibold">1/{patientProfile.carbRatio}</div>
+              </div>
+              <div>
+                <div className="opacity-75">Cible</div>
+                <div className="font-semibold">{patientProfile.targetGlucose}mg/dL</div>
               </div>
             </div>
-          )}
+          </div>
         </CardContent>
       </Card>
 
@@ -173,8 +174,8 @@ const AdvancedPredictiveAlerts: React.FC<AdvancedPredictiveAlertsProps> = ({ cla
             <div className="flex items-center space-x-3">
               <AlertTriangle className="w-6 h-6 text-red-500" />
               <div>
-                <h4 className="font-semibold text-red-700">Alerte d'Urgence</h4>
-                <p className="text-sm text-red-600">Notifier immédiatement votre famille</p>
+                <h4 className="font-semibold text-red-700">SOS Famille</h4>
+                <p className="text-sm text-red-600">Alerte d'urgence immédiate</p>
               </div>
             </div>
             <div className="flex space-x-2">
@@ -184,12 +185,31 @@ const AdvancedPredictiveAlerts: React.FC<AdvancedPredictiveAlertsProps> = ({ cla
                 onClick={() => triggerEmergencyAlert('medical_emergency')}
               >
                 <Users className="w-4 h-4 mr-1" />
-                SOS Famille
+                Alerter Famille
               </Button>
             </div>
           </div>
         </CardContent>
       </Card>
+
+      {/* Family Notifications Status */}
+      {familyNotifications.length > 0 && (
+        <Card className="bg-green-50 border-green-200">
+          <CardContent className="p-4">
+            <div className="flex items-center space-x-3">
+              <Users className="w-5 h-5 text-green-600" />
+              <div>
+                <h4 className="font-semibold text-green-700">
+                  Famille Notifiée ({familyNotifications.length})
+                </h4>
+                <p className="text-sm text-green-600">
+                  Dernière notification: {new Date(familyNotifications[0]?.timestamp).toLocaleTimeString('fr-FR')}
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Active Alerts */}
       {activeAlerts.length === 0 ? (
@@ -334,7 +354,7 @@ const AdvancedPredictiveAlerts: React.FC<AdvancedPredictiveAlertsProps> = ({ cla
                       <span>•</span>
                       <div className="flex items-center space-x-1">
                         <Brain className="w-3 h-3" />
-                        <span>IA v2.1</span>
+                        <span>IA v2.0</span>
                       </div>
                     </div>
                     
@@ -360,9 +380,9 @@ const AdvancedPredictiveAlerts: React.FC<AdvancedPredictiveAlertsProps> = ({ cla
               <Brain className="w-5 h-5 text-indigo-600" />
             </div>
             <div className="flex-1">
-              <h4 className="font-semibold text-indigo-700">Système d'IA Prédictive</h4>
+              <h4 className="font-semibold text-indigo-700">Système IA Prédictif Actif</h4>
               <p className="text-sm text-indigo-600">
-                Analyse continue multi-facteurs : glycémie, repas, insuline, âge, activités
+                Surveillance continue • Notifications famille en temps réel • Machine Learning
               </p>
             </div>
             <div className="text-right text-xs text-indigo-500">
@@ -376,4 +396,4 @@ const AdvancedPredictiveAlerts: React.FC<AdvancedPredictiveAlertsProps> = ({ cla
   );
 };
 
-export default AdvancedPredictiveAlerts;
+export default SimplifiedPredictiveAlerts;

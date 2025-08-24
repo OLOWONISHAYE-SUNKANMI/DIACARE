@@ -1,7 +1,7 @@
 import React from 'react';
 import { Brain, Users, Zap } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import AdvancedPredictiveAlerts from '@/components/ui/AdvancedPredictiveAlerts';
+import SimplifiedPredictiveAlerts from '@/components/ui/SimplifiedPredictiveAlerts';
 
 const PredictiveAlertsScreen: React.FC = () => {
   return (
@@ -41,7 +41,7 @@ const PredictiveAlertsScreen: React.FC = () => {
       </Card>
 
       {/* Main Alerts Component */}
-      <AdvancedPredictiveAlerts />
+      <SimplifiedPredictiveAlerts />
     </div>
   );
 };

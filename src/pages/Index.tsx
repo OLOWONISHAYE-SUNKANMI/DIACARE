@@ -27,6 +27,7 @@ import PatientAccessScreen from "@/components/screens/PatientAccessScreen";
 import ProfessionalRequestDashboard from "@/components/screens/ProfessionalRequestDashboard";
 import PatientAccessInterface from "@/components/ui/PatientAccessInterface";
 import CalendarScheduler from "@/components/ui/CalendarScheduler";
+import PredictiveAlertsScreen from "@/components/screens/PredictiveAlertsScreen";
 import { useAuth } from "@/contexts/AuthContext";
 import { GlucoseProvider } from "@/contexts/GlucoseContext";
 
@@ -117,6 +118,8 @@ const Index = () => {
         return <CalendarScheduler patientView={true} />;
       case "reminders":
         return <RemindersScreen />;
+      case "predictions":
+        return <PredictiveAlertsScreen />;
       default:
         return <HomeScreen onTabChange={setActiveTab} />;
     }
