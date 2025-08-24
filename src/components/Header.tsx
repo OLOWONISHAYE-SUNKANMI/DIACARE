@@ -1,6 +1,8 @@
-import { Heart } from "lucide-react";
+import { Heart, TestTube } from "lucide-react";
 import { useTranslation } from 'react-i18next';
 import LanguageToggle from './ui/LanguageToggle';
+import { Button } from './ui/button';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface HeaderProps {
   user?: any;
@@ -11,6 +13,7 @@ interface HeaderProps {
 
 const Header = ({ user, onLogout, isProfessional, professionalData }: HeaderProps) => {
   const { t } = useTranslation();
+  const { isTestMode, toggleTestMode } = useAuth();
   
   return (
     <header className="w-full max-w-full mx-4 my-4 mb-0 rounded-lg shadow-lg overflow-hidden bg-card border border-border">
@@ -22,6 +25,16 @@ const Header = ({ user, onLogout, isProfessional, professionalData }: HeaderProp
           </p>
         </div>
         <div className="ml-4 flex items-center space-x-3">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={toggleTestMode}
+            className={`text-white hover:text-white hover:bg-white/20 ${
+              isTestMode ? 'bg-white/30' : ''
+            }`}
+          >
+            <TestTube className="w-4 h-4" />
+          </Button>
           <LanguageToggle />
         </div>
       </div>

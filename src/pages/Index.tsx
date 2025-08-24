@@ -122,7 +122,7 @@ const Index = () => {
     }
   };
 
-  const { user, signOut, isProfessional, professionalData } = useAuth();
+  const { user, signOut, isProfessional, professionalData, isTestMode, toggleTestMode } = useAuth();
 
   const handleLogout = async () => {
     await signOut();

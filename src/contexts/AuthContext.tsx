@@ -12,6 +12,9 @@ interface AuthContextType {
   signOut: () => Promise<{ error: any }>;
   isProfessional: boolean;
   professionalData: any;
+  isTestMode: boolean;
+  toggleTestMode: () => void;
+  hasSubscription: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -22,6 +25,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [isProfessional, setIsProfessional] = useState(false);
   const [professionalData, setProfessionalData] = useState<any>(null);
+  const [isTestMode, setIsTestMode] = useState(() => {
+    return localStorage.getItem('dare-test-mode') === 'true';
+  });
+  const [hasSubscription, setHasSubscription] = useState(false);
 
   useEffect(() => {
     // Set up auth state listener FIRST
@@ -182,6 +189,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return { error };
   };
 
+  const toggleTestMode = () => {
+    const newTestMode = !isTestMode;
+    setIsTestMode(newTestMode);
+    localStorage.setItem('dare-test-mode', newTestMode.toString());
+    if (newTestMode) {
+      setHasSubscription(true); // In test mode, simulate having subscription
+    }
+  };
+
+  // In test mode or if user has actual subscription
+  const effectiveSubscription = isTestMode || hasSubscription;
+
   const value = {
     user,
     session,
@@ -192,6 +211,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     signOut,
     isProfessional,
     professionalData,
+    isTestMode,
+    toggleTestMode,
+    hasSubscription: effectiveSubscription,
   };
 
   return (
