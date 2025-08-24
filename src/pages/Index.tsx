@@ -1,25 +1,26 @@
-import { useState } from "react";
+import React, { useState, Suspense, useEffect } from "react";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import BottomNavigation from "@/components/BottomNavigation";
+import { useAuth } from "@/contexts/AuthContext";
+import { GlucoseProvider } from "@/contexts/GlucoseContext";
+import LoadingSpinner from "@/components/LoadingSpinner";
+import { PerformanceOptimizer } from "@/utils/PerformanceOptimizer";
+import { BundlePreloader } from "@/utils/BundleOptimizer";
+
+// Import critical screens directly (loaded immediately)
+import HomeScreen from "@/components/screens/HomeScreen";
+import DosesScreen from "@/components/screens/DosesScreen";
+import ProfileScreen from "@/components/screens/ProfileScreen";
+import { RemindersScreen } from "@/components/screens/RemindersScreen";
+
+// Import existing screens that are already loaded
 import PaymentScreen from "@/components/screens/PaymentScreen";
 import { ProfessionalDashboard } from "@/components/screens/ProfessionalDashboard";
 import DoctorDashboard from "@/components/screens/DoctorDashboard";
 import TeleconsultationBooking from "@/components/screens/TeleconsultationBooking";
-import HomeScreen from "@/components/screens/HomeScreen";
-import ChartsScreen from "@/components/screens/ChartsScreen";
-import DosesScreen from "@/components/screens/DosesScreen";
-import JournalScreen from "@/components/screens/JournalScreen";
-import ChatScreen from "@/components/screens/ChatScreen";
-import BlogScreen from "@/components/screens/BlogScreen";
-import FamilyScreen from "@/components/screens/FamilyScreen";
-import ProfileScreen from "@/components/screens/ProfileScreen";
-import ConsultationRequest from "@/components/screens/ConsultationRequest";
-import ProfessionalDashboardNew from "@/components/ui/ProfessionalDashboardNew";
-import { RemindersScreen } from "@/components/screens/RemindersScreen";
 import HealthProfessionalScreen from "@/components/screens/HealthProfessionalScreen";
 import AdminDashboard from "@/components/screens/AdminDashboard";
 import { AdminApplicationReview } from "@/components/screens/AdminApplicationReview";
@@ -27,9 +28,16 @@ import PatientAccessScreen from "@/components/screens/PatientAccessScreen";
 import ProfessionalRequestDashboard from "@/components/screens/ProfessionalRequestDashboard";
 import PatientAccessInterface from "@/components/ui/PatientAccessInterface";
 import CalendarScheduler from "@/components/ui/CalendarScheduler";
-import PredictiveAlertsScreen from "@/components/screens/PredictiveAlertsScreen";
-import { useAuth } from "@/contexts/AuthContext";
-import { GlucoseProvider } from "@/contexts/GlucoseContext";
+import ProfessionalDashboardNew from "@/components/ui/ProfessionalDashboardNew";
+
+// Lazy load non-critical screens for better performance
+const ChartsScreen = React.lazy(() => import("@/components/screens/ChartsScreen"));
+const BlogScreen = React.lazy(() => import("@/components/screens/BlogScreen"));
+const JournalScreen = React.lazy(() => import("@/components/screens/JournalScreen"));
+const FamilyScreen = React.lazy(() => import("@/components/screens/FamilyScreen"));
+const ChatScreen = React.lazy(() => import("@/components/screens/ChatScreen"));
+const ConsultationRequest = React.lazy(() => import("@/components/screens/ConsultationRequest"));
+const PredictiveAlertsScreen = React.lazy(() => import("@/components/screens/PredictiveAlertsScreen"));
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("home");
@@ -38,6 +46,29 @@ const Index = () => {
   const [showAlert, setShowAlert] = useState(true);
   const [isSubscribed, setIsSubscribed] = useState(false);
   const { toast } = useToast();
+  const [performanceOptimizer] = useState(() => PerformanceOptimizer.getInstance());
+
+  const { user, signOut, isProfessional, professionalData, isTestMode, toggleTestMode } = useAuth();
+
+  // Optimisations de performance à l'initialisation
+  useEffect(() => {
+    // Précharge les modules selon le rôle utilisateur
+    if (user?.user_metadata) {
+      const userRole = user.user_metadata.role || 'patient';
+      BundlePreloader.preloadByUserRole(userRole);
+    }
+
+    // Précharge selon les conditions réseau
+    const networkCondition = performanceOptimizer.getPerformanceMetrics().networkCondition;
+    BundlePreloader.preloadByNetworkCondition(networkCondition.effectiveType);
+
+    // Nettoyage périodique du cache
+    const cleanupInterval = setInterval(() => {
+      performanceOptimizer.clearExpiredCache();
+    }, 5 * 60 * 1000); // Toutes les 5 minutes
+
+    return () => clearInterval(cleanupInterval);
+  }, [user, performanceOptimizer]);
 
   const handleQuickAdd = () => {
     toast({
@@ -55,12 +86,11 @@ const Index = () => {
     });
   };
 
+  // Composant optimisé pour le rendu des écrans avec Suspense
   const renderScreen = () => {
     switch (activeTab) {
       case "home":
         return <HomeScreen onTabChange={setActiveTab} />;
-      case "charts":
-        return <ChartsScreen />;
       case "doses":
         return <DosesScreen 
           glucoseValue={glucoseValue}
@@ -70,44 +100,26 @@ const Index = () => {
           showAlert={showAlert}
           setShowAlert={setShowAlert}
         />;
-      case "journal":
-        return <JournalScreen 
-          showAlert={showAlert}
-          setShowAlert={setShowAlert}
-        />;
-      case "chat":
-        return <ChatScreen />;
+      case "profile":
+        return <ProfileScreen />;
+      case "reminders":
+        return <RemindersScreen />;
       case "health-pro":
         return <HealthProfessionalScreen />;
       case "admin":
         return <AdminDashboard />;
       case "admin-review":
         return <AdminApplicationReview />;
-      case "blog":
-        return <BlogScreen />;
-      case "family":
-        return <FamilyScreen />;
-      case "profile":
-        return <ProfileScreen />;
       case "teleconsultation":
         return <TeleconsultationBooking />;
       case "doctor-dashboard":
         return <DoctorDashboard />;
       case "professional-dashboard":
         return <ProfessionalDashboard />;
-      case "consultation-request":
-        return <ConsultationRequest />;
       case "professional-dashboard-new":
         return <ProfessionalDashboardNew />;
       case "professional-requests":
         return <ProfessionalRequestDashboard professionalId={professionalData?.id} />;
-      case "payment":
-        return (
-          <PaymentScreen 
-            onBack={() => setActiveTab("home")}
-            onPaymentSuccess={handlePaymentSuccess}
-          />
-        );
       case "patient-access":
         return <PatientAccessScreen />;
       case "patient-access-interface":
@@ -116,16 +128,64 @@ const Index = () => {
         return <CalendarScheduler professionalId={professionalData?.id} />;
       case "patient-calendar":
         return <CalendarScheduler patientView={true} />;
-      case "reminders":
-        return <RemindersScreen />;
+      case "payment":
+        return (
+          <PaymentScreen 
+            onBack={() => setActiveTab("home")}
+            onPaymentSuccess={handlePaymentSuccess}
+          />
+        );
+        
+      // Écrans lazy-loaded avec Suspense pour de meilleures performances
+      case "charts":
+        return (
+          <Suspense fallback={<LoadingSpinner fullScreen text="Chargement des graphiques..." />}>
+            <ChartsScreen />
+          </Suspense>
+        );
+      case "blog":
+        return (
+          <Suspense fallback={<LoadingSpinner fullScreen text="Chargement du blog..." />}>
+            <BlogScreen />
+          </Suspense>
+        );
+      case "journal":
+        return (
+          <Suspense fallback={<LoadingSpinner fullScreen text="Chargement du journal..." />}>
+            <JournalScreen 
+              showAlert={showAlert}
+              setShowAlert={setShowAlert}
+            />
+          </Suspense>
+        );
+      case "family":
+        return (
+          <Suspense fallback={<LoadingSpinner fullScreen text="Chargement famille..." />}>
+            <FamilyScreen />
+          </Suspense>
+        );
+      case "chat":
+        return (
+          <Suspense fallback={<LoadingSpinner fullScreen text="Chargement du chat..." />}>
+            <ChatScreen />
+          </Suspense>
+        );
+      case "consultation-request":
+        return (
+          <Suspense fallback={<LoadingSpinner fullScreen text="Chargement consultation..." />}>
+            <ConsultationRequest />
+          </Suspense>
+        );
       case "predictions":
-        return <PredictiveAlertsScreen />;
+        return (
+          <Suspense fallback={<LoadingSpinner fullScreen text="Chargement alertes..." />}>
+            <PredictiveAlertsScreen />
+          </Suspense>
+        );
       default:
         return <HomeScreen onTabChange={setActiveTab} />;
     }
   };
-
-  const { user, signOut, isProfessional, professionalData, isTestMode, toggleTestMode } = useAuth();
 
   const handleLogout = async () => {
     await signOut();

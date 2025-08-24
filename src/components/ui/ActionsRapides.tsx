@@ -8,7 +8,7 @@ interface ActionsRapidesProps {
   onActivityClick?: () => void;
 }
 
-const ActionsRapides: React.FC<ActionsRapidesProps> = ({ 
+const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(({ 
   onTabChange, 
   onGlycemieClick, 
   onMedicamentClick,
@@ -106,6 +106,8 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
       </div>
     </div>
   );
-};
+});
+
+ActionsRapides.displayName = 'ActionsRapides';
 
 export default ActionsRapides;

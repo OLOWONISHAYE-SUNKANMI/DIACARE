@@ -1,3 +1,4 @@
+import React from "react";
 import { Activity, Calendar, TrendingUp, TrendingDown, Minus, AlertTriangle, CheckCircle } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -7,7 +8,7 @@ interface GlucoseWidgetProps {
   trend?: "up" | "down" | "stable";
 }
 
-const GlucoseWidget = ({ 
+const GlucoseWidget = React.memo(({ 
   currentGlucose = 126, 
   lastReading = "Aujourd'hui 14:30",
   trend = "stable" 
@@ -84,6 +85,8 @@ const GlucoseWidget = ({
       </CardContent>
     </Card>
   );
-};
+});
+
+GlucoseWidget.displayName = 'GlucoseWidget';
 
 export default GlucoseWidget;
