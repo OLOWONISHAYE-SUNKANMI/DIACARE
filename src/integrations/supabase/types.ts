@@ -726,6 +726,60 @@ export type Database = {
         }
         Relationships: []
       }
+      monthly_revenue_distribution: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          created_at: string
+          distributed_at: string | null
+          distribution_status: string | null
+          id: string
+          month_year: string
+          total_app_fees_cfa: number
+          total_net_profit_cfa: number
+          total_platform_fees_cfa: number
+          total_professional_payments_cfa: number
+          total_reinvestment_cfa: number
+          total_revenue_cfa: number
+          total_subscriptions: number
+          updated_at: string
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          created_at?: string
+          distributed_at?: string | null
+          distribution_status?: string | null
+          id?: string
+          month_year: string
+          total_app_fees_cfa?: number
+          total_net_profit_cfa?: number
+          total_platform_fees_cfa?: number
+          total_professional_payments_cfa?: number
+          total_reinvestment_cfa?: number
+          total_revenue_cfa?: number
+          total_subscriptions?: number
+          updated_at?: string
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          created_at?: string
+          distributed_at?: string | null
+          distribution_status?: string | null
+          id?: string
+          month_year?: string
+          total_app_fees_cfa?: number
+          total_net_profit_cfa?: number
+          total_platform_fees_cfa?: number
+          total_professional_payments_cfa?: number
+          total_reinvestment_cfa?: number
+          total_revenue_cfa?: number
+          total_subscriptions?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       patient_access_codes: {
         Row: {
           access_code: string
@@ -1286,6 +1340,51 @@ export type Database = {
           },
         ]
       }
+      revenue_distribution_config: {
+        Row: {
+          app_fees_cfa: number
+          buffer_amount_cfa: number | null
+          created_at: string
+          id: string
+          net_profit_cfa: number
+          payment_platform_amount_cfa: number
+          plan_name: string
+          plan_price_cfa: number
+          plan_price_eur: number
+          professional_amount_cfa: number
+          reinvestment_amount_cfa: number | null
+          updated_at: string
+        }
+        Insert: {
+          app_fees_cfa: number
+          buffer_amount_cfa?: number | null
+          created_at?: string
+          id?: string
+          net_profit_cfa: number
+          payment_platform_amount_cfa: number
+          plan_name: string
+          plan_price_cfa: number
+          plan_price_eur: number
+          professional_amount_cfa: number
+          reinvestment_amount_cfa?: number | null
+          updated_at?: string
+        }
+        Update: {
+          app_fees_cfa?: number
+          buffer_amount_cfa?: number | null
+          created_at?: string
+          id?: string
+          net_profit_cfa?: number
+          payment_platform_amount_cfa?: number
+          plan_name?: string
+          plan_price_cfa?: number
+          plan_price_eur?: number
+          professional_amount_cfa?: number
+          reinvestment_amount_cfa?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       session_participants: {
         Row: {
           attended: boolean | null
@@ -1782,6 +1881,10 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
+      }
+      calculate_monthly_revenue_distribution: {
+        Args: { _month_year: string }
+        Returns: Json
       }
       calculate_professional_earnings: {
         Args: {
