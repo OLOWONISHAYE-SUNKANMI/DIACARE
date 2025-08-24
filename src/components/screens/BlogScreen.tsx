@@ -488,7 +488,7 @@ Les autorités de santé américaines examinent actuellement cette innovation po
   ];
 
   const filteredArticles = articles.filter(article => {
-    const matchesCategory = activeCategory === "Tous" || article.category === activeCategory;
+    const matchesCategory = activeCategory === t('blog.categories.all') || activeCategory === "Tous" || article.category === activeCategory;
     const matchesSearch = searchQuery === "" || 
       article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       article.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
