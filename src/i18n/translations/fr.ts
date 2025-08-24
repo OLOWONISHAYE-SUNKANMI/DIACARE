@@ -500,6 +500,65 @@ export const fr = {
     requestError: "Erreur lors de l'envoi de la demande"
   },
 
+  // Onboarding
+  onboarding: {
+    step: "Étape",
+    of: "sur",
+    getStarted: "Commencer",
+    languageSelection: {
+      title: "Choisissez votre langue",
+      description: "Sélectionnez votre langue préférée pour utiliser DARE"
+    },
+    welcome: {
+      title: "Bienvenue dans DARE",
+      subtitle: "La première plateforme africaine de gestion du diabète",
+      description: "Nous sommes ravis de vous accompagner dans votre parcours de santé"
+    },
+    profile: {
+      title: "Configurez votre profil",
+      subtitle: "Aidez-nous à personnaliser votre expérience DARE",
+      description: "Ces informations nous permettront de vous offrir un suivi adapté",
+      namePlaceholder: "Entrez votre prénom",
+      userType: "Je suis un(e)..."
+    },
+    privacy: {
+      title: "Confidentialité et préférences",
+      subtitle: "Contrôlez vos données et notifications",
+      description: "Configurez vos préférences de confidentialité",
+      notifications: "Notifications push",
+      notificationsDesc: "Recevez des rappels pour vos médicaments et mesures",
+      dataSharing: "Partage de données anonymes",
+      dataSharingDesc: "Contribuez à la recherche sur le diabète (optionnel)",
+      reminders: "Rappels intelligents",
+      remindersDesc: "Rappels adaptatifs basés sur vos habitudes"
+    },
+    features: {
+      title: "Découvrez DARE",
+      subtitle: "Toutes les fonctionnalités pour gérer votre diabète",
+      description: "Voici ce que DARE peut faire pour vous",
+      glucose: "Suivi glycémique",
+      reminders: "Rappels intelligents", 
+      consultation: "Téléconsultations",
+      community: "Communauté de soutien",
+      tracking: "Suivi complet",
+      trackingDesc: "Glycémie, médicaments, activités et plus",
+      ai: "Assistant IA",
+      aiDesc: "Conseils personnalisés basés sur vos données",
+      telehealth: "Télémédecine",
+      telehealthDesc: "Consultations avec des professionnels certifiés",
+      support: "Communauté",
+      supportDesc: "Échangez avec d'autres personnes diabétiques"
+    },
+    completion: {
+      title: "Configuration terminée !",
+      description: "Votre compte DARE est prêt à l'emploi"
+    }
+  },
+
+  // Common additions
+  enable: "Activer",
+  disable: "Désactiver",
+
   // Legal
   legal: {
     termsTitle: "Conditions d'Utilisation",

@@ -498,89 +498,65 @@ export const en = {
       
       <h3>3. User Account</h3>
       <p>You are responsible for maintaining the confidentiality of your account and password.</p>
-      
-      <h3>4. Acceptable Use</h3>
-      <p>You agree to:</p>
-      <ul>
-        <li>Provide accurate information</li>
-        <li>Respect other users</li>
-        <li>Not share others' medical information</li>
-        <li>Use the platform for legal purposes only</li>
-      </ul>
-      
-      <h3>5. Health Data</h3>
-      <p>Your health data is strictly confidential and only shared with your explicit consent.</p>
-      
-      <h3>6. Teleconsultations</h3>
-      <p>Medical consultations are provided by certified professionals. They do not replace emergency care.</p>
-      
-      <h3>7. Limitation of Liability</h3>
-      <p>DARE provides diabetes management tools but does not replace professional medical advice.</p>
-      
-      <h3>8. Termination</h3>
-      <p>You may delete your account at any time. We reserve the right to suspend accounts for violations.</p>
-      
-      <h3>9. Modifications</h3>
-      <p>We reserve the right to modify these terms with notice.</p>
-      
-      <h3>10. Contact</h3>
-      <p>For any questions: support@dare-africa.com</p>
-    `,
-    privacyContent: `
-      <h3>1. Data Collection</h3>
-      <p>We collect data you provide to us:</p>
-      <ul>
-        <li>Registration information (name, email, phone)</li>
-        <li>Health data (glucose, medications, symptoms)</li>
-        <li>Platform usage data</li>
-      </ul>
-      
-      <h3>2. Data Usage</h3>
-      <p>Your data is used to:</p>
-      <ul>
-        <li>Personalize your experience</li>
-        <li>Provide analysis and recommendations</li>
-        <li>Facilitate teleconsultations</li>
-        <li>Improve our services</li>
-      </ul>
-      
-      <h3>3. Data Protection</h3>
-      <p>We use advanced encryption technologies and comply with GDPR and ISO 27001 standards.</p>
-      
-      <h3>4. Data Sharing</h3>
-      <p>Your data is NEVER sold. It may only be shared:</p>
-      <ul>
-        <li>With your explicit consent</li>
-        <li>With healthcare professionals you authorize</li>
-        <li>When legally required</li>
-      </ul>
-      
-      <h3>5. Anonymized Data</h3>
-      <p>We may use anonymized data for medical research and improving diabetes care in Africa.</p>
-      
-      <h3>6. Your Rights</h3>
-      <p>You have the right to:</p>
-      <ul>
-        <li>Access your data</li>
-        <li>Correct incorrect information</li>
-        <li>Delete your account and data</li>
-        <li>Export your data</li>
-        <li>Limit data usage</li>
-      </ul>
-      
-      <h3>7. Data Retention</h3>
-      <p>Your data is retained while your account is active, then deleted within 30 days of closure.</p>
-      
-      <h3>8. Cookies</h3>
-      <p>We use essential cookies for platform operation and analytics cookies with your consent.</p>
-      
-      <h3>9. International Transfers</h3>
-      <p>Your data is hosted in Africa. Any international transfer complies with data protection agreements.</p>
-      
-      <h3>10. DPO Contact</h3>
-      <p>For any data questions: dpo@dare-africa.com</p>
-      
-      <p><strong>Last updated:</strong> December 2024</p>
     `
-  }
+  },
+
+  // Onboarding
+  onboarding: {
+    step: "Step",
+    of: "of",
+    getStarted: "Get Started",
+    languageSelection: {
+      title: "Choose your language",
+      description: "Select your preferred language to use DARE"
+    },
+    welcome: {
+      title: "Welcome to DARE",
+      subtitle: "The first African diabetes management platform",
+      description: "We're excited to accompany you on your health journey"
+    },
+    profile: {
+      title: "Set up your profile",
+      subtitle: "Help us personalize your DARE experience",
+      description: "This information will help us provide you with tailored care",
+      namePlaceholder: "Enter your first name",
+      userType: "I am a..."
+    },
+    privacy: {
+      title: "Privacy and preferences",
+      subtitle: "Control your data and notifications",
+      description: "Configure your privacy preferences",
+      notifications: "Push notifications",
+      notificationsDesc: "Receive reminders for medications and measurements",
+      dataSharing: "Anonymous data sharing",
+      dataSharingDesc: "Contribute to diabetes research (optional)",
+      reminders: "Smart reminders",
+      remindersDesc: "Adaptive reminders based on your habits"
+    },
+    features: {
+      title: "Discover DARE",
+      subtitle: "All the features to manage your diabetes",
+      description: "Here's what DARE can do for you",
+      glucose: "Glucose monitoring",
+      reminders: "Smart reminders",
+      consultation: "Teleconsultations", 
+      community: "Support community",
+      tracking: "Complete tracking",
+      trackingDesc: "Glucose, medications, activities and more",
+      ai: "AI Assistant",
+      aiDesc: "Personalized advice based on your data",
+      telehealth: "Telemedicine",
+      telehealthDesc: "Consultations with certified professionals",
+      support: "Community",
+      supportDesc: "Connect with other people with diabetes"
+    },
+    completion: {
+      title: "Setup complete!",
+      description: "Your DARE account is ready to use"
+    }
+  },
+
+  // Common additions
+  enable: "Enable",
+  disable: "Disable"
 };
