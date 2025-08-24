@@ -1,5 +1,5 @@
 import React, { useMemo, useCallback, useState, useEffect } from 'react';
-import { FixedSizeList as List, VariableSizeList, ListChildComponentProps } from 'react-window';
+import { FixedSizeList as List, VariableSizeList, ListChildComponentProps, ListOnScrollProps } from 'react-window';
 
 interface VirtualizedListProps<T> {
   items: T[];
@@ -12,7 +12,7 @@ interface VirtualizedListProps<T> {
   emptyMessage?: string;
   loadingMessage?: string;
   isLoading?: boolean;
-  onScroll?: (scrollTop: number) => void;
+  onScroll?: (scrollOffset: number) => void;
   estimatedItemSize?: number;
 }
 
@@ -30,7 +30,7 @@ export function VirtualizedList<T>({
   onScroll,
   estimatedItemSize = 60
 }: VirtualizedListProps<T>) {
-  const [scrollTop, setScrollTop] = useState(0);
+  const [scrollOffset, setScrollOffset] = useState(0);
   
   // Détermine si on utilise une hauteur fixe ou variable
   const isFixedHeight = typeof itemHeight === 'number';
@@ -48,9 +48,9 @@ export function VirtualizedList<T>({
   }, [items, renderItem]);
 
   // Gestion du scroll
-  const handleScroll = useCallback((props: { scrollTop: number }) => {
-    setScrollTop(props.scrollTop);
-    onScroll?.(props.scrollTop);
+  const handleScroll = useCallback((props: ListOnScrollProps) => {
+    setScrollOffset(props.scrollOffset);
+    onScroll?.(props.scrollOffset);
   }, [onScroll]);
 
   // Optimisation pour les grandes listes
@@ -119,18 +119,18 @@ export function VirtualizedList<T>({
 }
 
 // Hook pour observer la visibilité d'un élément dans la liste virtualisée
-export function useVirtualizedListItem(index: number, scrollTop: number, itemHeight: number) {
+export function useVirtualizedListItem(index: number, scrollOffset: number, itemHeight: number) {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     const itemTop = index * itemHeight;
     const itemBottom = itemTop + itemHeight;
-    const viewportTop = scrollTop;
-    const viewportBottom = scrollTop + window.innerHeight;
+    const viewportTop = scrollOffset;
+    const viewportBottom = scrollOffset + window.innerHeight;
 
     const visible = itemBottom >= viewportTop && itemTop <= viewportBottom;
     setIsVisible(visible);
-  }, [index, scrollTop, itemHeight]);
+  }, [index, scrollOffset, itemHeight]);
 
   return isVisible;
 }
