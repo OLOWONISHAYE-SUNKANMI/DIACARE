@@ -1,4 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useToast } from "@/hooks/use-toast";
 
 interface ActionsRapidesProps {
   onTabChange?: (tab: string) => void;
@@ -15,27 +19,56 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(({
   onMealClick,
   onActivityClick
 }) => {
-  
-  const handleGlycemieClick = () => {
-    console.log("Glycémie clicked");
-    onGlycemieClick?.();
+  const { toast } = useToast();
+  const [glucoseValue, setGlucoseValue] = useState("");
+  const [mealName, setMealName] = useState("");
+  const [medicationName, setMedicationName] = useState("");
+  const [activityName, setActivityName] = useState("");
+
+  const handleGlucoseSubmit = () => {
+    if (glucoseValue) {
+      toast({
+        title: "Glycémie ajoutée",
+        description: `Valeur: ${glucoseValue} mg/dL`,
+      });
+      setGlucoseValue("");
+      onGlycemieClick?.();
+    }
   };
-  
-  const handleRepasClick = () => {
-    console.log("Repas clicked - opening meal modal");
-    onMealClick?.();
+
+  const handleMealSubmit = () => {
+    if (mealName) {
+      toast({
+        title: "Repas ajouté",
+        description: `Repas: ${mealName}`,
+      });
+      setMealName("");
+      onMealClick?.();
+    }
   };
-  
-  const handleMedicamentClick = () => {
-    console.log("Médicament clicked - opening medication modal");
-    onMedicamentClick?.();
+
+  const handleMedicationSubmit = () => {
+    if (medicationName) {
+      toast({
+        title: "Médicament ajouté",
+        description: `Médicament: ${medicationName}`,
+      });
+      setMedicationName("");
+      onMedicamentClick?.();
+    }
   };
-  
-  const handleActiviteClick = () => {
-    console.log("Activité clicked - opening activity modal");
-    onActivityClick?.();
+
+  const handleActivitySubmit = () => {
+    if (activityName) {
+      toast({
+        title: "Activité ajoutée",
+        description: `Activité: ${activityName}`,
+      });
+      setActivityName("");
+      onActivityClick?.();
+    }
   };
-  
+
   const handleRappelsClick = () => {
     console.log("Rappels clicked - navigating to reminders");
     onTabChange?.('reminders');
@@ -47,49 +80,109 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(({
         <h3 className="font-semibold text-gray-800 mb-3 sm:mb-4">Actions Rapides</h3>
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
           
-          {/* Ajouter Glycémie - FONCTIONNEL */}
-          <button 
-            onClick={handleGlycemieClick}
-            className="flex flex-col items-center p-3 sm:p-4 bg-blue-50 rounded-xl hover:bg-blue-100 transition-colors active:scale-95"
-          >
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-500 rounded-full flex items-center justify-center mb-2">
-              <span className="text-lg sm:text-xl">🩸</span>
-            </div>
-            <span className="text-xs sm:text-sm font-medium text-gray-700 text-center leading-tight">Ajouter Glycémie</span>
-          </button>
+          {/* Ajouter Glycémie - POPOVER */}
+          <Popover>
+            <PopoverTrigger asChild>
+              <button className="flex flex-col items-center p-3 sm:p-4 bg-blue-50 rounded-xl hover:bg-blue-100 transition-colors active:scale-95">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-500 rounded-full flex items-center justify-center mb-2">
+                  <span className="text-lg sm:text-xl">🩸</span>
+                </div>
+                <span className="text-xs sm:text-sm font-medium text-gray-700 text-center leading-tight">Ajouter Glycémie</span>
+              </button>
+            </PopoverTrigger>
+            <PopoverContent className="w-80">
+              <div className="space-y-4">
+                <h3 className="font-semibold text-lg">📊 Nouvelle mesure glycémique</h3>
+                <Input
+                  type="number"
+                  placeholder="Entrer le taux (mg/dL)"
+                  value={glucoseValue}
+                  onChange={(e) => setGlucoseValue(e.target.value)}
+                />
+                <Button onClick={handleGlucoseSubmit} className="w-full">
+                  Enregistrer
+                </Button>
+              </div>
+            </PopoverContent>
+          </Popover>
 
-          {/* Journal des repas - FONCTIONNEL */}
-          <button 
-            onClick={handleRepasClick}
-            className="flex flex-col items-center p-3 sm:p-4 bg-green-50 rounded-xl hover:bg-green-100 transition-colors active:scale-95"
-          >
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-500 rounded-full flex items-center justify-center mb-2">
-              <span className="text-lg sm:text-xl">🍽️</span>
-            </div>
-            <span className="text-xs sm:text-sm font-medium text-gray-700 text-center leading-tight">Journal des repas</span>
-          </button>
+          {/* Journal des repas - POPOVER */}
+          <Popover>
+            <PopoverTrigger asChild>
+              <button className="flex flex-col items-center p-3 sm:p-4 bg-green-50 rounded-xl hover:bg-green-100 transition-colors active:scale-95">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-500 rounded-full flex items-center justify-center mb-2">
+                  <span className="text-lg sm:text-xl">🍽️</span>
+                </div>
+                <span className="text-xs sm:text-sm font-medium text-gray-700 text-center leading-tight">Journal des repas</span>
+              </button>
+            </PopoverTrigger>
+            <PopoverContent className="w-80">
+              <div className="space-y-4">
+                <h3 className="font-semibold text-lg">🍽️ Nouveau repas</h3>
+                <Input
+                  type="text"
+                  placeholder="Nom du repas"
+                  value={mealName}
+                  onChange={(e) => setMealName(e.target.value)}
+                />
+                <Button onClick={handleMealSubmit} className="w-full">
+                  Ajouter repas
+                </Button>
+              </div>
+            </PopoverContent>
+          </Popover>
 
-          {/* Médicaments - FONCTIONNEL */}
-          <button 
-            onClick={handleMedicamentClick}
-            className="flex flex-col items-center p-3 sm:p-4 bg-teal-50 rounded-xl hover:bg-teal-100 transition-colors active:scale-95"
-          >
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-teal-500 rounded-full flex items-center justify-center mb-2">
-              <span className="text-lg sm:text-xl">💊</span>
-            </div>
-            <span className="text-xs sm:text-sm font-medium text-gray-700 text-center leading-tight">Médicaments</span>
-          </button>
+          {/* Médicaments - POPOVER */}
+          <Popover>
+            <PopoverTrigger asChild>
+              <button className="flex flex-col items-center p-3 sm:p-4 bg-teal-50 rounded-xl hover:bg-teal-100 transition-colors active:scale-95">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-teal-500 rounded-full flex items-center justify-center mb-2">
+                  <span className="text-lg sm:text-xl">💊</span>
+                </div>
+                <span className="text-xs sm:text-sm font-medium text-gray-700 text-center leading-tight">Médicaments</span>
+              </button>
+            </PopoverTrigger>
+            <PopoverContent className="w-80">
+              <div className="space-y-4">
+                <h3 className="font-semibold text-lg">💊 Nouveau médicament</h3>
+                <Input
+                  type="text"
+                  placeholder="Nom du médicament"
+                  value={medicationName}
+                  onChange={(e) => setMedicationName(e.target.value)}
+                />
+                <Button onClick={handleMedicationSubmit} className="w-full">
+                  Ajouter médicament
+                </Button>
+              </div>
+            </PopoverContent>
+          </Popover>
 
-          {/* Activité - FONCTIONNEL */}
-          <button 
-            onClick={handleActiviteClick}
-            className="flex flex-col items-center p-3 sm:p-4 bg-orange-50 rounded-xl hover:bg-orange-100 transition-colors active:scale-95"
-          >
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-orange-500 rounded-full flex items-center justify-center mb-2">
-              <span className="text-lg sm:text-xl">🏃</span>
-            </div>
-            <span className="text-xs sm:text-sm font-medium text-gray-700 text-center leading-tight">Activité</span>
-          </button>
+          {/* Activité - POPOVER */}
+          <Popover>
+            <PopoverTrigger asChild>
+              <button className="flex flex-col items-center p-3 sm:p-4 bg-orange-50 rounded-xl hover:bg-orange-100 transition-colors active:scale-95">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-orange-500 rounded-full flex items-center justify-center mb-2">
+                  <span className="text-lg sm:text-xl">🏃</span>
+                </div>
+                <span className="text-xs sm:text-sm font-medium text-gray-700 text-center leading-tight">Activité</span>
+              </button>
+            </PopoverTrigger>
+            <PopoverContent className="w-80">
+              <div className="space-y-4">
+                <h3 className="font-semibold text-lg">🏃 Nouvelle activité</h3>
+                <Input
+                  type="text"
+                  placeholder="Type d'activité"
+                  value={activityName}
+                  onChange={(e) => setActivityName(e.target.value)}
+                />
+                <Button onClick={handleActivitySubmit} className="w-full">
+                  Ajouter activité
+                </Button>
+              </div>
+            </PopoverContent>
+          </Popover>
 
           {/* Rappels - FONCTIONNEL */}
           <button 
