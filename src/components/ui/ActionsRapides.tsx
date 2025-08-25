@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+import { useGlucose } from "@/contexts/GlucoseContext";
 
 interface ActionsRapidesProps {
   onTabChange?: (tab: string) => void;
@@ -20,53 +23,117 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(({
   onActivityClick
 }) => {
   const { toast } = useToast();
+  const { addReading } = useGlucose();
+  
+  // États pour Glycémie
   const [glucoseValue, setGlucoseValue] = useState("");
-  const [mealName, setMealName] = useState("");
-  const [medicationName, setMedicationName] = useState("");
-  const [activityName, setActivityName] = useState("");
+  const [glucoseNotes, setGlucoseNotes] = useState("");
+  
+  // États pour Repas
+  const [foodName, setFoodName] = useState("");
+  const [carbs, setCarbs] = useState("");
+  
+  // États pour Médicament
+  const [medication, setMedication] = useState("");
+  const [dose, setDose] = useState("");
+  
+  // États pour Activité
+  const [activity, setActivity] = useState("");
+  const [duration, setDuration] = useState("");
 
-  const handleGlucoseSubmit = () => {
-    if (glucoseValue) {
+  const handleGlucoseSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!glucoseValue || isNaN(Number(glucoseValue))) {
       toast({
-        title: "Glycémie ajoutée",
-        description: `Valeur: ${glucoseValue} mg/dL`,
+        title: "Erreur",
+        description: "Veuillez entrer une valeur de glycémie valide",
+        variant: "destructive",
       });
-      setGlucoseValue("");
-      onGlycemieClick?.();
+      return;
     }
+
+    addReading({
+      value: Number(glucoseValue),
+      timestamp: new Date().toISOString(),
+      context: "manual",
+      notes: glucoseNotes || undefined
+    });
+
+    toast({
+      title: "Mesure ajoutée",
+      description: "Votre glycémie a été enregistrée avec succès",
+    });
+
+    setGlucoseValue("");
+    setGlucoseNotes("");
+    onGlycemieClick?.();
   };
 
-  const handleMealSubmit = () => {
-    if (mealName) {
+  const handleMealSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!foodName) {
       toast({
-        title: "Repas ajouté",
-        description: `Repas: ${mealName}`,
+        title: "Erreur",
+        description: "Veuillez entrer un nom d'aliment",
+        variant: "destructive",
       });
-      setMealName("");
-      onMealClick?.();
+      return;
     }
+
+    toast({
+      title: "Repas ajouté",
+      description: `${foodName} a été ajouté à votre journal`,
+    });
+
+    setFoodName("");
+    setCarbs("");
+    onMealClick?.();
   };
 
-  const handleMedicationSubmit = () => {
-    if (medicationName) {
+  const handleMedicationSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!medication || !dose) {
       toast({
-        title: "Médicament ajouté",
-        description: `Médicament: ${medicationName}`,
+        title: "Erreur",
+        description: "Veuillez remplir tous les champs",
+        variant: "destructive",
       });
-      setMedicationName("");
-      onMedicamentClick?.();
+      return;
     }
+
+    toast({
+      title: "Médicament enregistré",
+      description: `${medication} - ${dose} unités pris avec succès`,
+    });
+
+    setMedication("");
+    setDose("");
+    onMedicamentClick?.();
   };
 
-  const handleActivitySubmit = () => {
-    if (activityName) {
+  const handleActivitySubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!activity || !duration) {
       toast({
-        title: "Activité ajoutée",
-        description: `Activité: ${activityName}`,
+        title: "Erreur",
+        description: "Veuillez remplir tous les champs",
+        variant: "destructive",
       });
-      setActivityName("");
-      onActivityClick?.();
+      return;
     }
+
+    toast({
+      title: "Activité enregistrée",
+      description: `${activity} pendant ${duration} minutes`,
+    });
+
+    setActivity("");
+    setDuration("");
+    onActivityClick?.();
   };
 
   const handleRappelsClick = () => {
@@ -91,18 +158,34 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(({
               </button>
             </PopoverTrigger>
             <PopoverContent className="w-80">
-              <div className="space-y-4">
+              <form onSubmit={handleGlucoseSubmit} className="space-y-4">
                 <h3 className="font-semibold text-lg">📊 Nouvelle mesure glycémique</h3>
-                <Input
-                  type="number"
-                  placeholder="Entrer le taux (mg/dL)"
-                  value={glucoseValue}
-                  onChange={(e) => setGlucoseValue(e.target.value)}
-                />
-                <Button onClick={handleGlucoseSubmit} className="w-full">
+                <div>
+                  <Label htmlFor="glucose">Glycémie (mg/dL)</Label>
+                  <Input
+                    id="glucose"
+                    type="number"
+                    placeholder="Ex: 120"
+                    value={glucoseValue}
+                    onChange={(e) => setGlucoseValue(e.target.value)}
+                    className="mt-1"
+                    autoFocus
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="glucoseNotes">Notes (optionnel)</Label>
+                  <Input
+                    id="glucoseNotes"
+                    placeholder="Commentaires..."
+                    value={glucoseNotes}
+                    onChange={(e) => setGlucoseNotes(e.target.value)}
+                    className="mt-1"
+                  />
+                </div>
+                <Button type="submit" className="w-full">
                   Enregistrer
                 </Button>
-              </div>
+              </form>
             </PopoverContent>
           </Popover>
 
@@ -117,18 +200,34 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(({
               </button>
             </PopoverTrigger>
             <PopoverContent className="w-80">
-              <div className="space-y-4">
-                <h3 className="font-semibold text-lg">🍽️ Nouveau repas</h3>
-                <Input
-                  type="text"
-                  placeholder="Nom du repas"
-                  value={mealName}
-                  onChange={(e) => setMealName(e.target.value)}
-                />
-                <Button onClick={handleMealSubmit} className="w-full">
-                  Ajouter repas
+              <form onSubmit={handleMealSubmit} className="space-y-4">
+                <h3 className="font-semibold text-lg">🍽️ Journal des Repas</h3>
+                <div>
+                  <Label htmlFor="foodName">Nom de l'aliment</Label>
+                  <Input
+                    id="foodName"
+                    placeholder="Ex: Pomme, Riz, Salade..."
+                    value={foodName}
+                    onChange={(e) => setFoodName(e.target.value)}
+                    className="mt-1"
+                    autoFocus
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="carbs">Glucides (g) - optionnel</Label>
+                  <Input
+                    id="carbs"
+                    type="number"
+                    placeholder="Ex: 25"
+                    value={carbs}
+                    onChange={(e) => setCarbs(e.target.value)}
+                    className="mt-1"
+                  />
+                </div>
+                <Button type="submit" className="w-full">
+                  Ajouter
                 </Button>
-              </div>
+              </form>
             </PopoverContent>
           </Popover>
 
@@ -143,18 +242,37 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(({
               </button>
             </PopoverTrigger>
             <PopoverContent className="w-80">
-              <div className="space-y-4">
-                <h3 className="font-semibold text-lg">💊 Nouveau médicament</h3>
-                <Input
-                  type="text"
-                  placeholder="Nom du médicament"
-                  value={medicationName}
-                  onChange={(e) => setMedicationName(e.target.value)}
-                />
-                <Button onClick={handleMedicationSubmit} className="w-full">
-                  Ajouter médicament
+              <form onSubmit={handleMedicationSubmit} className="space-y-4">
+                <h3 className="font-semibold text-lg">💊 Enregistrer Prise Médicament</h3>
+                <div>
+                  <Label htmlFor="medication">Type de médicament</Label>
+                  <Select value={medication} onValueChange={setMedication}>
+                    <SelectTrigger className="mt-1">
+                      <SelectValue placeholder="Sélectionner un médicament" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="insuline-rapide">Insuline rapide</SelectItem>
+                      <SelectItem value="insuline-lente">Insuline lente</SelectItem>
+                      <SelectItem value="metformine">Metformine</SelectItem>
+                      <SelectItem value="autre">Autre</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label htmlFor="dose">Dose (unités)</Label>
+                  <Input
+                    id="dose"
+                    type="number"
+                    placeholder="Ex: 5"
+                    value={dose}
+                    onChange={(e) => setDose(e.target.value)}
+                    className="mt-1"
+                  />
+                </div>
+                <Button type="submit" className="w-full">
+                  Confirmer
                 </Button>
-              </div>
+              </form>
             </PopoverContent>
           </Popover>
 
@@ -169,18 +287,39 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(({
               </button>
             </PopoverTrigger>
             <PopoverContent className="w-80">
-              <div className="space-y-4">
-                <h3 className="font-semibold text-lg">🏃 Nouvelle activité</h3>
-                <Input
-                  type="text"
-                  placeholder="Type d'activité"
-                  value={activityName}
-                  onChange={(e) => setActivityName(e.target.value)}
-                />
-                <Button onClick={handleActivitySubmit} className="w-full">
-                  Ajouter activité
+              <form onSubmit={handleActivitySubmit} className="space-y-4">
+                <h3 className="font-semibold text-lg">🏃 Activité Physique</h3>
+                <div>
+                  <Label htmlFor="activity">Type d'activité</Label>
+                  <Select value={activity} onValueChange={setActivity}>
+                    <SelectTrigger className="mt-1">
+                      <SelectValue placeholder="Sélectionner une activité" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="marche">Marche</SelectItem>
+                      <SelectItem value="course">Course</SelectItem>
+                      <SelectItem value="velo">Vélo</SelectItem>
+                      <SelectItem value="natation">Natation</SelectItem>
+                      <SelectItem value="musculation">Musculation</SelectItem>
+                      <SelectItem value="autre">Autre</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label htmlFor="duration">Durée (minutes)</Label>
+                  <Input
+                    id="duration"
+                    type="number"
+                    placeholder="Ex: 30"
+                    value={duration}
+                    onChange={(e) => setDuration(e.target.value)}
+                    className="mt-1"
+                  />
+                </div>
+                <Button type="submit" className="w-full">
+                  Enregistrer
                 </Button>
-              </div>
+              </form>
             </PopoverContent>
           </Popover>
 
