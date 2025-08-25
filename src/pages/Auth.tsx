@@ -7,7 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Separator } from '@/components/ui/separator';
 import { useAuth } from '@/contexts/AuthContext';
-import { useNavigate, Navigate } from 'react-router-dom';
+import { useNavigate, Navigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useToast } from '@/hooks/use-toast';
 import PlanSelection from '@/components/PlanSelection';
@@ -31,10 +31,11 @@ import {
 } from 'lucide-react';
 
 const AuthPage = () => {
-  const { user, signIn, signUp, signInWithProfessionalCode, loading, isTestMode } = useAuth();
+  const { user, signIn, signOut, signUp, signInWithProfessionalCode, loading, isTestMode } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
   const { t } = useTranslation();
+  const [searchParams] = useSearchParams();
 
   // États pour les formulaires - MOVED TO TOP
   const [activeTab, setActiveTab] = useState('patient');
@@ -74,8 +75,9 @@ const AuthPage = () => {
     );
   }
 
-  // Redirect if already authenticated
-  if (user) {
+  // Redirect if already authenticated (unless force parameter is used)
+  const forceAuth = searchParams.get('force') === 'true';
+  if (user && !forceAuth) {
     return <Navigate to="/" replace />;
   }
 
@@ -356,12 +358,54 @@ const AuthPage = () => {
     );
   }
 
+  const handleSignOut = async () => {
+    setIsLoading(true);
+    try {
+      const { error } = await signOut();
+      if (error) {
+        toast({
+          title: "Erreur",
+          description: "Impossible de se déconnecter",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Déconnexion réussie",
+          description: "Vous êtes maintenant déconnecté",
+        });
+        // Remove force parameter from URL
+        navigate('/auth', { replace: true });
+      }
+    } catch (err) {
+      toast({
+        title: "Erreur",
+        description: "Erreur lors de la déconnexion",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-medical-blue-light via-background to-medical-green-light flex items-center justify-center p-4">
       {/* Language Selector - Top Right */}
       <div className="fixed top-4 right-4 z-50">
         <LanguageSwitcher />
       </div>
+      
+      {/* Sign Out Button - Top Left (if user is connected and force mode) */}
+      {user && forceAuth && (
+        <div className="fixed top-4 left-4 z-50">
+          <Button 
+            variant="outline" 
+            onClick={handleSignOut}
+            disabled={isLoading}
+          >
+            {isLoading ? "Déconnexion..." : "Se déconnecter"}
+          </Button>
+        </div>
+      )}
       
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
