@@ -615,6 +615,39 @@ export type Database = {
         }
         Relationships: []
       }
+      glucose_readings: {
+        Row: {
+          context: string
+          created_at: string
+          id: string
+          notes: string | null
+          timestamp: string
+          updated_at: string
+          user_id: string
+          value: number
+        }
+        Insert: {
+          context?: string
+          created_at?: string
+          id?: string
+          notes?: string | null
+          timestamp?: string
+          updated_at?: string
+          user_id: string
+          value: number
+        }
+        Update: {
+          context?: string
+          created_at?: string
+          id?: string
+          notes?: string | null
+          timestamp?: string
+          updated_at?: string
+          user_id?: string
+          value?: number
+        }
+        Relationships: []
+      }
       insulin_injections: {
         Row: {
           created_at: string
