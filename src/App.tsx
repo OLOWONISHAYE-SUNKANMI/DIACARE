@@ -54,6 +54,7 @@ const AppContent = () => {
               <Index />
             </ProtectedRoute>
           } />
+          <Route path="/professional" element={<ProfessionalDashboard />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
