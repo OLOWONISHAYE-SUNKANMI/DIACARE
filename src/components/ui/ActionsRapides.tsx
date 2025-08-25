@@ -6,6 +6,8 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { useGlucose } from "@/contexts/GlucoseContext";
+import BarcodeScanModal from "@/components/modals/BarcodeScanModal";
+import PhotoAnalysisModal from "@/components/modals/PhotoAnalysisModal";
 
 interface ActionsRapidesProps {
   onTabChange?: (tab: string) => void;
@@ -40,6 +42,10 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(({
   // États pour Activité
   const [activity, setActivity] = useState("");
   const [duration, setDuration] = useState("");
+  
+  // États pour les modals
+  const [isBarcodeModalOpen, setIsBarcodeModalOpen] = useState(false);
+  const [isPhotoModalOpen, setIsPhotoModalOpen] = useState(false);
 
   const handleGlucoseSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -200,34 +206,67 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(({
               </button>
             </PopoverTrigger>
             <PopoverContent className="w-80">
-              <form onSubmit={handleMealSubmit} className="space-y-4">
+              <div className="space-y-4">
                 <h3 className="font-semibold text-lg">🍽️ Journal des Repas</h3>
-                <div>
-                  <Label htmlFor="foodName">Nom de l'aliment</Label>
-                  <Input
-                    id="foodName"
-                    placeholder="Ex: Pomme, Riz, Salade..."
-                    value={foodName}
-                    onChange={(e) => setFoodName(e.target.value)}
-                    className="mt-1"
-                    autoFocus
-                  />
+                
+                {/* Options de saisie */}
+                <div className="grid grid-cols-2 gap-2">
+                  <Button 
+                    variant="outline" 
+                    className="flex flex-col items-center p-4 h-auto"
+                    onClick={() => setIsBarcodeModalOpen(true)}
+                  >
+                    <span className="text-xl mb-1">📱</span>
+                    <span className="text-xs">Scanner code-barres</span>
+                  </Button>
+                  
+                  <Button 
+                    variant="outline" 
+                    className="flex flex-col items-center p-4 h-auto"
+                    onClick={() => setIsPhotoModalOpen(true)}
+                  >
+                    <span className="text-xl mb-1">📸</span>
+                    <span className="text-xs">Photo + IA</span>
+                  </Button>
                 </div>
-                <div>
-                  <Label htmlFor="carbs">Glucides (g) - optionnel</Label>
-                  <Input
-                    id="carbs"
-                    type="number"
-                    placeholder="Ex: 25"
-                    value={carbs}
-                    onChange={(e) => setCarbs(e.target.value)}
-                    className="mt-1"
-                  />
+                
+                <div className="relative">
+                  <div className="absolute inset-0 flex items-center">
+                    <span className="w-full border-t" />
+                  </div>
+                  <div className="relative flex justify-center text-xs uppercase">
+                    <span className="bg-popover px-2 text-muted-foreground">ou saisie manuelle</span>
+                  </div>
                 </div>
-                <Button type="submit" className="w-full">
-                  Ajouter
-                </Button>
-              </form>
+
+                <form onSubmit={handleMealSubmit} className="space-y-3">
+                  <div>
+                    <Label htmlFor="foodName">Nom de l'aliment</Label>
+                    <Input
+                      id="foodName"
+                      placeholder="Ex: Pomme, Riz, Salade..."
+                      value={foodName}
+                      onChange={(e) => setFoodName(e.target.value)}
+                      className="mt-1"
+                      autoFocus
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="carbs">Glucides (g) - optionnel</Label>
+                    <Input
+                      id="carbs"
+                      type="number"
+                      placeholder="Ex: 25"
+                      value={carbs}
+                      onChange={(e) => setCarbs(e.target.value)}
+                      className="mt-1"
+                    />
+                  </div>
+                  <Button type="submit" className="w-full">
+                    Ajouter
+                  </Button>
+                </form>
+              </div>
             </PopoverContent>
           </Popover>
 
@@ -336,6 +375,33 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(({
           
         </div>
       </div>
+      
+      {/* Modals */}
+      <BarcodeScanModal 
+        isOpen={isBarcodeModalOpen}
+        onClose={() => setIsBarcodeModalOpen(false)}
+        onFoodSelected={(food) => {
+          setFoodName(food.name);
+          setCarbs(food.carbs.toString());
+          toast({
+            title: "Produit ajouté",
+            description: `${food.name} - ${food.carbs}g de glucides`,
+          });
+        }}
+      />
+      
+      <PhotoAnalysisModal 
+        isOpen={isPhotoModalOpen}
+        onClose={() => setIsPhotoModalOpen(false)}
+        onFoodAnalyzed={(food) => {
+          setFoodName(food.name);
+          setCarbs(food.carbs.toString());
+          toast({
+            title: "Analyse terminée",
+            description: `${food.name} - ${food.carbs}g de glucides estimés`,
+          });
+        }}
+      />
     </div>
   );
 });
