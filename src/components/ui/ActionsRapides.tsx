@@ -290,9 +290,52 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(({
                       <SelectValue placeholder="Sélectionner un médicament" />
                     </SelectTrigger>
                     <SelectContent>
+                      {/* Insulines ultra-rapides */}
+                      <SelectItem value="insuline-ultra-rapide">Insuline ultra-rapide</SelectItem>
+                      <SelectItem value="humalog">Humalog (Lispro)</SelectItem>
+                      <SelectItem value="novorapid">NovoRapid (Aspart)</SelectItem>
+                      <SelectItem value="apidra">Apidra (Glulisine)</SelectItem>
+                      <SelectItem value="fiasp">Fiasp (Aspart ultra-rapide)</SelectItem>
+                      
+                      {/* Insulines rapides */}
                       <SelectItem value="insuline-rapide">Insuline rapide</SelectItem>
+                      <SelectItem value="actrapid">Actrapid</SelectItem>
+                      <SelectItem value="humulin-r">Humulin R</SelectItem>
+                      <SelectItem value="insuman-rapid">Insuman Rapid</SelectItem>
+                      
+                      {/* Insulines intermédiaires */}
+                      <SelectItem value="insuline-intermediaire">Insuline intermédiaire</SelectItem>
+                      <SelectItem value="insulatard">Insulatard (NPH)</SelectItem>
+                      <SelectItem value="humulin-n">Humulin N (NPH)</SelectItem>
+                      <SelectItem value="insuman-basal">Insuman Basal (NPH)</SelectItem>
+                      
+                      {/* Insulines lentes */}
                       <SelectItem value="insuline-lente">Insuline lente</SelectItem>
+                      <SelectItem value="lantus">Lantus (Glargine)</SelectItem>
+                      <SelectItem value="levemir">Levemir (Detemir)</SelectItem>
+                      <SelectItem value="toujeo">Toujeo (Glargine U300)</SelectItem>
+                      <SelectItem value="tresiba">Tresiba (Degludec)</SelectItem>
+                      <SelectItem value="abasaglar">Abasaglar (Glargine)</SelectItem>
+                      
+                      {/* Insulines mixtes */}
+                      <SelectItem value="insuline-mixte">Insuline mixte</SelectItem>
+                      <SelectItem value="novomix">NovoMix 30 (Aspart + NPH)</SelectItem>
+                      <SelectItem value="humalog-mix">Humalog Mix 25/50 (Lispro + NPH)</SelectItem>
+                      <SelectItem value="humulin-mix">Humulin 70/30 (Rapide + NPH)</SelectItem>
+                      <SelectItem value="insuman-comb">Insuman Comb (Rapide + NPH)</SelectItem>
+                      
+                      {/* Autres antidiabétiques */}
                       <SelectItem value="metformine">Metformine</SelectItem>
+                      <SelectItem value="glucophage">Glucophage (Metformine)</SelectItem>
+                      <SelectItem value="stagid">Stagid (Metformine)</SelectItem>
+                      <SelectItem value="gliclazide">Gliclazide</SelectItem>
+                      <SelectItem value="diamicron">Diamicron (Gliclazide)</SelectItem>
+                      <SelectItem value="victoza">Victoza (Liraglutide)</SelectItem>
+                      <SelectItem value="ozempic">Ozempic (Semaglutide)</SelectItem>
+                      <SelectItem value="trulicity">Trulicity (Dulaglutide)</SelectItem>
+                      <SelectItem value="januvia">Januvia (Sitagliptine)</SelectItem>
+                      <SelectItem value="forxiga">Forxiga (Dapagliflozine)</SelectItem>
+                      
                       <SelectItem value="autre">Autre</SelectItem>
                     </SelectContent>
                   </Select>
