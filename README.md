@@ -143,4 +143,4 @@ DARE vise à améliorer la prise en charge du diabète en Afrique en :
 
 ---
 
-**DARE - Ensemble, osons vaincre le diabète en Afrique ! 💪🌍**
+**DARE - Ensemble, osons vaincre le diabète en Afrique ! 💪🌍**# DIACARE
