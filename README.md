@@ -1,52 +1,51 @@
-# 💪 DARE - Votre Compagnon Diabète
+# DiabCare - Votre Compagnon Diabète
 
-> **DARE** : *Diabetes African Revolutionary Experience*  
-> Application de gestion du diabète adaptée au contexte africain et aux standards UEMOA
+> **DiabCare** : *La première plateforme de gestion et suivi du diabète en afrique*  
+> Application de gestion du diabète adaptée aux contextes africains (zone CEMAC et UEMOA)
 
-## 🌍 Vision
+## Vision
 
-DARE révolutionne la prise en charge du diabète en Afrique en offrant une solution technologique adaptée aux réalités locales : climat sahélien, prix en F CFA, contexte médical africain, et alimentation traditionnelle.
+DiabCare révolutionne la prise en charge du diabète en Afrique en offrant une solution technologique adaptée aux réalités locales.
 
-## ✨ Fonctionnalités Principales
+## Fonctionnalités Principales
 
-### 📊 **Suivi Glycémique Intelligent**
+### **Suivi Glycémique Intelligent**
 - Mesures en temps réel avec statuts colorés
 - Objectifs adaptés au climat tropical (70-140 mg/dL)
-- Historique 7 jours avec observance
+- Historique 1 mois avec observance
 
-### 💉 **Calculateur de Doses**
-- **Formule adaptée UEMOA** : Correction = (glycémie-120)/50, Repas = glucides/15
+### **Calculateur de Doses**
+- **Formule adaptée Afrique** : Correction = (glycémie-120)/50, Repas = glucides/15
 - Interface intuitive avec sliders
 - Calcul temps réel automatique
 - Conservation insuline (conseils canari terre cuite)
 
-### 📝 **Carnet de Suivi**
-- Entrées contextualisées (thiéboudienne, attiéké, bissap)
+### **Carnet de Suivi**
+- Entrées contextualisées (thiéboudienne, attiéké, ndolé, manioc, plantain, bissap)
 - Suivi injections avec alertes
 - Statistiques hebdomadaires personnalisées
 
-### 👨‍👩‍👧‍👦 **Réseau Familial**
+### **Réseau Familial**
 - Code partage familial sécurisé
 - Permissions granulaires (lecture, urgence, complet)
 - Activité temps réel des Care Partners
 
-### 📚 **Blog DARE**
+### **Blog DARE**
 - Articles "OSER" motivationnels
 - Contenu adapté Afrique (cuisine, climat, lifestyle)
 - Témoignages authentiques africains
 
-### 👤 **Profil Personnalisé**
-- Données réalistes africaines (noms, téléphones +221)
-- Équipe médicale locale (CHU Le Dantec)
-- Prix médicaments en F CFA
+### **Profil Personnalisé**
+- Données réalistes africaines (noms, téléphones, etc)
+- Équipe médicale locale 
 
-## 🏥 **Contexte Médical Africain**
+## **Contexte Médical Africain**
 
-### Standards UEMOA Intégrés
+### Standards UEMOA et CEMAC Intégrés
 - Objectifs glycémiques adaptés climat tropical
 - Formules insuline pour population africaine
-- Prix médicaments en Francs CFA
-- Réseau hospitalier local (Sénégal)
+- Prix médicaments en monnaie locale
+- Réseau hospitalier local
 
 ### Personnages Authentiques
 - **Amadou Diallo** (49 ans, Enseignant, Dakar)
@@ -54,7 +53,7 @@ DARE révolutionne la prise en charge du diabète en Afrique en offrant une solu
 - **Fatou Diop** (Épouse, Care Partner principal)
 - **Ibrahim Diallo** (Fils, monitoring familial)
 
-## 🎨 **Design System**
+## **Design System**
 
 ### Couleurs Principales
 - **Medical Teal**: `#0d9488` - Couleur principale confiance
@@ -67,7 +66,7 @@ DARE révolutionne la prise en charge du diabète en Afrique en offrant une solu
 - Tailles touch-friendly (44px minimum)
 - Contrastes validés accessibilité
 
-## 📱 **Expérience Mobile**
+## **Expérience Mobile**
 
 ### PWA Ready
 - Interface app-like native
@@ -80,7 +79,7 @@ DARE révolutionne la prise en charge du diabète en Afrique en offrant une solu
 - Breakpoints adaptés usage africain
 - Touch targets accessibilité
 
-## 🚀 **Architecture Technique**
+## **Architecture Technique**
 
 ### Stack Moderne
 ```
@@ -119,7 +118,7 @@ npm run build
 npm run preview
 ```
 
-## 🌟 **Philosophie DARE**
+## **Philosophie DARE**
 
 **OSER** c'est la philosophie au cœur de DARE :
 - **O**ser prendre sa santé en main
@@ -127,13 +126,13 @@ npm run preview
 - **E**ngager sa famille et son équipe médicale
 - **R**éussir à vivre pleinement avec le diabète
 
-## 📞 **Support & Contact**
+## **Support & Contact**
 
 - **Documentation** : Intégrée à l'application
-- **Support technique** : Via l'interface DARE
+- **Support technique** : Via l'interface DiabCare
 - **Feedback** : Système de notifications intégré
 
-## 🏆 **Impact Attendu**
+## **Impact Attendu**
 
 DARE vise à améliorer la prise en charge du diabète en Afrique en :
 - Réduisant les complications par un meilleur suivi
