@@ -3,15 +3,12 @@ import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import Header from "@/components/Header";
-
+import BottomNavigation from "@/components/BottomNavigation";
 import { useAuth } from "@/contexts/AuthContext";
 import { GlucoseProvider } from "@/contexts/GlucoseContext";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { PerformanceOptimizer } from "@/utils/PerformanceOptimizer";
 import { BundlePreloader } from "@/utils/BundleOptimizer";
-import { SidebarProvider } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/ui/AppSidebar";
-import { TopBar } from "@/components/ui/TopBar";
 
 // Import critical screens directly (loaded immediately)
 import HomeScreen from "@/components/screens/HomeScreen";
@@ -196,19 +193,24 @@ const Index = () => {
 
   return (
     <GlucoseProvider>
-      <SidebarProvider>
-        <div className="min-h-screen bg-background flex w-full">
-          <AppSidebar activeTab={activeTab} onTabChange={setActiveTab} />
-          
-          <div className="flex-1 flex flex-col">
-            <TopBar onQuickAdd={handleQuickAdd} />
-            
-            <main className="flex-1 overflow-auto">
-              {renderScreen()}
-            </main>
-          </div>
+      <div className="min-h-screen bg-background flex flex-col w-full relative">
+        <Header user={user} onLogout={handleLogout} isProfessional={isProfessional} professionalData={professionalData} />
+        <div className="flex-1 pb-24">
+          {renderScreen()}
         </div>
-      </SidebarProvider>
+        {activeTab !== "payment" && (
+          <BottomNavigation activeTab={activeTab} onTabChange={setActiveTab} />
+        )}
+        
+        {/* Bouton flottant + - Fixed positioning */}
+        <Button 
+          onClick={handleQuickAdd}
+          className="fixed bottom-24 right-4 w-14 h-14 rounded-full bg-medical-teal hover:bg-medical-teal/90 shadow-xl hover:shadow-2xl transition-all duration-200 hover:scale-110 z-50 ring-4 ring-medical-teal/20"
+          size="icon"
+        >
+          <Plus className="w-6 h-6" />
+        </Button>
+      </div>
     </GlucoseProvider>
   );
 };
