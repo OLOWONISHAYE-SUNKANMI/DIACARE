@@ -22,7 +22,7 @@ const BottomNavigation = ({ activeTab, onTabChange }: BottomNavigationProps) => 
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-card border-t border-border pb-safe-area-inset-bottom overflow-hidden z-50 backdrop-blur-sm bg-card/95">
+    <nav className="fixed bottom-0 left-0 right-0 w-full bg-card/95 backdrop-blur-sm border-t border-border pb-safe-area-inset-bottom overflow-hidden z-[9999] shadow-lg">
       <div className="px-1 sm:px-2 py-1 sm:py-2 pt-2 sm:pt-3">
         <div className="flex justify-around items-center min-h-0 overflow-x-auto scrollbar-hide">
           {tabs.map((tab) => {
