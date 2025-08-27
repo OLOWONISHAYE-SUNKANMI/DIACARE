@@ -195,7 +195,7 @@ const Index = () => {
     <GlucoseProvider>
       <div className="min-h-screen bg-background flex flex-col w-full relative">
         <Header user={user} onLogout={handleLogout} isProfessional={isProfessional} professionalData={professionalData} />
-        <div className="flex-1 pb-20">
+        <div className="flex-1 pb-24">
           {renderScreen()}
         </div>
         {activeTab !== "payment" && (
