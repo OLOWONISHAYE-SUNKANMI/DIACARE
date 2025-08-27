@@ -1,3 +1,4 @@
+
 export const en = {
   // App general
   appName: "DiabCare",
@@ -649,5 +650,77 @@ export const en = {
   professionalExtras: {
     patientInformation: "Patient Information",
     stackTrace: "Stack trace"
+  },
+
+  nativeHeader: {
+    title: 'Diabetes Assistant',
+    greetings: "Greetings",
+    question: 'How is your diabetes today?'
+  },
+
+  bloodSugar: {
+    title: 'Current Blood Sugar',
+    state: 'Normal',
+    measurement: 'Last measurement',
+  },
+
+  Actions: {
+    actions: 'Rapid Actions',
+    actionsPopover: {
+      bloodSugar: {
+        increment: 'Add Blood Sugar'
+      },
+      title: 'New Glucose Reading',
+      input1: 'Blood Sugar',
+      notes: 'optional',
+      comments: 'Comments'
+    },
+    button: 'Save'
+  },
+
+  Journal: {
+    title: "Meal Journal",
+    media: {
+      scanner: 'Scan barcode',
+      photo: 'Photo + AI'
+    },
+    manualEntry: 'or manual entry',
+    title1: 'Food Name',
+    title2: 'Carbohydrates',
+    optional: 'optional',
+    button: 'Add Food'
+  },
+
+  Medication: {
+    title: 'Medications',
+    subtitle: 'Save Medication',
+    title2: 'Type of medication',
+    select: 'Select a Medication',
+    dose: 'Dose',
+    unit: 'unit',
+    button: 's'
+  },
+
+  Activity: {
+    title: 'Activity',
+    subtitle: 'Physical Activity',
+    type: 'Type of Activity',
+    select: 'Select an activity',
+    Popover: {
+      one: "Walking",
+      two: "Running",
+      three: "Cycling",
+      four: "Swimming",
+      five: "Weight Training",
+      six: "Other",
+    },
+    duration: 'Duration',
+    button: 'Register'
+  },
+
+  Alerts: {
+    title: 'AI Predictive Alerts',
+    urgent: 'Urgent',
+    monitor: 'To Monitor'
   }
 };

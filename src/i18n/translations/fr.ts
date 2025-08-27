@@ -739,5 +739,77 @@ export const fr = {
     cannotLoadPlans: "Impossible de charger les forfaits",
     codeNotFound: "Code manquant",
     genericError: "Une erreur s'est produite"
+  },
+
+  nativeHeader: {
+    title: 'Assistant Diabète',
+    greetings: 'Bonjuor',
+    question: 'Comment va votre diabète aujourdhui ?'
+  },
+
+  bloodSugar: {
+    title: 'Glycémie Actuelle',
+    state: 'Dans la normale',
+    measurement: 'Dernière mesure',
+    
+  },
+
+  Actions: {
+    actions: 'Actions Rapides',
+    actionsPopover: {
+      bloodSugar: {
+        increment: 'Ajouter Glycémie'
+      },
+      title: 'Nouvelle mesure glycémique',
+      input1: 'Glycémie',
+      notes: 'optionnel',
+      comments: 'Commentaires...'
+    },
+    button: 'Enregister'
+  },
+
+  Journal: {
+    title: "Journal des Repas",
+    media: {
+      scanner: 'Scanner code-barres',
+      photo: 'Photo + IA'
+    },
+    manualEntry: 'ou saisie manuelle',
+    title1: 'Nom de laliment',
+    title2: 'Glucides',
+    optional: 'optionnel',
+    button: 'Ajouter'
+  },
+  
+  Medication: {
+    title: 'Médicaments',
+    subtitle: 'Enregistrer Prise Médicament',
+    title2: 'Type de médicament',
+    dose: 'Dose',
+    unit: 'unités',
+    button: 'Confirmer'
+  },
+
+  Activity: {
+    title: 'Activité',
+    subtitle: ' Activité Physique',
+    type: 'Type d activité',
+    select: 'Sélectionner une activité',
+    Popover: {
+      one: "Marche",
+      two: "Course",
+      three: "Vélo",
+      four: "Natation",
+      five: "Musculation",
+      six: "Autre",
+    },
+    duration: 'Durée',
+    button: 'Enregister'
+  },
+
+  Alerts: {
+    title: 'Alertes Prédictives IA',
+    urgent: 'Urgentes',
+    monitor: 'À surveiller'
   }
 };

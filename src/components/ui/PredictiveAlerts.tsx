@@ -7,6 +7,8 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { predictiveAnalyzer } from '@/utils/SimplifiedPredictiveAnalyzer';
 import type { RiskAlert } from '@/utils/SimplifiedPredictiveAnalyzer';
 
+import { useTranslation } from 'react-i18next';
+
 interface PredictiveAlertsProps {
   className?: string;
 }
@@ -74,6 +76,8 @@ const PredictiveAlerts: React.FC<PredictiveAlertsProps> = ({ className = "" }) =
   const activeAlerts = alerts.filter(alert => !alert.isRead);
   const stats = predictiveAnalyzer.getAlertStats();
 
+    const { t } = useTranslation()
+
   return (
     <div className={`space-y-4 ${className}`}>
       {/* Header with stats */}
@@ -82,7 +86,7 @@ const PredictiveAlerts: React.FC<PredictiveAlertsProps> = ({ className = "" }) =
           <CardTitle className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <Brain className="w-6 h-6" />
-              <span>Alertes Prédictives IA</span>
+              <span>{t('Alerts.title')}</span>
             </div>
             {activeAlerts.length > 0 && (
               <Button 

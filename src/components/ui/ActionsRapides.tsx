@@ -9,6 +9,8 @@ import { useGlucose } from "@/contexts/GlucoseContext";
 import BarcodeScanModal from "@/components/modals/BarcodeScanModal";
 import PhotoAnalysisModal from "@/components/modals/PhotoAnalysisModal";
 
+import { useTranslation } from 'react-i18next';
+
 interface ActionsRapidesProps {
   onTabChange?: (tab: string) => void;
   onGlycemieClick?: () => void;
@@ -147,10 +149,12 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(({
     onTabChange?.('reminders');
   };
 
+  const { t } = useTranslation()
+
   return (
     <div className="px-3 sm:px-4">
       <div className="bg-white rounded-xl p-4 sm:p-6 shadow-md">
-        <h3 className="font-semibold text-gray-800 mb-3 sm:mb-4">Actions Rapides</h3>
+        <h3 className="font-semibold text-gray-800 mb-3 sm:mb-4">{t('Actions.actions')}</h3>
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
           
           {/* Ajouter Glycémie - POPOVER */}
@@ -160,14 +164,14 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(({
                 <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-500 rounded-full flex items-center justify-center mb-2">
                   <span className="text-lg sm:text-xl">🩸</span>
                 </div>
-                <span className="text-xs sm:text-sm font-medium text-gray-700 text-center leading-tight">Ajouter Glycémie</span>
+                <span className="text-xs sm:text-sm font-medium text-gray-700 text-center leading-tight">{ t('Actions.actionsPopover.bloodSugar.increment')}</span>
               </button>
             </PopoverTrigger>
             <PopoverContent className="w-80">
               <form onSubmit={handleGlucoseSubmit} className="space-y-4">
-                <h3 className="font-semibold text-lg">📊 Nouvelle mesure glycémique</h3>
+                <h3 className="font-semibold text-lg">📊 {t('Actions.actionsPopover.title')}</h3>
                 <div>
-                  <Label htmlFor="glucose">Glycémie (mg/dL)</Label>
+                  <Label htmlFor="glucose">{t("Actions.actionsPopover.input1")} (mg/dL)</Label>
                   <Input
                     id="glucose"
                     type="number"
@@ -179,17 +183,17 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(({
                   />
                 </div>
                 <div>
-                  <Label htmlFor="glucoseNotes">Notes (optionnel)</Label>
+                  <Label htmlFor="glucoseNotes">Notes ({t("Actions.actionsPopover.notes")})</Label>
                   <Input
                     id="glucoseNotes"
-                    placeholder="Commentaires..."
+                    placeholder={t("Actions.actionsPopover.comments")}
                     value={glucoseNotes}
                     onChange={(e) => setGlucoseNotes(e.target.value)}
                     className="mt-1"
                   />
                 </div>
                 <Button type="submit" className="w-full">
-                  Enregistrer
+                  {t("Actions.button")}
                 </Button>
               </form>
             </PopoverContent>
@@ -202,12 +206,12 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(({
                 <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-500 rounded-full flex items-center justify-center mb-2">
                   <span className="text-lg sm:text-xl">🍽️</span>
                 </div>
-                <span className="text-xs sm:text-sm font-medium text-gray-700 text-center leading-tight">Journal des repas</span>
+                <span className="text-xs sm:text-sm font-medium text-gray-700 text-center leading-tight">{t('Journal.title')}</span>
               </button>
             </PopoverTrigger>
             <PopoverContent className="w-80">
               <div className="space-y-4">
-                <h3 className="font-semibold text-lg">🍽️ Journal des Repas</h3>
+                <h3 className="font-semibold text-lg">🍽️ {t('Journal.title')}</h3>
                 
                 {/* Options de saisie */}
                 <div className="grid grid-cols-2 gap-2">
@@ -217,7 +221,7 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(({
                     onClick={() => setIsBarcodeModalOpen(true)}
                   >
                     <span className="text-xl mb-1">📱</span>
-                    <span className="text-xs">Scanner code-barres</span>
+                    <span className="text-xs">{t('Journal.media.scanner')}</span>
                   </Button>
                   
                   <Button 
@@ -226,7 +230,7 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(({
                     onClick={() => setIsPhotoModalOpen(true)}
                   >
                     <span className="text-xl mb-1">📸</span>
-                    <span className="text-xs">Photo + IA</span>
+                    <span className="text-xs">{t("Journal.media.photo")}</span>
                   </Button>
                 </div>
                 
@@ -235,13 +239,13 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(({
                     <span className="w-full border-t" />
                   </div>
                   <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-popover px-2 text-muted-foreground">ou saisie manuelle</span>
+                    <span className="bg-popover px-2 text-muted-foreground">{t('Journal.manualEntry')}</span>
                   </div>
                 </div>
 
                 <form onSubmit={handleMealSubmit} className="space-y-3">
                   <div>
-                    <Label htmlFor="foodName">Nom de l'aliment</Label>
+                    <Label htmlFor="foodName">{t('Journal.title1')}</Label>
                     <Input
                       id="foodName"
                       placeholder="Ex: Pomme, Riz, Salade..."
@@ -252,7 +256,7 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(({
                     />
                   </div>
                   <div>
-                    <Label htmlFor="carbs">Glucides (g) - optionnel</Label>
+                    <Label htmlFor="carbs">{t('Journal.title2')} (g) - {t('Journal.optional')}</Label>
                     <Input
                       id="carbs"
                       type="number"
@@ -263,7 +267,7 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(({
                     />
                   </div>
                   <Button type="submit" className="w-full">
-                    Ajouter
+                   {t('Journal.button')}
                   </Button>
                 </form>
               </div>
@@ -277,17 +281,17 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(({
                 <div className="w-10 h-10 sm:w-12 sm:h-12 bg-teal-500 rounded-full flex items-center justify-center mb-2">
                   <span className="text-lg sm:text-xl">💊</span>
                 </div>
-                <span className="text-xs sm:text-sm font-medium text-gray-700 text-center leading-tight">Médicaments</span>
+                <span className="text-xs sm:text-sm font-medium text-gray-700 text-center leading-tight">{t('Medication.title')}</span>
               </button>
             </PopoverTrigger>
             <PopoverContent className="w-80">
               <form onSubmit={handleMedicationSubmit} className="space-y-4">
-                <h3 className="font-semibold text-lg">💊 Enregistrer Prise Médicament</h3>
+                <h3 className="font-semibold text-lg">💊 {t('Medications.subtitle')}</h3>
                 <div>
-                  <Label htmlFor="medication">Type de médicament</Label>
+                  <Label htmlFor="medication">{t('Medication.title2')}</Label>
                   <Select value={medication} onValueChange={setMedication}>
                     <SelectTrigger className="mt-1">
-                      <SelectValue placeholder="Sélectionner un médicament" />
+                      <SelectValue placeholder={t("Medication.select")} />
                     </SelectTrigger>
                     <SelectContent>
                       {/* Insulines ultra-rapides */}
@@ -341,7 +345,7 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(({
                   </Select>
                 </div>
                 <div>
-                  <Label htmlFor="dose">Dose (unités)</Label>
+                  <Label htmlFor="dose">{t('Medication.dose')} {t('Medication.unit')}</Label>
                   <Input
                     id="dose"
                     type="number"
@@ -352,7 +356,7 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(({
                   />
                 </div>
                 <Button type="submit" className="w-full">
-                  Confirmer
+                  {t('Medication.button')}
                 </Button>
               </form>
             </PopoverContent>
@@ -365,30 +369,30 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(({
                 <div className="w-10 h-10 sm:w-12 sm:h-12 bg-orange-500 rounded-full flex items-center justify-center mb-2">
                   <span className="text-lg sm:text-xl">🏃</span>
                 </div>
-                <span className="text-xs sm:text-sm font-medium text-gray-700 text-center leading-tight">Activité</span>
+                <span className="text-xs sm:text-sm font-medium text-gray-700 text-center leading-tight">{t('Activity.title')}</span>
               </button>
             </PopoverTrigger>
             <PopoverContent className="w-80">
               <form onSubmit={handleActivitySubmit} className="space-y-4">
-                <h3 className="font-semibold text-lg">🏃 Activité Physique</h3>
+                <h3 className="font-semibold text-lg">🏃 {t("Activity.subtitle")}</h3>
                 <div>
-                  <Label htmlFor="activity">Type d'activité</Label>
+                  <Label htmlFor="activity">{t("Activity.type")}</Label>
                   <Select value={activity} onValueChange={setActivity}>
                     <SelectTrigger className="mt-1">
-                      <SelectValue placeholder="Sélectionner une activité" />
+                      <SelectValue placeholder={t("Activity.select")} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="marche">Marche</SelectItem>
-                      <SelectItem value="course">Course</SelectItem>
-                      <SelectItem value="velo">Vélo</SelectItem>
-                      <SelectItem value="natation">Natation</SelectItem>
-                      <SelectItem value="musculation">Musculation</SelectItem>
-                      <SelectItem value="autre">Autre</SelectItem>
+                      <SelectItem value="marche">{t("Activity.Popover.one")}</SelectItem>
+                      <SelectItem value="course">{t("Activity.Popover.two")}</SelectItem>
+                      <SelectItem value="velo">{t("Activity.Popover.three")}</SelectItem>
+                      <SelectItem value="natation">{t("Activity.Popover.four")}</SelectItem>
+                      <SelectItem value="musculation">{t("Activity.Popover.five")}</SelectItem>
+                      <SelectItem value="autre">{t("Activity.Popover.six")}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div>
-                  <Label htmlFor="duration">Durée (minutes)</Label>
+                  <Label htmlFor="duration">{t("Activity.Duration")} (minutes)</Label>
                   <Input
                     id="duration"
                     type="number"
@@ -399,7 +403,7 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(({
                   />
                 </div>
                 <Button type="submit" className="w-full">
-                  Enregistrer
+                  {t("Activity.button")}
                 </Button>
               </form>
             </PopoverContent>

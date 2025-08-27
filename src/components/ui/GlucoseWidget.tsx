@@ -1,6 +1,7 @@
 import React from "react";
 import { Activity, Calendar, TrendingUp, TrendingDown, Minus, AlertTriangle, CheckCircle } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { useTranslation } from 'react-i18next';
 
 interface GlucoseWidgetProps {
   currentGlucose: number;
@@ -47,6 +48,8 @@ const GlucoseWidget = React.memo(({
 
   const glucoseStatus = getGlucoseStatus(currentGlucose);
 
+  const { t } = useTranslation()
+
   return (
     <Card className="bg-white shadow-xl border-0 rounded-2xl sm:rounded-3xl mx-3 sm:mx-4 -mt-4 sm:-mt-6 relative overflow-hidden max-w-full w-full">
       {/* Gradient accent */}
@@ -57,7 +60,7 @@ const GlucoseWidget = React.memo(({
         <div className="space-y-2 sm:space-y-3">
           <div className="flex items-center justify-center gap-2 mb-2">
             <Activity className="w-5 h-5 sm:w-6 sm:h-6 text-medical-green" />
-            <span className="text-base sm:text-lg font-semibold text-card-foreground">Glycémie Actuelle</span>
+            <span className="text-base sm:text-lg font-semibold text-card-foreground">{t('bloodSugar.title')}</span>
           </div>
           
           <div className="space-y-2">
@@ -72,14 +75,14 @@ const GlucoseWidget = React.memo(({
             {/* Status badge */}
             <div className={`inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium ${glucoseStatus.bgColor} ${glucoseStatus.color}`}>
               {glucoseStatus.icon}
-              <span>{glucoseStatus.message}</span>
+              <span>{t('bloodSugar.state')}</span>
             </div>
           </div>
           
           {/* Last reading */}
           <div className="flex items-center justify-center gap-1 text-xs sm:text-sm text-muted-foreground mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-muted/30">
             <Calendar className="w-3 h-3 sm:w-4 sm:h-4" />
-            <span className="text-center">Dernière mesure : {lastReading}</span>
+            <span className="text-center">{t('bloodSugar.measurement')} : {lastReading}</span>
           </div>
         </div>
       </CardContent>
