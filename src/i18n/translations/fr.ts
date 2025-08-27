@@ -215,7 +215,14 @@ export const fr = {
     context: "Contexte",
     notes: "Notes (optionnel)",
     duration: "Durée",
-    minutes: "minutes"
+    minutes: "minutes",
+    scanProduct: "Scanner un Produit",
+    productScanSimulation: "Simulation de scan de produits",
+    takePhoto: "Prendre une Photo",
+    aiMealAnalysis: "Analyse IA du repas",
+    manualEntry: "Saisie Manuelle",
+    enterInformation: "Entrez les informations",
+    followCarbs: "Suivez vos glucides facilement"
   },
   
   // Authentication
@@ -337,7 +344,9 @@ export const fr = {
     pending: "En attente",
     completed: "Terminé",
     duration: "Durée",
-    patientCode: "Code patient"
+    patientCode: "Code patient",
+    patientInformation: "Informations Patient",
+    stackTrace: "Stack trace"
   },
 
   // Chat and Community
@@ -375,7 +384,9 @@ export const fr = {
     mg_dl: "mg/dL",
     mmol_l: "mmol/L",
     send: "Envoyer",
-    sending: "Envoi en cours..."
+    sending: "Envoi en cours...",
+    enable: "Activer",
+    disable: "Désactiver"
   },
 
   // Notifications
@@ -391,7 +402,6 @@ export const fr = {
   // Home Screen
   homeScreen: {
     mission: "Mission DiabCare",
-    
     darePackage: "Forfait DiabCare",
     completePlan: "DiabCare Complet",
     premium: "PREMIUM",
@@ -551,10 +561,6 @@ export const fr = {
     }
   },
 
-  // Common additions
-  enable: "Activer",
-  disable: "Désactiver",
-
   // Legal
   legal: {
     termsTitle: "Conditions d'Utilisation",
@@ -661,5 +667,77 @@ export const fr = {
       
       <p><strong>Dernière mise à jour :</strong> Décembre 2024</p>
     `
+  },
+
+  // Admin sections
+  admin: {
+    notifications: "🔔 Notifications Admin",
+    noNotifications: "Aucune notification",
+    newActivities: "Les nouvelles activités apparaîtront ici",
+    clearAll: "Tout effacer",
+    applications: "Gestion des candidatures professionnelles",
+    totalApplications: "Total candidatures",
+    pending: "En attente",
+    allStatuses: "Tous les statuts",
+    approve: "Approuver",
+    reject: "Rejeter",
+    viewDetails: "Voir les détails",
+    applicationSubmitted: "Candidature déposée",
+    documents: "Documents",
+    actions: "Actions",
+    license: "Licence",
+    city: "Ville",
+    institution: "Institution",
+    noDocuments: "Aucun document",
+    notSpecified: "Non spécifiée"
+  },
+
+  // Form labels
+  forms: {
+    email: "Email",
+    phone: "Téléphone",
+    time: "Heure",
+    now: "Maintenant",
+    context: "Contexte de mesure",
+    measurementTime: "Heure de mesure",
+    title: "Titre du rappel",
+    reminderType: "Type de rappel",
+    mealName: "Nom du repas",
+    mealTime: "Moment du repas",
+    breakfast: "Petit-déjeuner",
+    lunch: "Déjeuner",
+    dinner: "Dîner",
+    snack: "Collation",
+    calories: "Calories",
+    profilePhoto: "Photo de profil"
+  },
+
+  // Activities
+  activityTypes: {
+    walking: "Marche",
+    running: "Course",
+    cycling: "Vélo",
+    swimming: "Natation",
+    weightlifting: "Musculation",
+    other: "Autre",
+    light: "Légère",
+    moderate: "Modérée",
+    intense: "Intense",
+    estimation: "Estimation"
+  },
+
+  // Medications
+  medicationTypes: {
+    rapidInsulin: "Insuline rapide",
+    slowInsulin: "Insuline lente",
+    metformin: "Metformine"
+  },
+
+  // Error messages
+  errors: {
+    error: "Erreur",
+    cannotLoadPlans: "Impossible de charger les forfaits",
+    codeNotFound: "Code manquant",
+    genericError: "Une erreur s'est produite"
   }
 };
