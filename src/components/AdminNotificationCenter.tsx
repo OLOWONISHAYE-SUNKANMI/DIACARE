@@ -13,12 +13,14 @@ import {
 import { useAdminNotifications, AdminNotification } from '@/hooks/useAdminNotifications';
 import { formatDistanceToNow } from 'date-fns';
 import { fr } from 'date-fns/locale';
+import { useTranslation } from 'react-i18next';
 
 interface AdminNotificationCenterProps {
   isAdmin: boolean;
 }
 
 export const AdminNotificationCenter: React.FC<AdminNotificationCenterProps> = ({ isAdmin }) => {
+  const { t } = useTranslation();
   const {
     markNotificationAsRead,
     getUnreadCount,
@@ -129,7 +131,7 @@ export const AdminNotificationCenter: React.FC<AdminNotificationCenterProps> = (
       <PopoverContent className="w-96 p-0" align="end">
         <div className="p-4 border-b">
           <div className="flex items-center justify-between">
-            <h3 className="font-semibold text-lg">🔔 Notifications Admin</h3>
+            <h3 className="font-semibold text-lg">{t('admin.notifications')}</h3>
             {notifications.length > 0 && (
               <Button
                 variant="ghost"
@@ -138,7 +140,7 @@ export const AdminNotificationCenter: React.FC<AdminNotificationCenterProps> = (
                 className="text-sm text-gray-500 hover:text-red-600"
               >
                 <Trash2 className="h-4 w-4 mr-1" />
-                Tout effacer
+                {t('admin.clearAll')}
               </Button>
             )}
           </div>
@@ -153,9 +155,9 @@ export const AdminNotificationCenter: React.FC<AdminNotificationCenterProps> = (
           {notifications.length === 0 ? (
             <div className="p-8 text-center text-gray-500">
               <Bell className="h-12 w-12 mx-auto mb-3 text-gray-300" />
-              <p className="text-sm">Aucune notification</p>
+              <p className="text-sm">{t('admin.noNotifications')}</p>
               <p className="text-xs text-gray-400 mt-1">
-                Les nouvelles activités apparaîtront ici
+                {t('admin.newActivities')}
               </p>
             </div>
           ) : (
@@ -231,7 +233,7 @@ export const AdminNotificationCenter: React.FC<AdminNotificationCenterProps> = (
                 className="text-xs text-gray-500"
                 onClick={() => setIsOpen(false)}
               >
-                Fermer les notifications
+                {t('common.close')}
               </Button>
             </div>
           </>
