@@ -554,5 +554,100 @@ export const en = {
 
   // Common additions
   enable: "Enable",
-  disable: "Disable"
+  disable: "Disable",
+
+  // Admin sections
+  admin: {
+    notifications: "🔔 Admin Notifications",
+    noNotifications: "No notifications",
+    newActivities: "New activities will appear here",
+    clearAll: "Clear all",
+    applications: "Professional applications management",
+    totalApplications: "Total applications",
+    pending: "Pending",
+    allStatuses: "All statuses",
+    approve: "Approve",
+    reject: "Reject",
+    viewDetails: "View details",
+    applicationSubmitted: "Application submitted",
+    documents: "Documents",
+    actions: "Actions",
+    license: "License",
+    city: "City",
+    institution: "Institution",
+    noDocuments: "No documents",
+    notSpecified: "Not specified"
+  },
+
+  // Form labels
+  forms: {
+    email: "Email",
+    phone: "Phone",
+    time: "Time",
+    now: "Now",
+    context: "Measurement context",
+    measurementTime: "Measurement time",
+    title: "Reminder title",
+    reminderType: "Reminder type",
+    mealName: "Meal name",
+    mealTime: "Meal time",
+    breakfast: "Breakfast",
+    lunch: "Lunch", 
+    dinner: "Dinner",
+    snack: "Snack",
+    calories: "Calories",
+    profilePhoto: "Profile photo"
+  },
+
+  // Activities
+  activityTypes: {
+    walking: "Walking",
+    running: "Running",
+    cycling: "Cycling",
+    swimming: "Swimming",
+    weightlifting: "Weight lifting",
+    other: "Other",
+    light: "Light",
+    moderate: "Moderate",
+    intense: "Intense",
+    estimation: "Estimation"
+  },
+
+  // Medications
+  medicationTypes: {
+    rapidInsulin: "Rapid insulin",
+    slowInsulin: "Slow insulin",
+    metformin: "Metformin"
+  },
+
+  // Error messages
+  errors: {
+    error: "Error",
+    cannotLoadPlans: "Cannot load plans",
+    codeNotFound: "Code not found",
+    genericError: "An error occurred"
+  },
+
+  // Modals additions
+  modalExtras: {
+    scanProduct: "Scan Product",
+    productScanSimulation: "Product scan simulation",
+    takePhoto: "Take Photo",
+    aiMealAnalysis: "AI meal analysis",
+    manualEntry: "Manual Entry",
+    enterInformation: "Enter information",
+    followCarbs: "Track your carbs easily"
+  },
+
+  // Blog additions
+  blogExtras: {
+    reliableSources: "Reliable sources",
+    sources: "Nature Medicine • The Lancet • WHO • ADA"
+  },
+
+  // Professional additions
+  professionalExtras: {
+    patientInformation: "Patient Information",
+    stackTrace: "Stack trace"
+  }
 };
