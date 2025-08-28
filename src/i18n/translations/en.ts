@@ -914,4 +914,41 @@ export const en = {
     button1: 'Create a Reminder',
     button2: 'New Reminder',
   },
+
+  chatTestimonial: {
+    firstMessage:
+      'Hello everyone! I managed to keep my blood glucose in the target range all week 🎉',
+    secondMessage:
+      'Congratulations Marie! This is exactly the kind of progress we love to see. Keep it up!',
+    thirdMessage:
+      'I have a question about rapid-acting insulin before meals. Can anyone share their experience?',
+  },
+
+  journalEntries: {
+    id1: {
+      date: 'Friday',
+      glucoseStatus: 'slightly high',
+      context: 'after thiéboudienne.',
+    },
+    id2: {
+      date: 'Friday',
+      glucoseStatus: 'within target range',
+      context: 'on an empty stomach',
+    },
+    id3: {
+      date: 'Thursday',
+      glucoseStatus: 'high',
+      context: 'before dinner.',
+    },
+    id4: {
+      date: 'Thursday',
+      glucoseStatus: 'within target range',
+      context: 'after launch',
+    },
+    id5: {
+      date: 'Wednesday',
+      glucoseStatus: 'within target range.',
+      context: 'after hibiscus juice without sugar.',
+    },
+  },
 };
