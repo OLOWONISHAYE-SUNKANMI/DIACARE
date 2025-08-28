@@ -1,4 +1,5 @@
 import { Bell, Settings } from "lucide-react";
+import { useTranslation } from 'react-i18next';
 
 interface NativeHeaderProps {
   userName?: string;
@@ -9,6 +10,8 @@ const NativeHeader = ({ userName = "Amadou" }: NativeHeaderProps) => {
     hour: '2-digit', 
     minute: '2-digit' 
   });
+
+  const { t } = useTranslation()
 
   return (
     <div className="bg-gradient-to-r from-medical-green to-medical-teal pt-8 sm:pt-12 pb-6 sm:pb-8 px-3 sm:px-4">
@@ -33,7 +36,7 @@ const NativeHeader = ({ userName = "Amadou" }: NativeHeaderProps) => {
       <div className="flex items-center justify-between mb-3 sm:mb-4">
         <div className="flex-1 min-w-0">
           <h1 className="text-xl sm:text-2xl font-bold text-white truncate">DiabCare</h1>
-          <p className="text-xs sm:text-sm text-white/80">Assistant Diabète</p>
+          <p className="text-xs sm:text-sm text-white/80">{t('nativeHeader.title')}</p>
         </div>
         
         {/* Icons natifs avec fonctionnalités */}
@@ -59,8 +62,8 @@ const NativeHeader = ({ userName = "Amadou" }: NativeHeaderProps) => {
       
       {/* Greeting personnalisé */}
       <div className="text-white">
-        <p className="text-white/80 text-xs sm:text-sm mb-1">Bonjour {userName} 👋</p>
-        <p className="text-base sm:text-lg font-semibold leading-tight">Comment va votre diabète aujourd'hui ?</p>
+        <p className="text-white/80 text-xs sm:text-sm mb-1">{t('nativeHeader.greetings')} {userName}👋</p>
+        <p className="text-base sm:text-lg font-semibold leading-tight">{t('nativeHeader.question')}</p>
       </div>
     </div>
   );

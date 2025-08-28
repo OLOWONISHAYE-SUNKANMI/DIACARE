@@ -7,11 +7,14 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { predictiveAnalyzer } from '@/utils/SimplifiedPredictiveAnalyzer';
 import type { RiskAlert } from '@/utils/SimplifiedPredictiveAnalyzer';
 
+import { useTranslation } from 'react-i18next';
+
 interface PredictiveAlertsProps {
   className?: string;
 }
 
 const PredictiveAlerts: React.FC<PredictiveAlertsProps> = ({ className = "" }) => {
+  const { t } = useTranslation()
   const [alerts, setAlerts] = useState<RiskAlert[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -74,6 +77,7 @@ const PredictiveAlerts: React.FC<PredictiveAlertsProps> = ({ className = "" }) =
   const activeAlerts = alerts.filter(alert => !alert.isRead);
   const stats = predictiveAnalyzer.getAlertStats();
 
+
   return (
     <div className={`space-y-4 ${className}`}>
       {/* Header with stats */}
@@ -82,7 +86,7 @@ const PredictiveAlerts: React.FC<PredictiveAlertsProps> = ({ className = "" }) =
           <CardTitle className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <Brain className="w-6 h-6" />
-              <span>Alertes Prédictives IA</span>
+              <span>{t('Alerts.title')}</span>
             </div>
             {activeAlerts.length > 0 && (
               <Button 
@@ -104,11 +108,11 @@ const PredictiveAlerts: React.FC<PredictiveAlertsProps> = ({ className = "" }) =
             </div>
             <div>
               <div className="text-2xl font-bold text-red-200">{stats.critical + stats.high}</div>
-              <div className="text-sm opacity-90">Urgentes</div>
+              <div className="text-sm opacity-90">{t("Alerts.urgent")}</div>
             </div>
             <div>
               <div className="text-2xl font-bold text-yellow-200">{stats.medium}</div>
-              <div className="text-sm opacity-90">À surveiller</div>
+              <div className="text-sm opacity-90">{t("Alerts.monitor")}</div>
             </div>
           </div>
         </CardContent>
@@ -119,8 +123,8 @@ const PredictiveAlerts: React.FC<PredictiveAlertsProps> = ({ className = "" }) =
         <Card className="bg-green-50 border-green-200">
           <CardContent className="p-6 text-center">
             <CheckCircle className="w-12 h-12 text-green-500 mx-auto mb-3" />
-            <h3 className="text-lg font-semibold text-green-700 mb-2">Tout va bien !</h3>
-            <p className="text-green-600">Aucune alerte prédictive détectée pour le moment.</p>
+            <h3 className="text-lg font-semibold text-green-700 mb-2">{t("Alerts.good")}</h3>
+            <p className="text-green-600">{t("Alerts.message")}</p>
           </CardContent>
         </Card>
       ) : (
@@ -209,9 +213,9 @@ const PredictiveAlerts: React.FC<PredictiveAlertsProps> = ({ className = "" }) =
           <div className="flex items-center space-x-3">
             <Brain className="w-6 h-6 text-purple-500" />
             <div>
-              <h4 className="font-semibold text-purple-700">Analyse IA Continue</h4>
+              <h4 className="font-semibold text-purple-700">{t("analyze.title")}</h4>
               <p className="text-sm text-purple-600">
-                Le système analyse vos données en continu pour détecter les patterns à risque
+                {t("analyze.message")}
               </p>
             </div>
           </div>
