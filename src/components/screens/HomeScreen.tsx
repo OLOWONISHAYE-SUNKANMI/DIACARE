@@ -80,12 +80,12 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
                 <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm flex-shrink-0">
                   <Target className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                 </div>
-                <span className="leading-tight">{t('homeScreen.mission')}</span>
+                <span className="leading-tight">{t('mission.title')}</span>
               </CardTitle>
             </CardHeader>
             <CardContent className="p-4 sm:p-6">
               <p className="text-card-foreground text-sm sm:text-base leading-relaxed">
-                Notre mission est de vous aider à mieux comprendre et gérer votre diabète avec des outils adaptés à votre réalité.
+               {t('mission.message')}
               </p>
             </CardContent>
           </Card>

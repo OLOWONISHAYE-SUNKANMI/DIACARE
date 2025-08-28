@@ -199,14 +199,14 @@ export const RemindersScreen: React.FC = () => {
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold">⏰ Mes Rappels</h1>
+          <h1 className="text-3xl font-bold">⏰ {t("reminderScreen.title")}</h1>
           <p className="text-muted-foreground">
-            Gérez vos rappels pour insuline, médicaments, tests et plus
+            {t("reminderScreen.subtitle")}
           </p>
         </div>
         <Button onClick={() => setIsCreateModalOpen(true)}>
           <Plus className="w-4 h-4 mr-2" />
-          Nouveau Rappel
+          {t("reminderScreen.button2")}
         </Button>
       </div>
 
@@ -270,19 +270,19 @@ export const RemindersScreen: React.FC = () => {
       {/* All Reminders */}
       <div>
         <h2 className="text-xl font-semibold mb-4">
-          📋 Tous les rappels ({reminders.length})
+          📋 {t("reminderScreen.newReminder.title")} ({reminders.length})
         </h2>
         {reminders.length === 0 ? (
           <Card>
             <CardContent className="text-center py-12">
               <div className="text-6xl mb-4">⏰</div>
-              <h3 className="text-lg font-semibold mb-2">Aucun rappel configuré</h3>
+              <h3 className="text-lg font-semibold mb-2">{t("reminderScreen.newReminder.reminderSet")}</h3>
               <p className="text-muted-foreground mb-4">
-                Créez votre premier rappel pour ne jamais oublier vos traitements
+                {t("reminderScreen.newReminder.writeup")}
               </p>
               <Button onClick={() => setIsCreateModalOpen(true)}>
                 <Plus className="w-4 h-4 mr-2" />
-                Créer un rappel
+                {t("reminderScreen.button1")}
               </Button>
             </CardContent>
           </Card>

@@ -81,7 +81,7 @@ const DosesScreen = ({
           <AlertTriangle className="h-4 w-4 text-destructive" />
           <AlertDescription className="flex items-center justify-between">
             <span className="text-destructive font-medium">
-              Rappel Insuline - 19h00 Lantus 20UI
+              {t("reminder.writeup")}
             </span>
             <Button 
               variant="ghost" 
@@ -112,18 +112,18 @@ const DosesScreen = ({
         <CardContent className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <p className="text-sm text-muted-foreground">Dose habituelle</p>
+              <p className="text-sm text-muted-foreground">{t('lantus.dose')}</p>
               <p className="text-lg font-semibold text-foreground">20 UI</p>
             </div>
             <div>
-              <p className="text-sm text-muted-foreground">Heure programmée</p>
+              <p className="text-sm text-muted-foreground">{t('lantus.time')}</p>
               <p className="text-lg font-semibold text-foreground">07:30</p>
             </div>
           </div>
           
           <div className="bg-success/10 border border-success/20 rounded-lg p-3">
             <p className="text-sm text-success font-medium">
-              Dernière injection : Aujourd'hui 07:45
+              {t('lantus.injection')}
             </p>
           </div>
           
@@ -132,7 +132,7 @@ const DosesScreen = ({
             onClick={() => handleMarkInjected("Lantus 20UI")}
           >
             <CheckCircle className="w-4 h-4 mr-2" />
-            Marquer comme injecté
+            {t('lantus.button')}
           </Button>
         </CardContent>
       </Card>
@@ -143,11 +143,11 @@ const DosesScreen = ({
           <CardTitle className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <Calculator className="w-5 h-5 text-medical-teal" />
-              <span className="text-foreground">Humalog (Rapide)</span>
+              <span className="text-foreground">{t("humalog.title")}</span>
             </div>
             <Badge className="bg-warning text-warning-foreground">
               <Clock className="w-3 h-3 mr-1" />
-              En attente
+             {t("humalog.pending")}
             </Badge>
           </CardTitle>
         </CardHeader>
@@ -155,7 +155,7 @@ const DosesScreen = ({
           {/* Glucose Input */}
           <div className="space-y-2">
             <label className="text-sm font-medium text-foreground">
-              Glycémie actuelle (mg/dL)
+              {t("humalog.glucose")} (mg/dL)
             </label>
             <Input
               type="number"
@@ -169,7 +169,7 @@ const DosesScreen = ({
           <div className="space-y-3">
             <div className="flex justify-between items-center">
               <label className="text-sm font-medium text-foreground">
-                Glucides du repas
+                {t("humalog.carbs")}
               </label>
               <span className="text-lg font-semibold text-medical-teal">
                 {carbValue}g
@@ -194,7 +194,7 @@ const DosesScreen = ({
             <CardContent className="p-4 space-y-3">
               <h4 className="font-semibold text-medical-teal flex items-center space-x-2">
                 <Target className="w-4 h-4" />
-                <span>Dose Calculée</span>
+                <span>{t("humalog.dose")}</span>
               </h4>
               <div className="grid grid-cols-3 gap-3 text-center">
                 <div>
@@ -207,7 +207,7 @@ const DosesScreen = ({
                   <p className="text-2xl font-bold text-medical-teal">
                     {calculatedDose.meal}
                   </p>
-                  <p className="text-xs text-muted-foreground">Repas</p>
+                  <p className="text-xs text-muted-foreground">{t("humalog.meal")}</p>
                 </div>
                 <div>
                   <p className="text-3xl font-bold text-medical-teal">
@@ -221,7 +221,7 @@ const DosesScreen = ({
 
           <Button className="w-full bg-medical-teal hover:bg-medical-teal/90 text-white">
             <Clock className="w-4 h-4 mr-2" />
-            Programmer injection
+            {t("humalog.button")}
           </Button>
         </CardContent>
       </Card>
@@ -231,16 +231,16 @@ const DosesScreen = ({
         <CardHeader>
           <CardTitle className="flex items-center space-x-2 text-destructive">
             <AlertTriangle className="w-5 h-5" />
-            <span>Injection Manquée</span>
+            <span>{t("injection.title")}</span>
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-3">
             <p className="text-sm font-medium text-destructive">
-              Hier 19:00 - Humalog 6 UI
+              {t("injection.time")}
             </p>
             <p className="text-xs text-muted-foreground mt-1">
-              Non administré
+              {t("injection.administer")}
             </p>
           </div>
           
@@ -249,12 +249,12 @@ const DosesScreen = ({
               variant="outline" 
               className="flex-1 border-muted-foreground text-muted-foreground hover:bg-muted"
             >
-              Ignorer
+              {t("injection.button1")}
             </Button>
             <Button 
               className="flex-1 bg-destructive hover:bg-destructive/90 text-white"
             >
-              Injecter maintenant
+              {t("injection.button2")}
             </Button>
           </div>
         </CardContent>
@@ -266,7 +266,7 @@ const DosesScreen = ({
           <CardTitle className="text-lg text-foreground flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <TrendingUp className="w-5 h-5 text-medical-teal" />
-              <span>Historique 7 jours</span>
+              <span>{t("history.title")}</span>
             </div>
             <Badge className="bg-medical-teal text-white">
               {adherence}% observance
@@ -297,7 +297,7 @@ const DosesScreen = ({
             })}
           </div>
           <div className="text-center text-xs text-muted-foreground mt-4">
-            Injections réalisées / programmées par jour
+            {t("history.message")}
           </div>
         </CardContent>
       </Card>
