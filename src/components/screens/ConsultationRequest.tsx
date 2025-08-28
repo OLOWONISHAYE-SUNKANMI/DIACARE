@@ -44,14 +44,14 @@ const ConsultationRequest = () => {
   const [loading, setLoading] = useState(false);
 
   const consultationReasons = [
-    { value: 'routine_checkup', label: 'Contrôle de routine' },
-    { value: 'urgent_consultation', label: 'Consultation urgente' },
-    { value: 'glucose_management', label: 'Gestion glycémie' },
-    { value: 'medication_adjustment', label: 'Ajustement traitement' },
-    { value: 'diet_counseling', label: 'Conseil nutritionnel' },
-    { value: 'psychological_support', label: 'Soutien psychologique' },
-    { value: 'complications', label: 'Complications diabète' },
-    { value: 'follow_up', label: 'Suivi post-consultation' }
+    { value: 'routine_checkup', label: t("consultation.request.input2.writeup.options.one")},
+    { value: 'urgent_consultation', label: t("consultation.request.input2.writeup.options.two") },
+    { value: 'glucose_management', label: t("consultation.request.input2.writeup.options.three") },
+    { value: 'medication_adjustment', label: t("consultation.request.input2.writeup.options.four") },
+    { value: 'diet_counseling', label: t("consultation.request.input2.writeup.options.five") },
+    { value: 'psychological_support', label: t("consultation.request.input2.writeup.options.six") },
+    { value: 'complications', label: t("consultation.request.input2.writeup.options.seven") },
+    { value: 'follow_up', label: t("consultation.request.input2.writeup.options.eight") }
   ];
 
   const professionalRates = {
@@ -186,10 +186,10 @@ const ConsultationRequest = () => {
       {/* En-tête */}
       <div className="text-center">
         <h1 className="text-3xl font-bold text-primary mb-2">
-          💊 Demande de Consultation
+          💊 {t("consultation.title")}
         </h1>
         <p className="text-muted-foreground">
-          Consultez un professionnel de santé spécialisé en diabète
+          {t("consultation.subtitle")}
         </p>
       </div>
 
@@ -198,21 +198,21 @@ const ConsultationRequest = () => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Send className="w-5 h-5" />
-            Nouvelle demande de consultation
+            {t("consultation.request.title")}
           </CardTitle>
           <CardDescription>
-            Sélectionnez un professionnel et décrivez votre besoin
+            {t("consultation.request.subtitle")}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Sélection du professionnel */}
           <div>
             <label className="block text-sm font-medium mb-2">
-              Professionnel de santé *
+              {t("consultation.request.input1.title")}
             </label>
             <Select value={selectedProfessional} onValueChange={setSelectedProfessional}>
               <SelectTrigger className="bg-background">
-                <SelectValue placeholder="Choisissez un professionnel" />
+                <SelectValue placeholder={t("consultation.request.input1.writeup")} />
               </SelectTrigger>
               <SelectContent className="bg-background border shadow-md z-50">
                 {professionals.map((prof) => {
@@ -242,11 +242,11 @@ const ConsultationRequest = () => {
           {/* Motif de consultation */}
           <div>
             <label className="block text-sm font-medium mb-2">
-              Motif de consultation *
+              {t("consultation.request.input2.title")}
             </label>
             <Select value={consultationReason} onValueChange={setConsultationReason}>
               <SelectTrigger className="bg-background">
-                <SelectValue placeholder="Sélectionnez un motif" />
+                <SelectValue placeholder={t("consultation.request.input2.writeup.title")} />
               </SelectTrigger>
               <SelectContent className="bg-background border shadow-md z-50">
                 {consultationReasons.map((reason) => (
@@ -261,12 +261,12 @@ const ConsultationRequest = () => {
           {/* Message optionnel */}
           <div>
             <label className="block text-sm font-medium mb-2">
-              Message pour le professionnel (optionnel)
+              {t("consultation.request.input3.title")}
             </label>
             <Textarea
               value={patientMessage}
               onChange={(e) => setPatientMessage(e.target.value)}
-              placeholder="Décrivez votre situation, vos symptômes ou questions..."
+              placeholder={t("consultation.request.input3.writeup")}
               rows={4}
             />
           </div>
@@ -310,7 +310,7 @@ const ConsultationRequest = () => {
             ) : (
               <>
                 <Send className="w-4 h-4 mr-2" />
-                Envoyer la demande
+                {t("consultation.button")}
               </>
             )}
           </Button>
@@ -322,10 +322,10 @@ const ConsultationRequest = () => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Clock className="w-5 h-5" />
-            Mes demandes de consultation
+            {t("consultationRequest.title")}
           </CardTitle>
           <CardDescription>
-            Historique de vos demandes et leur statut
+            {t("consultationRequest.subtitle")}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -391,9 +391,9 @@ const ConsultationRequest = () => {
           ) : (
             <div className="text-center py-8">
               <Clock className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-              <p className="text-muted-foreground">Aucune demande de consultation</p>
+              <p className="text-muted-foreground">{t("consultationRequest.request.noRequest")}</p>
               <p className="text-sm text-muted-foreground">
-                Vos demandes apparaîtront ici une fois envoyées
+                {t("consultationRequest.request.procedure")}
               </p>
             </div>
           )}
