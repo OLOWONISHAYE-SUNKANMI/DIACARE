@@ -1008,4 +1008,41 @@ export const fr = {
     button1: 'Créer un rappel',
     button2: 'Nouveau Rappel',
   },
+
+  chatTestimonial: {
+    firstMessage:
+      'Bonjour à tous ! Jai réussi à maintenir ma glycémie dans la zone cible toute la semaine 🎉',
+    secondMessage:
+      'Félicitations Marie ! Cest exactement le type de progrès que nous aimons voir. Continuez ainsi !',
+    thirdMessage:
+      'Jai une question sur linsuline rapide avant les repas. Quelquun peut-il partager son expérience ?',
+  },
+
+  journalEntries: {
+    id1: {
+      date: 'Vendredi',
+      glucoseStatus: 'Légèrement élevé',
+      context: 'Après thiéboudienne',
+    },
+    id2: {
+      date: 'Vendredi',
+      glucoseStatus: 'Dans la cible',
+      context: 'À jeun',
+    },
+    id3: {
+      date: 'Jeudi',
+      glucoseStatus: 'Élevé',
+      context: 'Avant dîner',
+    },
+    id4: {
+      date: 'Jeudi',
+      glucoseStatus: 'Dans la cible',
+      context: 'Post-déjeuner',
+    },
+    id5: {
+      date: 'Mercredi',
+      glucoseStatus: 'Dans la cible',
+      context: 'Après bissap sans sucre',
+    },
+  },
 };

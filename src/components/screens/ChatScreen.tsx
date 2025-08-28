@@ -1,11 +1,19 @@
-import { useState, useEffect, useRef } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { Send, Phone, Video, MoreVertical, Heart, Users2, Stethoscope } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useState, useEffect, useRef } from 'react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
+import {
+  Send,
+  Phone,
+  Video,
+  MoreVertical,
+  Heart,
+  Users2,
+  Stethoscope,
+} from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 import { useTranslation } from 'react-i18next';
 
 interface Message {
@@ -26,36 +34,39 @@ const ChatScreen = ({ onBack }: ChatScreenProps) => {
   const { t } = useTranslation();
   const [messages, setMessages] = useState<Message[]>([
     {
-      id: "1",
-      user: "Marie D.",
-      message: "Bonjour à tous ! J'ai réussi à maintenir ma glycémie dans la zone cible toute la semaine 🎉",
+      id: '1',
+      user: 'Marie D.',
+      message: 'chatTestimonial.firstMessage',
       timestamp: new Date(Date.now() - 2 * 60 * 1000),
       type: 'milestone',
-      reactions: [{ emoji: "👏", count: 8 }, { emoji: "💚", count: 5 }]
+      reactions: [
+        { emoji: '👏', count: 8 },
+        { emoji: '💚', count: 5 },
+      ],
     },
     {
-      id: "2",
-      user: "Dr. Konaté",
-      message: "Félicitations Marie ! C'est exactement le type de progrès que nous aimons voir. Continuez ainsi !",
+      id: '2',
+      user: 'Dr. Konaté',
+      message: 'chatTestimonial.secondMessage',
       timestamp: new Date(Date.now() - 1 * 60 * 1000),
-      type: 'support'
+      type: 'support',
     },
     {
-      id: "3",
-      user: "Ahmed S.",
-      message: "J'ai une question sur l'insuline rapide avant les repas. Quelqu'un peut-il partager son expérience ?",
+      id: '3',
+      user: 'Ahmed S.',
+      message: 'chatTestimonial.thirdMessage',
       timestamp: new Date(Date.now() - 30 * 1000),
-      type: 'message'
-    }
+      type: 'message',
+    },
   ]);
-  
-  const [newMessage, setNewMessage] = useState("");
+
+  const [newMessage, setNewMessage] = useState('');
   const [isTyping, setIsTyping] = useState<string[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   useEffect(() => {
@@ -67,15 +78,15 @@ const ChatScreen = ({ onBack }: ChatScreenProps) => {
 
     const message: Message = {
       id: Date.now().toString(),
-      user: "Vous",
+      user: 'Vous',
       message: newMessage,
       timestamp: new Date(),
-      type: 'message'
+      type: 'message',
     };
 
     setMessages(prev => [...prev, message]);
-    setNewMessage("");
-    
+    setNewMessage('');
+
     toast({
       title: t('chatScreen.messageSent'),
       description: t('chatScreen.messageShared'),
@@ -90,37 +101,39 @@ const ChatScreen = ({ onBack }: ChatScreenProps) => {
   };
 
   const addReaction = (messageId: string, emoji: string) => {
-    setMessages(prev => prev.map(msg => {
-      if (msg.id === messageId) {
-        const reactions = msg.reactions || [];
-        const existingReaction = reactions.find(r => r.emoji === emoji);
-        
-        if (existingReaction) {
-          return {
-            ...msg,
-            reactions: reactions.map(r => 
-              r.emoji === emoji ? { ...r, count: r.count + 1 } : r
-            )
-          };
-        } else {
-          return {
-            ...msg,
-            reactions: [...reactions, { emoji, count: 1 }]
-          };
+    setMessages(prev =>
+      prev.map(msg => {
+        if (msg.id === messageId) {
+          const reactions = msg.reactions || [];
+          const existingReaction = reactions.find(r => r.emoji === emoji);
+
+          if (existingReaction) {
+            return {
+              ...msg,
+              reactions: reactions.map(r =>
+                r.emoji === emoji ? { ...r, count: r.count + 1 } : r
+              ),
+            };
+          } else {
+            return {
+              ...msg,
+              reactions: [...reactions, { emoji, count: 1 }],
+            };
+          }
         }
-      }
-      return msg;
-    }));
+        return msg;
+      })
+    );
   };
 
   const getMessageStyle = (type: Message['type']) => {
     switch (type) {
       case 'support':
-        return "bg-medical-green-light border-l-4 border-medical-green";
+        return 'bg-medical-green-light border-l-4 border-medical-green';
       case 'milestone':
-        return "bg-gradient-to-r from-medical-teal-light to-medical-blue-light border-l-4 border-medical-teal";
+        return 'bg-gradient-to-r from-medical-teal-light to-medical-blue-light border-l-4 border-medical-teal';
       default:
-        return "bg-card";
+        return 'bg-card';
     }
   };
 
@@ -148,11 +161,15 @@ const ChatScreen = ({ onBack }: ChatScreenProps) => {
               <div className="absolute -top-1 -right-1 w-3 h-3 bg-status-active rounded-full border-2 border-card"></div>
             </div>
             <div>
-              <h2 className="text-lg font-semibold text-foreground">{t('chatScreen.title')}</h2>
-              <p className="text-sm text-muted-foreground">127 {t('chatScreen.membersConnected')}</p>
+              <h2 className="text-lg font-semibold text-foreground">
+                {t('chatScreen.title')}
+              </h2>
+              <p className="text-sm text-muted-foreground">
+                127 {t('chatScreen.membersConnected')}
+              </p>
             </div>
           </div>
-          
+
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="sm" className="h-9 w-9 p-0">
               <Phone className="w-4 h-4" />
@@ -165,7 +182,7 @@ const ChatScreen = ({ onBack }: ChatScreenProps) => {
             </Button>
           </div>
         </div>
-        
+
         {/* Community Stats */}
         <div className="flex items-center gap-4 mt-3 pt-3 border-t border-border">
           <Badge variant="secondary" className="text-xs">
@@ -183,17 +200,22 @@ const ChatScreen = ({ onBack }: ChatScreenProps) => {
       {/* Messages */}
       <ScrollArea className="flex-1 p-4">
         <div className="space-y-4">
-          {messages.map((message) => (
+          {messages.map(message => (
             <div key={message.id} className="animate-fade-in">
-              <div className={`rounded-lg p-4 ${getMessageStyle(message.type)}`}>
+              <div
+                className={`rounded-lg p-4 ${getMessageStyle(message.type)}`}
+              >
                 <div className="flex items-start gap-3">
                   <Avatar className="w-8 h-8">
                     <AvatarImage src={message.avatar} alt={message.user} />
                     <AvatarFallback className="bg-medical-teal text-white text-xs">
-                      {message.user.split(' ').map(n => n[0]).join('')}
+                      {message.user
+                        .split(' ')
+                        .map(n => n[0])
+                        .join('')}
                     </AvatarFallback>
                   </Avatar>
-                  
+
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
                       <span className="font-medium text-sm text-foreground">
@@ -201,32 +223,36 @@ const ChatScreen = ({ onBack }: ChatScreenProps) => {
                       </span>
                       {getMessageIcon(message.type)}
                       <span className="text-xs text-muted-foreground">
-                        {message.timestamp.toLocaleTimeString('fr-FR', { 
-                          hour: '2-digit', 
-                          minute: '2-digit' 
+                        {message.timestamp.toLocaleTimeString('fr-FR', {
+                          hour: '2-digit',
+                          minute: '2-digit',
                         })}
                       </span>
                     </div>
-                    
+
                     <p className="text-foreground text-sm leading-relaxed">
-                      {message.message}
+                      {t(message.message)}
                     </p>
-                    
+
                     {message.reactions && message.reactions.length > 0 && (
                       <div className="flex items-center gap-2 mt-3">
                         {message.reactions.map((reaction, index) => (
                           <button
                             key={index}
-                            onClick={() => addReaction(message.id, reaction.emoji)}
+                            onClick={() =>
+                              addReaction(message.id, reaction.emoji)
+                            }
                             className="flex items-center gap-1 px-2 py-1 rounded-full bg-accent hover:bg-accent/80 transition-colors text-xs"
                           >
                             <span>{reaction.emoji}</span>
-                            <span className="text-accent-foreground">{reaction.count}</span>
+                            <span className="text-accent-foreground">
+                              {reaction.count}
+                            </span>
                           </button>
                         ))}
-                        
-                        <button 
-                          onClick={() => addReaction(message.id, "👍")}
+
+                        <button
+                          onClick={() => addReaction(message.id, '👍')}
                           className="flex items-center justify-center w-6 h-6 rounded-full bg-muted hover:bg-accent transition-colors text-xs"
                         >
                           +
@@ -238,18 +264,24 @@ const ChatScreen = ({ onBack }: ChatScreenProps) => {
               </div>
             </div>
           ))}
-          
+
           {isTyping.length > 0 && (
             <div className="flex items-center gap-2 text-muted-foreground text-sm">
               <div className="flex gap-1">
                 <div className="w-2 h-2 bg-medical-teal rounded-full animate-pulse"></div>
-                <div className="w-2 h-2 bg-medical-teal rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
-                <div className="w-2 h-2 bg-medical-teal rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+                <div
+                  className="w-2 h-2 bg-medical-teal rounded-full animate-pulse"
+                  style={{ animationDelay: '0.2s' }}
+                ></div>
+                <div
+                  className="w-2 h-2 bg-medical-teal rounded-full animate-pulse"
+                  style={{ animationDelay: '0.4s' }}
+                ></div>
               </div>
               <span>{isTyping.join(', ')} en train d'écrire...</span>
             </div>
           )}
-          
+
           <div ref={messagesEndRef} />
         </div>
       </ScrollArea>
@@ -260,14 +292,14 @@ const ChatScreen = ({ onBack }: ChatScreenProps) => {
           <div className="flex-1">
             <Input
               value={newMessage}
-              onChange={(e) => setNewMessage(e.target.value)}
+              onChange={e => setNewMessage(e.target.value)}
               onKeyPress={handleKeyPress}
               placeholder={t('chatScreen.typingMessage')}
               className="border-0 bg-background focus-visible:ring-1 focus-visible:ring-ring"
             />
           </div>
-          
-          <Button 
+
+          <Button
             onClick={handleSendMessage}
             disabled={!newMessage.trim()}
             className="bg-medical-teal hover:bg-medical-teal/90 text-white h-10 w-10 p-0"
@@ -275,7 +307,7 @@ const ChatScreen = ({ onBack }: ChatScreenProps) => {
             <Send className="w-4 h-4" />
           </Button>
         </div>
-        
+
         <div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
           <span>{t('chatScreen.kindness')}</span>
           <span>•</span>
