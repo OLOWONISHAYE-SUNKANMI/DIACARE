@@ -1,82 +1,94 @@
-import { useState } from "react";
-import { Users, Share2, Settings, UserPlus, Eye, AlertTriangle, Clock, CheckCircle, Phone } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Separator } from "@/components/ui/separator";
+import { useState } from 'react';
+import {
+  Users,
+  Share2,
+  Settings,
+  UserPlus,
+  Eye,
+  AlertTriangle,
+  Clock,
+  CheckCircle,
+  Phone,
+} from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Separator } from '@/components/ui/separator';
+import { useTranslation } from 'react-i18next';
 
 interface FamilyScreenProps {}
 
 const FamilyScreen = (props: FamilyScreenProps) => {
+  const { t } = useTranslation();
   const familyMembers = [
     {
       id: 1,
-      name: "Fatou Diop",
-      role: "Épouse",
-      permission: "Accès complet",
-      status: "online",
-      avatar: "F",
-      lastSeen: "En ligne",
+      name: 'Fatou Diop',
+      role: t('familyScreen.familyMembers.patientOne.role'),
+      permission: t('familyScreen.familyMembers.patientOne.permission'),
+      status: 'online',
+      avatar: 'F',
+      lastSeen: t('familyScreen.familyMembers.patientOne.lastSeen'),
       icon: CheckCircle,
-      color: "text-green-500",
-      phone: "+221 77 987 65 43"
+      color: 'text-green-500',
+      phone: '+221 77 987 65 43',
     },
     {
       id: 2,
-      name: "Dr. Mamadou Kane",
-      role: "Médecin traitant",
-      permission: "Urgences + Données",
-      status: "emergency",
-      avatar: "Dr",
-      lastSeen: "Il y a 2h",
+      name: 'Dr. Mamadou Kane',
+      role: t('familyScreen.familyMembers.patientTwo.role'),
+      permission: t('familyScreen.familyMembers.patientTwo.permission'),
+      status: 'emergency',
+      avatar: 'Dr',
+      lastSeen: t('familyScreen.familyMembers.patientTwo.lastSeen'),
       icon: AlertTriangle,
-      color: "text-orange-500",
-      phone: "+221 33 825 14 52"
+      color: 'text-orange-500',
+      phone: '+221 33 825 14 52',
     },
     {
       id: 3,
-      name: "Ibrahim Diallo",
-      role: "Fils",
-      permission: "Lecture seule",
-      status: "readonly",
-      avatar: "I",
-      lastSeen: "Il y a 1j",
+      name: 'Ibrahim Diallo',
+      role: t('familyScreen.familyMembers.patientThree.role'),
+      permission: t('familyScreen.familyMembers.patientThree.permission'),
+      status: 'readonly',
+      avatar: 'I',
+      lastSeen: t('familyScreen.familyMembers.patientThree.lastSeen'),
       icon: Eye,
-      color: "text-blue-500",
-      phone: "+221 76 543 21 09"
-    }
+      color: 'text-blue-500',
+      phone: '+221 76 543 21 09',
+    },
   ];
 
   const recentActivity = [
     {
       id: 1,
-      time: "Il y a 10 min",
-      action: "Fatou a consulté vos dernières glycémies",
-      type: "view",
-      actor: "Fatou"
+      time: t('familyScreen.recentActivity.firstOne.time'),
+      action: t('familyScreen.recentActivity.firstOne.action'),
+      type: 'view',
+      actor: 'Fatou',
     },
     {
       id: 2,
-      time: "Il y a 2h",
-      action: "Dr. Kane a ajouté une note médicale",
-      type: "medical",
-      actor: "Dr. Kane"
+      time: t('familyScreen.recentActivity.secondOne.time'),
+      action: t('familyScreen.recentActivity.secondOne.action'),
+      type: 'medical',
+      actor: 'Dr. Kane',
     },
     {
       id: 3,
-      time: "Hier 19:30",
-      action: "Ibrahim a reçu une alerte d'injection manquée",
-      type: "alert",
-      actor: "Ibrahim"
+      time: t('familyScreen.recentActivity.thirdOne.time'),
+      action: t('familyScreen.recentActivity.thirdOne.action'),
+      type: 'alert',
+      actor: 'Ibrahim',
     },
     {
       id: 4,
-      time: "Hier 15:00",
-      action: "Fatou a confirmé votre injection de Humalog",
-      type: "confirmation",
-      actor: "Fatou"
-    }
+      time: t('familyScreen.recentActivity.fourthOne.time'),
+      action: t('familyScreen.recentActivity.fourthOne.action'),
+      type: 'confirmation',
+      actor: 'Fatou',
+    },
   ];
 
   return (
@@ -85,9 +97,11 @@ const FamilyScreen = (props: FamilyScreenProps) => {
       <div className="text-center space-y-2">
         <h1 className="text-2xl font-bold text-foreground flex items-center justify-center gap-2">
           <Users className="w-6 h-6 text-medical-teal" />
-          Famille DARE
+          {t('familyScreen.heading.title')} DARE
         </h1>
-        <p className="text-muted-foreground">Votre cercle de soins</p>
+        <p className="text-muted-foreground">
+          {t('familyScreen.heading.subtitle')}
+        </p>
       </div>
 
       {/* Code de partage */}
@@ -95,7 +109,7 @@ const FamilyScreen = (props: FamilyScreenProps) => {
         <CardHeader>
           <CardTitle className="text-lg flex items-center gap-2 text-yellow-800">
             <Share2 className="w-5 h-5" />
-            Code de Partage Familial
+            {t('familyScreen.familySharingCode.title')}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -104,14 +118,14 @@ const FamilyScreen = (props: FamilyScreenProps) => {
               AF-2847
             </div>
             <p className="text-sm text-yellow-700">
-              Partagez ce code avec vos proches pour qu'ils puissent vous accompagner
+              {t('familyScreen.familySharingCode.subtitle')}
             </p>
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               size="sm"
               className="border-yellow-600 text-yellow-700 hover:bg-yellow-100"
             >
-              Copier le code
+              {t('familyScreen.familySharingCode.button')}
             </Button>
           </div>
         </CardContent>
@@ -128,13 +142,17 @@ const FamilyScreen = (props: FamilyScreenProps) => {
         <Card className="text-center p-3">
           <CardContent className="p-0">
             <div className="text-2xl font-bold text-medical-teal">47</div>
-            <div className="text-xs text-muted-foreground">Alertes</div>
+            <div className="text-xs text-muted-foreground">
+              {t('familyScreen.numOfPatients.first')}
+            </div>
           </CardContent>
         </Card>
         <Card className="text-center p-3">
           <CardContent className="p-0">
             <div className="text-2xl font-bold text-medical-teal">12</div>
-            <div className="text-xs text-muted-foreground">Jours connectés</div>
+            <div className="text-xs text-muted-foreground">
+              {t('familyScreen.numOfPatients.second')}
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -144,7 +162,7 @@ const FamilyScreen = (props: FamilyScreenProps) => {
         <CardHeader>
           <CardTitle className="text-lg flex items-center gap-2">
             <Users className="w-5 h-5 text-medical-teal" />
-            Membres de la Famille
+            {t('familyScreen.familyMembers.title')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -156,10 +174,12 @@ const FamilyScreen = (props: FamilyScreenProps) => {
                     {member.avatar}
                   </AvatarFallback>
                 </Avatar>
-                
+
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
-                    <span className="font-medium text-foreground">{member.name}</span>
+                    <span className="font-medium text-foreground">
+                      {member.name}
+                    </span>
                     <member.icon className={`w-4 h-4 ${member.color}`} />
                   </div>
                   <div className="text-sm text-muted-foreground">
@@ -174,7 +194,9 @@ const FamilyScreen = (props: FamilyScreenProps) => {
                   <Settings className="w-4 h-4" />
                 </Button>
               </div>
-              {index < familyMembers.length - 1 && <Separator className="mt-4" />}
+              {index < familyMembers.length - 1 && (
+                <Separator className="mt-4" />
+              )}
             </div>
           ))}
         </CardContent>
@@ -185,7 +207,7 @@ const FamilyScreen = (props: FamilyScreenProps) => {
         <CardHeader>
           <CardTitle className="text-lg flex items-center gap-2">
             <Clock className="w-5 h-5 text-medical-teal" />
-            Activité Récente
+            {t('familyScreen.recentActivity.firstOne.title')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
@@ -205,11 +227,11 @@ const FamilyScreen = (props: FamilyScreenProps) => {
       <div className="space-y-3">
         <Button className="w-full bg-medical-teal hover:bg-medical-teal/90">
           <UserPlus className="w-4 h-4 mr-2" />
-          Inviter un Care Partner
+          {t('familyScreen.button1')}
         </Button>
         <Button variant="outline" className="w-full">
           <Settings className="w-4 h-4 mr-2" />
-          Gérer les Permissions
+          {t('familyScreen.button2')}
         </Button>
       </div>
 
@@ -218,8 +240,12 @@ const FamilyScreen = (props: FamilyScreenProps) => {
         <CardContent className="p-4">
           <div className="flex items-center justify-between">
             <div>
-              <div className="font-medium text-red-700">Contact d'Urgence</div>
-              <div className="text-sm text-red-600">Fatou Diop • +221 77 987 65 43</div>
+              <div className="font-medium text-red-700">
+                {t('familyScreen.emergencyContact')}
+              </div>
+              <div className="text-sm text-red-600">
+                Fatou Diop • +221 77 987 65 43
+              </div>
             </div>
             <Button size="sm" className="bg-red-600 hover:bg-red-700">
               <Phone className="w-4 h-4" />
