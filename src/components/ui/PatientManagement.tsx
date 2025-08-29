@@ -1,17 +1,49 @@
 import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Calendar } from "@/components/ui/calendar";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Users, Calendar as CalendarIcon, FileText, MessageSquare, Clock, MoreVertical, Eye, Phone, Edit, UserPlus, Video, Send } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import { Calendar } from '@/components/ui/calendar';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import {
+  Users,
+  Calendar as CalendarIcon,
+  FileText,
+  MessageSquare,
+  Clock,
+  MoreVertical,
+  Eye,
+  Phone,
+  Edit,
+  UserPlus,
+  Video,
+  Send,
+} from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface Patient {
   id: string;
@@ -19,7 +51,7 @@ interface Patient {
   lastConsultation: string;
   nextAppointment?: string;
   notes: string;
-  status: 'stable' | 'attention' | 'amélioration';
+  status: string;
   diabetesType: string;
   lastGlucose: string;
 }
@@ -35,7 +67,10 @@ interface Consultation {
 }
 
 export const PatientManagement = () => {
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
+  const { t } = useTranslation();
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(
+    new Date()
+  );
   const [isPatientCodeModalOpen, setIsPatientCodeModalOpen] = useState(false);
   const [patientCode, setPatientCode] = useState('');
   const [selectedAction, setSelectedAction] = useState<{
@@ -43,7 +78,7 @@ export const PatientManagement = () => {
     patientId: string;
     patientName: string;
   } | null>(null);
-  
+
   // Modal states
   const [isPatientFileOpen, setIsPatientFileOpen] = useState(false);
   const [isMessageModalOpen, setIsMessageModalOpen] = useState(false);
@@ -99,92 +134,104 @@ export const PatientManagement = () => {
   // Données de démo
   const patients: Patient[] = [
     {
-      id: "1",
-      name: "Marie Dubois",
-      lastConsultation: "2024-01-15",
-      nextAppointment: "2024-01-22",
-      notes: "Glucose bien contrôlé. Continuer le traitement actuel. Prochaine consultation dans 1 semaine.",
-      status: "stable",
-      diabetesType: "Type 2",
-      lastGlucose: "7.2 mmol/L"
+      id: '1',
+      name: 'Marie Dubois',
+      lastConsultation: '2024-01-15',
+      nextAppointment: '2024-01-22',
+      notes: t('professionalDashboard.patients.recentNotes.people.first'),
+      status: t('professionalDashboard.patients.lastBloodGlucose.first'),
+      diabetesType: 'Type 2',
+      lastGlucose: '7.2 mmol/L',
     },
     {
-      id: "2",
-      name: "Pierre Martin", 
-      lastConsultation: "2024-01-14",
-      notes: "Amélioration notable de l'HbA1c. Réduction de la dose d'insuline recommandée.",
-      status: "amélioration",
-      diabetesType: "Type 1",
-      lastGlucose: "6.8 mmol/L"
+      id: '2',
+      name: 'Pierre Martin',
+      lastConsultation: '2024-01-14',
+      notes: t('professionalDashboard.patients.recentNotes.people.second'),
+      status: t('professionalDashboard.patients.lastBloodGlucose.second'),
+      diabetesType: 'Type 1',
+      lastGlucose: '6.8 mmol/L',
     },
     {
-      id: "3",
-      name: "Sophie Laurent",
-      lastConsultation: "2024-01-12",
-      nextAppointment: "2024-01-19",
-      notes: "Pics glycémiques fréquents. Revoir l'alimentation et ajuster le traitement.",
-      status: "attention",
-      diabetesType: "Type 2",
-      lastGlucose: "8.1 mmol/L"
+      id: '3',
+      name: 'Sophie Laurent',
+      lastConsultation: '2024-01-12',
+      nextAppointment: '2024-01-19',
+      notes: t('professionalDashboard.patients.recentNotes.people.third'),
+      status: t('professionalDashboard.patients.lastBloodGlucose.third'),
+      diabetesType: 'Type 2',
+      lastGlucose: '8.1 mmol/L',
     },
     {
-      id: "4",
-      name: "Jean Bernard",
-      lastConsultation: "2024-01-10",
-      notes: "Nouveau patient. Éducation thérapeutique débutée.",
-      status: "stable",
-      diabetesType: "Type 2",
-      lastGlucose: "7.5 mmol/L"
-    }
+      id: '4',
+      name: 'Jean Bernard',
+      lastConsultation: '2024-01-10',
+      notes: t('professionalDashboard.patients.recentNotes.people.fourth'),
+      status: t('professionalDashboard.patients.lastBloodGlucose.fourth'),
+      diabetesType: 'Type 2',
+      lastGlucose: '7.5 mmol/L',
+    },
   ];
 
   const consultations: Consultation[] = [
     {
-      id: "1",
-      patient: "Marie Dubois",
-      date: "2024-01-22",
-      time: "09:00",
-      type: "Suivi routine",
-      status: "scheduled",
-      duration: "30min"
+      id: '1',
+      patient: 'Marie Dubois',
+      date: '2024-01-22',
+      time: '09:00',
+      type: t('professionalDashboard.patients.planning.type.followUp'),
+      status: 'scheduled',
+      duration: '30min',
     },
     {
-      id: "2",
-      patient: "Sophie Laurent", 
-      date: "2024-01-19",
-      time: "14:30",
-      type: "Consultation urgente",
-      status: "scheduled",
-      duration: "45min"
+      id: '2',
+      patient: 'Sophie Laurent',
+      date: '2024-01-19',
+      time: '14:30',
+      type: t('professionalDashboard.patients.planning.type.urgent'),
+      status: 'scheduled',
+      duration: '45min',
     },
     {
-      id: "3",
-      patient: "Pierre Martin",
-      date: "2024-01-18",
-      time: "11:00",
-      type: "Téléconsultation",
-      status: "completed",
-      duration: "25min"
+      id: '3',
+      patient: 'Pierre Martin',
+      date: '2024-01-18',
+      time: '11:00',
+      type: t('professionalDashboard.patients.planning.type.teleconsultation'),
+      status: 'completed',
+      duration: '25min',
     },
     {
-      id: "4",
-      patient: "Jean Bernard",
-      date: "2024-01-17",
-      time: "16:00", 
-      type: "Première consultation",
-      status: "completed",
-      duration: "60min"
-    }
+      id: '4',
+      patient: 'Jean Bernard',
+      date: '2024-01-17',
+      time: '16:00',
+      type: t('professionalDashboard.patients.planning.type.first'),
+      status: 'completed',
+      duration: '60min',
+    },
   ];
 
   const getStatusBadge = (status: string) => {
     switch (status) {
-      case 'stable':
-        return <Badge variant="secondary" className="bg-green-100 text-green-700">Stable</Badge>;
-      case 'attention':
-        return <Badge variant="destructive">Attention</Badge>;
-      case 'amélioration':
-        return <Badge variant="secondary" className="bg-blue-100 text-blue-700">Amélioration</Badge>;
+      case t('professionalDashboard.patients.lastBloodGlucose.first'):
+        return (
+          <Badge variant="secondary" className="bg-green-100 text-green-700">
+            {t('professionalDashboard.patients.lastBloodGlucose.first')}
+          </Badge>
+        );
+      case t('professionalDashboard.patients.lastBloodGlucose.third'):
+        return (
+          <Badge variant="destructive">
+            {t('professionalDashboard.patients.lastBloodGlucose.third')}
+          </Badge>
+        );
+      case t('professionalDashboard.patients.lastBloodGlucose.second'):
+        return (
+          <Badge variant="secondary" className="bg-blue-100 text-blue-700">
+            {t('professionalDashboard.patients.lastBloodGlucose.second')}
+          </Badge>
+        );
       default:
         return <Badge variant="outline">{status}</Badge>;
     }
@@ -193,11 +240,23 @@ export const PatientManagement = () => {
   const getConsultationStatusBadge = (status: string) => {
     switch (status) {
       case 'scheduled':
-        return <Badge variant="secondary" className="bg-blue-100 text-blue-700">Programmée</Badge>;
+        return (
+          <Badge variant="secondary" className="bg-blue-100 text-blue-700">
+            {t('professionalDashboard.patients.planning.status.scheduled')}
+          </Badge>
+        );
       case 'completed':
-        return <Badge variant="secondary" className="bg-green-100 text-green-700">Terminée</Badge>;
+        return (
+          <Badge variant="secondary" className="bg-green-100 text-green-700">
+            {t('professionalDashboard.patients.planning.status.completed')}
+          </Badge>
+        );
       case 'cancelled':
-        return <Badge variant="secondary" className="bg-red-100 text-red-700">Annulée</Badge>;
+        return (
+          <Badge variant="secondary" className="bg-red-100 text-red-700">
+            {t('professionalDashboard.patients.planning.status.cancelled')}
+          </Badge>
+        );
       default:
         return <Badge variant="outline">{status}</Badge>;
     }
@@ -209,7 +268,9 @@ export const PatientManagement = () => {
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="patients">Patients</TabsTrigger>
           <TabsTrigger value="planning">Planning</TabsTrigger>
-          <TabsTrigger value="calendar">Calendrier</TabsTrigger>
+          <TabsTrigger value="calendar">
+            {t('professionalDashboard.patients.calendar')}
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="patients" className="space-y-4">
@@ -217,7 +278,7 @@ export const PatientManagement = () => {
             <CardHeader>
               <CardTitle className="flex items-center">
                 <Users className="h-5 w-5 mr-2" />
-                Liste des patients ({patients.length})
+                {t('professionalDashboard.patients.title')} ({patients.length})
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -225,106 +286,154 @@ export const PatientManagement = () => {
                 <TableHeader>
                   <TableRow>
                     <TableHead>Patient</TableHead>
-                    <TableHead>Type diabète</TableHead>
-                    <TableHead>Dernière consultation</TableHead>
-                    <TableHead>Dernière glycémie</TableHead>
-                    <TableHead>Statut</TableHead>
-                    <TableHead>Actions</TableHead>
+                    <TableHead>
+                      {t('professionalDashboard.patients.title')}
+                    </TableHead>
+                    <TableHead>
+                      {t('professionalDashboard.patients.tableHeading.first')}
+                    </TableHead>
+                    <TableHead>
+                      {t('professionalDashboard.patients.tableHeading.second')}
+                    </TableHead>
+                    <TableHead>
+                      {t('professionalDashboard.patients.tableHeading.fourth')}
+                    </TableHead>
+                    <TableHead>
+                      {t('professionalDashboard.patients.tableHeading.fifth')}
+                    </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {patients.map((patient) => (
+                  {patients.map(patient => (
                     <TableRow key={patient.id}>
                       <TableCell>
                         <div className="flex items-center space-x-3">
                           <Avatar className="h-8 w-8">
                             <AvatarFallback className="bg-primary/10 text-primary text-xs">
-                              {patient.name.split(' ').map(n => n[0]).join('')}
+                              {patient.name
+                                .split(' ')
+                                .map(n => n[0])
+                                .join('')}
                             </AvatarFallback>
                           </Avatar>
                           <div>
                             <p className="font-medium">{patient.name}</p>
                             <p className="text-sm text-muted-foreground">
-                              {patient.nextAppointment && `Prochain RDV: ${new Date(patient.nextAppointment).toLocaleDateString('fr-FR')}`}
+                              {patient.nextAppointment &&
+                                `Prochain RDV: ${new Date(patient.nextAppointment).toLocaleDateString('fr-FR')}`}
                             </p>
                           </div>
                         </div>
                       </TableCell>
                       <TableCell>{patient.diabetesType}</TableCell>
-                      <TableCell>{new Date(patient.lastConsultation).toLocaleDateString('fr-FR')}</TableCell>
+                      <TableCell>
+                        {new Date(patient.lastConsultation).toLocaleDateString(
+                          'fr-FR'
+                        )}
+                      </TableCell>
                       <TableCell>{patient.lastGlucose}</TableCell>
                       <TableCell>{getStatusBadge(patient.status)}</TableCell>
                       <TableCell>
                         <DropdownMenu modal={false}>
                           <DropdownMenuTrigger asChild>
-                            <Button 
-                              size="sm" 
-                              variant="outline" 
+                            <Button
+                              size="sm"
+                              variant="outline"
                               className="h-8 w-8 p-0 hover:bg-accent"
                             >
                               <MoreVertical className="h-4 w-4" />
                             </Button>
                           </DropdownMenuTrigger>
-                          <DropdownMenuContent 
-                            align="end" 
+                          <DropdownMenuContent
+                            align="end"
                             className="z-[100] min-w-48 bg-background border border-border shadow-md rounded-md p-1"
                             side="bottom"
                             sideOffset={4}
                           >
-                            <DropdownMenuItem 
+                            <DropdownMenuItem
                               className="cursor-pointer hover:bg-accent hover:text-accent-foreground rounded-sm px-2 py-1.5 text-sm"
-                              onClick={(e) => {
+                              onClick={e => {
                                 e.preventDefault();
                                 e.stopPropagation();
-                                handlePatientAction('view', patient.id, patient.name);
+                                handlePatientAction(
+                                  'view',
+                                  patient.id,
+                                  patient.name
+                                );
                               }}
                             >
                               <Eye className="mr-2 h-4 w-4" />
-                              Voir le dossier
+                              {t(
+                                'professionalDashboard.patients.dropdownOptions.first'
+                              )}
                             </DropdownMenuItem>
-                            <DropdownMenuItem 
+                            <DropdownMenuItem
                               className="cursor-pointer hover:bg-accent hover:text-accent-foreground rounded-sm px-2 py-1.5 text-sm"
-                              onClick={(e) => {
+                              onClick={e => {
                                 e.preventDefault();
                                 e.stopPropagation();
-                                handlePatientAction('message', patient.id, patient.name);
+                                handlePatientAction(
+                                  'message',
+                                  patient.id,
+                                  patient.name
+                                );
                               }}
                             >
                               <MessageSquare className="mr-2 h-4 w-4" />
-                              Envoyer un message
+                              {t(
+                                'professionalDashboard.patients.dropdownOptions.second'
+                              )}
                             </DropdownMenuItem>
-                            <DropdownMenuItem 
+                            <DropdownMenuItem
                               className="cursor-pointer hover:bg-accent hover:text-accent-foreground rounded-sm px-2 py-1.5 text-sm"
-                              onClick={(e) => {
+                              onClick={e => {
                                 e.preventDefault();
                                 e.stopPropagation();
-                                handlePatientAction('teleconsultation', patient.id, patient.name);
+                                handlePatientAction(
+                                  'teleconsultation',
+                                  patient.id,
+                                  patient.name
+                                );
                               }}
                             >
                               <Video className="mr-2 h-4 w-4" />
-                              Téléconsultation
+                              {t(
+                                'professionalDashboard.patients.dropdownOptions.third'
+                              )}
                             </DropdownMenuItem>
-                            <DropdownMenuItem 
+                            <DropdownMenuItem
                               className="cursor-pointer hover:bg-accent hover:text-accent-foreground rounded-sm px-2 py-1.5 text-sm"
-                              onClick={(e) => {
+                              onClick={e => {
                                 e.preventDefault();
                                 e.stopPropagation();
-                                handlePatientAction('call', patient.id, patient.name);
+                                handlePatientAction(
+                                  'call',
+                                  patient.id,
+                                  patient.name
+                                );
                               }}
                             >
                               <Phone className="mr-2 h-4 w-4" />
-                              Appeler
+                              {t(
+                                'professionalDashboard.patients.dropdownOptions.fourth'
+                              )}
                             </DropdownMenuItem>
-                            <DropdownMenuItem 
+                            <DropdownMenuItem
                               className="cursor-pointer hover:bg-accent hover:text-accent-foreground rounded-sm px-2 py-1.5 text-sm"
-                              onClick={(e) => {
+                              onClick={e => {
                                 e.preventDefault();
                                 e.stopPropagation();
-                                handlePatientAction('edit', patient.id, patient.name);
+                                handlePatientAction(
+                                  'edit',
+                                  patient.id,
+                                  patient.name
+                                );
                               }}
                             >
                               <Edit className="mr-2 h-4 w-4" />
-                              Modifier le profil
+                              {t(
+                                'professionalDashboard.patients.dropdownOptions.fifth'
+                              )}
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
@@ -341,22 +450,28 @@ export const PatientManagement = () => {
             <CardHeader>
               <CardTitle className="flex items-center">
                 <FileText className="h-5 w-5 mr-2" />
-                Notes récentes
+                {t('professionalDashboard.patients.recentNotes.title')}
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {patients.filter(p => p.notes).map((patient) => (
-                  <div key={patient.id} className="p-4 border rounded-lg">
-                    <div className="flex items-center justify-between mb-2">
-                      <h4 className="font-medium">{patient.name}</h4>
-                      <span className="text-sm text-muted-foreground">
-                        {new Date(patient.lastConsultation).toLocaleDateString('fr-FR')}
-                      </span>
+                {patients
+                  .filter(p => p.notes)
+                  .map(patient => (
+                    <div key={patient.id} className="p-4 border rounded-lg">
+                      <div className="flex items-center justify-between mb-2">
+                        <h4 className="font-medium">{patient.name}</h4>
+                        <span className="text-sm text-muted-foreground">
+                          {new Date(
+                            patient.lastConsultation
+                          ).toLocaleDateString('fr-FR')}
+                        </span>
+                      </div>
+                      <p className="text-sm text-muted-foreground">
+                        {patient.notes}
+                      </p>
                     </div>
-                    <p className="text-sm text-muted-foreground">{patient.notes}</p>
-                  </div>
-                ))}
+                  ))}
               </div>
             </CardContent>
           </Card>
@@ -367,7 +482,7 @@ export const PatientManagement = () => {
             <CardHeader>
               <CardTitle className="flex items-center">
                 <Clock className="h-5 w-5 mr-2" />
-                Planning des consultations
+                {t('professionalDashboard.patients.planning.title')}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -375,54 +490,82 @@ export const PatientManagement = () => {
                 <TableHeader>
                   <TableRow>
                     <TableHead>Date</TableHead>
-                    <TableHead>Heure</TableHead>
+                    <TableHead>
+                      {t(
+                        'professionalDashboard.patients.planning.tableHeading.time'
+                      )}
+                    </TableHead>
                     <TableHead>Patient</TableHead>
                     <TableHead>Type</TableHead>
-                    <TableHead>Durée</TableHead>
-                    <TableHead>Statut</TableHead>
+                    <TableHead>
+                      {t(
+                        'professionalDashboard.patients.planning.tableHeading.duration'
+                      )}
+                    </TableHead>
+                    <TableHead>
+                      {t(
+                        'professionalDashboard.patients.planning.tableHeading.status'
+                      )}
+                    </TableHead>
                     <TableHead>Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {consultations.map((consultation) => (
+                  {consultations.map(consultation => (
                     <TableRow key={consultation.id}>
                       <TableCell className="font-medium">
-                        {new Date(consultation.date).toLocaleDateString('fr-FR')}
+                        {new Date(consultation.date).toLocaleDateString(
+                          'fr-FR'
+                        )}
                       </TableCell>
                       <TableCell>{consultation.time}</TableCell>
                       <TableCell>{consultation.patient}</TableCell>
                       <TableCell>{consultation.type}</TableCell>
                       <TableCell>{consultation.duration}</TableCell>
-                      <TableCell>{getConsultationStatusBadge(consultation.status)}</TableCell>
+                      <TableCell>
+                        {getConsultationStatusBadge(consultation.status)}
+                      </TableCell>
                       <TableCell>
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
-                            <Button size="sm" variant="outline" className="h-8 w-8 p-0">
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="h-8 w-8 p-0"
+                            >
                               <MoreVertical className="h-4 w-4" />
                             </Button>
                           </DropdownMenuTrigger>
-                          <DropdownMenuContent 
-                            align="end" 
+                          <DropdownMenuContent
+                            align="end"
                             className="z-50 bg-background border shadow-lg"
                           >
                             {consultation.status === 'scheduled' && (
                               <DropdownMenuItem className="cursor-pointer">
                                 <Video className="mr-2 h-4 w-4" />
-                                Commencer la consultation
+                                {t(
+                                  'professionalDashboard.patients.planning.actions.start'
+                                )}
                               </DropdownMenuItem>
                             )}
                             <DropdownMenuItem className="cursor-pointer">
                               <Eye className="mr-2 h-4 w-4" />
-                              Voir les détails
+                              {t(
+                                'professionalDashboard.patients.planning.actions.view'
+                              )}
                             </DropdownMenuItem>
                             <DropdownMenuItem className="cursor-pointer">
                               <Edit className="mr-2 h-4 w-4" />
-                              Modifier
+                              {t(
+                                'professionalDashboard.patients.planning.actions.edit'
+                              )}
                             </DropdownMenuItem>
                             {consultation.status === 'scheduled' && (
                               <DropdownMenuItem className="cursor-pointer text-red-600">
                                 <Clock className="mr-2 h-4 w-4" />
-                                Annuler
+                                {t(
+                                  'professionalDashboard.patients.planning.actions.cancel'
+                                )}
                               </DropdownMenuItem>
                             )}
                           </DropdownMenuContent>
@@ -442,7 +585,7 @@ export const PatientManagement = () => {
               <CardHeader>
                 <CardTitle className="flex items-center">
                   <CalendarIcon className="h-5 w-5 mr-2" />
-                  Calendrier
+                  {t('professionalDashboard.patients.calendarScreen.title')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -458,26 +601,48 @@ export const PatientManagement = () => {
             <Card>
               <CardHeader>
                 <CardTitle>
-                  Consultations du {selectedDate?.toLocaleDateString('fr-FR')}
+                  {t(
+                    'professionalDashboard.patients.calendarScreen.consulationOf'
+                  )}{' '}
+                  {selectedDate?.toLocaleDateString('fr-FR')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
                   {consultations
-                    .filter(c => new Date(c.date).toDateString() === selectedDate?.toDateString())
-                    .map((consultation) => (
-                      <div key={consultation.id} className="p-3 border rounded-lg">
+                    .filter(
+                      c =>
+                        new Date(c.date).toDateString() ===
+                        selectedDate?.toDateString()
+                    )
+                    .map(consultation => (
+                      <div
+                        key={consultation.id}
+                        className="p-3 border rounded-lg"
+                      >
                         <div className="flex items-center justify-between">
                           <div>
-                            <p className="font-medium">{consultation.time} - {consultation.patient}</p>
-                            <p className="text-sm text-muted-foreground">{consultation.type}</p>
+                            <p className="font-medium">
+                              {consultation.time} - {consultation.patient}
+                            </p>
+                            <p className="text-sm text-muted-foreground">
+                              {consultation.type}
+                            </p>
                           </div>
                           {getConsultationStatusBadge(consultation.status)}
                         </div>
                       </div>
                     ))}
-                  {consultations.filter(c => new Date(c.date).toDateString() === selectedDate?.toDateString()).length === 0 && (
-                    <p className="text-muted-foreground">Aucune consultation prévue ce jour</p>
+                  {consultations.filter(
+                    c =>
+                      new Date(c.date).toDateString() ===
+                      selectedDate?.toDateString()
+                  ).length === 0 && (
+                    <p className="text-muted-foreground">
+                      {t(
+                        'professionalDashboard.patients.calendarScreen.scheduled'
+                      )}
+                    </p>
                   )}
                 </div>
               </CardContent>
@@ -487,26 +652,32 @@ export const PatientManagement = () => {
       </Tabs>
 
       {/* Modal pour saisir le code patient */}
-      <Dialog open={isPatientCodeModalOpen} onOpenChange={setIsPatientCodeModalOpen}>
+      <Dialog
+        open={isPatientCodeModalOpen}
+        onOpenChange={setIsPatientCodeModalOpen}
+      >
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle>Code patient requis</DialogTitle>
             <DialogDescription>
-              Veuillez saisir le code patient pour accéder aux informations sécurisées
+              Veuillez saisir le code patient pour accéder aux informations
+              sécurisées
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
             <div className="space-y-2">
               <Label>
                 Veuillez saisir le code patient pour accéder aux informations de{' '}
-                <span className="font-semibold">{selectedAction?.patientName}</span>
+                <span className="font-semibold">
+                  {selectedAction?.patientName}
+                </span>
               </Label>
               <Input
                 type="text"
                 placeholder="Code patient (ex: ABC123)"
                 value={patientCode}
-                onChange={(e) => setPatientCode(e.target.value.toUpperCase())}
-                onKeyPress={(e) => {
+                onChange={e => setPatientCode(e.target.value.toUpperCase())}
+                onKeyPress={e => {
                   if (e.key === 'Enter') {
                     handlePatientCodeSubmit();
                   }
@@ -514,8 +685,8 @@ export const PatientManagement = () => {
               />
             </div>
             <div className="flex justify-end space-x-2">
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 onClick={() => {
                   setIsPatientCodeModalOpen(false);
                   setPatientCode('');
@@ -524,7 +695,7 @@ export const PatientManagement = () => {
               >
                 Annuler
               </Button>
-              <Button 
+              <Button
                 onClick={handlePatientCodeSubmit}
                 disabled={!patientCode.trim()}
               >
@@ -549,15 +720,23 @@ export const PatientManagement = () => {
               <>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Label className="text-sm font-medium">Nom du patient</Label>
-                    <p className="text-lg font-semibold">{activePatient.name}</p>
+                    <Label className="text-sm font-medium">
+                      Nom du patient
+                    </Label>
+                    <p className="text-lg font-semibold">
+                      {activePatient.name}
+                    </p>
                   </div>
                   <div>
-                    <Label className="text-sm font-medium">Type de diabète</Label>
+                    <Label className="text-sm font-medium">
+                      Type de diabète
+                    </Label>
                     <p>{activePatient.diabetesType}</p>
                   </div>
                   <div>
-                    <Label className="text-sm font-medium">Dernière glycémie</Label>
+                    <Label className="text-sm font-medium">
+                      Dernière glycémie
+                    </Label>
                     <p>{activePatient.lastGlucose}</p>
                   </div>
                   <div>
@@ -572,12 +751,24 @@ export const PatientManagement = () => {
                   </div>
                 </div>
                 <div>
-                  <Label className="text-sm font-medium">Dernière consultation</Label>
-                  <p>{new Date(activePatient.lastConsultation).toLocaleDateString('fr-FR')}</p>
+                  <Label className="text-sm font-medium">
+                    Dernière consultation
+                  </Label>
+                  <p>
+                    {new Date(
+                      activePatient.lastConsultation
+                    ).toLocaleDateString('fr-FR')}
+                  </p>
                   {activePatient.nextAppointment && (
                     <>
-                      <Label className="text-sm font-medium mt-2 block">Prochain rendez-vous</Label>
-                      <p>{new Date(activePatient.nextAppointment).toLocaleDateString('fr-FR')}</p>
+                      <Label className="text-sm font-medium mt-2 block">
+                        Prochain rendez-vous
+                      </Label>
+                      <p>
+                        {new Date(
+                          activePatient.nextAppointment
+                        ).toLocaleDateString('fr-FR')}
+                      </p>
                     </>
                   )}
                 </div>
@@ -596,7 +787,9 @@ export const PatientManagement = () => {
       <Dialog open={isMessageModalOpen} onOpenChange={setIsMessageModalOpen}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
-            <DialogTitle>Envoyer un message à {activePatient?.name}</DialogTitle>
+            <DialogTitle>
+              Envoyer un message à {activePatient?.name}
+            </DialogTitle>
             <DialogDescription>
               Messagerie sécurisée patient-professionnel
             </DialogDescription>
@@ -608,14 +801,17 @@ export const PatientManagement = () => {
             </div>
             <div>
               <Label htmlFor="message-content">Message</Label>
-              <Textarea 
+              <Textarea
                 id="message-content"
                 placeholder="Tapez votre message ici..."
                 className="min-h-32"
               />
             </div>
             <div className="flex justify-end space-x-2">
-              <Button variant="outline" onClick={() => setIsMessageModalOpen(false)}>
+              <Button
+                variant="outline"
+                onClick={() => setIsMessageModalOpen(false)}
+              >
                 Annuler
               </Button>
               <Button>
@@ -628,10 +824,15 @@ export const PatientManagement = () => {
       </Dialog>
 
       {/* Modal Téléconsultation */}
-      <Dialog open={isTeleconsultationOpen} onOpenChange={setIsTeleconsultationOpen}>
+      <Dialog
+        open={isTeleconsultationOpen}
+        onOpenChange={setIsTeleconsultationOpen}
+      >
         <DialogContent className="max-w-4xl">
           <DialogHeader>
-            <DialogTitle>Téléconsultation avec {activePatient?.name}</DialogTitle>
+            <DialogTitle>
+              Téléconsultation avec {activePatient?.name}
+            </DialogTitle>
             <DialogDescription>
               Interface de consultation vidéo sécurisée
             </DialogDescription>
@@ -641,7 +842,9 @@ export const PatientManagement = () => {
               <div className="text-center">
                 <Video className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
                 <p className="text-lg font-medium">Interface vidéo</p>
-                <p className="text-sm text-muted-foreground">La consultation vidéo apparaîtrait ici</p>
+                <p className="text-sm text-muted-foreground">
+                  La consultation vidéo apparaîtrait ici
+                </p>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
@@ -656,14 +859,17 @@ export const PatientManagement = () => {
             </div>
             <div>
               <Label htmlFor="consultation-notes">Notes de consultation</Label>
-              <Textarea 
+              <Textarea
                 id="consultation-notes"
                 placeholder="Notez les points importants de la consultation..."
                 className="min-h-24"
               />
             </div>
             <div className="flex justify-between">
-              <Button variant="outline" onClick={() => setIsTeleconsultationOpen(false)}>
+              <Button
+                variant="outline"
+                onClick={() => setIsTeleconsultationOpen(false)}
+              >
                 Fermer
               </Button>
               <div className="space-x-2">
@@ -700,14 +906,17 @@ export const PatientManagement = () => {
             </div>
             <div>
               <Label htmlFor="phone-notes">Notes d'appel</Label>
-              <Textarea 
+              <Textarea
                 id="phone-notes"
                 placeholder="Notez l'objet de l'appel..."
                 className="min-h-20"
               />
             </div>
             <div className="flex justify-center space-x-2">
-              <Button variant="outline" onClick={() => setIsCallModalOpen(false)}>
+              <Button
+                variant="outline"
+                onClick={() => setIsCallModalOpen(false)}
+              >
                 Annuler
               </Button>
               <Button className="bg-green-600 hover:bg-green-700">
@@ -723,7 +932,9 @@ export const PatientManagement = () => {
       <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
-            <DialogTitle>Modifier le profil - {activePatient?.name}</DialogTitle>
+            <DialogTitle>
+              Modifier le profil - {activePatient?.name}
+            </DialogTitle>
             <DialogDescription>
               Édition des informations du patient
             </DialogDescription>
@@ -738,13 +949,16 @@ export const PatientManagement = () => {
                   </div>
                   <div>
                     <Label htmlFor="edit-diabetes-type">Type de diabète</Label>
-                    <Input id="edit-diabetes-type" defaultValue={activePatient.diabetesType} />
+                    <Input
+                      id="edit-diabetes-type"
+                      defaultValue={activePatient.diabetesType}
+                    />
                   </div>
                 </div>
                 <div>
                   <Label htmlFor="edit-status">Statut</Label>
-                  <select 
-                    id="edit-status" 
+                  <select
+                    id="edit-status"
                     className="w-full p-2 border rounded-md"
                     defaultValue={activePatient.status}
                   >
@@ -755,19 +969,24 @@ export const PatientManagement = () => {
                 </div>
                 <div>
                   <Label htmlFor="edit-glucose">Dernière glycémie</Label>
-                  <Input id="edit-glucose" defaultValue={activePatient.lastGlucose} />
+                  <Input
+                    id="edit-glucose"
+                    defaultValue={activePatient.lastGlucose}
+                  />
                 </div>
                 <div>
                   <Label htmlFor="edit-notes">Notes médicales</Label>
-                  <Textarea 
+                  <Textarea
                     id="edit-notes"
                     defaultValue={activePatient.notes}
                     className="min-h-32"
                   />
                 </div>
                 <div>
-                  <Label htmlFor="edit-next-appointment">Prochain rendez-vous</Label>
-                  <Input 
+                  <Label htmlFor="edit-next-appointment">
+                    Prochain rendez-vous
+                  </Label>
+                  <Input
                     id="edit-next-appointment"
                     type="date"
                     defaultValue={activePatient.nextAppointment}
@@ -776,12 +995,13 @@ export const PatientManagement = () => {
               </>
             )}
             <div className="flex justify-end space-x-2">
-              <Button variant="outline" onClick={() => setIsEditModalOpen(false)}>
+              <Button
+                variant="outline"
+                onClick={() => setIsEditModalOpen(false)}
+              >
                 Annuler
               </Button>
-              <Button>
-                Enregistrer les modifications
-              </Button>
+              <Button>Enregistrer les modifications</Button>
             </div>
           </div>
         </DialogContent>

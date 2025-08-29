@@ -1,8 +1,13 @@
 import { useTranslation } from 'react-i18next';
 import { Button } from './button';
 import { Globe } from 'lucide-react';
+import React from 'react';
 
-const LanguageToggle = () => {
+interface Props {
+  className?: string; // for overriding styles
+}
+
+const LanguageToggle: React.FC<Props> = ({ className = '' }) => {
   const { i18n } = useTranslation();
 
   const toggleLanguage = () => {
@@ -18,7 +23,7 @@ const LanguageToggle = () => {
       variant="outline"
       size="sm"
       onClick={toggleLanguage}
-      className="gap-2 bg-white/10 backdrop-blur-sm border-white/20 hover:bg-white/20 text-white hover:text-white shadow-sm"
+      className={`gap-2 backdrop-blur-sm border ${className}`} // removed hardcoded text-white/bg-white
     >
       <Globe className="h-4 w-4" />
       <span className="flex items-center gap-1">
