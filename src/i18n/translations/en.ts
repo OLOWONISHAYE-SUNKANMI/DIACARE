@@ -1,6 +1,6 @@
 export const en = {
   // App general
-  appName: 'DiabCare',
+  appName: 'Klukoo',
   appDescription: '',
   appSlogan: 'The first diabetes management and monitoring platform in Africa',
 

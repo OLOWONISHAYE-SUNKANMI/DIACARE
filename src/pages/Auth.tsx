@@ -447,7 +447,7 @@ const AuthPage = () => {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <div className="w-20 h-20 bg-gradient-medical rounded-full mx-auto mb-4 flex items-center justify-center shadow-lg">
-            <Stethoscope className="w-10 h-10 text-primary-foreground" />
+              <img src='https://res.cloudinary.com/depeqzb6z/image/upload/v1756502933/Layer_0_aezqw1.png' className="w-15 h-15 text-primary-foreground"  alt='logo'/>
           </div>
           <h1 className="text-3xl font-bold text-foreground mb-4">
             {t('appName')}
@@ -521,7 +521,7 @@ const AuthPage = () => {
                           {t('auth.email')}
                         </Label>
                         <div className="relative">
-                          <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                          <Mail className="absolute left-3 top-7 h-4 w-4 text-muted-foreground" />
                           <Input
                             id="patient-signin-email"
                             type="email"
@@ -544,7 +544,7 @@ const AuthPage = () => {
                           {t('auth.password')}
                         </Label>
                         <div className="relative">
-                          <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                          <Lock className="absolute left-3 top-7 h-4 w-4 text-muted-foreground" />
                           <Input
                             id="patient-signin-password"
                             type={showPassword ? 'text' : 'password'}
@@ -629,7 +629,7 @@ const AuthPage = () => {
                           {t('auth.email')}
                         </Label>
                         <div className="relative">
-                          <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                          <Mail className="absolute left-3 top-7 h-4 w-4 text-muted-foreground" />
                           <Input
                             id="patient-signup-email"
                             type="email"
@@ -652,7 +652,7 @@ const AuthPage = () => {
                           {t('auth.password')}
                         </Label>
                         <div className="relative">
-                          <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                          <Lock className="absolute left-3 top-7 h-4 w-4 text-muted-foreground" />
                           <Input
                             id="patient-signup-password"
                             type={showPassword ? 'text' : 'password'}
@@ -675,7 +675,7 @@ const AuthPage = () => {
                           {t('auth.confirmPassword')}
                         </Label>
                         <div className="relative">
-                          <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                          <Lock className="absolute left-3 top-7 h-4 w-4 text-muted-foreground" />
                           <Input
                             id="patient-confirm-password"
                             type={showPassword ? 'text' : 'password'}
@@ -708,7 +708,7 @@ const AuthPage = () => {
               <TabsContent value="professional" className="mt-6">
                 <div className="text-center mb-4">
                   <div className="w-12 h-12 bg-medical-green-light rounded-full mx-auto mb-2 flex items-center justify-center">
-                    <Stethoscope className="w-6 h-6 text-medical-green" />
+                   <img src='https://res.cloudinary.com/depeqzb6z/image/upload/v1756502933/Layer_0_aezqw1.png' alt='logo' />
                   </div>
                   <h3 className="font-semibold text-foreground">
                     {t('professionalLoginCard.title')}
