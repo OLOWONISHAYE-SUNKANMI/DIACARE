@@ -1045,4 +1045,136 @@ export const fr = {
       context: 'Après bissap sans sucre',
     },
   },
+
+  blogScreen: {
+    article: {
+      id7: {
+        category: 'instructions',
+        title: 'Guide nutritionnel pour les diabétiques',
+        excerpt:
+          'Guide complet pour une alimentation équilibrée adaptée au diabète. Découvrez les aliments recommandés, les portions et les stratégies nutritionnelles...',
+        authorTitle: 'Nutritionniste.',
+      },
+      id8: {
+        category: 'instructions',
+        title: 'Guide complet sur le diabète de type 1 et de type 2.',
+        excerpt:
+          'Tout ce que vous devez savoir sur le diabète : définitions, symptômes, traitements, complications et gestion au quotidien...',
+        authorTitle: 'Endocrinologue.',
+      },
+      id1: {
+        category: 'Recherche',
+        title:
+          'Percée : 83 % des diabétiques de type 1 libérés de l’insuline grâce au Zimislecel',
+        excerpt:
+          'Une thérapie révolutionnaire par cellules souches permet à 83 % des patients de ne plus avoir besoin d’injections d’insuline après un an…',
+      },
+      id2: {
+        category: 'Innovation',
+        title:
+          'Gel “intelligent” révolutionnaire : guérison des plaies diabétiques en quelques jours.',
+        excerpt:
+          'Un nouveau gel restaure la circulation sanguine et accélère dramatiquement la cicatrisation des plaies diabétiques chroniques...',
+      },
+      id3: {
+        category: 'Recherche',
+        title:
+          'Première transplantation d’îlots génétiquement modifiés sans immunosuppression',
+        excerpt:
+          'Pour la première fois, des cellules d’îlots pancréatiques génétiquement éditées ont été transplantées avec succès sans médicaments anti-rejet…',
+      },
+      id4: {
+        category: 'Innovation',
+        title: 'Insuline intelligente : premiers essais cliniques réussis',
+        excerpt:
+          'Une insuline qui s’adapte automatiquement au taux de glucose sanguin montre des résultats prometteurs lors des tests...',
+      },
+      id5: {
+        category: 'Témoignages',
+        title:
+          'Marathon avec le diabète : l’exploit de James Thompson à 65 ans.',
+        excerpt:
+          'Diabétique depuis 30 ans, James Thompson termine le marathon de Boston et inspire des milliers de personnes...',
+      },
+      id6: {
+        category: 'Innovation',
+        title:
+          'IA prédictive 2025 : prévention des hypoglycémies avec 97 % de précision',
+        excerpt:
+          'La nouvelle génération d’IA médicale atteint une précision de 97 % dans la prédiction des crises, avec alerte 45 minutes à l’avance…',
+      },
+    },
+    sources: {
+      title: 'Sources fiables',
+      subtitle:
+        'Toutes nos actualités sont vérifiées et proviennent de sources médicales reconnues internationalement',
+    },
+    button: 'Lire',
+  },
+
+  familyScreen: {
+    heading: {
+      title: 'Famille',
+      subtitle: 'Votre cercle de soins',
+    },
+    familySharingCode: {
+      title: 'Code de partage familial',
+      subtitle:
+        'Partagez ce code avec vos proches afin qu’ils puissent vous accompagner.',
+      button: 'Copier le code',
+    },
+    numOfPatients: {
+      first: 'Alertes',
+      second: 'Jours connectés',
+    },
+    familyMembers: {
+      title: 'Membres de la famille',
+      patientOne: {
+        role: 'Épouse',
+        permission: 'Accès complet',
+        lastSeen: 'En ligne',
+      },
+      patientTwo: {
+        role: 'Médecin traitant',
+        permission: 'Urgences + Données',
+        lastSeen: 'Il y a 2 heures',
+      },
+      patientThree: {
+        role: 'Fils',
+        permission: 'Lecture seule',
+        lastSeen: 'Il y a 1 heure',
+      },
+    },
+    recentActivity: {
+      firstOne: {
+        title: 'Activité récente',
+        action: 'Fatou a consulté vos dernières glycémies.',
+        time: 'Il y a 10 minutes',
+      },
+      secondOne: {
+        action: 'Dr Kane a ajouté une note médicale.',
+        time: 'Il y a 2 heures',
+      },
+      thirdOne: {
+        action: 'Ibrahim a reçu une alerte pour injection manquée.',
+        time: 'Hier à 19h30',
+      },
+      fourthOne: {
+        action: 'Fatou a confirmé votre injection de Humalog.',
+        time: 'Hier à 15h00',
+      },
+    },
+    button1: 'Inviter un partenaire de soins',
+    button2: 'Gérer les permissions',
+    emergencyContact: 'Contact d’urgence',
+  },
+
+  //professional login card
+  professionalLoginCard: {
+    title: 'Professionnel de santé',
+    subtitle: 'Accès aux outils professionnels',
+    button: "Accéder à l'espace professionnel",
+    testAccess: 'Accès test professionnel',
+    loginButton: 'Connexion',
+  },
 };

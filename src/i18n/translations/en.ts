@@ -951,4 +951,136 @@ export const en = {
       context: 'after hibiscus juice without sugar.',
     },
   },
+
+  blogScreen: {
+    article: {
+      id7: {
+        category: 'Instructions',
+        title: 'Nutrition guide for diabetics',
+        excerpt:
+          'Complete guide for a balanced diet adapted to diabetes. Discover recommended foods, portions, and nutritional strategies...',
+        authorTitle: 'Nutritionist.',
+      },
+      id8: {
+        category: 'Instructions',
+        title: 'Complete guide on type 1 and type 2 diabetes.',
+        excerpt:
+          'Everything you need to know about diabetes: definitions, symptoms, treatments, complications, and daily management...',
+        authorTitle: 'Endocrinologist.',
+      },
+      id1: {
+        category: 'Research',
+        title:
+          'Breakthrough: 83% of type 1 diabetics freed from insulin with Zimislecel',
+        excerpt:
+          'A revolutionary stem cell therapy allows 83% of patients to no longer need insulin injections after one year…',
+      },
+      id2: {
+        category: 'Innovation',
+        title:
+          'Revolutionary smart gel: healing diabetic wounds in just a few days.',
+        excerpt:
+          'A new gel restores blood circulation and dramatically accelerates the healing of chronic diabetic wounds...',
+      },
+      id3: {
+        category: 'Research',
+        title:
+          'First transplantation of genetically modified islets without immunosuppression',
+        excerpt:
+          'For the first time, genetically edited pancreatic islet cells were successfully transplanted without anti-rejection drugs…',
+      },
+      id4: {
+        category: 'Innovation',
+        title: 'Smart insulin: first successful clinical trials',
+        excerpt:
+          'An insulin that automatically adapts to blood glucose levels shows promising results in tests...',
+      },
+      id5: {
+        category: 'Testimonials',
+        title:
+          'Marathon with diabetes: the achievement of James Thompson at 65 years old.',
+        excerpt:
+          'Diabetic for 30 years, James Thompson finishes the Boston Marathon and inspires thousands of people...',
+      },
+      id6: {
+        category: 'Innovation',
+        title:
+          'Predictive AI 2025: prevention of hypoglycemia with 97% accuracy',
+        excerpt:
+          'The new generation of medical AI achieves 97% accuracy in predicting crises, with alerts up to 45 minutes in advance…',
+      },
+    },
+    sources: {
+      title: 'Reliable Sources',
+      subtitle:
+        'All our news is verified and comes from internationally recognized medical sources.',
+    },
+    button: 'Read',
+  },
+
+  familyScreen: {
+    heading: {
+      title: 'Family',
+      subtitle: 'Your circle of care',
+    },
+    familySharingCode: {
+      title: 'Family Sharing Code',
+      subtitle:
+        'Share this code with your relatives so they can accompany you.',
+      button: 'Copy the code',
+    },
+    numOfPatients: {
+      first: 'Alerts',
+      second: 'Connected days',
+    },
+    familyMembers: {
+      title: 'Family Members',
+      patientOne: {
+        role: 'Wife',
+        permission: 'Full Access',
+        lastSeen: 'Online',
+      },
+      patientTwo: {
+        role: 'Primary Care Doctor',
+        permission: 'Emergency + Data',
+        lastSeen: '2 hours ago',
+      },
+      patientThree: {
+        role: 'Son',
+        permission: 'Read-only',
+        lastSeen: '1 hour ago',
+      },
+    },
+    recentActivity: {
+      firstOne: {
+        title: 'Recent Activity',
+        action: 'Fatou has viewed your latest blood glucose readings.',
+        time: '10 minutes ago',
+      },
+      secondOne: {
+        action: 'Dr. Kane added a medical note.',
+        time: '2 hours ago',
+      },
+      thirdOne: {
+        action: 'Ibrahim received a missed injection alert.',
+        time: 'Yesterday at 7:30 PM',
+      },
+      fourthOne: {
+        action: 'Fatou confirmed your Humalog injection.',
+        time: 'Yesterday at 3:00 PM',
+      },
+    },
+    button1: 'Invite a Care Partner',
+    button2: 'Manage Permissions',
+    emergencyContact: 'Emergency Contact',
+  },
+
+  //professional login card
+  professionalLoginCard: {
+    title: 'Healthcare Professional',
+    subtitle: 'Access to professional tools',
+    button: 'Access Professional Space',
+    testAccess: 'Professional Test Access',
+    loginButton: 'Login',
+  },
 };
