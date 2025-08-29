@@ -1,19 +1,37 @@
 import { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { CalendarIcon, Clock, Users, FileText, Settings } from "lucide-react";
-import { format } from "date-fns";
-import { fr } from "date-fns/locale";
-import { cn } from "@/lib/utils";
-import { toast } from "@/hooks/use-toast";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Calendar } from '@/components/ui/calendar';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
+import { CalendarIcon, Clock, Users, FileText, Settings } from 'lucide-react';
+import { format } from 'date-fns';
+import { fr } from 'date-fns/locale';
+import { cn } from '@/lib/utils';
+import { toast } from '@/hooks/use-toast';
+import { useTranslation } from 'react-i18next';
 
 export const QuickActions = () => {
+  const { t } = useTranslation();
   const [consultationDate, setConsultationDate] = useState<Date>();
   const [consultationOpen, setConsultationOpen] = useState(false);
   const [reportOpen, setReportOpen] = useState(false);
@@ -22,24 +40,24 @@ export const QuickActions = () => {
 
   const handleScheduleConsultation = () => {
     toast({
-      title: "Consultation programmée",
-      description: "La consultation a été ajoutée au planning",
+      title: 'Consultation programmée',
+      description: 'La consultation a été ajoutée au planning',
     });
     setConsultationOpen(false);
   };
 
   const handleGenerateReport = () => {
     toast({
-      title: "Rapport généré",
-      description: "Le rapport a été généré avec succès",
+      title: 'Rapport généré',
+      description: 'Le rapport a été généré avec succès',
     });
     setReportOpen(false);
   };
 
   const handleAddPatient = () => {
     toast({
-      title: "Patient ajouté",
-      description: "Le nouveau patient a été ajouté à votre liste",
+      title: 'Patient ajouté',
+      description: 'Le nouveau patient a été ajouté à votre liste',
     });
     setPatientOpen(false);
   };
@@ -51,19 +69,29 @@ export const QuickActions = () => {
         <DialogTrigger asChild>
           <Button className="w-full justify-start" variant="outline">
             <CalendarIcon className="h-4 w-4 mr-2" />
-            Programmer une consultation
+            {t(
+              'professionalDashboard.overview.quickActions.scheduleAppointment.title'
+            )}
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Programmer une consultation</DialogTitle>
+            <DialogTitle>
+              {t(
+                'professionalDashboard.overview.quickActions.scheduleAppointment.title'
+              )}
+            </DialogTitle>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid gap-2">
               <Label htmlFor="patient-select">Patient</Label>
               <Select>
                 <SelectTrigger>
-                  <SelectValue placeholder="Sélectionner un patient" />
+                  <SelectValue
+                    placeholder={t(
+                      'professionalDashboard.overview.quickActions.scheduleAppointment.patient.placeholder'
+                    )}
+                  />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="marie">Marie Dubois</SelectItem>
@@ -78,14 +106,22 @@ export const QuickActions = () => {
               <Popover>
                 <PopoverTrigger asChild>
                   <Button
-                    variant={"outline"}
+                    variant={'outline'}
                     className={cn(
-                      "justify-start text-left font-normal",
-                      !consultationDate && "text-muted-foreground"
+                      'justify-start text-left font-normal',
+                      !consultationDate && 'text-muted-foreground'
                     )}
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
-                    {consultationDate ? format(consultationDate, "PPP", { locale: fr }) : <span>Choisir une date</span>}
+                    {consultationDate ? (
+                      format(consultationDate, 'PPP', { locale: fr })
+                    ) : (
+                      <span>
+                        {t(
+                          'professionalDashboard.overview.quickActions.scheduleAppointment.date.placeholder'
+                        )}
+                      </span>
+                    )}
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0">
@@ -100,10 +136,18 @@ export const QuickActions = () => {
               </Popover>
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="time">Heure</Label>
+              <Label htmlFor="time">
+                {t(
+                  'professionalDashboard.overview.quickActions.scheduleAppointment.time.title'
+                )}
+              </Label>
               <Select>
                 <SelectTrigger>
-                  <SelectValue placeholder="Sélectionner l'heure" />
+                  <SelectValue
+                    placeholder={t(
+                      'professionalDashboard.overview.quickActions.scheduleAppointment.time.placeholder'
+                    )}
+                  />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="09:00">09:00</SelectItem>
@@ -116,27 +160,72 @@ export const QuickActions = () => {
               </Select>
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="type">Type de consultation</Label>
+              <Label htmlFor="type">
+                {t(
+                  'professionalDashboard.overview.quickActions.scheduleAppointment.consultationType.title'
+                )}
+              </Label>
               <Select>
                 <SelectTrigger>
-                  <SelectValue placeholder="Sélectionner le type" />
+                  <SelectValue
+                    placeholder={t(
+                      'professionalDashboard.overview.quickActions.scheduleAppointment.consultationType.placeholder.title'
+                    )}
+                  />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="routine">Suivi routine</SelectItem>
-                  <SelectItem value="urgent">Consultation urgente</SelectItem>
-                  <SelectItem value="teleconsultation">Téléconsultation</SelectItem>
-                  <SelectItem value="first">Première consultation</SelectItem>
+                  <SelectItem value="routine">
+                    {t(
+                      'professionalDashboard.overview.quickActions.scheduleAppointment.consultationType.placeholder.routine'
+                    )}
+                  </SelectItem>
+                  <SelectItem value="urgent">
+                    {t(
+                      'professionalDashboard.overview.quickActions.scheduleAppointment.consultationType.placeholder.urgent'
+                    )}
+                  </SelectItem>
+                  <SelectItem value="teleconsultation">
+                    {t(
+                      'professionalDashboard.overview.quickActions.scheduleAppointment.consultationType.placeholder.teleconsultation'
+                    )}
+                  </SelectItem>
+                  <SelectItem value="first">
+                    {t(
+                      'professionalDashboard.overview.quickActions.scheduleAppointment.consultationType.placeholder.first'
+                    )}
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="notes">Notes (optionnel)</Label>
-              <Textarea placeholder="Notes sur la consultation..." />
+              <Label htmlFor="notes">
+                Notes (
+                {t(
+                  'professionalDashboard.overview.quickActions.scheduleAppointment.notes.title'
+                )}
+                )
+              </Label>
+              <Textarea
+                placeholder={t(
+                  'professionalDashboard.overview.quickActions.scheduleAppointment.notes.placeholder'
+                )}
+              />
             </div>
           </div>
           <div className="flex justify-end space-x-2">
-            <Button variant="outline" onClick={() => setConsultationOpen(false)}>Annuler</Button>
-            <Button onClick={handleScheduleConsultation}>Programmer</Button>
+            <Button
+              variant="outline"
+              onClick={() => setConsultationOpen(false)}
+            >
+              {t(
+                'professionalDashboard.overview.quickActions.scheduleAppointment.button1'
+              )}
+            </Button>
+            <Button onClick={handleScheduleConsultation}>
+              {t(
+                'professionalDashboard.overview.quickActions.scheduleAppointment.button2'
+              )}
+            </Button>
           </div>
         </DialogContent>
       </Dialog>
@@ -146,39 +235,95 @@ export const QuickActions = () => {
         <DialogTrigger asChild>
           <Button className="w-full justify-start" variant="outline">
             <FileText className="h-4 w-4 mr-2" />
-            Générer un rapport
+            {t(
+              'professionalDashboard.overview.quickActions.reportGenerator.title'
+            )}
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Générer un rapport</DialogTitle>
+            <DialogTitle>
+              {t(
+                'professionalDashboard.overview.quickActions.reportGenerator.title'
+              )}
+            </DialogTitle>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid gap-2">
-              <Label htmlFor="report-type">Type de rapport</Label>
+              <Label htmlFor="report-type">
+                {t(
+                  'professionalDashboard.overview.quickActions.reportGenerator.reportType.title'
+                )}
+              </Label>
               <Select>
                 <SelectTrigger>
-                  <SelectValue placeholder="Sélectionner le type" />
+                  <SelectValue
+                    placeholder={t(
+                      'professionalDashboard.overview.quickActions.reportGenerator.reportType.placeholder.title'
+                    )}
+                  />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="monthly">Rapport mensuel</SelectItem>
-                  <SelectItem value="patient">Rapport patient</SelectItem>
-                  <SelectItem value="financial">Rapport financier</SelectItem>
-                  <SelectItem value="activity">Rapport d'activité</SelectItem>
+                  <SelectItem value="monthly">
+                    placeholder=
+                    {t(
+                      'professionalDashboard.overview.quickActions.reportGenerator.reportType.placeholder.monthly'
+                    )}
+                  </SelectItem>
+                  <SelectItem value="patient">
+                    {t(
+                      'professionalDashboard.overview.quickActions.reportGenerator.reportType.placeholder.patient'
+                    )}
+                  </SelectItem>
+                  <SelectItem value="financial">
+                    {t(
+                      'professionalDashboard.overview.quickActions.reportGenerator.reportType.placeholder.financial'
+                    )}
+                  </SelectItem>
+                  <SelectItem value="activity">
+                    {t(
+                      'professionalDashboard.overview.quickActions.reportGenerator.reportType.placeholder.activity'
+                    )}
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="period">Période</Label>
+              <Label htmlFor="period">
+                {t(
+                  'professionalDashboard.overview.quickActions.reportGenerator.timeframe.title'
+                )}
+              </Label>
               <Select>
                 <SelectTrigger>
-                  <SelectValue placeholder="Sélectionner la période" />
+                  <SelectValue
+                    placeholder={t(
+                      'professionalDashboard.overview.quickActions.reportGenerator.timeframe.placeholder.title'
+                    )}
+                  />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="last-week">Semaine dernière</SelectItem>
-                  <SelectItem value="last-month">Mois dernier</SelectItem>
-                  <SelectItem value="last-quarter">Trimestre dernier</SelectItem>
-                  <SelectItem value="custom">Période personnalisée</SelectItem>
+                  <SelectItem value="last-week">
+                    placeholder=
+                    {t(
+                      'professionalDashboard.overview.quickActions.reportGenerator.timeframe.placeholder.lastWeek'
+                    )}
+                  </SelectItem>
+                  <SelectItem value="last-month">
+                    {t(
+                      'professionalDashboard.overview.quickActions.reportGenerator.timeframe.placeholder.lastMonth'
+                    )}
+                  </SelectItem>
+                  <SelectItem value="last-quarter">
+                    {t(
+                      'professionalDashboard.overview.quickActions.reportGenerator.timeframe.placeholder.lastQuarter'
+                    )}
+                  </SelectItem>
+                  <SelectItem value="custom">
+                    {t(
+                      'professionalDashboard.overview.quickActions.reportGenerator.timeframe.placeholder.custom'
+                    )}
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -186,7 +331,11 @@ export const QuickActions = () => {
               <Label htmlFor="format">Format</Label>
               <Select>
                 <SelectTrigger>
-                  <SelectValue placeholder="Sélectionner le format" />
+                  <SelectValue
+                    placeholder={t(
+                      'professionalDashboard.overview.quickActions.reportGenerator.format.placeholder'
+                    )}
+                  />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="pdf">PDF</SelectItem>
@@ -197,8 +346,16 @@ export const QuickActions = () => {
             </div>
           </div>
           <div className="flex justify-end space-x-2">
-            <Button variant="outline" onClick={() => setReportOpen(false)}>Annuler</Button>
-            <Button onClick={handleGenerateReport}>Générer</Button>
+            <Button variant="outline" onClick={() => setReportOpen(false)}>
+              {t(
+                'professionalDashboard.overview.quickActions.reportGenerator.button1'
+              )}
+            </Button>
+            <Button onClick={handleGenerateReport}>
+              {t(
+                'professionalDashboard.overview.quickActions.reportGenerator.button2'
+              )}
+            </Button>
           </div>
         </DialogContent>
       </Dialog>
@@ -208,22 +365,45 @@ export const QuickActions = () => {
         <DialogTrigger asChild>
           <Button className="w-full justify-start" variant="outline">
             <Users className="h-4 w-4 mr-2" />
-            Ajouter un patient
+            {t('professionalDashboard.overview.quickActions.addPatient.title')}
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Ajouter un nouveau patient</DialogTitle>
+            <DialogTitle>
+              {t(
+                'professionalDashboard.overview.quickActions.addPatient.subtitle'
+              )}
+            </DialogTitle>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-2 gap-4">
               <div className="grid gap-2">
-                <Label htmlFor="first-name">Prénom</Label>
-                <Input id="first-name" placeholder="Prénom" />
+                <Label htmlFor="first-name">
+                  {t(
+                    'professionalDashboard.overview.quickActions.addPatient.name.firstName'
+                  )}
+                </Label>
+                <Input
+                  id="first-name"
+                  placeholder={t(
+                    'professionalDashboard.overview.quickActions.addPatient.name.firstName'
+                  )}
+                />
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="last-name">Nom</Label>
-                <Input id="last-name" placeholder="Nom" />
+                <Label htmlFor="last-name">
+                  {' '}
+                  {t(
+                    'professionalDashboard.overview.quickActions.addPatient.name.lastName'
+                  )}
+                </Label>
+                <Input
+                  id="last-name"
+                  placeholder={t(
+                    'professionalDashboard.overview.quickActions.addPatient.name.lastName'
+                  )}
+                />
               </div>
             </div>
             <div className="grid gap-2">
@@ -231,30 +411,62 @@ export const QuickActions = () => {
               <Input id="email" type="email" placeholder="email@exemple.com" />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="phone">Téléphone</Label>
+              <Label htmlFor="phone">
+                {t(
+                  'professionalDashboard.overview.quickActions.addPatient.number'
+                )}
+              </Label>
               <Input id="phone" placeholder="+33 6 12 34 56 78" />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="diabetes-type">Type de diabète</Label>
+              <Label htmlFor="diabetes-type">
+                {t(
+                  'professionalDashboard.overview.quickActions.addPatient.diabetesTypes.title'
+                )}
+              </Label>
               <Select>
                 <SelectTrigger>
-                  <SelectValue placeholder="Sélectionner le type" />
+                  <SelectValue
+                    placeholder={t(
+                      'professionalDashboard.overview.quickActions.addPatient.diabetesTypes.placeholder.title'
+                    )}
+                  />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="type1">Type 1</SelectItem>
                   <SelectItem value="type2">Type 2</SelectItem>
-                  <SelectItem value="gestational">Gestationnel</SelectItem>
+                  <SelectItem value="gestational">
+                    {t(
+                      'professionalDashboard.overview.quickActions.addPatient.diabetesTypes.placeholder.gestational'
+                    )}
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="notes">Notes médicales</Label>
-              <Textarea placeholder="Historique médical, allergies, etc." />
+              <Label htmlFor="notes">
+                {t(
+                  'professionalDashboard.overview.quickActions.addPatient.medicalNotes.title'
+                )}
+              </Label>
+              <Textarea
+                placeholder={t(
+                  'professionalDashboard.overview.quickActions.addPatient.medicalNotes.placeholder'
+                )}
+              />
             </div>
           </div>
           <div className="flex justify-end space-x-2">
-            <Button variant="outline" onClick={() => setPatientOpen(false)}>Annuler</Button>
-            <Button onClick={handleAddPatient}>Ajouter</Button>
+            <Button variant="outline" onClick={() => setPatientOpen(false)}>
+              {t(
+                'professionalDashboard.overview.quickActions.addPatient.button1'
+              )}
+            </Button>
+            <Button onClick={handleAddPatient}>
+              {t(
+                'professionalDashboard.overview.quickActions.addPatient.button2'
+              )}
+            </Button>
           </div>
         </DialogContent>
       </Dialog>
@@ -264,24 +476,51 @@ export const QuickActions = () => {
         <DialogTrigger asChild>
           <Button className="w-full justify-start" variant="outline">
             <Settings className="h-4 w-4 mr-2" />
-            Paramètres du compte
+            {t(
+              'professionalDashboard.overview.quickActions.accountSetting.title'
+            )}
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Paramètres du compte</DialogTitle>
+            <DialogTitle>
+              {t(
+                'professionalDashboard.overview.quickActions.accountSetting.title'
+              )}
+            </DialogTitle>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid gap-2">
-              <Label htmlFor="availability">Disponibilité</Label>
+              <Label htmlFor="availability">
+                {t(
+                  'professionalDashboard.overview.quickActions.accountSetting.currentStatus.title'
+                )}
+              </Label>
               <Select>
                 <SelectTrigger>
-                  <SelectValue placeholder="Statut actuel" />
+                  <SelectValue
+                    placeholder={t(
+                      'professionalDashboard.overview.quickActions.accountSetting.currentStatus.placeholder'
+                    )}
+                  />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="available">Disponible</SelectItem>
-                  <SelectItem value="busy">Occupé</SelectItem>
-                  <SelectItem value="offline">Hors ligne</SelectItem>
+                  <SelectItem value="available">
+                    {t(
+                      'professionalDashboard.overview.quickActions.accountSetting.currentStatus.options.available'
+                    )}
+                  </SelectItem>
+                  <SelectItem value="busy">
+                    {' '}
+                    {t(
+                      'professionalDashboard.overview.quickActions.accountSetting.currentStatus.options.busy'
+                    )}
+                  </SelectItem>
+                  <SelectItem value="offline">
+                    {t(
+                      'professionalDashboard.overview.quickActions.accountSetting.currentStatus.options.offline'
+                    )}
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -289,23 +528,52 @@ export const QuickActions = () => {
               <Label htmlFor="notifications">Notifications</Label>
               <Select>
                 <SelectTrigger>
-                  <SelectValue placeholder="Préférences notifications" />
+                  <SelectValue
+                    placeholder={t(
+                      'professionalDashboard.overview.quickActions.accountSetting.notifications.placeholder'
+                    )}
+                  />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">Toutes les notifications</SelectItem>
-                  <SelectItem value="important">Importantes uniquement</SelectItem>
-                  <SelectItem value="none">Aucune notification</SelectItem>
+                  <SelectItem value="all">
+                    {t(
+                      'professionalDashboard.overview.quickActions.accountSetting.notifications.options.all'
+                    )}
+                  </SelectItem>
+                  <SelectItem value="important">
+                    {t(
+                      'professionalDashboard.overview.quickActions.accountSetting.notifications.options.important'
+                    )}
+                  </SelectItem>
+                  <SelectItem value="none">
+                    {t(
+                      'professionalDashboard.overview.quickActions.accountSetting.notifications.options.none'
+                    )}
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="consultation-rate">Tarif consultation (XOF)</Label>
+              <Label htmlFor="consultation-rate">
+                {t(
+                  'professionalDashboard.overview.quickActions.accountSetting.consultationFee'
+                )}{' '}
+                consultation (XOF)
+              </Label>
               <Input id="consultation-rate" type="number" placeholder="5000" />
             </div>
           </div>
           <div className="flex justify-end space-x-2">
-            <Button variant="outline" onClick={() => setSettingsOpen(false)}>Annuler</Button>
-            <Button>Sauvegarder</Button>
+            <Button variant="outline" onClick={() => setSettingsOpen(false)}>
+              {t(
+                'professionalDashboard.overview.quickActions.accountSetting.button1'
+              )}
+            </Button>
+            <Button>
+              {t(
+                'professionalDashboard.overview.quickActions.accountSetting.button2'
+              )}
+            </Button>
           </div>
         </DialogContent>
       </Dialog>

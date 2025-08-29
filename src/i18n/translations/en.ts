@@ -1083,4 +1083,286 @@ export const en = {
     testAccess: 'Professional Test Access',
     loginButton: 'Login',
   },
+
+  //professionalDashboard
+  professionalDashboard: {
+    title: 'Professional',
+    study: 'Endocrinology',
+    mode: 'Demo Mode',
+    logout: 'Logout',
+    stats: {
+      title1: 'Followed Patients',
+      title2: 'Consultations This Month',
+      title3: 'Generated Reports',
+      title4: 'Average Time / Consultation',
+      compared: 'compared to last month',
+    },
+
+    tableHeaderSections: {
+      revenue: 'Revenue',
+      settings: 'Settings',
+    },
+
+    overview: {
+      heading: 'Overview',
+      recentPatients: {
+        title: 'Recent patients',
+        firstPatient: {
+          lastvisit: '2 hours ago',
+          status: 'stable',
+        },
+        secondPatient: {
+          lastvisit: 'Yesterday',
+          status: 'improvement',
+        },
+        ThirdPatient: {
+          lastvisit: '3 days ago',
+          status: 'improvement',
+        },
+        button: 'See all patients',
+      },
+
+      //
+      quickActions: {
+        title: 'Quick Actions',
+        scheduleAppointment: {
+          title: 'Schedule an appointment',
+          subtitle: 'Schedule an appointment',
+          patient: {
+            placeholder: 'Select a patient',
+          },
+          date: {
+            placeholder: 'Choose a date',
+          },
+          time: {
+            title: 'Time',
+            placeholder: 'Select the time',
+          },
+          consultationType: {
+            title: 'Type of consultation',
+            placeholder: {
+              title: 'Select the type',
+              routine: 'Routine follow-up',
+              urgent: 'Urgent consultation',
+              teleconsultation: 'Teleconsultation',
+              first: 'First consultation',
+            },
+          },
+          notes: {
+            title: 'optional',
+            placeholder: 'Consultation observations...',
+          },
+          button1: 'Cancel',
+          button2: 'Schedule',
+        },
+
+        //
+        reportGenerator: {
+          title: 'Generate a report',
+          subtitle: 'Generate a report',
+          reportType: {
+            title: 'Type of report',
+            placeholder: {
+              title: 'Select a type',
+              monthly: 'Monthly report',
+              patient: 'Patient report',
+              financial: 'Financial report',
+              activity: 'Activity report',
+            },
+          },
+          timeframe: {
+            title: 'Timeframe',
+            placeholder: {
+              title: 'Select the period',
+              lastWeek: 'Last week',
+              lastMonth: 'Last month',
+              lastQuarter: 'Last quarter',
+              custom: 'Custom period',
+            },
+          },
+          format: {
+            placeholder: 'Select the format',
+          },
+          button1: 'Close',
+          button2: 'Generate',
+        },
+
+        //
+        addPatient: {
+          title: 'Add a patient',
+          subtitle: 'Add a new patient',
+          name: {
+            firstName: 'Frist Name',
+            lastName: 'Last Name',
+          },
+          number: 'Phone',
+
+          diabetesTypes: {
+            title: 'Type of Diabetes',
+            placeholder: {
+              title: 'Select the type',
+              type1: 'Type 1',
+              type2: 'Type 2',
+              gestational: 'Gestational',
+            },
+          },
+          medicalNotes: {
+            title: 'Medical Notes',
+            placeholder: 'Medical history, allergies, etc.',
+          },
+          button1: 'Close',
+          button2: 'Add',
+        },
+
+        //accountSetting
+        accountSetting: {
+          title: 'Account Settings',
+          currentStatus: {
+            title: 'Availability',
+            placeholder: 'Current Status',
+            options: {
+              available: 'Available',
+              busy: 'Busy',
+              offline: 'Offline',
+            },
+          },
+
+          notifications: {
+            placeholder: 'Notification Preferences',
+            options: {
+              all: 'All Notifications',
+              important: 'Important Only',
+              none: 'No Notifications',
+            },
+          },
+
+          consultationFee: ' Tarif consultation ',
+          button1: 'Close',
+          button2: 'Save',
+        },
+      },
+    },
+
+    //patient
+    patients: {
+      calendar: 'Calender',
+      title: 'List of patients',
+      tableHeading: {
+        first: 'Patient',
+        second: 'Diabetes Type',
+        third: 'Last consultation',
+        fourth: 'Last blood glucose',
+        fifth: 'Status',
+      },
+      lastBloodGlucose: {
+        first: 'stable',
+        second: 'improvement',
+        third: 'warning',
+        fourth: 'stable',
+      },
+      recentNotes: {
+        title: 'Recent notes',
+        people: {
+          first:
+            'Glucose well controlled. Continue the current treatment. Next consultation in 1 week.',
+          second:
+            'Significant improvement in HbA1c. Reduction of the insulin dose recommended.',
+          third:
+            'Frequent blood glucose spikes. Review diet and adjust treatment.',
+          fourth: '',
+        },
+      },
+      dropdownOptions: {
+        first: 'View record',
+        second: 'Send a message',
+        third: 'Teleconsultation',
+        fourth: 'Call',
+        fifth: 'Edit profile',
+      },
+
+      //
+      planning: {
+        title: 'Consultation Schedule',
+        tableHeading: {
+          time: 'Time',
+          duration: 'Duration',
+          status: 'Status',
+        },
+        type: {
+          followUp: 'Routine follow-up',
+          urgent: 'Urgent consultation',
+          teleconsultation: 'Teleconsultation',
+          first: 'First consultation',
+        },
+        status: {
+          scheduled: 'Scheduled',
+          completed: 'Completed',
+          cancelled: 'Cancelled',
+        },
+        actions: {
+          start: 'Start Consultation',
+          view: 'View Details',
+          edit: 'Edit',
+          cancel: 'Cancel',
+        },
+      },
+
+      //calendar
+      calendarScreen: {
+        title: 'Calender',
+        consulationOf: 'Consultations on',
+        scheduled: 'No consultations scheduled for today',
+      },
+    },
+
+    //consultations
+    consultations: {
+      title: 'My consultations',
+      placeholder: {
+        title: 'Filter by status',
+        options: {
+          all: 'All',
+          pending: 'Pending',
+          active: 'Active',
+          completed: 'Completed',
+        },
+      },
+      loading: 'Loading consultations',
+    },
+
+    //revenue
+    revenue: {
+      title: 'Revenue',
+      thisMonth: 'This Month',
+      revenueThisMonth: 'Net revenue this month',
+      tableHeader: {
+        grossAmount: 'Gross Amount',
+        status: 'Status',
+      },
+      consultationType: {
+        one: 'Endocrinology Consultation',
+        two: 'Diabetes Follow-up',
+        three: 'Endocrinology Consultation',
+        four: 'Teleconsultation',
+        five: 'Endocrinology Consultation',
+        six: 'Hormonal Follow-up',
+      },
+      status: {
+        paid: 'Paid',
+        processing: 'Processing',
+        pending: 'Pending',
+      },
+      consultationRevenue: {
+        title: 'Revenue per consultation',
+        writeup:
+          'Revenue is calculated automatically according to the rates per profession defined in the system. Each completed consultation adds the corresponding amount to your revenue.',
+      },
+    },
+
+    //accountSettings
+    accountSettings: {
+      title: 'Account settings',
+      writeup: 'Account settings under development...',
+    },
+  },
 };

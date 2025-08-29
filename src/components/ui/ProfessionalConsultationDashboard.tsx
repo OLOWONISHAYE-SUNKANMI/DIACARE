@@ -2,7 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Calendar, Clock, User, DollarSign, ArrowRight } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
@@ -10,19 +16,24 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTeleconsultations } from '@/hooks/useTeleconsultations';
 import { ConsultationChat } from '@/components/ui/ConsultationChat';
+import { useTranslation } from 'react-i18next';
 
 interface ProfessionalConsultationDashboardProps {
   professionalId: string;
 }
 
-export const ProfessionalConsultationDashboard: React.FC<ProfessionalConsultationDashboardProps> = ({
-  professionalId
-}) => {
+export const ProfessionalConsultationDashboard: React.FC<
+  ProfessionalConsultationDashboardProps
+> = ({ professionalId }) => {
   const { user } = useAuth();
   const { toast } = useToast();
   const { consultations, loading } = useTeleconsultations();
-  const [selectedConsultation, setSelectedConsultation] = useState<string | null>(null);
-  const [filter, setFilter] = useState<'all' | 'pending' | 'active' | 'completed'>('all');
+  const [selectedConsultation, setSelectedConsultation] = useState<
+    string | null
+  >(null);
+  const [filter, setFilter] = useState<
+    'all' | 'pending' | 'active' | 'completed'
+  >('all');
 
   // Filtrer les consultations selon le filtre sélectionné
   const filteredConsultations = consultations.filter(consultation => {
@@ -37,17 +48,45 @@ export const ProfessionalConsultationDashboard: React.FC<ProfessionalConsultatio
   const closeConsultationChat = () => {
     setSelectedConsultation(null);
   };
+  const { t } = useTranslation();
 
   const getStatusBadge = (status: string) => {
     const statusConfig = {
-      scheduled: { label: 'Programmée', variant: 'outline' as const, color: 'text-blue-600' },
-      confirmed: { label: 'Confirmée', variant: 'default' as const, color: 'text-green-600' },
-      in_progress: { label: 'En cours', variant: 'default' as const, color: 'text-orange-600' },
-      completed: { label: 'Terminée', variant: 'secondary' as const, color: 'text-gray-600' },
-      cancelled: { label: 'Annulée', variant: 'destructive' as const, color: 'text-red-600' },
-      no_show: { label: 'Absent', variant: 'destructive' as const, color: 'text-red-600' }
+      scheduled: {
+        label: 'Programmée',
+        variant: 'outline' as const,
+        color: 'text-blue-600',
+      },
+      confirmed: {
+        label: 'Confirmée',
+        variant: 'default' as const,
+        color: 'text-green-600',
+      },
+      in_progress: {
+        label: 'En cours',
+        variant: 'default' as const,
+        color: 'text-orange-600',
+      },
+      completed: {
+        label: 'Terminée',
+        variant: 'secondary' as const,
+        color: 'text-gray-600',
+      },
+      cancelled: {
+        label: 'Annulée',
+        variant: 'destructive' as const,
+        color: 'text-red-600',
+      },
+      no_show: {
+        label: 'Absent',
+        variant: 'destructive' as const,
+        color: 'text-red-600',
+      },
     };
-    return statusConfig[status as keyof typeof statusConfig] || statusConfig.scheduled;
+    return (
+      statusConfig[status as keyof typeof statusConfig] ||
+      statusConfig.scheduled
+    );
   };
 
   const formatDate = (dateString: string) => {
@@ -57,7 +96,7 @@ export const ProfessionalConsultationDashboard: React.FC<ProfessionalConsultatio
       month: 'long',
       day: 'numeric',
       hour: '2-digit',
-      minute: '2-digit'
+      minute: '2-digit',
     });
   };
 
@@ -92,24 +131,48 @@ export const ProfessionalConsultationDashboard: React.FC<ProfessionalConsultatio
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Calendar className="h-5 w-5" />
-            Mes consultations
+            {t('professionalDashboard.consultations.title')}
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex gap-4 items-center">
-            <Select value={filter} onValueChange={(value: any) => setFilter(value)}>
+            <Select
+              value={filter}
+              onValueChange={(value: any) => setFilter(value)}
+            >
               <SelectTrigger className="w-48">
-                <SelectValue placeholder="Filtrer par statut" />
+                <SelectValue
+                  placeholder={t(
+                    'professionalDashboard.consultations.placeholder.title'
+                  )}
+                />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">Toutes</SelectItem>
-                <SelectItem value="pending">En attente</SelectItem>
-                <SelectItem value="active">Actives</SelectItem>
-                <SelectItem value="completed">Terminées</SelectItem>
+                <SelectItem value="all">
+                  {t(
+                    'professionalDashboard.consultations.placeholder.options.all'
+                  )}
+                </SelectItem>
+                <SelectItem value="pending">
+                  {t(
+                    'professionalDashboard.consultations.placeholder.options.pending'
+                  )}
+                </SelectItem>
+                <SelectItem value="active">
+                  {t(
+                    'professionalDashboard.consultations.placeholder.options.active'
+                  )}
+                </SelectItem>
+                <SelectItem value="completed">
+                  {t(
+                    'professionalDashboard.consultations.placeholder.options.completed'
+                  )}
+                </SelectItem>
               </SelectContent>
             </Select>
             <Badge variant="outline">
-              {filteredConsultations.length} consultation{filteredConsultations.length !== 1 ? 's' : ''}
+              {filteredConsultations.length} consultation
+              {filteredConsultations.length !== 1 ? 's' : ''}
             </Badge>
           </div>
         </CardContent>
@@ -120,7 +183,7 @@ export const ProfessionalConsultationDashboard: React.FC<ProfessionalConsultatio
         {loading ? (
           <Card>
             <CardContent className="p-8 text-center">
-              <p>Chargement des consultations...</p>
+              <p>{t('professionalDashboard.consultations.loading')}</p>
             </CardContent>
           </Card>
         ) : filteredConsultations.length === 0 ? (
@@ -128,14 +191,19 @@ export const ProfessionalConsultationDashboard: React.FC<ProfessionalConsultatio
             <CardContent className="p-8 text-center text-muted-foreground">
               <Calendar className="h-12 w-12 mx-auto mb-4 text-muted-foreground/30" />
               <p>Aucune consultation trouvée</p>
-              <p className="text-sm">Les consultations apparaîtront ici une fois créées</p>
+              <p className="text-sm">
+                Les consultations apparaîtront ici une fois créées
+              </p>
             </CardContent>
           </Card>
         ) : (
-          filteredConsultations.map((consultation) => {
+          filteredConsultations.map(consultation => {
             const status = getStatusBadge(consultation.status);
             return (
-              <Card key={consultation.id} className="hover:shadow-md transition-shadow">
+              <Card
+                key={consultation.id}
+                className="hover:shadow-md transition-shadow"
+              >
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div className="space-y-2">
@@ -159,13 +227,15 @@ export const ProfessionalConsultationDashboard: React.FC<ProfessionalConsultatio
 
                       {consultation.consultation_notes && (
                         <p className="text-sm text-muted-foreground">
-                          <strong>Notes:</strong> {consultation.consultation_notes}
+                          <strong>Notes:</strong>{' '}
+                          {consultation.consultation_notes}
                         </p>
                       )}
 
                       {consultation.duration_minutes && (
                         <p className="text-sm text-muted-foreground">
-                          <strong>Durée:</strong> {consultation.duration_minutes} minutes
+                          <strong>Durée:</strong>{' '}
+                          {consultation.duration_minutes} minutes
                         </p>
                       )}
                     </div>
@@ -175,12 +245,15 @@ export const ProfessionalConsultationDashboard: React.FC<ProfessionalConsultatio
                         {status.label}
                       </Badge>
 
-                      {(consultation.status === 'confirmed' || consultation.status === 'in_progress') && (
+                      {(consultation.status === 'confirmed' ||
+                        consultation.status === 'in_progress') && (
                         <Button
                           size="sm"
                           onClick={() => openConsultationChat(consultation.id)}
                         >
-                          {consultation.status === 'in_progress' ? 'Reprendre' : 'Démarrer'}
+                          {consultation.status === 'in_progress'
+                            ? 'Reprendre'
+                            : 'Démarrer'}
                           <ArrowRight className="h-3 w-3 ml-1" />
                         </Button>
                       )}
