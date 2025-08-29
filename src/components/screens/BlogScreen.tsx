@@ -1,38 +1,59 @@
-import { useState } from "react";
-import { Globe, Clock, ArrowRight, TrendingUp, Heart, Brain, Search, Bookmark, X, ExternalLink } from "lucide-react";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { useState } from 'react';
+import {
+  Globe,
+  Clock,
+  ArrowRight,
+  TrendingUp,
+  Heart,
+  Brain,
+  Search,
+  Bookmark,
+  X,
+  ExternalLink,
+} from 'lucide-react';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { useTranslation } from 'react-i18next';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@/components/ui/dialog';
 
 interface BlogScreenProps {}
 
 const BlogScreen = (props: BlogScreenProps) => {
   const { t } = useTranslation();
-  const [activeCategory, setActiveCategory] = useState(t('blog.categories.all'));
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedArticle, setSelectedArticle] = useState<typeof articles[0] | null>(null);
+  const [activeCategory, setActiveCategory] = useState(
+    t('blog.categories.all')
+  );
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedArticle, setSelectedArticle] = useState<
+    (typeof articles)[0] | null
+  >(null);
 
   const categories = [
-    t('blog.categories.all'), 
-    "Guides",
-    t('blog.categories.research'), 
-    t('blog.categories.nutrition'), 
-    t('blog.categories.mental'), 
-    t('blog.categories.innovation'), 
-    t('blog.categories.testimonials')
+    t('blog.categories.all'),
+    'Guides',
+    t('blog.categories.research'),
+    t('blog.categories.nutrition'),
+    t('blog.categories.mental'),
+    t('blog.categories.innovation'),
+    t('blog.categories.testimonials'),
   ];
 
   const articles = [
     {
       id: 7,
-      image: "🍽️",
-      category: "Guides",
-      readTime: "15 min",
-      title: "Guide d'alimentation pour personnes diabétiques",
-      excerpt: "Guide complet pour une alimentation équilibrée et adaptée au diabète. Découvrez les aliments recommandés, les portions, et les stratégies nutritionnelles...",
+      image: '🍽️',
+      category: t('blogScreen.article.id7.category'),
+      readTime: '15 min',
+      title: t('blogScreen.article.id7.title'),
+      excerpt: t('blogScreen.article.id7.excerpt'),
       content: `# Guide d'alimentation pour personnes diabétiques
 
 ## Introduction
@@ -136,19 +157,19 @@ Consultez votre médecin avant de prendre :
 
 ## Conclusion
 Une alimentation adaptée au diabète n'est pas restrictive mais équilibrée. Elle permet de profiter des plaisirs de la table tout en maintenant une glycémie stable. N'hésitez pas à consulter un nutritionniste spécialisé pour un plan personnalisé.`,
-      author: "Dr. Marie Dubois, Nutritionniste",
-      date: "2024-01-20",
-      source: "Guide DARE",
-      bgColor: "bg-green-100",
-      trending: true
+      author: `Dr. Marie Dubois, ${t('blogScreen.article.id7.authorTitle')}`,
+      date: '2024-01-20',
+      source: 'Guide DARE',
+      bgColor: 'bg-green-100',
+      trending: true,
     },
     {
       id: 8,
-      image: "📚",
-      category: "Guides", 
-      readTime: "20 min",
-      title: "Guide complet sur le diabète de type 1 et type 2",
-      excerpt: "Tout ce que vous devez savoir sur le diabète : définitions, symptômes, traitements, complications et gestion au quotidien...",
+      image: '📚',
+      category: t('blogScreen.article.id8.category'),
+      readTime: '20 min',
+      title: t('blogScreen.article.id8.title'),
+      excerpt: t('blogScreen.article.id8.excerpt'),
       content: `# Guide complet sur le diabète de type 1 et type 2
 
 ## Qu'est-ce que le diabète ?
@@ -332,19 +353,19 @@ Mêmes critères que le type 1, mais évolution plus lente.
 Le diabète est une maladie complexe mais gérable. Une prise en charge précoce et adaptée, associée à une bonne hygiène de vie, permet de prévenir les complications et de maintenir une qualité de vie optimale. L'éducation du patient et le soutien de l'équipe soignante sont essentiels pour une gestion réussie à long terme.
 
 N'hésitez jamais à poser des questions à votre équipe médicale et à participer activement à votre prise en charge.`,
-      author: "Dr. Pierre Martin, Endocrinologue",
-      date: "2024-01-18",
-      source: "Guide DARE",
-      bgColor: "bg-blue-100",
-      trending: true
+      author: `Dr. Pierre Martin, ${t('blogScreen.article.id8.authorTitle')}`,
+      date: '2024-01-18',
+      source: 'Guide DARE',
+      bgColor: 'bg-blue-100',
+      trending: true,
     },
     {
       id: 1,
-      image: "🧬",
-      category: "Recherches",
-      readTime: "6 min",
-      title: "Breakthrough : 83% des diabétiques type 1 libérés de l'insuline avec Zimislecel",
-      excerpt: "Une thérapie révolutionnaire par cellules souches permet à 83% des patients de ne plus avoir besoin d'injections d'insuline après un an...",
+      image: '🧬',
+      category: t('blogScreen.article.id1.category'),
+      readTime: '6 min',
+      title: t('blogScreen.article.id1.title'),
+      excerpt: t('blogScreen.article.id1.excerpt'),
       content: `Une percée médicale majeure vient d'être annoncée : le traitement Zimislecel, une thérapie par cellules souches, a permis à 83% des patients atteints de diabète de type 1 sévère d'arrêter complètement leurs injections d'insuline après une seule perfusion.
 
 L'étude, publiée ce mois-ci, a suivi 12 volontaires pendant un an. Dix d'entre eux n'ont plus eu besoin d'insuline, tandis que les deux autres ont pu réduire drastiquement leurs doses. Aucun épisode d'hypoglycémie sévère n'a été rapporté.
@@ -354,19 +375,19 @@ L'étude, publiée ce mois-ci, a suivi 12 volontaires pendant un an. Dix d'entre
 Le traitement utilise des cellules souches manipulées pour devenir des cellules d'îlots pancréatiques, responsables de la production d'insuline. Cette approche représente l'aboutissement de décennies de recherche sur la médecine régénérative.
 
 La FDA examine actuellement ce traitement pour une approbation accélérée, ce qui pourrait révolutionner la prise en charge du diabète de type 1 dès 2026.`,
-      author: "Dr. Jennifer Martinez",
-      date: "2025-08-20",
-      source: "Nature Medicine",
-      bgColor: "bg-purple-100",
-      trending: true
+      author: 'Dr. Jennifer Martinez',
+      date: '2025-08-20',
+      source: 'Nature Medicine',
+      bgColor: 'bg-purple-100',
+      trending: true,
     },
     {
       id: 2,
-      image: "🩹",
-      category: "Innovation",
-      readTime: "5 min",
-      title: "Gel 'intelligent' révolutionnaire : guérison des plaies diabétiques en quelques jours",
-      excerpt: "Un nouveau gel restaure la circulation sanguine et accélère dramatiquement la cicatrisation des plaies diabétiques chroniques...",
+      image: '🩹',
+      category: t('blogScreen.article.id2.category'),
+      readTime: '5 min',
+      title: t('blogScreen.article.id2.title'),
+      excerpt: t('blogScreen.article.id2.excerpt'),
       content: `Une innovation majeure dans le traitement des plaies diabétiques vient d'être dévoilée : un gel "intelligent" qui combine des vésicules cicatrisantes microscopiques avec un hydrogel spécialisé, restaurant la circulation sanguine et accélérant la guérison de façon spectaculaire.
 
 Cette thérapie révolutionnaire, développée par une équipe internationale, utilise des messagers de guérison encapsulés dans des nanovésicules qui se libèrent progressivement au contact de la plaie. Le gel stimule la formation de nouveaux vaisseaux sanguins tout en protégeant la zone blessée.
@@ -380,19 +401,19 @@ Les résultats des tests cliniques sont impressionnants :
 "Cette technologie va sauver des milliers de membres chaque année", déclare le Dr. Sarah Chen, dermatologue spécialisée. "Nous passons de semaines de traitement à quelques jours seulement."
 
 Le gel sera disponible dans les hôpitaux européens dès septembre 2025, après validation réglementaire.`,
-      author: "Dr. Sarah Chen",
-      date: "2025-08-15",
-      source: "Burns & Trauma Journal",
-      bgColor: "bg-orange-100",
-      trending: true
+      author: 'Dr. Sarah Chen',
+      date: '2025-08-15',
+      source: 'Burns & Trauma Journal',
+      bgColor: 'bg-orange-100',
+      trending: true,
     },
     {
       id: 3,
-      image: "🔬",
-      category: "Recherches",
-      readTime: "7 min",
-      title: "Première transplantation d'îlots génétiquement modifiés sans immunosuppression",
-      excerpt: "Pour la première fois, des cellules d'îlots pancréatiques génétiquement éditées ont été transplantées avec succès sans médicaments anti-rejet...",
+      image: '🔬',
+      category: t('blogScreen.article.id3.category'),
+      readTime: '7 min',
+      title: t('blogScreen.article.id3.title'),
+      excerpt: t('blogScreen.article.id3.excerpt'),
       content: `Une percée historique vient d'être réalisée : pour la première fois au monde, des chercheurs ont réussi à transplanter des cellules d'îlots pancréatiques génétiquement modifiées chez un patient diabétique de type 1, sans avoir recours à des médicaments immunosuppresseurs.
 
 Cette étude de phase 1, menée sur un seul participant, a montré des résultats prometteurs après 12 semaines. Les îlots transplantés continuent de produire de l'insuline de manière stable, sans rejet par le système immunitaire.
@@ -408,19 +429,19 @@ L'innovation clé réside dans l'édition génétique des cellules donneuses :
 Cette approche pourrait révolutionner le traitement du diabète de type 1, offrant une alternative durable aux injections d'insuline sans les complications des thérapies immunosuppressives traditionnelles.
 
 Les prochaines phases incluront davantage de participants pour confirmer l'efficacité à long terme.`,
-      author: "Dr. Michael Rodriguez",
-      date: "2025-08-10",
-      source: "The Lancet",
-      bgColor: "bg-teal-100",
-      trending: true
+      author: 'Dr. Michael Rodriguez',
+      date: '2025-08-10',
+      source: 'The Lancet',
+      bgColor: 'bg-teal-100',
+      trending: true,
     },
     {
       id: 4,
-      image: "💊",
-      category: "Innovation",
-      readTime: "7 min",
-      title: "Insuline intelligente : premiers essais cliniques réussis",
-      excerpt: "Une insuline qui s'adapte automatiquement au taux de glucose sanguin montre des résultats prometteurs lors des tests...",
+      image: '💊',
+      category: t('blogScreen.article.id4.category'),
+      readTime: '7 min',
+      title: t('blogScreen.article.id4.title'),
+      excerpt: t('blogScreen.article.id1.excerpt'),
       content: `Une équipe internationale de chercheurs a développé une "insuline intelligente" capable de s'adapter automatiquement aux variations de glucose sanguin. Cette innovation pourrait révolutionner le traitement du diabète en éliminant les risques d'hypoglycémie.
 
 Le principe repose sur des nanoparticules qui libèrent l'insuline uniquement en présence de glucose élevé. Les premiers essais cliniques sur 45 patients diabétiques de type 1 montrent des résultats exceptionnels :
@@ -432,19 +453,19 @@ Le principe repose sur des nanoparticules qui libèrent l'insuline uniquement en
 "C'est le Saint Graal du traitement diabétique", explique le Dr. Li Wei, responsable de l'étude. "Cette insuline 'pense' à la place du patient."
 
 La commercialisation pourrait débuter dès 2026 après validation des essais de phase III.`,
-      author: "Dr. Li Wei",
-      date: "2024-01-08",
-      source: "The Lancet",
-      bgColor: "bg-orange-100",
-      trending: true
+      author: 'Dr. Li Wei',
+      date: '2024-01-08',
+      source: 'The Lancet',
+      bgColor: 'bg-orange-100',
+      trending: true,
     },
     {
       id: 5,
-      image: "👥",
-      category: "Témoignages",
-      readTime: "4 min",
-      title: "Marathon avec le diabète : l'exploit de James Thompson à 65 ans",
-      excerpt: "Diabétique depuis 30 ans, James Thompson termine le marathon de Boston et inspire des milliers de personnes...",
+      image: '👥',
+      category: t('blogScreen.article.id5.category'),
+      readTime: '4 min',
+      title: t('blogScreen.article.id5.title'),
+      excerpt: t('blogScreen.article.id5.excerpt'),
       content: `À 65 ans et diabétique depuis 30 ans, James Thompson a réalisé l'exploit de terminer le prestigieux marathon de Boston en 3h42min. Son parcours inspire désormais des milliers de personnes à travers le monde.
 
 "Quand on m'a diagnostiqué le diabète à 35 ans, je pensais que ma vie sportive était finie", confie James. "J'avais tort. Le diabète n'est pas une limite, c'est un défi à relever."
@@ -458,19 +479,19 @@ Sa routine d'entraînement inclut :
 "James prouve que le diabète bien géré n'empêche aucun rêve", déclare son médecin. Son histoire fait désormais l'objet d'un documentaire et d'un livre à paraître.
 
 Il prépare maintenant l'Ironman de Hawaï pour ses 66 ans.`,
-      author: "Reporter Sport",
-      date: "2024-01-05",
-      source: "Diabetes Today",
-      bgColor: "bg-yellow-100",
-      trending: false
+      author: 'Reporter Sport',
+      date: '2024-01-05',
+      source: 'Diabetes Today',
+      bgColor: 'bg-yellow-100',
+      trending: false,
     },
     {
       id: 6,
-      image: "📱",
-      category: "Innovation", 
-      readTime: "6 min",
-      title: "IA prédictive 2025 : prévention d'hypoglycémies avec 97% de précision",
-      excerpt: "La nouvelle génération d'IA médicale atteint une précision de 97% dans la prédiction des crises, avec alerte 45 minutes à l'avance...",
+      image: '📱',
+      category: t('blogScreen.article.id6.category'),
+      readTime: '6 min',
+      title: t('blogScreen.article.id6.title'),
+      excerpt: t('blogScreen.article.id6.excerpt'),
       content: `L'intelligence artificielle médicale franchit un nouveau cap en 2025 : la dernière version de l'algorithme prédictif développé conjointement par Google Health et l'Université de Stanford atteint une précision de 97% dans la prévention des hypoglycémies, avec des alertes jusqu'à 45 minutes à l'avance.
 
 Cette IA de nouvelle génération analyse désormais plus de 150 biomarqueurs en temps réel :
@@ -489,17 +510,21 @@ Déployée sur 15,000 patients dans 12 pays, l'IA montre des résultats exceptio
 "Nous entrons dans l'ère de la prévention totale", déclare le Dr. Lisa Wang, directrice de Google Health Diabetes. "L'hypoglycémie sévère devient un événement évitable."
 
 L'application DARE AI sera la première à intégrer cette technologie dès septembre 2025, avec certification CE et FDA approuvée.`,
-      author: "Dr. Lisa Wang",
-      date: "2025-08-18",
-      source: "Google Health Research",
-      bgColor: "bg-indigo-100",
-      trending: true
-    }
+      author: 'Dr. Lisa Wang',
+      date: '2025-08-18',
+      source: 'Google Health Research',
+      bgColor: 'bg-indigo-100',
+      trending: true,
+    },
   ];
 
   const filteredArticles = articles.filter(article => {
-    const matchesCategory = activeCategory === t('blog.categories.all') || activeCategory === "Tous" || article.category === activeCategory;
-    const matchesSearch = searchQuery === "" || 
+    const matchesCategory =
+      activeCategory === t('blog.categories.all') ||
+      activeCategory === 'Tous' ||
+      article.category === activeCategory;
+    const matchesSearch =
+      searchQuery === '' ||
       article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       article.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
@@ -513,7 +538,9 @@ L'application DARE AI sera la première à intégrer cette technologie dès sept
           <Globe className="w-6 h-6 text-medical-teal" />
           <span className="text-medical-teal">DARE</span> News
         </h1>
-        <p className="text-muted-foreground">Actualités internationales sur le diabète</p>
+        <p className="text-muted-foreground">
+          Actualités internationales sur le diabète
+        </p>
       </div>
 
       {/* Barre de recherche */}
@@ -522,17 +549,17 @@ L'application DARE AI sera la première à intégrer cette technologie dès sept
         <Input
           placeholder="Rechercher des actualités..."
           value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          onChange={e => setSearchQuery(e.target.value)}
           className="pl-10"
         />
       </div>
 
       {/* Filtres catégories */}
       <div className="flex gap-2 overflow-x-auto pb-2">
-        {categories.map((category) => (
+        {categories.map(category => (
           <Button
             key={category}
-            variant={activeCategory === category ? "default" : "outline"}
+            variant={activeCategory === category ? 'default' : 'outline'}
             size="sm"
             onClick={() => setActiveCategory(category)}
             className="whitespace-nowrap"
@@ -544,11 +571,16 @@ L'application DARE AI sera la première à intégrer cette technologie dès sept
 
       {/* Articles */}
       <div className="space-y-4">
-        {filteredArticles.map((article) => (
-          <Card key={article.id} className="border-l-4 border-l-medical-teal overflow-hidden">
+        {filteredArticles.map(article => (
+          <Card
+            key={article.id}
+            className="border-l-4 border-l-medical-teal overflow-hidden"
+          >
             <CardHeader className="pb-3">
               <div className="flex items-start gap-3">
-                <div className={`w-16 h-16 rounded-lg ${article.bgColor} flex items-center justify-center text-2xl relative`}>
+                <div
+                  className={`w-16 h-16 rounded-lg ${article.bgColor} flex items-center justify-center text-2xl relative`}
+                >
                   {article.image}
                   {article.trending && (
                     <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
@@ -559,7 +591,10 @@ L'application DARE AI sera la première à intégrer cette technologie dès sept
                     <Badge variant="secondary" className="text-xs">
                       {article.category}
                     </Badge>
-                    <Badge variant="outline" className="text-xs flex items-center gap-1">
+                    <Badge
+                      variant="outline"
+                      className="text-xs flex items-center gap-1"
+                    >
                       <Clock className="w-3 h-3" />
                       {article.readTime}
                     </Badge>
@@ -586,10 +621,16 @@ L'application DARE AI sera la première à intégrer cette technologie dès sept
               <div className="flex items-center justify-between text-xs text-muted-foreground">
                 <div className="space-y-1">
                   <div>Par {article.author}</div>
-                  <div>{article.date} • {article.source}</div>
+                  <div>
+                    {article.date} • {article.source}
+                  </div>
                 </div>
-                <Button size="sm" className="bg-medical-teal hover:bg-medical-teal/90" onClick={() => setSelectedArticle(article)}>
-                  Lire
+                <Button
+                  size="sm"
+                  className="bg-medical-teal hover:bg-medical-teal/90"
+                  onClick={() => setSelectedArticle(article)}
+                >
+                  {t('blogScreen.button')}
                   <ArrowRight className="w-3 h-3 ml-1" />
                 </Button>
               </div>
@@ -599,7 +640,10 @@ L'application DARE AI sera la première à intégrer cette technologie dès sept
       </div>
 
       {/* Modal pour afficher l'article complet */}
-      <Dialog open={!!selectedArticle} onOpenChange={() => setSelectedArticle(null)}>
+      <Dialog
+        open={!!selectedArticle}
+        onOpenChange={() => setSelectedArticle(null)}
+      >
         <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
           {selectedArticle && (
             <>
@@ -608,7 +652,10 @@ L'application DARE AI sera la première à intégrer cette technologie dès sept
                   <Badge variant="secondary" className="text-xs">
                     {selectedArticle.category}
                   </Badge>
-                  <Badge variant="outline" className="text-xs flex items-center gap-1">
+                  <Badge
+                    variant="outline"
+                    className="text-xs flex items-center gap-1"
+                  >
                     <Clock className="w-3 h-3" />
                     {selectedArticle.readTime}
                   </Badge>
@@ -623,23 +670,31 @@ L'application DARE AI sera la première à intégrer cette technologie dès sept
                   {selectedArticle.title}
                 </DialogTitle>
                 <DialogDescription className="text-sm text-muted-foreground">
-                  Par {selectedArticle.author} • {selectedArticle.date} • {selectedArticle.source}
+                  Par {selectedArticle.author} • {selectedArticle.date} •{' '}
+                  {selectedArticle.source}
                 </DialogDescription>
               </DialogHeader>
-              
+
               <div className="space-y-4">
-                <div className={`w-20 h-20 rounded-lg ${selectedArticle.bgColor} flex items-center justify-center text-3xl mx-auto`}>
+                <div
+                  className={`w-20 h-20 rounded-lg ${selectedArticle.bgColor} flex items-center justify-center text-3xl mx-auto`}
+                >
                   {selectedArticle.image}
                 </div>
-                
+
                 <div className="prose prose-sm max-w-none">
-                  {selectedArticle.content.split('\n\n').map((paragraph, index) => (
-                    <p key={index} className="text-foreground leading-relaxed mb-4">
-                      {paragraph}
-                    </p>
-                  ))}
+                  {selectedArticle.content
+                    .split('\n\n')
+                    .map((paragraph, index) => (
+                      <p
+                        key={index}
+                        className="text-foreground leading-relaxed mb-4"
+                      >
+                        {paragraph}
+                      </p>
+                    ))}
                 </div>
-                
+
                 <div className="flex gap-2 pt-4 border-t">
                   <Button variant="outline" size="sm" className="flex-1">
                     <Bookmark className="w-4 h-4 mr-2" />
@@ -660,12 +715,15 @@ L'application DARE AI sera la première à intégrer cette technologie dès sept
       <Card className="bg-gradient-to-r from-medical-teal/5 to-medical-teal/10 border-medical-teal/20">
         <CardContent className="p-4 text-center">
           <Heart className="w-8 h-8 text-medical-teal mx-auto mb-2" />
-          <h3 className="font-semibold text-foreground mb-1">Sources fiables</h3>
+          <h3 className="font-semibold text-foreground mb-1">
+            {t('blogScreen.sources.title')}
+          </h3>
           <p className="text-sm text-muted-foreground mb-3">
-            Toutes nos actualités sont vérifiées et proviennent de sources médicales reconnues internationalement
+            {t('blogScreen.sources.subtitle')}
           </p>
           <div className="flex flex-wrap justify-center gap-2 text-xs text-muted-foreground">
-            <span>Nature Medicine</span> • <span>The Lancet</span> • <span>WHO</span> • <span>ADA</span>
+            <span>Nature Medicine</span> • <span>The Lancet</span> •{' '}
+            <span>WHO</span> • <span>ADA</span>
           </div>
         </CardContent>
       </Card>
