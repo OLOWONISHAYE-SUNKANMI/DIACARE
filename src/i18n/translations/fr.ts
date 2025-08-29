@@ -1177,4 +1177,284 @@ export const fr = {
     testAccess: 'Accès test professionnel',
     loginButton: 'Connexion',
   },
+
+  //professionalDashboard
+  professionalDashboard: {
+    title: 'Professionnel',
+    study: 'Endocrinologie',
+    mode: 'Mode Démo',
+    logout: 'Déconnexion',
+    stats: {
+      title1: 'Patients suivis',
+      title2: 'Consultations ce mois',
+      title3: 'Rapports générés',
+      title4: 'Temps moyen / consultation',
+      compared: 'vs mois dernier',
+    },
+
+    tableHeaderSections: {
+      revenue: 'Revenus',
+      settings: 'Paramètres',
+    },
+
+    overview: {
+      heading: 'Aperçu',
+      recentPatients: {
+        title: 'Patients récents',
+        firstPatient: {
+          lastvisit: 'Il y a 2 heures',
+          status: 'stable',
+        },
+        secondPatient: {
+          lastvisit: 'Hier',
+          status: 'amélioration',
+        },
+        ThirdPatient: {
+          lastvisit: 'Il y a 3 jours',
+          status: 'amélioration',
+        },
+        button: 'Voir tous les patients',
+      },
+
+      quickActions: {
+        title: 'Actions rapides',
+        scheduleAppointment: {
+          title: 'Planifier un rendez-vous',
+          subtitle: 'Planifier un rendez-vous',
+          patient: {
+            placeholder: 'Sélectionner un patient',
+          },
+          date: {
+            placeholder: 'Choisir une date',
+          },
+          time: {
+            title: 'Heure',
+            placeholder: "Sélectionner l'heure",
+          },
+          consultationType: {
+            title: 'Type de consultation',
+            placeholder: {
+              title: 'Sélectionner le type',
+              routine: 'Suivi de routine',
+              urgent: 'Consultation urgente',
+              teleconsultation: 'Téléconsultation',
+              first: 'Première consultation',
+            },
+          },
+          notes: {
+            title: 'optional',
+            placeholder: 'Consultation observations...',
+          },
+          button1: 'Cancel',
+          button2: 'Programmer',
+        },
+
+        //
+        reportGenerator: {
+          title: 'Générer un rapport',
+          subtitle: 'Générer un rapport',
+          reportType: {
+            title: 'Type de rapport',
+            placeholder: {
+              title: 'Sélectionner un type',
+              monthly: 'Rapport mensuel',
+              patient: 'Rapport patient',
+              financial: 'Rapport financier',
+              activity: "Rapport d'activité",
+            },
+          },
+          timeframe: {
+            title: 'Période',
+            placeholder: {
+              title: 'Sélectionner la période',
+              lastWeek: 'Semaine dernière',
+              lastMonth: 'Mois dernier',
+              lastQuarter: 'Trimestre dernier',
+              custom: 'Période personnalisée',
+            },
+          },
+          format: {
+            placeholder: 'Sélectionner le format',
+          },
+          button1: 'Fermer',
+          button2: 'Générer',
+        },
+
+        //
+        addPatient: {
+          title: 'Ajouter un patient',
+          subtitle: 'Ajouter un nouveau patient',
+          name: {
+            firstName: 'Prénom',
+            lastName: 'Nom de famille',
+          },
+          number: 'Téléphone',
+
+          diabetesTypes: {
+            title: 'Type de diabète',
+            placeholder: {
+              title: 'Sélectionner le type',
+              type1: 'Type 1',
+              type2: 'Type 2',
+              gestational: 'Gestationnel',
+            },
+          },
+          medicalNotes: {
+            title: 'Notes médicales',
+            placeholder: 'Antécédents médicaux, allergies, etc.',
+          },
+          button1: 'Fermer',
+          button2: 'Ajouter',
+        },
+
+        //accountSetting
+        accountSetting: {
+          title: 'Paramètres du compte',
+          currentStatus: {
+            title: 'Disponibilité',
+            placeholder: 'Statut actuel',
+            options: {
+              available: 'Disponible',
+              busy: 'Occupé',
+              offline: 'Hors ligne',
+            },
+          },
+
+          notifications: {
+            placeholder: 'Préférences de notification',
+            options: {
+              all: 'Toutes les notifications',
+              important: 'Uniquement les importantes',
+              none: 'Aucune notification',
+            },
+          },
+
+          consultationFee: 'Tarif de consultation',
+          button1: 'Fermer',
+          button2: 'Enregistrer',
+        },
+      },
+    },
+
+    //patient
+    patients: {
+      calendar: 'Calendrier',
+      title: 'Liste des patients',
+      tableHeading: {
+        first: 'Patient',
+        second: 'Type de diabète',
+        third: 'Dernière consultation',
+        fourth: 'Dernière glycémie',
+        fifth: 'Statut',
+      },
+      lastBloodGlucose: {
+        first: 'Stable',
+        second: 'amélioration',
+        third: 'attention',
+        fourth: 'Stable',
+      },
+      recentNotes: {
+        title: 'Notes récentes',
+        people: {
+          first:
+            'Glycémie bien contrôlée. Continuer le traitement actuel. Prochaine consultation dans 1 semaine.',
+          second:
+            "Amélioration significative de l'HbA1c. Réduction de la dose d'insuline recommandée.",
+          third:
+            'Pics fréquents de glycémie. Revoir l’alimentation et ajuster le traitement.',
+          fourth: '',
+        },
+      },
+      dropdownOptions: {
+        first: 'Voir le dossier',
+        second: 'Envoyer un message',
+        third: 'Téléconsultation',
+        fourth: 'Appeler',
+        fifth: 'Modifier le profil',
+      },
+
+      //
+      planning: {
+        title: 'Planning des consultations',
+        tableHeading: {
+          time: 'Heure',
+          duration: 'Durée',
+          status: 'Statut',
+        },
+        type: {
+          followUp: 'Suivi routine',
+          urgent: 'Consultation urgente',
+          teleconsultation: 'Téléconsultation',
+          first: 'Première consultation',
+        },
+        status: {
+          scheduled: 'Planifié',
+          completed: 'Terminé',
+          cancelled: 'Annulé',
+        },
+        actions: {
+          start: 'Commencer la consultation',
+          view: 'Voir les détails',
+          edit: 'Modifier',
+          cancel: 'Annuler',
+        },
+      },
+
+      //calender
+      calendarScreen: {
+        title: 'Calendrier',
+        consulationOf: 'Consultations du',
+        scheduled: "Aucune consultation prévue pour aujourd'hui",
+      },
+    },
+
+    //consulations
+    consultations: {
+      title: 'Mes consultations',
+      placeholder: {
+        title: 'Filtrer par statut',
+        options: {
+          all: 'Toutes',
+          pending: 'En attente',
+          active: 'Actives',
+          completed: 'Terminées',
+        },
+      },
+      loading: 'Chargement des consultations...',
+    },
+
+    revenue: {
+      title: 'Revenu',
+      thisMonth: 'Ce mois-ci',
+      revenueThisMonth: 'Revenu net ce mois-ci',
+      tableHeader: {
+        grossAmount: 'Montant Brut',
+        status: 'Statut',
+      },
+      consultationType: {
+        one: 'Consultation endocrinologie',
+        two: 'Suivi diabète',
+        three: 'Consultation endocrinologie',
+        four: 'Téléconsultation',
+        five: 'Consultation endocrinologie',
+        six: 'Suivi hormonal',
+      },
+      status: {
+        paid: 'Payé',
+        processing: 'En traitement',
+        pending: 'En attente',
+      },
+      consultationRevenue: {
+        title: 'Revenu par consultation',
+        writeup:
+          'Le revenu est calculé automatiquement selon les tarifs par profession définis dans le système. Chaque consultation terminée ajoute le montant correspondant à votre revenu.',
+      },
+    },
+
+    //accountSettings
+    accountSettings: {
+      title: 'Paramètres du compte',
+      writeup: 'Paramètres du compte en cours de développement...',
+    },
+  },
 };
