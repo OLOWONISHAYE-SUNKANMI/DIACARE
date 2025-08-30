@@ -60,6 +60,26 @@ const Index = () => {
     PerformanceOptimizer.getInstance()
   );
 
+   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' ? window.innerWidth < 768 : false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    const handleOpenSidebar = () => {
+      setIsSidebarOpen(true);
+    };
+
+    window.addEventListener('resize', handleResize);
+    document.addEventListener('openSidebar', handleOpenSidebar);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      document.removeEventListener('openSidebar', handleOpenSidebar);
+    };
+  }, []);
   const {
     user,
     signOut,
@@ -262,7 +282,8 @@ const Index = () => {
     //   </div>
     // </GlucoseProvider>
     <GlucoseProvider>
-      <div className="h-screen w-full bg-background flex flex-col">
+      <div className="h-screen w-full bg-background flex flex-col reative" >
+        {/* ✅ Fixed Header */}
         <div className="fixed top-0 left-0 right-0 z-50">
           <Header
             user={user}
@@ -280,19 +301,23 @@ const Index = () => {
           {renderScreen()}
         </div>
 
-        {/* ✅ Fixed Bottom Navigation */}
-        {activeTab !== 'payment' && (
-          <BottomNavigation activeTab={activeTab} onTabChange={setActiveTab} />
-        )}
-
-        {/* ✅ Floating Button (above bottom nav) */}
-        <Button
+        {/* <Button
           onClick={handleQuickAdd}
-          className="fixed bottom-20 right-4 w-14 h-14 rounded-full bg-medical-teal hover:bg-medical-teal/90 shadow-xl hover:shadow-2xl transition-all duration-200 hover:scale-110 z-50 ring-4 ring-medical-teal/20"
+          className="absolute bottom-20 right-0 w-14 h-14 rounded-full bg-medical-teal hover:bg-medical-teal/90 shadow-xl hover:shadow-2xl transition-all duration-200 hover:scale-110 z-50 ring-4 ring-medical-teal/20"
           size="icon"
         >
           <Plus className="w-6 h-6" />
-        </Button>
+        </Button> */}
+        {/* ✅ Fixed Bottom Navigation */}
+        
+        {activeTab !== 'payment' && (
+          <div className="hidden md:block">
+
+          <BottomNavigation activeTab={activeTab} onTabChange={setActiveTab} />
+          </div>
+        )}
+
+        {/* ✅ Floating Button (above bottom nav) */}
       </div>
     </GlucoseProvider>
   );
