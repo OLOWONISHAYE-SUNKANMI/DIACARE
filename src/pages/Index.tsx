@@ -302,13 +302,13 @@ const Index = () => {
           {renderScreen()}
         </div>
 
-        {/* <Button
+        <Button
           onClick={handleQuickAdd}
           className="absolute bottom-20 right-0 w-14 h-14 rounded-full bg-medical-teal hover:bg-medical-teal/90 shadow-xl hover:shadow-2xl transition-all duration-200 hover:scale-110 z-50 ring-4 ring-medical-teal/20"
           size="icon"
         >
           <Plus className="w-6 h-6" />
-        </Button> */}
+        </Button>
         {/* ✅ Fixed Bottom Navigation */}
         
         {activeTab !== 'payment' && (
