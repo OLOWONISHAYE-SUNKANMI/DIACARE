@@ -68,7 +68,7 @@ interface HeaderProps {
   onTabChange?: (tab: string) => void;
 }
 
-const Header = ({ user, onLogout, isProfessional, professionalData, onTabChange }: HeaderProps) => {
+const Header = ({ user, onLogout, isProfessional, professionalData, onTabChange, activeTab, }: HeaderProps) => {
   const { t } = useTranslation();
   const { isTestMode, toggleTestMode } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -129,10 +129,7 @@ const Header = ({ user, onLogout, isProfessional, professionalData, onTabChange 
           {tabs.map(({ id, label, icon: Icon }) => (
             <li key={id}>
               <button
-                onClick={() => {
-                  onTabChange?.(id);
-                  setMenuOpen(false);
-                }}
+              onClick={() => onTabChange(id)}
                 className="w-full flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-100 transition"
               >
                 <Icon className="w-5 h-5 text-medical-teal" />
