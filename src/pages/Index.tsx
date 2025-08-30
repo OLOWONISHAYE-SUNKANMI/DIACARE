@@ -290,6 +290,7 @@ const Index = () => {
             onLogout={handleLogout}
             isProfessional={isProfessional}
             professionalData={professionalData}
+            activeTab={activeTab} onTabChange={setActiveTab}
           />
         </div>
 
