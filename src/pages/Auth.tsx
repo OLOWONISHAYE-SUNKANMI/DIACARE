@@ -578,7 +578,7 @@ const AuthPage = () => {
                           </Button>
                         </div> */}
                         <div className="w-full rounded-md border focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2"                                                                                                                                                                                                         >
-                          <div className="relative flex items-center w-full ">
+                          <div className="relative flex items-center w-full bg-background">
                             {/* Left lock icon */}
                             <Lock className="absolute left-3 h-4 w-4 text-muted-foreground pointer-events-none" />
 
