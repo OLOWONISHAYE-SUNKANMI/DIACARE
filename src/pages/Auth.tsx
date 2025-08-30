@@ -567,7 +567,7 @@ const AuthPage = () => {
                             type="button"
                             variant="ghost"
                             size="sm"
-                            className="absolute right-0 top-0 h-full px-3"
+                            className="absolute  ml-96 right-7 bottom-7 h-full px-3"
                             onClick={() => setShowPassword(!showPassword)}
                           >
                             {showPassword ? (
