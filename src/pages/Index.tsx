@@ -309,8 +309,12 @@ const Index = () => {
           <Plus className="w-6 h-6" />
         </Button> */}
         {/* ✅ Fixed Bottom Navigation */}
+        
         {activeTab !== 'payment' && (
+          <div className="hidden md:block">
+
           <BottomNavigation activeTab={activeTab} onTabChange={setActiveTab} />
+          </div>
         )}
 
         {/* ✅ Floating Button (above bottom nav) */}
