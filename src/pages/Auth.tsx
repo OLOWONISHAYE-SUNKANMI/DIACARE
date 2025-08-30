@@ -447,7 +447,11 @@ const AuthPage = () => {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <div className="w-20 h-20 bg-gradient-medical rounded-full mx-auto mb-4 flex items-center justify-center shadow-lg">
-              <img src='https://res.cloudinary.com/depeqzb6z/image/upload/v1756502933/Layer_0_aezqw1.png' className="w-15 h-15 text-primary-foreground"  alt='logo'/>
+            <img
+              src="https://res.cloudinary.com/depeqzb6z/image/upload/v1756502933/Layer_0_aezqw1.png"
+              className="w-15 h-15 text-primary-foreground"
+              alt="logo"
+            />
           </div>
           <h1 className="text-3xl font-bold text-foreground mb-4">
             {t('appName')}
@@ -543,7 +547,7 @@ const AuthPage = () => {
                         <Label htmlFor="patient-signin-password">
                           {t('auth.password')}
                         </Label>
-                        <div className="relative">
+                        {/* <div className="relative">
                           <Lock className="absolute left-3 top-7 h-4 w-4 text-muted-foreground" />
                           <Input
                             id="patient-signin-password"
@@ -572,8 +576,45 @@ const AuthPage = () => {
                               <Eye className="h-4 w-4" />
                             )}
                           </Button>
+                        </div> */}
+                        <div className="w-full rounded-md border focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2"                                                                                                                                                                                                         >
+                          <div className="relative flex items-center w-full ">
+                            {/* Left lock icon */}
+                            <Lock className="absolute left-3 h-4 w-4 text-muted-foreground pointer-events-none" />
+
+                            {/* Input field */}
+                            <Input
+                              id="patient-signin-password"
+                              type={showPassword ? 'text' : 'password'}
+                              placeholder={t('auth.password')}
+                              value={patientSignInData.password}
+                              onChange={e =>
+                                setPatientSignInData(prev => ({
+                                  ...prev,
+                                  password: e.target.value,
+                                }))
+                              }
+                              className="w-full pl-10 pr-10 border-0 focus:ring-0 focus-visible:ring-0"
+                              required
+                            />
+
+                            {/* Right eye icon */}
+                            <button
+                              type="button"
+                              onClick={() => setShowPassword(!showPassword)}
+                              className="absolute right-3 text-muted-foreground"
+                            >
+                              {showPassword ? (
+                                <EyeOff className="h-4 w-4" />
+                              ) : (
+                                <Eye className="h-4 w-4" />
+                              )}
+                            </button>
+                          </div>
                         </div>
+                        
                       </div>
+                      
 
                       <Button
                         type="submit"
@@ -708,7 +749,10 @@ const AuthPage = () => {
               <TabsContent value="professional" className="mt-6">
                 <div className="text-center mb-4">
                   <div className="w-12 h-12 bg-medical-green-light rounded-full mx-auto mb-2 flex items-center justify-center">
-                   <img src='https://res.cloudinary.com/depeqzb6z/image/upload/v1756502933/Layer_0_aezqw1.png' alt='logo' />
+                    <img
+                      src="https://res.cloudinary.com/depeqzb6z/image/upload/v1756502933/Layer_0_aezqw1.png"
+                      alt="logo"
+                    />
                   </div>
                   <h3 className="font-semibold text-foreground">
                     {t('professionalLoginCard.title')}
