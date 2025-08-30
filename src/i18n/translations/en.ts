@@ -51,7 +51,7 @@ export const en = {
       avgGlucose: 'Average glucose',
     },
     advice: {
-      title: '💡 Personalized DiabCare advice',
+      title: '💡 Personalized Klukoo advice',
       example:
         'Excellent adherence this week! Your late afternoon glucose levels are slightly elevated. Consider adjusting your 3 PM snack or advancing your Humalog injection by 10 minutes.',
     },
@@ -143,7 +143,7 @@ export const en = {
 
   // Blog/News Screen - COMPLETE
   blog: {
-    title: 'DiabCare News',
+    title: 'Klukoo News',
     subtitle: 'News and advice on diabetes',
     readMore: 'Read',
     readFull: 'Read full article',
@@ -235,7 +235,7 @@ export const en = {
     loading: 'Loading...',
     signInTitle: 'Sign In',
     signUpTitle: 'Sign Up',
-    description: 'Access your DiabCare account',
+    description: 'Access your Klukoo account',
     appSlogan: 'African Diabetes & Excellence Resources',
     patient: 'Patient',
     professional: 'Professional',
@@ -279,10 +279,10 @@ export const en = {
     loginSuccess: 'Login successful!',
     welcomePatient: 'Welcome to your patient space.',
     registrationSuccess: 'Registration successful!',
-    choosePlan: 'Choose your DiaCare plan',
+    choosePlan: 'Choose your Klukoo plan',
     confirmEmail: 'Check your email to confirm your account.',
     familyAccessGranted: 'Family access granted!',
-    welcomeFamily: 'Welcome to the DiaCare family space.',
+    welcomeFamily: 'Welcome to the Klukoo family space.',
     professionalLoginSuccess: 'Professional login successful!',
     welcomeProfessional: 'Welcome to your professional space.',
   },
@@ -393,10 +393,10 @@ export const en = {
 
   // Home Screen
   homeScreen: {
-    mission: 'DiabCare Mission',
+    mission: 'Klukoo Mission',
 
-    darePackage: 'DiabCare Package',
-    completePlan: 'DiabCare Complete',
+    darePackage: 'Klukoo Package',
+    completePlan: 'Klukoo Complete',
     premium: 'PREMIUM',
     monthlyPrice: 'CFA F/month',
     healthPriceless: 'Your health is priceless',
@@ -405,8 +405,8 @@ export const en = {
     clarityCharts: 'Clarity-style charts',
     advancedCalculator: 'Advanced dose calculator',
     familySupport: 'Family support',
-    aiAssistant: 'DiabCare AI Assistant',
-    startTracking: 'Start my DiabCare tracking',
+    aiAssistant: 'Klukoo AI Assistant',
+    startTracking: 'Start my Klukoo tracking',
     freeTrial: '✨ 7-day free trial',
     cancelAnytime: 'Cancel anytime • Support included',
     lastReading: 'Today 2:30 PM',
@@ -423,7 +423,7 @@ export const en = {
   // Profile Screen
   profileScreen: {
     years: 'years old',
-    yearsWithDare: 'Years with DiabCare',
+    yearsWithDare: 'Years with Klukoo',
     glucoseMeasures: 'Glucose measurements',
     adherence: 'Adherence',
     personalInfo: 'Personal Information',
@@ -461,7 +461,7 @@ export const en = {
 
   // Chat Screen
   chatScreen: {
-    title: 'DiabCare Chat',
+    title: 'Klukoo Chat',
     membersConnected: 'members connected',
     successesThisWeek: '💚 142 successes this week',
     inTargetZone: '🎯 89% in target zone',
@@ -472,7 +472,7 @@ export const en = {
     typingMessage: 'Write your supportive message...',
     typing: 'typing...',
     messageSent: 'Message sent',
-    messageShared: 'Your message was shared with the DiabCare community',
+    messageShared: 'Your message was shared with the Klukoo community',
   },
 
   // Legal
@@ -483,10 +483,10 @@ export const en = {
     privacyDescription: 'Learn how we protect your personal data',
     termsContent: `
       <h3>1. Acceptance of Terms</h3>
-      <p>By using DiabCare (Diabetes Awareness, Routine & Empowerment), you accept these terms of use.</p>
+      <p>By using Klukoo (Diabetes Awareness, Routine & Empowerment), you accept these terms of use.</p>
       
       <h3>2. Service Description</h3>
-      <p>DiabCare is the first diabetes management and monitoring platform in Africa, offering:</p>
+      <p>Klukoo is the first diabetes management and monitoring platform in Africa, offering:</p>
       <ul>
         <li>Personalized glucose monitoring</li>
         <li>Medication management and reminders</li>
@@ -507,16 +507,16 @@ export const en = {
     getStarted: 'Get Started',
     languageSelection: {
       title: 'Choose your language',
-      description: 'Select your preferred language to use DiabCare',
+      description: 'Select your preferred language to use Klukoo',
     },
     welcome: {
-      title: 'Welcome to DiabCare',
+      title: 'Welcome to Klukoo',
       subtitle: 'The first African diabetes management platform',
       description: "We're excited to accompany you on your health journey",
     },
     profile: {
       title: 'Set up your profile',
-      subtitle: 'Help us personalize your DiabCare experience',
+      subtitle: 'Help us personalize your Klukoo experience',
       description:
         'This information will help us provide you with tailored care',
       namePlaceholder: 'Enter your first name',
@@ -534,9 +534,9 @@ export const en = {
       remindersDesc: 'Adaptive reminders based on your habits',
     },
     features: {
-      title: 'Discover DiabCare',
+      title: 'Discover Klukoo',
       subtitle: 'All the features to manage your diabetes',
-      description: "Here's what DiabCare can do for you",
+      description: "Here's what Klukoo can do for you",
       glucose: 'Glucose monitoring',
       reminders: 'Smart reminders',
       consultation: 'Teleconsultations',
@@ -552,7 +552,7 @@ export const en = {
     },
     completion: {
       title: 'Setup complete!',
-      description: 'Your DiabCare account is ready to use',
+      description: 'Your Klukoo account is ready to use',
     },
   },
 
@@ -775,7 +775,7 @@ export const en = {
   },
 
   mission: {
-    title: 'DiabCare Mission',
+    title: 'Klukoo Mission',
     message:
       'Our mission is to help you better understand and manage your diabetes with tools adapted to your reality.',
   },
