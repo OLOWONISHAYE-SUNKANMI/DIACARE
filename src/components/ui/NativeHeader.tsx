@@ -14,7 +14,7 @@ const NativeHeader = ({ userName = "Amadou" }: NativeHeaderProps) => {
   const { t } = useTranslation()
 
   return (
-    <div className="bg-gradient-to-r from-medical-green to-medical-teal pt-8 sm:pt-12 pb-6 sm:pb-8 px-3 sm:px-4">
+    <div className="bg-gradient-to-r from-medical-orange to-medical-teal pt-8 sm:pt-12 pb-6 sm:pb-8 px-3 sm:px-4">
       {/* Status bar simulation - cachée sur très petits écrans */}
       <div className="hidden xs:flex items-center justify-between text-white text-xs sm:text-sm mb-4 sm:mb-6 opacity-90">
         <div className="flex items-center gap-1">

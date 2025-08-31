@@ -47,10 +47,10 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
   return (
     <div className="flex-1 bg-gray-50 min-h-screen pb-20 sm:pb-24 overflow-x-hidden">
       {/* Native Header */}
-      <NativeHeader userName="Amadou" />
+      <NativeHeader userName="SK PROJECTS" />
 
       {/* Main Content */}
-      <div className="space-y-4 sm:space-y-6 pb-4">
+      <div className="space-y-4 sm:space-y-6 pb-5">
         {/* Glucose Widget */}
         <GlucoseWidget
           currentGlucose={currentGlucose}
@@ -112,14 +112,16 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
             <CardHeader className="bg-gradient-to-r from-medical-green to-medical-teal text-white p-4 sm:p-6">
               <CardTitle className="text-base sm:text-lg flex items-center space-x-2">
                 <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm flex-shrink-0">
-                  <Target className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+                  <Target className="w-4 h-4 sm:w-5 sm:h-5 text-medical-orange" />
                 </div>
-                <span className="leading-tight">{t('mission.title')}</span>
+                <span className="leading-tight text-medical-orange">{t('mission.title')}</span>
               </CardTitle>
             </CardHeader>
-            <CardContent className="p-4 sm:p-6">
-              <p className="text-card-foreground text-sm sm:text-base leading-relaxed">
-                {t('mission.message')}
+
+            <CardContent className="p-3 sm:p-6">
+              <p className="text-card-foreground text-sm  sm:text-base leading-relaxed">
+               {t('mission.message')}
+
               </p>
             </CardContent>
           </Card>
