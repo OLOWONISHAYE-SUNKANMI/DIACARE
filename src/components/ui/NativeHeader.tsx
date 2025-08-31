@@ -35,8 +35,8 @@ const NativeHeader = ({ userName = "Amadou" }: NativeHeaderProps) => {
       {/* Header principal */}
       <div className="flex items-center justify-between mb-3 sm:mb-4">
         <div className="flex-1 min-w-0">
-          <h1 className="text-xl sm:text-2xl font-bold text-white truncate">DiabCare</h1>
-          <p className="text-xs sm:text-sm text-white/80">{t('nativeHeader.title')}</p>
+          {/* <h1 className="text-xl sm:text-2xl font-bold text-white truncate">Klukoo</h1> */}
+          <h1 className="text-xl sm:text-2xl font-bold text-white truncate">{t('nativeHeader.title')}</h1>
         </div>
         
         {/* Icons natifs avec fonctionnalités */}
