@@ -26,7 +26,7 @@ const LoadingSpinner = ({ size = "md", text, fullScreen = false }: LoadingSpinne
 
   if (fullScreen) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-medical-blue-light via-background to-medical-green-light flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-medical-orange via-background to-medical-green-light flex items-center justify-center">
         <div className="bg-card rounded-lg shadow-lg p-6">
           {content}
         </div>
