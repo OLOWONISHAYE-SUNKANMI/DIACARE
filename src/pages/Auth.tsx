@@ -541,6 +541,7 @@ const AuthPage = () => {
                             }
                             className="pl-10"
                             required
+                            
                           />
                         </div>
                       </div>
