@@ -6,10 +6,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 import PhotoUploadModal from "@/components/modals/PhotoUploadModal";
 import WeightModal from "@/components/modals/WeightModal";
+import ReactSwitch from "react-switch";
 
 interface ProfileScreenProps {}
 
@@ -222,37 +222,69 @@ const ProfileScreen = (props: ProfileScreenProps) => {
       </Card>
 
       {/* Paramètres */}
-      <Card className="border-l-4 border-l-medical-teal">
-        <CardHeader>
-          <CardTitle className="text-lg flex items-center gap-2">
-            <Settings className="w-5 h-5 text-medical-teal" />
-            {t('profileScreen.settings')}
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex items-center justify-between">
-            <span className="text-sm font-medium">{t('profileScreen.notifications')}</span>
-            <Switch 
-              checked={notifications}
-              onCheckedChange={setNotifications}
-            />
-          </div>
-          <div className="flex items-center justify-between">
-            <span className="text-sm font-medium">{t('profileScreen.dataSharing')}</span>
-            <Switch 
-              checked={dataSharing}
-              onCheckedChange={setDataSharing}
-            />
-          </div>
-          <div className="flex items-center justify-between">
-            <span className="text-sm font-medium">{t('profileScreen.darkMode')}</span>
-            <Switch 
-              checked={darkMode}
-              onCheckedChange={setDarkMode}
-            />
-          </div>
-        </CardContent>
-      </Card>
+     <Card className="border-l-4 border-l-medical-teal">
+      <CardHeader>
+        <CardTitle className="text-lg flex items-center gap-2">
+          <Settings className="w-5 h-5 text-medical-teal" />
+          {t("profileScreen.settings")}
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        {/* Notifications */}
+        <div className="flex items-center justify-between">
+          <span className="text-sm font-medium">
+            {t("profileScreen.notifications")}
+          </span>
+          <ReactSwitch
+            onChange={setNotifications}
+            checked={notifications}
+            onColor="#14b8a6" // teal-500
+            offColor="#d1d5db" // gray-300
+            uncheckedIcon={false}
+            checkedIcon={false}
+            height={20}
+            width={40}
+            handleDiameter={18}
+          />
+        </div>
+
+        {/* Data Sharing */}
+        <div className="flex items-center justify-between">
+          <span className="text-sm font-medium">
+            {t("profileScreen.dataSharing")}
+          </span>
+          <ReactSwitch
+            onChange={setDataSharing}
+            checked={dataSharing}
+            onColor="#14b8a6"
+            offColor="#d1d5db"
+            uncheckedIcon={false}
+            checkedIcon={false}
+            height={20}
+            width={40}
+            handleDiameter={18}
+          />
+        </div>
+
+        {/* Dark Mode */}
+        <div className="flex items-center justify-between">
+          <span className="text-sm font-medium">
+            {t("profileScreen.darkMode")}
+          </span>
+          <ReactSwitch
+            onChange={setDarkMode}
+            checked={darkMode}
+            onColor="#14b8a6"
+            offColor="#d1d5db"
+            uncheckedIcon={false}
+            checkedIcon={false}
+            height={20}
+            width={40}
+            handleDiameter={18}
+          />
+        </div>
+      </CardContent>
+    </Card>
 
       {/* Boutons Actions */}
       <div className="space-y-3">
@@ -282,3 +314,4 @@ const ProfileScreen = (props: ProfileScreenProps) => {
 };
 
 export default ProfileScreen;
+

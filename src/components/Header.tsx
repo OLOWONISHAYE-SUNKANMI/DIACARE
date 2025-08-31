@@ -89,6 +89,11 @@ const Header = ({ user, onLogout, isProfessional, professionalData, onTabChange,
     { id: "profile", label: t("nav.profile"), icon: User },
   ];
 
+  const handleClick = (id: number) => {
+    setMenuOpen(false)
+
+    onTabChange(id)
+  }
   return (
     <header className="w-full bg-gradient-to-r from-medical-orange to-medical-teal border-b border-border/20 pt-safe-area-inset-top relative">
       <div className="flex items-center justify-between py-4 px-4">
@@ -122,14 +127,14 @@ const Header = ({ user, onLogout, isProfessional, professionalData, onTabChange,
       {/* Mobile Dropdown */}
       <div
         className={`absolute top-full left-0 w-full bg-white shadow-md overflow-hidden transition-all duration-300 lg:hidden ${
-          menuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+          menuOpen ? " opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        <ul className="flex flex-col divide-y divide-gray-200">
+        <ul className="flex flex-col divide-y divide-gray-200 absolute">
           {tabs.map(({ id, label, icon: Icon }) => (
             <li key={id}>
               <button
-              onClick={() => onTabChange(id)}
+              onClick={() => handleClick(id)}
                 className="w-full flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-100 transition"
               >
                 <Icon className="w-5 h-5 text-medical-teal" />
