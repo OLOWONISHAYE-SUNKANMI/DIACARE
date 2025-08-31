@@ -49,7 +49,7 @@ const SimpleGlucoseModal = ({ isOpen, onClose }: SimpleGlucoseModalProps) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50">
+    <div className="h-min-screen  fixed inset-0 z-50">
       {/* Overlay */}
       <div 
         className="absolute inset-0 bg-black/50"
