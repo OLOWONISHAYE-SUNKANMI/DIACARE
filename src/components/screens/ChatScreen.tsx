@@ -171,12 +171,12 @@ const ChatScreen = ({ onBack }: ChatScreenProps) => {
           </div>
 
           <div className="flex items-center gap-2">
-            <Button variant="ghost" size="sm" className="h-9 w-9 p-0">
+            {/* <Button variant="ghost" size="sm" className="h-9 w-9 p-0">
               <Phone className="w-4 h-4" />
             </Button>
             <Button variant="ghost" size="sm" className="h-9 w-9 p-0">
               <Video className="w-4 h-4" />
-            </Button>
+            </Button> */}
             <Button variant="ghost" size="sm" className="h-9 w-9 p-0">
               <MoreVertical className="w-4 h-4" />
             </Button>
