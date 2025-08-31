@@ -427,7 +427,7 @@ const AuthPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-medical-blue-light via-background to-medical-green-light flex items-center justify-center p-4">
       {/* Language Selector - Top Right */}
-      <div className="fixed top-4 right-4 z-50">
+      <div className="hidden md:block fixed top-4 right-4 z-50">
         <LanguageSwitcher />
       </div>
 
@@ -460,7 +460,9 @@ const AuthPage = () => {
             {t('appSlogan')}
           </p>
         </div>
-
+        <div className="md:hidden w-40 m-auto mb-2">
+          <LanguageSwitcher />
+        </div>
         <Card className="shadow-xl">
           <CardHeader className="text-center pb-4">
             <CardTitle className="text-xl">{t('auth.signInTitle')}</CardTitle>
@@ -577,7 +579,7 @@ const AuthPage = () => {
                             )}
                           </Button>
                         </div> */}
-                        <div className="w-full rounded-md border focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2"                                                                                                                                                                                                         >
+                        <div className="w-full rounded-md border focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
                           <div className="relative flex items-center w-full bg-background">
                             {/* Left lock icon */}
                             <Lock className="absolute left-3 h-4 w-4 text-muted-foreground pointer-events-none" />
@@ -612,9 +614,7 @@ const AuthPage = () => {
                             </button>
                           </div>
                         </div>
-                        
                       </div>
-                      
 
                       <Button
                         type="submit"
