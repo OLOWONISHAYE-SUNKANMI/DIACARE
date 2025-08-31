@@ -57,7 +57,7 @@ export default {
 				medical: {
 					teal: 'hsl(var(--medical-teal))',
 					'teal-light': 'hsl(var(--medical-teal-light))',
-					green: 'hsl(var(--medical-green))',
+					orange: 'hsl(var(--medical-orange))',
 					'green-light': 'hsl(var(--medical-green-light))',
 					blue: 'hsl(var(--medical-blue))',
 					'blue-light': 'hsl(var(--medical-blue-light))',
