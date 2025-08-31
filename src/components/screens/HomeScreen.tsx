@@ -35,10 +35,10 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
   return (
     <div className="flex-1 bg-gray-50 min-h-screen pb-20 sm:pb-24 overflow-x-hidden">
       {/* Native Header */}
-      <NativeHeader userName="Amadou" />
+      <NativeHeader userName="SK PROJECTS" />
 
       {/* Main Content */}
-      <div className="space-y-4 sm:space-y-6 pb-4">
+      <div className="space-y-4 sm:space-y-6 pb-5">
         {/* Glucose Widget */}
         <GlucoseWidget 
           currentGlucose={currentGlucose}
