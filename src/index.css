@@ -47,9 +47,9 @@ All colors MUST be HSL.
     --destructive-foreground: 0 0% 100%;
 
     /* DARE Medical Colors */
-    --medical-teal: 180 50% 45%;
+    --medical-teal: 25 100% 64%;
     --medical-teal-light: 180 30% 85%;
-    --medical-green: 142 76% 36%;
+    --medical-orange : 15 90% 50%;
     --medical-green-light: 142 76% 90%;
     --medical-blue: 210 50% 45%;
     --medical-blue-light: 210 50% 90%;
