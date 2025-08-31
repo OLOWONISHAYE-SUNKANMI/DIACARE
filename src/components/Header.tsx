@@ -95,7 +95,7 @@ const Header = ({ user, onLogout, isProfessional, professionalData, onTabChange,
     onTabChange(id)
   }
   return (
-    <header className="w-full bg-gradient-to-r from-medical-green to-medical-teal border-b border-border/20 pt-safe-area-inset-top relative">
+    <header className="w-full bg-gradient-to-r from-medical-orange to-medical-teal border-b border-border/20 pt-safe-area-inset-top relative">
       <div className="flex items-center justify-between py-4 px-4">
         {/* App Name */}
         <h1 className="text-2xl font-bold tracking-wide text-white">{t("appName")}</h1>
