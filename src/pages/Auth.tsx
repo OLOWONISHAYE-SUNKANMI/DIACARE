@@ -453,7 +453,7 @@ const AuthPage = () => {
               alt="logo"
             />
           </div>
-          <h1 className="text-3xl font-bold text-foreground mb-4">
+          <h1 className="text-3xl font-bold text-[#4B2E2B] mb-4">
             {t('appName')}
           </h1>
           <p className="text-lg font-medium text-muted-foreground mb-2">
