@@ -21,6 +21,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '../Modal';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface HomeScreenProps {
   onTabChange?: (tab: string) => void;
@@ -33,6 +34,13 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
   const [showAddMeal, setShowAddMeal] = useState(false);
   const [showAddActivity, setShowAddActivity] = useState(false);
   const { getLatestReading, getTrend } = useGlucose();
+  const { user, profile } = useAuth();
+
+  const userName =
+    profile?.first_name ||
+    user?.user_metadata?.first_name ||
+    user?.email ||
+    'Invité';
 
   console.log(
     'Modal states - showAddMeasure:',
@@ -47,7 +55,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
   return (
     <div className="flex-1 bg-gray-50 min-h-screen pb-20 sm:pb-24 overflow-x-hidden">
       {/* Native Header */}
-      <NativeHeader userName="SK PROJECTS" />
+      <NativeHeader userName={userName} />
 
       {/* Main Content */}
       <div className="space-y-4 sm:space-y-6 pb-5">
@@ -79,7 +87,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
             </DialogContent>
           </Dialog>
         </div> */}
-        
+
         {/* Actions Rapides - FONCTIONNELLES */}
         <ActionsRapides
           onTabChange={onTabChange}
@@ -114,14 +122,15 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
                 <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm flex-shrink-0">
                   <Target className="w-4 h-4 sm:w-5 sm:h-5 text-medical-orange" />
                 </div>
-                <span className="leading-tight text-medical-orange">{t('mission.title')}</span>
+                <span className="leading-tight text-medical-orange">
+                  {t('mission.title')}
+                </span>
               </CardTitle>
             </CardHeader>
 
             <CardContent className="p-3 sm:p-6">
               <p className="text-card-foreground text-sm  sm:text-base leading-relaxed">
-               {t('mission.message')}
-
+                {t('mission.message')}
               </p>
             </CardContent>
           </Card>

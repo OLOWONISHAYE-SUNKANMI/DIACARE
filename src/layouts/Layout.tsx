@@ -60,8 +60,6 @@ const Layout = ({ children, activeTab, onTabChange }: LayoutProps) => {
           <div className="relative h-full">{children}</div>
         </div>
 
-      
-
         {/* ✅ Floating Button
         <Button
           onClick={handleQuickAdd}
