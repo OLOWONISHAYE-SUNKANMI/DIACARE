@@ -17,7 +17,11 @@ interface PhotoUploadModalProps {
   currentPhoto?: string;
 }
 
-const PhotoUploadModal = ({ children, onPhotoChange, currentPhoto }: PhotoUploadModalProps) => {
+const PhotoUploadModal = ({
+  children,
+  onPhotoChange,
+  currentPhoto,
+}: PhotoUploadModalProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [preview, setPreview] = useState<string | null>(currentPhoto || null);
 
@@ -25,7 +29,7 @@ const PhotoUploadModal = ({ children, onPhotoChange, currentPhoto }: PhotoUpload
     const file = event.target.files?.[0];
     if (file) {
       const reader = new FileReader();
-      reader.onload = (e) => {
+      reader.onload = e => {
         const result = e.target?.result as string;
         setPreview(result);
       };
@@ -46,9 +50,7 @@ const PhotoUploadModal = ({ children, onPhotoChange, currentPhoto }: PhotoUpload
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        {children}
-      </DialogTrigger>
+      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Photo de profil</DialogTitle>
@@ -56,7 +58,7 @@ const PhotoUploadModal = ({ children, onPhotoChange, currentPhoto }: PhotoUpload
             Ajoutez ou modifiez votre photo de profil
           </DialogDescription>
         </DialogHeader>
-        
+
         <div className="space-y-6">
           <div className="flex justify-center">
             <Avatar className="w-32 h-32">
@@ -90,7 +92,11 @@ const PhotoUploadModal = ({ children, onPhotoChange, currentPhoto }: PhotoUpload
             </div>
 
             {preview && (
-              <Button variant="outline" onClick={handleRemove} className="w-full">
+              <Button
+                variant="outline"
+                onClick={handleRemove}
+                className="w-full"
+              >
                 <X className="w-4 h-4 mr-2" />
                 Supprimer la photo
               </Button>
@@ -98,7 +104,11 @@ const PhotoUploadModal = ({ children, onPhotoChange, currentPhoto }: PhotoUpload
           </div>
 
           <div className="flex gap-2">
-            <Button variant="outline" onClick={() => setIsOpen(false)} className="flex-1">
+            <Button
+              variant="outline"
+              onClick={() => setIsOpen(false)}
+              className="flex-1"
+            >
               Annuler
             </Button>
             <Button onClick={handleSave} className="flex-1">
