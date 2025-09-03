@@ -420,9 +420,7 @@ import PhotoUploadModal from '@/components/modals/PhotoUploadModal';
 import WeightModal from '@/components/modals/WeightModal';
 import ReactSwitch from 'react-switch';
 import { toast } from 'sonner';
-
-// import { DialogHeader } from '../Modal';
-import { Input } from '../ui/input';
+import { EditProfileModal } from '../modals/EditProfileModal';
 
 const ProfileScreen = () => {
   const { t } = useTranslation();
@@ -446,7 +444,9 @@ const ProfileScreen = () => {
     return <div className="p-4">{t('profileScreen.loading')}</div>;
   }
 
-  const handleUpdateProfile = async (e: React.FormEvent) => {
+  const handleUpdateProfile = async (
+    e: React.FormEvent<HTMLFormElement>
+  ): Promise<boolean> => {
     e.preventDefault();
     setLoading(true);
 
@@ -462,8 +462,10 @@ const ProfileScreen = () => {
 
     if (error) {
       toast.error('Failed to update profile');
+      return false; // ❌ failure
     } else {
       toast.success('Profile updated successfully');
+      return true; // ✅ success
     }
   };
 
@@ -578,72 +580,23 @@ const ProfileScreen = () => {
 
       {/* Personal Info */}
       <Card className="border-l-4 border-l-medical-teal">
-        <CardHeader>
-          <CardTitle className="text-lg flex items-center gap-2">
-            <User className="w-5 h-5 text-medical-teal" />
-            {t('profileScreen.personalInfo')}
-          </CardTitle>
-          {/* Edit button opens modal */}
-          {/* <DialogTrigger onClick={onOpen}>
-            <Pencil className="w-4 h-4" />
-          </DialogTrigger> */}
-
-          {/* <Dialog isOpen={isOpen} onClose={onClose}>
-            <DialogContent>
-              <DialogHeader>Edit Profile</DialogHeader>
-              <DialogClose onClose={onClose} />
-              <DialogBody>
-                <form onSubmit={handleUpdateProfile} className="space-y-4">
-                  <div>
-                    <label>First Name</label>
-                    <Input
-                      value={form.first_name || ''}
-                      onChange={e => handleChange('first_name', e.target.value)}
-                    />
-                  </div>
-                  <div>
-                    <label>Last Name</label>
-                    <Input
-                      value={form.last_name || ''}
-                      onChange={e => handleChange('last_name', e.target.value)}
-                    />
-                  </div>
-                  <div>
-                    <label>Phone</label>
-                    <Input
-                      value={form.phone || ''}
-                      onChange={e => handleChange('phone', e.target.value)}
-                    />
-                  </div>
-                  <div>
-                    <label>Specialty</label>
-                    <Input
-                      value={form.specialty || ''}
-                      onChange={e => handleChange('specialty', e.target.value)}
-                    />
-                  </div>
-                  <div>
-                    <label>Professional License</label>
-                    <Input
-                      value={form.professional_license || ''}
-                      onChange={e =>
-                        handleChange('professional_license', e.target.value)
-                      }
-                    />
-                  </div>
-
-                  <Button
-                    type="submit"
-                    disabled={loading}
-                    className="w-full mt-4"
-                  >
-                    {loading ? 'Saving...' : 'Save Changes'}
-                  </Button>
-                </form>
-              </DialogBody>
-            </DialogContent>
-          </Dialog> */}
-        </CardHeader>
+        <div className="flex justify-between items-center w-full">
+          <CardHeader className="flex  justify-between">
+            <CardTitle className="text-lg flex items-center gap-2">
+              <User className="w-5 h-5 text-medical-teal" />
+              {t('profileScreen.personalInfo')}
+            </CardTitle>
+          </CardHeader>
+          <CardHeader>
+            <EditProfileModal
+              form={form}
+              loading={loading}
+              handleChange={handleChange}
+              handleUpdateProfile={handleUpdateProfile}
+              trigger={<Pencil className="w-4 h-4 cursor-pointer" />}
+            />
+          </CardHeader>
+        </div>
 
         <CardContent className="space-y-3">
           <div className="grid grid-cols-2 gap-4 text-sm">

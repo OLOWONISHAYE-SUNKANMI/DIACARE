@@ -1,0 +1,174 @@
+import React from 'react';
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  ModalCloseButton,
+  Button,
+  Input,
+  useDisclosure,
+} from '@chakra-ui/react';
+
+type EditProfileModalProps = {
+  form: any;
+  loading?: boolean;
+  handleChange: (field: string, value: string) => void;
+  handleUpdateProfile: (
+    e: React.FormEvent<HTMLFormElement>
+  ) => Promise<boolean>;
+  trigger?: React.ReactNode;
+};
+
+export const EditProfileModal: React.FC<EditProfileModalProps> = ({
+  form,
+  loading = false,
+  handleChange,
+  handleUpdateProfile,
+  trigger,
+}) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const success = await handleUpdateProfile(e);
+    if (success) {
+      onClose();
+    }
+  };
+
+  return (
+    <>
+      {/* Trigger button or element */}
+      {trigger ? (
+        <span onClick={onOpen}>{trigger}</span>
+      ) : (
+        <Button onClick={onOpen}>Edit Profile</Button>
+      )}
+
+      <Modal isOpen={isOpen} onClose={onClose} isCentered size="md">
+        <ModalOverlay />
+        <ModalContent p={4}>
+          {' '}
+          <ModalHeader fontSize="lg" p={2}>
+            Edit Profile
+          </ModalHeader>
+          <ModalCloseButton />
+          <ModalBody p={2}>
+            <form
+              onSubmit={handleSubmit}
+              className="grid grid-cols-1 sm:grid-cols-2 gap-3"
+            >
+              {/* First Name */}
+              <div className="flex flex-col">
+                <label className="text-sm mb-1">First Name</label>
+                <Input
+                  size="sm"
+                  value={form.first_name || ''}
+                  onChange={e => handleChange('first_name', e.target.value)}
+                  _focus={{
+                    borderColor: '#32948f',
+                    boxShadow: '0 0 0 1px #32948f',
+                  }}
+                  _focusVisible={{
+                    borderColor: '#32948f',
+                    boxShadow: '0 0 0 1px #32948f',
+                  }}
+                />
+              </div>
+
+              {/* Last Name */}
+              <div className="flex flex-col">
+                <label className="text-sm mb-1">Last Name</label>
+                <Input
+                  size="sm"
+                  value={form.last_name || ''}
+                  onChange={e => handleChange('last_name', e.target.value)}
+                  _focus={{
+                    borderColor: '#32948f',
+                    boxShadow: '0 0 0 1px #32948f',
+                  }}
+                  _focusVisible={{
+                    borderColor: '#32948f',
+                    boxShadow: '0 0 0 1px #32948f',
+                  }}
+                />
+              </div>
+
+              {/* Phone */}
+              <div className="flex flex-col">
+                <label className="text-sm mb-1">Phone</label>
+                <Input
+                  size="sm"
+                  value={form.phone || ''}
+                  onChange={e => handleChange('phone', e.target.value)}
+                  _focus={{
+                    borderColor: '#32948f',
+                    boxShadow: '0 0 0 1px #32948f',
+                  }}
+                  _focusVisible={{
+                    borderColor: '#32948f',
+                    boxShadow: '0 0 0 1px #32948f',
+                  }}
+                />
+              </div>
+
+              {/* Specialty */}
+              <div className="flex flex-col">
+                <label className="text-sm mb-1">Specialty</label>
+                <Input
+                  size="sm"
+                  value={form.specialty || ''}
+                  onChange={e => handleChange('specialty', e.target.value)}
+                  _focus={{
+                    borderColor: '#32948f',
+                    boxShadow: '0 0 0 1px #32948f',
+                  }}
+                  _focusVisible={{
+                    borderColor: '#32948f',
+                    boxShadow: '0 0 0 1px #32948f',
+                  }}
+                />
+              </div>
+
+              {/* Professional License */}
+              <div className="flex flex-col sm:col-span-2">
+                <label className="text-sm mb-1">Professional License</label>
+                <Input
+                  size="sm"
+                  value={form.professional_license || ''}
+                  onChange={e =>
+                    handleChange('professional_license', e.target.value)
+                  }
+                  _focus={{
+                    borderColor: '#32948f',
+                    boxShadow: '0 0 0 1px #32948f',
+                  }}
+                  _focusVisible={{
+                    borderColor: '#32948f',
+                    boxShadow: '0 0 0 1px #32948f',
+                  }}
+                />
+              </div>
+
+              {/* Submit Button */}
+              <Button
+                type="submit"
+                isDisabled={loading}
+                mt={2}
+                w="full"
+                size="sm"
+                bg="#3aa6a1"
+                _hover={{ bg: '#32948f' }}
+                color="#fff"
+              >
+                {loading ? 'Saving...' : 'Save Changes'}
+              </Button>
+            </form>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+    </>
+  );
+};
