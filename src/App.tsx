@@ -14,6 +14,7 @@ import PaymentSuccess from './components/screens/PaymentSuccess';
 import PaymentScreen from './components/screens/PaymentScreen';
 import { ProfessionalDashboard } from './components/screens/ProfessionalDashboard';
 import { ProfessionalRegistrationScreen } from './components/screens/ProfessionalRegistrationScreen';
+import { ChakraProvider } from '@chakra-ui/react';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -80,17 +81,19 @@ const AppContent = () => {
 };
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <ErrorBoundary>
-      <AuthProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <AppContent />
-        </TooltipProvider>
-      </AuthProvider>
-    </ErrorBoundary>
-  </QueryClientProvider>
+  <ChakraProvider>
+    <QueryClientProvider client={queryClient}>
+      <ErrorBoundary>
+        <AuthProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <AppContent />
+          </TooltipProvider>
+        </AuthProvider>
+      </ErrorBoundary>
+    </QueryClientProvider>
+  </ChakraProvider>
 );
 
 export default App;

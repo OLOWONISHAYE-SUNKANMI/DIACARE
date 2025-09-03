@@ -1,17 +1,17 @@
-import { Bell, Settings } from "lucide-react";
+import { Bell, Settings } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 interface NativeHeaderProps {
   userName?: string;
 }
 
-const NativeHeader = ({ userName = "Amadou" }: NativeHeaderProps) => {
-  const currentTime = new Date().toLocaleTimeString('fr-FR', { 
-    hour: '2-digit', 
-    minute: '2-digit' 
+const NativeHeader = ({ userName }: NativeHeaderProps) => {
+  const currentTime = new Date().toLocaleTimeString('fr-FR', {
+    hour: '2-digit',
+    minute: '2-digit',
   });
 
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   return (
     <div className="bg-gradient-to-r from-medical-blue-dark to-medical-blue-light pt-8 sm:pt-12 pb-6 sm:pb-8 px-3 sm:px-4">
@@ -36,34 +36,40 @@ const NativeHeader = ({ userName = "Amadou" }: NativeHeaderProps) => {
       <div className="flex items-center justify-between mb-3 sm:mb-4">
         <div className="flex-1 min-w-0">
           {/* <h1 className="text-xl sm:text-2xl font-bold text-white truncate">Klukoo</h1> */}
-          <h1 className="text-xl sm:text-2xl font-bold text-white truncate">{t('nativeHeader.title')}</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-white truncate">
+            {t('nativeHeader.title')}
+          </h1>
         </div>
-        
+
         {/* Icons natifs avec fonctionnalités */}
         <div className="flex gap-2 sm:gap-3 ml-2">
-          <button 
+          <button
             className="w-9 h-9 sm:w-11 sm:h-11 bg-white/20 rounded-xl sm:rounded-2xl flex items-center justify-center backdrop-blur-sm active:scale-95 transition-transform"
             onClick={() => {
-              alert("Notifications - Fonctionnalité en développement");
+              alert('Notifications - Fonctionnalité en développement');
             }}
           >
             <Bell className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
           </button>
-          <button 
+          <button
             className="w-9 h-9 sm:w-11 sm:h-11 bg-white/20 rounded-xl sm:rounded-2xl flex items-center justify-center backdrop-blur-sm active:scale-95 transition-transform"
             onClick={() => {
-              alert("Paramètres - Fonctionnalité en développement");
+              alert('Paramètres - Fonctionnalité en développement');
             }}
           >
             <Settings className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
           </button>
         </div>
       </div>
-      
+
       {/* Greeting personnalisé */}
       <div className="text-white">
-        <p className="text-white/80 text-xs sm:text-sm mb-1">{t('nativeHeader.greetings')} {userName}👋</p>
-        <p className="text-base sm:text-lg font-semibold leading-tight">{t('nativeHeader.question')}</p>
+        <p className="text-white/80 text-xs sm:text-sm mb-1">
+          {t('nativeHeader.greetings')} {userName}👋
+        </p>
+        <p className="text-base sm:text-lg font-semibold leading-tight">
+          {t('nativeHeader.question')}
+        </p>
       </div>
     </div>
   );
