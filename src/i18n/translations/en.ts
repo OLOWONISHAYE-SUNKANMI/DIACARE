@@ -419,36 +419,55 @@ export const en = {
     empowerment: 'Empowerment',
     control: 'Control',
   },
-
   // Profile Screen
   profileScreen: {
     years: 'years old',
     yearsWithDare: 'Years with Klukoo',
     glucoseMeasures: 'Glucose measurements',
     adherence: 'Adherence',
+
+    userType: 'User type',
+    professionalLicense: 'Professional license',
+    specialty: 'Specialty',
+
+    notSet: 'Not set',
+    // verified: '✓ Verified Profile',
+    notVerified: '✗ Unverified Profile',
+
+    // Section titles
     personalInfo: 'Personal Information',
+    medicalTeam: 'Medical Team',
+    currentTreatment: 'Current Treatment',
+    emergencyContact: 'Emergency Contact',
+    settings: 'Settings',
+
+    // Profile fields (static labels only!)
     fullName: 'Full name',
     dateOfBirth: 'Date of birth',
     age: 'Age',
     phone: 'Phone',
     city: 'City',
     profession: 'Profession',
-    medicalTeam: 'Medical Team',
+
+    // Medical team
     doctor: 'Primary care physician • Diabetologist',
     followUpCenter: 'Follow-up facility',
     consultant: 'Consulting endocrinologist',
-    currentTreatment: 'Current Treatment',
+
+    // Treatment
     insulins: 'Insulins',
     keepCool: 'Stored cool (clay pot)',
     oralMedications: 'Oral medications',
     price: 'Price',
     glucoseTarget: 'Glucose target',
     adaptedClimate: 'Adapted to tropical climate',
-    emergencyContact: 'Emergency Contact',
+
+    // Emergency contact
     spouse: 'Spouse',
     call: 'Call',
     sms: 'SMS',
-    settings: 'Settings',
+
+    // Settings
     notifications: 'Notifications',
     dataSharing: 'Data sharing',
     darkMode: 'Dark mode',
@@ -457,8 +476,8 @@ export const en = {
     privacy: 'Privacy',
     signOut: 'Sign out',
     verified: '✓ Verified Profile',
+    unverified: 'Unverified Profile',
   },
-
   // Chat Screen
   chatScreen: {
     title: 'Klukoo Chat',
