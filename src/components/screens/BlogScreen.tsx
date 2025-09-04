@@ -17,12 +17,17 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useTranslation } from 'react-i18next';
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from '@/components/ui/dialog';
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalCloseButton,
+  ModalFooter,
+  Text,
+  Box,
+  Flex,
+} from "@chakra-ui/react";
 
 interface BlogScreenProps {}
 
@@ -640,76 +645,110 @@ L'application DARE AI sera la première à intégrer cette technologie dès sept
       </div>
 
       {/* Modal pour afficher l'article complet */}
-      <Dialog
-        open={!!selectedArticle}
-        onOpenChange={() => setSelectedArticle(null)}
+      <Modal
+        isOpen={!!selectedArticle}
+        onClose={() => setSelectedArticle(null)}
+        size="2xl"
+        scrollBehavior="inside"
       >
-        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+        <ModalOverlay />
+        <ModalContent maxH="80vh" overflowY="auto">
           {selectedArticle && (
             <>
-              <DialogHeader>
-                <div className="flex items-center gap-2 mb-2">
-                  <Badge variant="secondary" className="text-xs">
+              <ModalHeader>
+                <Flex align="center" gap={2} mb={2}>
+                  <Badge colorScheme="gray" fontSize="0.7rem">
                     {selectedArticle.category}
                   </Badge>
                   <Badge
                     variant="outline"
-                    className="text-xs flex items-center gap-1"
+                    fontSize="0.7rem"
+                    display="flex"
+                    alignItems="center"
+                    gap={1}
                   >
                     <Clock className="w-3 h-3" />
                     {selectedArticle.readTime}
                   </Badge>
                   {selectedArticle.trending && (
-                    <Badge className="text-xs bg-red-500 text-white flex items-center gap-1">
+                    <Badge
+                      colorScheme="red"
+                      fontSize="0.7rem"
+                      display="flex"
+                      alignItems="center"
+                      gap={1}
+                    >
                       <TrendingUp className="w-3 h-3" />
                       Tendance
                     </Badge>
                   )}
-                </div>
-                <DialogTitle className="text-xl leading-tight">
-                  {selectedArticle.title}
-                </DialogTitle>
-                <DialogDescription className="text-sm text-muted-foreground">
-                  Par {selectedArticle.author} • {selectedArticle.date} •{' '}
-                  {selectedArticle.source}
-                </DialogDescription>
-              </DialogHeader>
+                </Flex>
 
-              <div className="space-y-4">
-                <div
-                  className={`w-20 h-20 rounded-lg ${selectedArticle.bgColor} flex items-center justify-center text-3xl mx-auto`}
+                <Text fontSize="xl" fontWeight="bold" lineHeight="short">
+                  {selectedArticle.title}
+                </Text>
+                <Text fontSize="sm" color="gray.500">
+                  Par {selectedArticle.author} • {selectedArticle.date} •{" "}
+                  {selectedArticle.source}
+                </Text>
+              </ModalHeader>
+              <ModalCloseButton />
+
+              <ModalBody>
+                <Box
+                  w="20"
+                  h="20"
+                  borderRadius="lg"
+                  bg={selectedArticle.bgColor}
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  fontSize="3xl"
+                  mx="auto"
+                  mb={4}
                 >
                   {selectedArticle.image}
-                </div>
+                </Box>
 
-                <div className="prose prose-sm max-w-none">
+                <Box>
                   {selectedArticle.content
-                    .split('\n\n')
+                    .split("\n\n")
                     .map((paragraph, index) => (
-                      <p
+                      <Text
                         key={index}
-                        className="text-foreground leading-relaxed mb-4"
+                        mb={4}
+                        color="gray.800"
+                        lineHeight="tall"
+                        fontSize="sm"
                       >
                         {paragraph}
-                      </p>
+                      </Text>
                     ))}
-                </div>
+                </Box>
+              </ModalBody>
 
-                <div className="flex gap-2 pt-4 border-t">
-                  <Button variant="outline" size="sm" className="flex-1">
-                    <Bookmark className="w-4 h-4 mr-2" />
-                    Sauvegarder
-                  </Button>
-                  <Button variant="outline" size="sm" className="flex-1">
-                    <ExternalLink className="w-4 h-4 mr-2" />
-                    Source complète
-                  </Button>
-                </div>
-              </div>
+              <ModalFooter gap={2} borderTop="1px solid" borderColor="gray.200">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  flex="1"
+                  leftIcon={<Bookmark className="w-4 h-4" />}
+                >
+                  Sauvegarder
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  flex="1"
+                  leftIcon={<ExternalLink className="w-4 h-4" />}
+                >
+                  Source complète
+                </Button>
+              </ModalFooter>
             </>
           )}
-        </DialogContent>
-      </Dialog>
+        </ModalContent>
+      </Modal>
 
       {/* Sources et disclaimer */}
       <Card className="bg-gradient-to-r from-medical-teal/5 to-medical-teal/10 border-medical-teal/20">
