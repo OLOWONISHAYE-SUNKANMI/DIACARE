@@ -1247,8 +1247,9 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
     const [isBarcodeModalOpen, setIsBarcodeModalOpen] = useState(false);
     const [isPhotoModalOpen, setIsPhotoModalOpen] = useState(false);
 
-    const handleGlucoseSubmit = (e: React.FormEvent) => {
+    const handleGlucoseSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
+
       if (!glucoseValue || isNaN(Number(glucoseValue))) {
         toast({
           title: 'Erreur',
@@ -1257,20 +1258,33 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
         });
         return;
       }
-      addReading({
-        value: Number(glucoseValue),
-        timestamp: new Date().toISOString(),
-        context: 'manual',
-        notes: glucoseNotes || undefined,
-      });
-      toast({
-        title: 'Mesure ajoutée',
-        description: 'Votre glycémie a été enregistrée avec succès',
-      });
-      setGlucoseValue('');
-      setGlucoseNotes('');
-      setIsGlucoseModalOpen(false);
-      onGlycemieClick?.();
+
+      try {
+        await addReading({
+          value: Number(glucoseValue),
+          timestamp: new Date().toISOString(),
+          context: 'manual',
+          notes: glucoseNotes || undefined,
+        });
+
+        toast({
+          title: 'Mesure ajoutée',
+          description: 'Votre glycémie a été enregistrée avec succès',
+        });
+
+        // reset form + close modal
+        setGlucoseValue('');
+        setGlucoseNotes('');
+        setIsGlucoseModalOpen(false);
+        onGlycemieClick?.();
+      } catch (error: any) {
+        console.error('Erreur ajout glycémie:', error);
+        toast({
+          title: 'Erreur',
+          description: "Impossible d'enregistrer votre mesure",
+          variant: 'destructive',
+        });
+      }
     };
 
     const handleMealSubmit = (e: React.FormEvent) => {
@@ -1528,7 +1542,7 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
                             placeholder={t('Medication.select.title')}
                           />
                         </SelectTrigger>
-                        
+
                         <SelectContent className="z-[9999] bg-white dark:bg-gray-900 shadow-lg rounded-lg">
                           {/* Insulines ultra-rapides */}
                           <SelectItem value="insuline-ultra-rapide">
