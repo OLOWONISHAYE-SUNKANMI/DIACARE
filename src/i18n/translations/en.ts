@@ -1104,6 +1104,11 @@ export const en = {
     loginButton: 'Login',
   },
 
+  toastMessage: {
+    title: 'New Entry',
+    description: 'Feature coming soon',
+  },
+
   //professionalDashboard
   professionalDashboard: {
     title: 'Professional',
