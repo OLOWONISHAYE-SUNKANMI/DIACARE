@@ -1,6 +1,13 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalCloseButton,
+} from "@chakra-ui/react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -91,115 +98,118 @@ export const ProfessionalAccessModal = ({ isOpen, onClose }: ProfessionalAccessM
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-md">
-        <DialogHeader>
-          <DialogTitle>{t('professionalAccess.title')}</DialogTitle>
-        </DialogHeader>
-        
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+    <Modal isOpen={isOpen} onClose={onClose} isCentered size="md">
+      <ModalOverlay />
+      <ModalContent maxW="md" py={6} px={4}>
+        <ModalHeader>
+          {t('professionalAccess.title')}
+        </ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="firstName">{t('professionalAccess.firstName')}</Label>
+                <Input
+                  id="firstName"
+                  value={formData.firstName}
+                  onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                  required
+                />
+              </div>
+              <div>
+                <Label htmlFor="lastName">{t('professionalAccess.lastName')}</Label>
+                <Input
+                  id="lastName"
+                  value={formData.lastName}
+                  onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                  required
+                />
+              </div>
+            </div>
+
             <div>
-              <Label htmlFor="firstName">{t('professionalAccess.firstName')}</Label>
+              <Label htmlFor="email">{t('professionalAccess.email')}</Label>
               <Input
-                id="firstName"
-                value={formData.firstName}
-                onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                id="email"
+                type="email"
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 required
               />
             </div>
+
             <div>
-              <Label htmlFor="lastName">{t('professionalAccess.lastName')}</Label>
+              <Label htmlFor="phone">{t('professionalAccess.phone')}</Label>
               <Input
-                id="lastName"
-                value={formData.lastName}
-                onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                id="phone"
+                type="tel"
+                value={formData.phone}
+                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                 required
               />
             </div>
-          </div>
 
-          <div>
-            <Label htmlFor="email">{t('professionalAccess.email')}</Label>
-            <Input
-              id="email"
-              type="email"
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              required
-            />
-          </div>
-
-          <div>
-            <Label htmlFor="phone">{t('professionalAccess.phone')}</Label>
-            <Input
-              id="phone"
-              type="tel"
-              value={formData.phone}
-              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-              required
-            />
-          </div>
-
-          <div>
-            <Label htmlFor="profession">{t('professionalAccess.profession')}</Label>
-            <div
-              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background cursor-pointer hover:bg-accent/50 transition-colors"
-              onClick={() => setIsProfessionModalOpen(true)}
-            >
-              <span className={formData.profession ? "text-foreground" : "text-muted-foreground"}>
-                {formData.profession ? getProfessionLabel(formData.profession) : t('professionalAccess.selectProfession')}
-              </span>
+            <div>
+              <Label htmlFor="profession">{t('professionalAccess.profession')}</Label>
+              <div
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background cursor-pointer hover:bg-accent/50 transition-colors"
+                onClick={() => setIsProfessionModalOpen(true)}
+              >
+                <span className={formData.profession ? "text-foreground" : "text-muted-foreground"}>
+                  {formData.profession ? getProfessionLabel(formData.profession) : t('professionalAccess.selectProfession')}
+                </span>
+              </div>
             </div>
-          </div>
 
-          <div>
-            <Label htmlFor="licenseNumber">{t('professionalAccess.licenseNumber')}</Label>
-            <Input
-              id="licenseNumber"
-              value={formData.licenseNumber}
-              onChange={(e) => setFormData({ ...formData, licenseNumber: e.target.value })}
-              required
-            />
-          </div>
+            <div>
+              <Label htmlFor="licenseNumber">{t('professionalAccess.licenseNumber')}</Label>
+              <Input
+                id="licenseNumber"
+                value={formData.licenseNumber}
+                onChange={(e) => setFormData({ ...formData, licenseNumber: e.target.value })}
+                required
+              />
+            </div>
 
-          <div>
-            <Label htmlFor="institution">{t('professionalAccess.institution')}</Label>
-            <Input
-              id="institution"
-              value={formData.institution}
-              onChange={(e) => setFormData({ ...formData, institution: e.target.value })}
-              required
-            />
-          </div>
+            <div>
+              <Label htmlFor="institution">{t('professionalAccess.institution')}</Label>
+              <Input
+                id="institution"
+                value={formData.institution}
+                onChange={(e) => setFormData({ ...formData, institution: e.target.value })}
+                required
+              />
+            </div>
 
-          <div>
-            <Label htmlFor="motivation">{t('professionalAccess.motivation')}</Label>
-            <Textarea
-              id="motivation"
-              value={formData.motivation}
-              onChange={(e) => setFormData({ ...formData, motivation: e.target.value })}
-              placeholder={t('professionalAccess.motivationPlaceholder')}
-            />
-          </div>
+            <div>
+              <Label htmlFor="motivation">{t('professionalAccess.motivation')}</Label>
+              <Textarea
+                id="motivation"
+                value={formData.motivation}
+                onChange={(e) => setFormData({ ...formData, motivation: e.target.value })}
+                placeholder={t('professionalAccess.motivationPlaceholder')}
+              />
+            </div>
 
-          <div className="flex gap-2 pt-4">
-            <Button type="button" variant="outline" onClick={onClose} className="flex-1">
-              {t('common.cancel')}
-            </Button>
-            <Button type="submit" disabled={isSubmitting} className="flex-1">
-              {isSubmitting ? t('common.sending') : t('common.send')}
-            </Button>
-          </div>
-        </form>
+            <div className="flex gap-2 pt-4">
+              <Button type="button" variant="outline" onClick={onClose} className="flex-1">
+                {t('common.cancel')}
+              </Button>
+              <Button type="submit" disabled={isSubmitting} className="flex-1">
+                {isSubmitting ? t('common.sending') : t('common.send')}
+              </Button>
+            </div>
+          </form>
 
-        <ProfessionSelectionModal
-          isOpen={isProfessionModalOpen}
-          onClose={() => setIsProfessionModalOpen(false)}
-          selectedValue={formData.profession}
-          onSelect={(value) => setFormData({ ...formData, profession: value })}
-        />
-      </DialogContent>
-    </Dialog>
+          <ProfessionSelectionModal
+            isOpen={isProfessionModalOpen}
+            onClose={() => setIsProfessionModalOpen(false)}
+            selectedValue={formData.profession}
+            onSelect={(value) => setFormData({ ...formData, profession: value })}
+          />
+        </ModalBody>
+      </ModalContent>
+    </Modal>
   );
 };

@@ -27,8 +27,9 @@ import { CalendarIcon, Clock, Users, FileText, Settings } from 'lucide-react';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { cn } from '@/lib/utils';
-import { toast } from '@/hooks/use-toast';
 import { useTranslation } from 'react-i18next';
+import { useToast } from "@/hooks/use-toast";
+
 
 export const QuickActions = () => {
   const { t } = useTranslation();
@@ -37,6 +38,8 @@ export const QuickActions = () => {
   const [reportOpen, setReportOpen] = useState(false);
   const [patientOpen, setPatientOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
+
+  const { toast } = useToast();
 
   const handleScheduleConsultation = () => {
     toast({

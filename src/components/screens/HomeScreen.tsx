@@ -13,15 +13,9 @@ import SimpleMedicationModal from '@/components/modals/SimpleMedicationModal';
 import CompleteMealModal from '@/components/modals/CompleteMealModal';
 import SimpleActivityModal from '@/components/modals/SimpleActivityModal';
 import { useGlucose } from '@/contexts/GlucoseContext';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '../Modal';
+
 import { useAuth } from '@/contexts/AuthContext';
+import TransitionExample from '../modals/TransitionExample';
 
 interface HomeScreenProps {
   onTabChange?: (tab: string) => void;
@@ -69,24 +63,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
           }
           trend={getTrend()}
         />
-        {/* <div className="relative top[-20rem] left-1/2 transform -translate-x-1/2 -translate-y-1/2 ">
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button variant="outline">Open Modal</Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px] absolute md:top-[-50vh] left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-              <DialogHeader>
-                <DialogTitle>Edit profile</DialogTitle>
-                <DialogDescription>
-                  Make changes to your profile here. Click save when you're
-                  done.
-                </DialogDescription>
-              </DialogHeader>
-              <div className="grid gap-4 py-4">
-              </div>
-            </DialogContent>
-          </Dialog>
-        </div> */}
+      
 
         {/* Actions Rapides - FONCTIONNELLES */}
         <ActionsRapides
@@ -143,6 +120,10 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
 
       {/* Toutes les Modales Simples */}
       <SimpleMedicationModal
+        isOpen={showAddDose}
+        onClose={() => setShowAddDose(false)}
+      />
+      <TransitionExample
         isOpen={showAddDose}
         onClose={() => setShowAddDose(false)}
       />
