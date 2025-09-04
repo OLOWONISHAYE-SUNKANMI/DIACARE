@@ -17,7 +17,7 @@ const BottomNavigation = ({ activeTab, onTabChange }) => {
   // Assign colors for each tab to create a flowing gradient palette
   const tabs = [
     { id: "home", label: t("nav.home"), icon: Home, color: "blue" }, // light blue
-    { id: "doses", label: t("nav.doses"), icon: Pill, color: "teal" },
+    // { id: "doses", label: t("nav.doses"), icon: Pill, color: "teal" },
     { id: "journal", label: t("nav.journal"), icon: FileText, color: "coral" },
     { id: "charts", label: t("nav.charts"), icon: BarChart3, color: "orange" },
     {
@@ -66,25 +66,25 @@ const BottomNavigation = ({ activeTab, onTabChange }) => {
             const colors = colorVariants[tab.color];
 
             return (
-              <button
-                key={tab.id}
-                onClick={() => onTabChange(tab.id)}
-                className={`flex flex-col items-center justify-center px-2 py-1.5 sm:px-3 sm:py-2 rounded-xl transition-all duration-300 flex-shrink-0 ${
-                  isActive
-                    ? colors.active
-                    : `${colors.base} ${colors.hover} text-gray-500`
-                }`}
-                style={{ minWidth: "56px" }}
-              >
-                <Icon
-                  className={`w-5 h-5 sm:w-6 sm:h-6 mb-0.5 sm:mb-1 flex-shrink-0 transition-transform duration-300 ${
-                    isActive ? "scale-110" : "scale-100"
-                  }`}
-                />
-                <span className="text-[10px] sm:text-xs md:text-sm font-medium truncate max-w-[70px] text-center">
-                  {tab.label}
-                </span>
-              </button>
+             <button
+  key={tab.id}
+  onClick={() => onTabChange(tab.id)}
+  className={`flex flex-col items-center justify-center px-2 py-1.5 sm:px-3 sm:py-2 rounded-xl transition-all duration-300 flex-shrink-0 ${
+    isActive
+      ? colors.active
+      : `${colors.base} ${colors.hover}`
+  }`}
+  style={{ minWidth: "56px" }}
+>
+  <Icon
+    className={`w-5 h-5 sm:w-6 sm:h-6 mb-0.5 sm:mb-1 flex-shrink-0 transition-transform duration-300 ${
+      isActive ? "scale-110" : "scale-100"
+    }`}
+  />
+  <span className="text-[10px] sm:text-xs md:text-sm font-medium truncate max-w-[70px] text-center">
+    {tab.label}
+  </span>
+</button>
             );
           })}
         </div>
