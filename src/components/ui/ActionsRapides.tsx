@@ -24,6 +24,9 @@ import BarcodeScanModal from '@/components/modals/BarcodeScanModal';
 import PhotoAnalysisModal from '@/components/modals/PhotoAnalysisModal';
 import { useTranslation } from 'react-i18next';
 import { SelectPortal } from '@radix-ui/react-select';
+import { useMeals } from '@/contexts/MealContext';
+import { useMedications } from '@/contexts/MedicationContext';
+import { useActivities } from '@/contexts/ActivityContext';
 
 interface ActionsRapidesProps {
   onTabChange?: (tab: string) => void;
@@ -44,6 +47,9 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
     const { toast } = useToast();
     const { addReading } = useGlucose();
     const { t } = useTranslation();
+    const { addMeal } = useMeals();
+    const { addMedication } = useMedications();
+    const { addActivity } = useActivities();
 
     // States for modals
     const [isGlucoseModalOpen, setIsGlucoseModalOpen] = useState(false);
@@ -57,7 +63,12 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
 
     // States for Repas
     const [foodName, setFoodName] = useState('');
+    const [mealType, setMealType] = useState<
+      'breakfast' | 'lunch' | 'dinner' | 'snack'
+    >('lunch');
     const [carbs, setCarbs] = useState('');
+    const [portion, setPortion] = useState('');
+    const [notes, setNotes] = useState('');
 
     // States for Médicament
     const [medication, setMedication] = useState('');
@@ -71,8 +82,15 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
     const [isBarcodeModalOpen, setIsBarcodeModalOpen] = useState(false);
     const [isPhotoModalOpen, setIsPhotoModalOpen] = useState(false);
 
-    const handleGlucoseSubmit = (e: React.FormEvent) => {
+    // loading states
+    const [glucoseLoading, setGlucoseLoading] = useState(false);
+    const [mealLoading, setMealLoading] = useState(false);
+    const [medicationLoading, setMedicationLoading] = useState(false);
+    const [activityLoading, setActivityLoading] = useState(false);
+
+    const handleGlucoseSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
+
       if (!glucoseValue || isNaN(Number(glucoseValue))) {
         toast({
           title: 'Erreur',
@@ -81,24 +99,42 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
         });
         return;
       }
-      addReading({
-        value: Number(glucoseValue),
-        timestamp: new Date().toISOString(),
-        context: 'manual',
-        notes: glucoseNotes || undefined,
-      });
-      toast({
-        title: 'Mesure ajoutée',
-        description: 'Votre glycémie a été enregistrée avec succès',
-      });
-      setGlucoseValue('');
-      setGlucoseNotes('');
-      setIsGlucoseModalOpen(false);
-      onGlycemieClick?.();
+
+      try {
+        setGlucoseLoading(true);
+
+        await addReading({
+          value: Number(glucoseValue),
+          timestamp: new Date().toISOString(),
+          context: 'manual',
+          notes: glucoseNotes || undefined,
+        });
+
+        toast({
+          title: 'Mesure ajoutée',
+          description: 'Votre glycémie a été enregistrée avec succès',
+        });
+
+        // reset form + close modal
+        setGlucoseValue('');
+        setGlucoseNotes('');
+        setIsGlucoseModalOpen(false);
+        onGlycemieClick?.();
+      } catch (error: any) {
+        console.error('Erreur ajout glycémie:', error);
+        toast({
+          title: 'Erreur',
+          description: "Impossible d'enregistrer votre mesure",
+          variant: 'destructive',
+        });
+      } finally {
+        setGlucoseLoading(false);
+      }
     };
 
-    const handleMealSubmit = (e: React.FormEvent) => {
+    const handleMealSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
+
       if (!foodName) {
         toast({
           title: 'Erreur',
@@ -107,18 +143,45 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
         });
         return;
       }
-      toast({
-        title: 'Repas ajouté',
-        description: `${foodName} a été ajouté à votre journal`,
-      });
-      setFoodName('');
-      setCarbs('');
-      setIsMealModalOpen(false);
-      onMealClick?.();
+
+      try {
+        setMealLoading(true);
+
+        await addMeal({
+          meal_name: foodName,
+          carbs_per_100g: carbs ? Number(carbs) : undefined,
+          portion_grams: portion ? Number(portion) : 100,
+          meal_type: mealType,
+          notes: notes || undefined,
+        });
+
+        toast({
+          title: 'Repas ajouté',
+          description: `${foodName} a été ajouté à votre journal`,
+        });
+
+        setFoodName('');
+        setMealType('lunch');
+        setCarbs('');
+        setPortion('');
+        setNotes('');
+        setIsMealModalOpen(false);
+        onMealClick?.();
+      } catch (err) {
+        console.error(err);
+        toast({
+          title: 'Erreur',
+          description: "Impossible d'ajouter le repas",
+          variant: 'destructive',
+        });
+      } finally {
+        setMealLoading(false);
+      }
     };
 
-    const handleMedicationSubmit = (e: React.FormEvent) => {
+    const handleMedicationSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
+
       if (!medication || !dose) {
         toast({
           title: 'Erreur',
@@ -127,18 +190,51 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
         });
         return;
       }
-      toast({
-        title: 'Médicament enregistré',
-        description: `${medication} - ${dose} unités pris avec succès`,
-      });
-      setMedication('');
-      setDose('');
-      setIsMedicationModalOpen(false);
-      onMedicamentClick?.();
+
+      try {
+        setMedicationLoading(true);
+
+        await addMedication({
+          medication_name: medication,
+          dose: Number(dose),
+          dose_unit: 'units', // can make dynamic later
+          notes: undefined,
+        });
+
+        toast({
+          title: 'Médicament enregistré',
+          description: `${medication} - ${dose} unités pris avec succès`,
+        });
+
+        setMedication('');
+        setDose('');
+        setIsMedicationModalOpen(false);
+        onMedicamentClick?.();
+      } catch (err) {
+        console.error(err);
+        toast({
+          title: 'Erreur',
+          description: "Impossible d'ajouter le médicament",
+          variant: 'destructive',
+        });
+      } finally {
+        setMedicationLoading(false);
+      }
     };
 
-    const handleActivitySubmit = (e: React.FormEvent) => {
+    // Mapping French UI values to DB-accepted values
+    const activityTypeMapping: Record<string, string> = {
+      marche: 'walking',
+      course: 'running',
+      velo: 'cycling',
+      natation: 'swimming',
+      musculation: 'strength',
+      autre: 'other',
+    };
+
+    const handleActivitySubmit = async (e: React.FormEvent) => {
       e.preventDefault();
+
       if (!activity || !duration) {
         toast({
           title: 'Erreur',
@@ -147,14 +243,37 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
         });
         return;
       }
-      toast({
-        title: 'Activité enregistrée',
-        description: `${activity} pendant ${duration} minutes`,
-      });
-      setActivity('');
-      setDuration('');
-      setIsActivityModalOpen(false);
-      onActivityClick?.();
+
+      try {
+        setActivityLoading(true);
+
+        await addActivity({
+          activity_name: activity,
+          activity_type: activityTypeMapping[activity] || 'other',
+          duration_minutes: Number(duration),
+          intensity: 'moderate',
+          notes: undefined,
+        });
+
+        toast({
+          title: 'Activité enregistrée',
+          description: `${activity} pendant ${duration} minutes`,
+        });
+
+        setActivity('');
+        setDuration('');
+        setIsActivityModalOpen(false);
+        onActivityClick?.();
+      } catch (err) {
+        console.error(err);
+        toast({
+          title: 'Erreur',
+          description: "Impossible d'ajouter l'activité",
+          variant: 'destructive',
+        });
+      } finally {
+        setActivityLoading(false);
+      }
     };
 
     const handleRappelsClick = () => {
@@ -222,8 +341,14 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
                         className="mt-1"
                       />
                     </div>
-                    <Button type="submit" className="w-full">
-                      {t('Actions.button')}
+                    <Button
+                      type="submit"
+                      className="w-full"
+                      disabled={glucoseLoading}
+                    >
+                      {glucoseLoading
+                        ? 'Enregistrement...'
+                        : t('Actions.button')}
                     </Button>
                   </form>
                 </ModalBody>
@@ -242,6 +367,7 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
                 {t('Journal.title')}
               </span>
             </button>
+
             <Modal
               isOpen={isMealModalOpen}
               onClose={() => setIsMealModalOpen(false)}
@@ -297,9 +423,26 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
                           autoFocus
                         />
                       </div>
+
+                      <div>
+                        <Label htmlFor="mealType">Type de repas</Label>
+                        <select
+                          id="mealType"
+                          value={mealType}
+                          onChange={e => setMealType(e.target.value)}
+                          className="mt-1 block w-full border rounded p-2"
+                        >
+                          <option value="breakfast">Petit-déjeuner</option>
+                          <option value="lunch">Déjeuner</option>
+                          <option value="dinner">Dîner</option>
+                          <option value="snack">Snack</option>
+                        </select>
+                      </div>
+
                       <div>
                         <Label htmlFor="carbs">
-                          {t('Journal.title2')} (g) - {t('Journal.optional')}
+                          {t('Journal.title2')} (g pour 100g) -{' '}
+                          {t('Journal.optional')}
                         </Label>
                         <Input
                           id="carbs"
@@ -310,8 +453,36 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
                           className="mt-1"
                         />
                       </div>
-                      <Button type="submit" className="w-full">
-                        {t('Journal.button')}
+
+                      <div>
+                        <Label htmlFor="portion">Portion (g)</Label>
+                        <Input
+                          id="portion"
+                          type="number"
+                          placeholder="Ex: 150"
+                          value={portion}
+                          onChange={e => setPortion(e.target.value)}
+                          className="mt-1"
+                        />
+                      </div>
+
+                      <div>
+                        <Label htmlFor="notes">Notes</Label>
+                        <Input
+                          id="notes"
+                          placeholder="Ex: Avec du poulet, sauce légère..."
+                          value={notes}
+                          onChange={e => setNotes(e.target.value)}
+                          className="mt-1"
+                        />
+                      </div>
+
+                      <Button
+                        type="submit"
+                        className="w-full"
+                        disabled={mealLoading}
+                      >
+                        {mealLoading ? 'Ajout...' : t('Journal.button')}
                       </Button>
                     </form>
                   </div>
@@ -331,6 +502,7 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
                 {t('Medication.title')}
               </span>
             </button>
+
             <Modal
               isOpen={isMedicationModalOpen}
               onClose={() => setIsMedicationModalOpen(false)}
@@ -487,8 +659,14 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
                         className="mt-1"
                       />
                     </div>
-                    <Button type="submit" className="w-full">
-                      {t('Medication.button')}
+                    <Button
+                      type="submit"
+                      className="w-full"
+                      disabled={medicationLoading}
+                    >
+                      {medicationLoading
+                        ? 'Enregistrement...'
+                        : t('Medication.button')}
                     </Button>
                   </form>
                 </ModalBody>
@@ -507,6 +685,7 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
                 {t('Activity.title')}
               </span>
             </button>
+
             <Modal
               isOpen={isActivityModalOpen}
               onClose={() => setIsActivityModalOpen(false)}
@@ -571,13 +750,20 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
                     </div>
 
                     {/* Submit Button */}
-                    <Button type="submit" className="w-full">
-                      {t('Activity.button')}
+                    <Button
+                      type="submit"
+                      className="w-full"
+                      disabled={activityLoading}
+                    >
+                      {activityLoading
+                        ? 'Enregistrement...'
+                        : t('Activity.button')}
                     </Button>
                   </form>
                 </ModalBody>
               </ModalContent>
             </Modal>
+
             {/* Rappels */}
             <button
               onClick={handleRappelsClick}
@@ -587,7 +773,7 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
                 <span className="text-lg sm:text-xl">⏰</span>
               </div>
               <span className="text-xs sm:text-sm font-medium text-gray-700 text-center leading-tight">
-                Rappels
+                Reminders
               </span>
             </button>
           </div>

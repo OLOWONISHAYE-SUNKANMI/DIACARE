@@ -759,6 +759,42 @@ export type Database = {
         }
         Relationships: []
       }
+      medication_entries: {
+        Row: {
+          created_at: string
+          dose: number
+          dose_unit: string | null
+          id: string
+          medication_name: string
+          medication_time: string
+          notes: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          dose: number
+          dose_unit?: string | null
+          id?: string
+          medication_name: string
+          medication_time?: string
+          notes?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          dose?: number
+          dose_unit?: string | null
+          id?: string
+          medication_name?: string
+          medication_time?: string
+          notes?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       monthly_revenue_distribution: {
         Row: {
           approved_at: string | null
