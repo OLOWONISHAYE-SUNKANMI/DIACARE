@@ -1258,6 +1258,12 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
     const [isBarcodeModalOpen, setIsBarcodeModalOpen] = useState(false);
     const [isPhotoModalOpen, setIsPhotoModalOpen] = useState(false);
 
+    // loading states
+    const [glucoseLoading, setGlucoseLoading] = useState(false);
+    const [mealLoading, setMealLoading] = useState(false);
+    const [medicationLoading, setMedicationLoading] = useState(false);
+    const [activityLoading, setActivityLoading] = useState(false);
+
     const handleGlucoseSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
 
@@ -1271,6 +1277,8 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
       }
 
       try {
+        setGlucoseLoading(true);
+
         await addReading({
           value: Number(glucoseValue),
           timestamp: new Date().toISOString(),
@@ -1295,11 +1303,14 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
           description: "Impossible d'enregistrer votre mesure",
           variant: 'destructive',
         });
+      } finally {
+        setGlucoseLoading(false);
       }
     };
 
     const handleMealSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
+
       if (!foodName) {
         toast({
           title: 'Erreur',
@@ -1310,12 +1321,14 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
       }
 
       try {
+        setMealLoading(true);
+
         await addMeal({
           meal_name: foodName,
           carbs_per_100g: carbs ? Number(carbs) : undefined,
           portion_grams: portion ? Number(portion) : 100,
           meal_type: mealType,
-          notes: notes || undefined, // ✅ optional notes
+          notes: notes || undefined,
         });
 
         toast({
@@ -1323,7 +1336,6 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
           description: `${foodName} a été ajouté à votre journal`,
         });
 
-        // reset fields
         setFoodName('');
         setMealType('lunch');
         setCarbs('');
@@ -1338,6 +1350,8 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
           description: "Impossible d'ajouter le repas",
           variant: 'destructive',
         });
+      } finally {
+        setMealLoading(false);
       }
     };
 
@@ -1354,10 +1368,12 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
       }
 
       try {
+        setMedicationLoading(true);
+
         await addMedication({
           medication_name: medication,
           dose: Number(dose),
-          dose_unit: 'units', // default (you can make this dynamic later if needed)
+          dose_unit: 'units', // can make dynamic later
           notes: undefined,
         });
 
@@ -1377,8 +1393,11 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
           description: "Impossible d'ajouter le médicament",
           variant: 'destructive',
         });
+      } finally {
+        setMedicationLoading(false);
       }
     };
+
     // Mapping French UI values to DB-accepted values
     const activityTypeMapping: Record<string, string> = {
       marche: 'walking',
@@ -1391,6 +1410,7 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
 
     const handleActivitySubmit = async (e: React.FormEvent) => {
       e.preventDefault();
+
       if (!activity || !duration) {
         toast({
           title: 'Erreur',
@@ -1401,11 +1421,13 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
       }
 
       try {
+        setActivityLoading(true);
+
         await addActivity({
           activity_name: activity,
-          activity_type: activityTypeMapping[activity] || 'other', // mapped to DB
+          activity_type: activityTypeMapping[activity] || 'other',
           duration_minutes: Number(duration),
-          intensity: 'moderate', // default value
+          intensity: 'moderate',
           notes: undefined,
         });
 
@@ -1425,6 +1447,8 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
           description: "Impossible d'ajouter l'activité",
           variant: 'destructive',
         });
+      } finally {
+        setActivityLoading(false);
       }
     };
 
@@ -1493,8 +1517,14 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
                         className="mt-1"
                       />
                     </div>
-                    <Button type="submit" className="w-full">
-                      {t('Actions.button')}
+                    <Button
+                      type="submit"
+                      className="w-full"
+                      disabled={glucoseLoading}
+                    >
+                      {glucoseLoading
+                        ? 'Enregistrement...'
+                        : t('Actions.button')}
                     </Button>
                   </form>
                 </ModalBody>
@@ -1623,8 +1653,12 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
                         />
                       </div>
 
-                      <Button type="submit" className="w-full">
-                        {t('Journal.button')}
+                      <Button
+                        type="submit"
+                        className="w-full"
+                        disabled={mealLoading}
+                      >
+                        {mealLoading ? 'Ajout...' : t('Journal.button')}
                       </Button>
                     </form>
                   </div>
@@ -1801,8 +1835,14 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
                         className="mt-1"
                       />
                     </div>
-                    <Button type="submit" className="w-full">
-                      {t('Medication.button')}
+                    <Button
+                      type="submit"
+                      className="w-full"
+                      disabled={medicationLoading}
+                    >
+                      {medicationLoading
+                        ? 'Enregistrement...'
+                        : t('Medication.button')}
                     </Button>
                   </form>
                 </ModalBody>
@@ -1886,8 +1926,14 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
                     </div>
 
                     {/* Submit Button */}
-                    <Button type="submit" className="w-full">
-                      {t('Activity.button')}
+                    <Button
+                      type="submit"
+                      className="w-full"
+                      disabled={activityLoading}
+                    >
+                      {activityLoading
+                        ? 'Enregistrement...'
+                        : t('Activity.button')}
                     </Button>
                   </form>
                 </ModalBody>
