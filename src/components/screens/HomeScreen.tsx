@@ -8,14 +8,9 @@ import NativeHeader from '@/components/ui/NativeHeader';
 import GlucoseWidget from '@/components/ui/GlucoseWidget';
 import ActionsRapides from '@/components/ui/ActionsRapides';
 import PredictiveAlerts from '@/components/ui/PredictiveAlerts';
-import SimpleGlucoseModal from '@/components/modals/SimpleGlucoseModal';
-import SimpleMedicationModal from '@/components/modals/SimpleMedicationModal';
-import CompleteMealModal from '@/components/modals/CompleteMealModal';
-import SimpleActivityModal from '@/components/modals/SimpleActivityModal';
 import { useGlucose } from '@/contexts/GlucoseContext';
 
 import { useAuth } from '@/contexts/AuthContext';
-import TransitionExample from '../modals/TransitionExample';
 
 interface HomeScreenProps {
   onTabChange?: (tab: string) => void;
@@ -105,27 +100,6 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
           </Card>
         </div>
       </div>
-      {/* <SimpleGlucoseModal
-        isOpen={showAddMeasure}
-        onClose={() => setShowAddMeasure(false)}
-      />
-
-      <SimpleMedicationModal
-        isOpen={showAddDose}
-        onClose={() => setShowAddDose(false)}
-      />
-      <TransitionExample
-        isOpen={showAddDose}
-        onClose={() => setShowAddDose(false)}
-      />
-      <CompleteMealModal
-        isOpen={showAddMeal}
-        onClose={() => setShowAddMeal(false)}
-      />
-      <SimpleActivityModal
-        isOpen={showAddActivity}
-        onClose={() => setShowAddActivity(false)}
-      /> */}
     </div>
   );
 };
