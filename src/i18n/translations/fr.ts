@@ -1169,6 +1169,11 @@ export const fr = {
     emergencyContact: 'Contact d’urgence',
   },
 
+  toastMessage: {
+    title: 'Nouvelle entrée',
+    description: 'Fonctionnalité disponible prochainement',
+  },
+
   //professional login card
   professionalLoginCard: {
     title: 'Professionnel de santé',
