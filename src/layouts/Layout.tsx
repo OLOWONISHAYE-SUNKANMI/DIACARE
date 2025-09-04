@@ -6,6 +6,7 @@ import BottomNavigation from '@/components/BottomNavigation';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { GlucoseProvider } from '@/contexts/GlucoseContext';
+
 import { MealProvider } from '@/contexts/MealContext';
 import { MedicationProvider } from '@/contexts/MedicationContext';
 import { ActivityProvider } from '@/contexts/ActivityContext';
