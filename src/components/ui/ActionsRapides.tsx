@@ -1199,6 +1199,7 @@ import { useGlucose } from '@/contexts/GlucoseContext';
 import BarcodeScanModal from '@/components/modals/BarcodeScanModal';
 import PhotoAnalysisModal from '@/components/modals/PhotoAnalysisModal';
 import { useTranslation } from 'react-i18next';
+import { SelectPortal } from '@radix-ui/react-select';
 
 interface ActionsRapidesProps {
   onTabChange?: (tab: string) => void;
@@ -1423,7 +1424,7 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
               isCentered
             >
               <ModalOverlay />
-              <ModalContent  py={10}>
+              <ModalContent py={10}>
                 <ModalHeader>🍽️ {t('Journal.title')}</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
@@ -1512,7 +1513,7 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
               isCentered
             >
               <ModalOverlay />
-              <ModalContent  py={10}>
+              <ModalContent py={10}>
                 <ModalHeader>💊 {t('Medication.subtitle')}</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
@@ -1527,8 +1528,125 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
                             placeholder={t('Medication.select.title')}
                           />
                         </SelectTrigger>
-                        <SelectContent>
-                          {/* ...SelectItems as before... */}
+                        
+                        <SelectContent className="z-[9999] bg-white dark:bg-gray-900 shadow-lg rounded-lg">
+                          {/* Insulines ultra-rapides */}
+                          <SelectItem value="insuline-ultra-rapide">
+                            {t('medication.select.option.one')}
+                          </SelectItem>
+                          <SelectItem value="humalog">
+                            {t('Medication.select.option.two')}
+                          </SelectItem>
+                          <SelectItem value="novorapid">
+                            {t('Medication.select.option.three')}
+                          </SelectItem>
+                          <SelectItem value="apidra">
+                            {t('Medication.select.option.four')}
+                          </SelectItem>
+                          <SelectItem value="fiasp">
+                            {t('Medication.select.option.five')}
+                          </SelectItem>
+
+                          {/* Rapid Insulins */}
+                          <SelectItem value="insuline-rapide">
+                            {t('Medication.select.option.six')}
+                          </SelectItem>
+                          <SelectItem value="actrapid">
+                            {t('Medication.select.option.seven')}
+                          </SelectItem>
+                          <SelectItem value="humulin-r">
+                            {t('Medication.select.option.eight')}
+                          </SelectItem>
+                          <SelectItem value="insuman-rapid">
+                            {t('Medication.select.option.nine')}
+                          </SelectItem>
+
+                          {/* Intermediate Insulins */}
+                          <SelectItem value="insuline-intermediaire">
+                            {t('Medication.select.option.ten')}
+                          </SelectItem>
+                          <SelectItem value="insulatard">
+                            {t('Medication.select.option.eleven')}
+                          </SelectItem>
+                          <SelectItem value="humulin-n">
+                            {t('Medication.select.option.twelve')}
+                          </SelectItem>
+                          <SelectItem value="insuman-basal">
+                            {t('Medication.select.option.thirteen')}
+                          </SelectItem>
+
+                          {/* Long-Acting Insulins */}
+                          <SelectItem value="insuline-lente">
+                            {t('Medication.select.option.fourteen')}
+                          </SelectItem>
+                          <SelectItem value="lantus">
+                            {t('Medication.select.option.fifteen')}
+                          </SelectItem>
+                          <SelectItem value="levemir">
+                            {t('Medication.select.option.sixteen')}
+                          </SelectItem>
+                          <SelectItem value="toujeo">
+                            {t('Medication.select.option.seventeen')}
+                          </SelectItem>
+                          <SelectItem value="tresiba">
+                            {t('Medication.select.option.eighteen')}
+                          </SelectItem>
+                          <SelectItem value="abasaglar">
+                            {t('Medication.select.option.nineteen')}
+                          </SelectItem>
+
+                          {/* Mixed Insulins */}
+                          <SelectItem value="insuline-mixte">
+                            {t('Medication.select.option.twenty')}
+                          </SelectItem>
+                          <SelectItem value="novomix">
+                            {t('Medication.select.option.twentyone')}
+                          </SelectItem>
+                          <SelectItem value="humalog-mix">
+                            {t('Medication.select.option.twentytwo')}
+                          </SelectItem>
+                          <SelectItem value="humulin-mix">
+                            {t('Medication.select.option.twentythree')}
+                          </SelectItem>
+                          <SelectItem value="insuman-comb">
+                            {t('Medication.select.option.twentyfour')}
+                          </SelectItem>
+
+                          {/* Other Antidiabetics */}
+                          <SelectItem value="metformine">
+                            {t('Medication.select.option.twentyfive')}
+                          </SelectItem>
+                          <SelectItem value="glucophage">
+                            {t('Medication.select.option.twentysix')}
+                          </SelectItem>
+                          <SelectItem value="stagid">
+                            {t('Medication.select.option.twentyseven')}
+                          </SelectItem>
+                          <SelectItem value="gliclazide">
+                            {t('Medication.select.option.twentyeight')}
+                          </SelectItem>
+                          <SelectItem value="diamicron">
+                            {t('Medication.select.option.twentynine')}
+                          </SelectItem>
+                          <SelectItem value="victoza">
+                            {t('Medication.select.option.thirty')}
+                          </SelectItem>
+                          <SelectItem value="ozempic">
+                            {t('Medication.select.option.thirtyone')}
+                          </SelectItem>
+                          <SelectItem value="trulicity">
+                            {t('Medication.select.option.thirtytwo')}
+                          </SelectItem>
+                          <SelectItem value="januvia">
+                            {t('Medication.select.option.thirtythree')}
+                          </SelectItem>
+                          <SelectItem value="forxiga">
+                            {t('Medication.select.option.thirtyfour')}
+                          </SelectItem>
+
+                          <SelectItem value="autre">
+                            {t('Medication.select.option.thirtyfive')}
+                          </SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -1571,7 +1689,7 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
               isCentered
             >
               <ModalOverlay />
-              <ModalContent  py={10}>
+              <ModalContent py={10} zIndex={1500}>
                 <ModalHeader>🏃 {t('Activity.subtitle')}</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
@@ -1579,17 +1697,41 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
                     onSubmit={handleActivitySubmit}
                     className="space-y-4 py-6"
                   >
+                    {/* Select Input */}
                     <div>
                       <Label htmlFor="activity">{t('Activity.type')}</Label>
                       <Select value={activity} onValueChange={setActivity}>
                         <SelectTrigger className="mt-1">
                           <SelectValue placeholder={t('Activity.select')} />
                         </SelectTrigger>
-                        <SelectContent>
-                          {/* ...SelectItems as before... */}
-                        </SelectContent>
+
+                        {/* ✅ Use SelectPortal to force dropdown above modal */}
+                        <SelectPortal>
+                          <SelectContent className="z-[9999] bg-white dark:bg-gray-900 shadow-lg rounded-lg">
+                            <SelectItem value="marche">
+                              {t('Activity.Popover.one')}
+                            </SelectItem>
+                            <SelectItem value="course">
+                              {t('Activity.Popover.two')}
+                            </SelectItem>
+                            <SelectItem value="velo">
+                              {t('Activity.Popover.three')}
+                            </SelectItem>
+                            <SelectItem value="natation">
+                              {t('Activity.Popover.four')}
+                            </SelectItem>
+                            <SelectItem value="musculation">
+                              {t('Activity.Popover.five')}
+                            </SelectItem>
+                            <SelectItem value="autre">
+                              {t('Activity.Popover.six')}
+                            </SelectItem>
+                          </SelectContent>
+                        </SelectPortal>
                       </Select>
                     </div>
+
+                    {/* Duration Input */}
                     <div>
                       <Label htmlFor="duration">
                         {t('Activity.Duration')} (minutes)
@@ -1603,6 +1745,8 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
                         className="mt-1"
                       />
                     </div>
+
+                    {/* Submit Button */}
                     <Button type="submit" className="w-full">
                       {t('Activity.button')}
                     </Button>
@@ -1610,7 +1754,6 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
                 </ModalBody>
               </ModalContent>
             </Modal>
-
             {/* Rappels */}
             <button
               onClick={handleRappelsClick}

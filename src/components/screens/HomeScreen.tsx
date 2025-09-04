@@ -113,12 +113,11 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
           </Card>
         </div>
       </div>
-      <SimpleGlucoseModal
+      {/* <SimpleGlucoseModal
         isOpen={showAddMeasure}
         onClose={() => setShowAddMeasure(false)}
       />
 
-      {/* Toutes les Modales Simples */}
       <SimpleMedicationModal
         isOpen={showAddDose}
         onClose={() => setShowAddDose(false)}
@@ -134,7 +133,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
       <SimpleActivityModal
         isOpen={showAddActivity}
         onClose={() => setShowAddActivity(false)}
-      />
+      /> */}
     </div>
   );
 };
