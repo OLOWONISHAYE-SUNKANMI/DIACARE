@@ -27,9 +27,9 @@ const Layout = ({ children, activeTab, onTabChange }: LayoutProps) => {
   const [isOpen, setIsOpen] = useState(true);
 
   const handleQuickAdd = () => {
-    toast({
-      title: 'Nouvelle entrée',
+    toast.success('Nouvelle entrée', {
       description: 'Fonctionnalité disponible prochainement',
+      duration: 3000, // optional: controls how long the toast shows
     });
   };
 

@@ -1,5 +1,3 @@
-import { Toaster } from '@/components/ui/toaster';
-import { Toaster as Sonner } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
@@ -15,6 +13,7 @@ import PaymentScreen from './components/screens/PaymentScreen';
 import { ProfessionalDashboard } from './components/screens/ProfessionalDashboard';
 import { ProfessionalRegistrationScreen } from './components/screens/ProfessionalRegistrationScreen';
 import { ChakraProvider } from '@chakra-ui/react';
+import { Toaster } from 'sonner';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -86,8 +85,7 @@ const App = () => (
       <ErrorBoundary>
         <AuthProvider>
           <TooltipProvider>
-            <Toaster />
-            <Sonner />
+            <Toaster richColors position="bottom-right" />
             <AppContent />
           </TooltipProvider>
         </AuthProvider>

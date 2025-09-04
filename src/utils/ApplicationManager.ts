@@ -15,8 +15,9 @@ interface Application {
 }
 
 export const ApplicationManager = {
-  
-  approveApplication: async (application: Application): Promise<{ success: boolean; professionalCode?: string }> => {
+  approveApplication: async (
+    application: Application
+  ): Promise<{ success: boolean; professionalCode?: string }> => {
     try {
       // Utiliser la fonction Supabase existante pour approuver
       const { data: currentUser } = await supabase.auth.getUser();
@@ -25,11 +26,13 @@ export const ApplicationManager = {
       }
 
       // Appeler la fonction de base de données pour approuver l'application
-      const { data, error } = await supabase
-        .rpc('approve_professional_application', {
+      const { data, error } = await supabase.rpc(
+        'approve_professional_application',
+        {
           application_id: application.id,
-          reviewer_id: currentUser.user.id
-        });
+          reviewer_id: currentUser.user.id,
+        }
+      );
 
       if (error) throw error;
 
@@ -45,35 +48,43 @@ export const ApplicationManager = {
       // Envoyer l'email d'approbation via le service de notifications
       const emailSent = await EmailNotifications.sendApprovalEmail({
         ...application,
-        professional_code: updatedApplication.professional_code
+        professional_code: updatedApplication.professional_code,
       });
 
       if (!emailSent) {
-        console.warn('Attention: Email d\'approbation non envoyé');
+        console.warn("Attention: Email d'approbation non envoyé");
       }
 
-      toast({
-        title: "Candidature approuvée !",
+      toast.success('Candidature approuvée !', {
         description: `Code professionnel ${updatedApplication.professional_code} généré et envoyé par email.`,
+        duration: 3000,
       });
-      
-      return { 
-        success: true, 
-        professionalCode: updatedApplication.professional_code 
+
+      return {
+        success: true,
+        professionalCode: updatedApplication.professional_code,
       };
-      
     } catch (error: any) {
       console.error('Erreur approbation:', error);
-      toast({
-        title: "Erreur d'approbation",
+      // toast({
+      //   title: "Erreur d'approbation",
+      //   description:
+      //     error.message || "Une erreur est survenue lors de l'approbation",
+      //   variant: 'destructive',
+      // });
+       toast.error("Erreur d'approbation", {
         description: error.message || "Une erreur est survenue lors de l'approbation",
-        variant: "destructive"
+        duration: 3000,
       });
+      
       return { success: false };
     }
   },
-  
-  rejectApplication: async (application: Application, reason: string): Promise<boolean> => {
+
+  rejectApplication: async (
+    application: Application,
+    reason: string
+  ): Promise<boolean> => {
     try {
       const { data: currentUser } = await supabase.auth.getUser();
       if (!currentUser.user) {
@@ -87,54 +98,59 @@ export const ApplicationManager = {
           status: 'rejected',
           rejection_reason: reason,
           reviewed_by: currentUser.user.id,
-          reviewed_at: new Date().toISOString()
+          reviewed_at: new Date().toISOString(),
         })
         .eq('id', application.id);
 
       if (error) throw error;
 
       // Envoyer l'email de rejet via le service de notifications
-      const emailSent = await EmailNotifications.sendRejectionEmail(application, reason);
+      const emailSent = await EmailNotifications.sendRejectionEmail(
+        application,
+        reason
+      );
 
       if (!emailSent) {
         console.warn('Attention: Email de rejet non envoyé');
       }
 
       toast({
-        title: "Candidature rejetée",
-        description: "Email de notification envoyé au candidat.",
+        title: 'Candidature rejetée',
+        description: 'Email de notification envoyé au candidat.',
       });
-      
+
       return true;
-      
     } catch (error: any) {
       console.error('Erreur rejet:', error);
       toast({
-        title: "Erreur de rejet",
-        description: error.message || "Une erreur est survenue lors du rejet",
-        variant: "destructive"
+        title: 'Erreur de rejet',
+        description: error.message || 'Une erreur est survenue lors du rejet',
+        variant: 'destructive',
       });
       return false;
     }
   },
 
-  generateProfessionalCode: (professionalType: string, country: string): string => {
+  generateProfessionalCode: (
+    professionalType: string,
+    country: string
+  ): string => {
     const types: Record<string, string> = {
-      'endocrinologist': 'ENDO',
-      'diabetologist': 'DIAB',
-      'psychologist': 'PSYC',
-      'nutritionist': 'NUTR',
-      'nurse': 'NURS',
-      'general_practitioner': 'MGEN',
-      'pharmacist': 'PHAR',
-      'podiatrist': 'PODO'
+      endocrinologist: 'ENDO',
+      diabetologist: 'DIAB',
+      psychologist: 'PSYC',
+      nutritionist: 'NUTR',
+      nurse: 'NURS',
+      general_practitioner: 'MGEN',
+      pharmacist: 'PHAR',
+      podiatrist: 'PODO',
     };
-    
+
     // Format: TYPE-PAYS-XXXX
     const type = types[professionalType] || 'PROF';
     const countryCode = country.substring(0, 3).toUpperCase();
     const number = Math.floor(1000 + Math.random() * 9000);
-    
+
     return `${type}-${countryCode}-${number}`;
   },
 
@@ -150,9 +166,9 @@ export const ApplicationManager = {
       }
 
       const { data, error } = await query;
-      
+
       if (error) throw error;
-      
+
       return data || [];
     } catch (error) {
       console.error('Erreur récupération candidatures:', error);
@@ -172,7 +188,7 @@ export const ApplicationManager = {
         total: data.length,
         pending: data.filter(app => app.status === 'pending').length,
         approved: data.filter(app => app.status === 'approved').length,
-        rejected: data.filter(app => app.status === 'rejected').length
+        rejected: data.filter(app => app.status === 'rejected').length,
       };
 
       return stats;
@@ -180,5 +196,5 @@ export const ApplicationManager = {
       console.error('Erreur stats candidatures:', error);
       return { total: 0, pending: 0, approved: 0, rejected: 0 };
     }
-  }
+  },
 };
