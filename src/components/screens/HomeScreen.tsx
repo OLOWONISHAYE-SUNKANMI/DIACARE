@@ -36,13 +36,6 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
     user?.email ||
     'Invité';
 
-  console.log(
-    'Modal states - showAddMeasure:',
-    showAddMeasure,
-    'showAddDose:',
-    showAddDose
-  );
-
   const latestReading = getLatestReading();
   const currentGlucose = latestReading?.value || 126;
 
@@ -63,7 +56,6 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
           }
           trend={getTrend()}
         />
-      
 
         {/* Actions Rapides - FONCTIONNELLES */}
         <ActionsRapides
