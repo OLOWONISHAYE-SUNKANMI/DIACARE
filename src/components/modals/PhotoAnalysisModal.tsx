@@ -5,6 +5,14 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalCloseButton,
+} from "@chakra-ui/react";
 
 interface PhotoAnalysisModalProps {
   isOpen: boolean;
@@ -17,8 +25,6 @@ const PhotoAnalysisModal = ({ isOpen, onClose, onFoodAnalyzed }: PhotoAnalysisMo
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisResult, setAnalysisResult] = useState<{ name: string; carbs: number; analysis: string } | null>(null);
   const { toast } = useToast();
-
-  if (!isOpen) return null;
 
   const takePicture = async (source: CameraSource) => {
     try {
@@ -110,121 +116,94 @@ const PhotoAnalysisModal = ({ isOpen, onClose, onFoodAnalyzed }: PhotoAnalysisMo
   };
 
   return (
-    <div className="fixed inset-0 z-50">
-      {/* Overlay */}
-      <div 
-        className="absolute inset-0 bg-black/50"
-        onClick={onClose}
-      />
-      
-      {/* Modal */}
-      <div 
-        className="absolute top-20 left-1/2 transform -translate-x-1/2 bg-white rounded-xl p-6 shadow-2xl w-full max-w-md max-h-[80vh] overflow-y-auto"
-        style={{ top: '80px' }}
-      >
-        {/* Header */}
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-semibold text-gray-900">
-            📸 Analyse Photo + IA
-          </h2>
-          <button
-            onClick={onClose}
-            className="p-1 rounded-full hover:bg-gray-100 transition-colors"
-          >
-            <X className="w-5 h-5 text-gray-500" />
-          </button>
-        </div>
-
-        <div className="space-y-4">
-          {!selectedImage ? (
-            /* Sélection de l'image */
-            <div className="space-y-3">
-              <p className="text-sm text-gray-600 mb-4">
-                Prenez une photo de votre repas pour que l'IA estime automatiquement les glucides.
-              </p>
-              
-              <Button 
-                onClick={() => takePicture(CameraSource.Camera)}
-                className="w-full flex items-center gap-2"
-              >
-                <CameraIcon className="w-4 h-4" />
-                Prendre une photo
-              </Button>
-
-              <Button 
-                onClick={() => takePicture(CameraSource.Photos)}
-                variant="outline"
-                className="w-full flex items-center gap-2"
-              >
-                <ImageIcon className="w-4 h-4" />
-                Choisir depuis la galerie
-              </Button>
-            </div>
-          ) : (
-            /* Affichage et analyse de l'image */
-            <div className="space-y-4">
-              {/* Image sélectionnée */}
-              <div className="relative">
-                <img 
-                  src={selectedImage} 
-                  alt="Repas à analyser"
-                  className="w-full h-48 object-cover rounded-lg"
-                />
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={resetModal}
-                  className="absolute top-2 right-2"
-                >
-                  Changer
-                </Button>
-              </div>
-
-              {/* Bouton d'analyse */}
-              {!analysisResult && (
+    <Modal isOpen={isOpen} onClose={onClose} isCentered size="md">
+      <ModalOverlay />
+      <ModalContent maxW="md" p={0}>
+        <ModalHeader display="flex" alignItems="center" justifyContent="space-between">
+          <span>📸 Analyse Photo + IA</span>
+        </ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>
+          <div className="space-y-4">
+            {!selectedImage ? (
+              <div className="space-y-3">
+                <p className="text-sm text-gray-600 mb-4">
+                  Prenez une photo de votre repas pour que l'IA estime automatiquement les glucides.
+                </p>
                 <Button 
-                  onClick={analyzeImage}
-                  disabled={isAnalyzing}
+                  onClick={() => takePicture(CameraSource.Camera)}
                   className="w-full flex items-center gap-2"
                 >
-                  {isAnalyzing ? (
-                    <>
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                      Analyse en cours...
-                    </>
-                  ) : (
-                    <>
-                      🤖 Analyser avec l'IA
-                    </>
-                  )}
+                  <CameraIcon className="w-4 h-4" />
+                  Prendre une photo
                 </Button>
-              )}
-
-              {/* Résultat de l'analyse */}
-              {analysisResult && (
-                <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                  <h3 className="font-medium text-blue-800 mb-3">Résultat de l'analyse IA:</h3>
-                  
-                  <div className="space-y-2 text-sm">
-                    <p><strong>Plat identifié:</strong> {analysisResult.name}</p>
-                    <p><strong>Glucides estimés:</strong> {analysisResult.carbs}g</p>
-                    <p><strong>Analyse:</strong> {analysisResult.analysis}</p>
-                  </div>
-                  
-                  <Button 
-                    onClick={handleAddFood}
-                    className="w-full mt-4"
+                <Button 
+                  onClick={() => takePicture(CameraSource.Photos)}
+                  variant="outline"
+                  className="w-full flex items-center gap-2"
+                >
+                  <ImageIcon className="w-4 h-4" />
+                  Choisir depuis la galerie
+                </Button>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <div className="relative">
+                  <img 
+                    src={selectedImage} 
+                    alt="Repas à analyser"
+                    className="w-full h-48 object-cover rounded-lg"
+                  />
+                  <Button
                     size="sm"
+                    variant="outline"
+                    onClick={resetModal}
+                    className="absolute top-2 right-2"
                   >
-                    Ajouter au journal
+                    Changer
                   </Button>
                 </div>
-              )}
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
+                {!analysisResult && (
+                  <Button 
+                    onClick={analyzeImage}
+                    disabled={isAnalyzing}
+                    className="w-full flex items-center gap-2"
+                  >
+                    {isAnalyzing ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        Analyse en cours...
+                      </>
+                    ) : (
+                      <>
+                        🤖 Analyser avec l'IA
+                      </>
+                    )}
+                  </Button>
+                )}
+                {analysisResult && (
+                  <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                    <h3 className="font-medium text-blue-800 mb-3">Résultat de l'analyse IA:</h3>
+                    <div className="space-y-2 text-sm">
+                      <p><strong>Plat identifié:</strong> {analysisResult.name}</p>
+                      <p><strong>Glucides estimés:</strong> {analysisResult.carbs}g</p>
+                      <p><strong>Analyse:</strong> {analysisResult.analysis}</p>
+                    </div>
+                    <Button 
+                      onClick={handleAddFood}
+                      className="w-full mt-4"
+                      size="sm"
+                    >
+                      Ajouter au journal
+                    </Button>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </ModalBody>
+      </ModalContent>
+    </Modal>
   );
 };
 

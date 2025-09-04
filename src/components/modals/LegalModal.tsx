@@ -1,15 +1,15 @@
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { X, FileText, Shield } from 'lucide-react';
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogHeader, 
-  DialogTitle,
-  DialogDescription 
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { ScrollArea } from '@/components/ui/scroll-area';
+import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalCloseButton,
+} from "@chakra-ui/react";
 
 interface LegalModalProps {
   isOpen: boolean;
@@ -39,31 +39,33 @@ export const LegalModal = ({ isOpen, onClose, type }: LegalModalProps) => {
   const { icon, title, content } = getContent();
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[80vh]">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
+    <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl">
+      <ModalOverlay />
+      <ModalContent maxW="4xl" maxH="80vh" py={6} px={4}>
+        <ModalHeader>
+          <div className="flex items-center gap-2">
             {icon}
             {title}
-          </DialogTitle>
-          <DialogDescription>
+          </div>
+          <div className="text-muted-foreground text-sm">
             {type === 'terms' ? t('legal.termsDescription') : t('legal.privacyDescription')}
-          </DialogDescription>
-        </DialogHeader>
-        
-        <ScrollArea className="h-[60vh] pr-4">
-          <div 
-            className="prose prose-sm max-w-none text-muted-foreground"
-            dangerouslySetInnerHTML={{ __html: content }}
-          />
-        </ScrollArea>
-        
-        <div className="flex justify-end pt-4 border-t">
-          <Button onClick={onClose} variant="outline">
-            {t('common.close')}
-          </Button>
-        </div>
-      </DialogContent>
-    </Dialog>
+          </div>
+        </ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>
+          <ScrollArea className="h-[60vh] pr-4">
+            <div
+              className="prose prose-sm max-w-none text-muted-foreground"
+              dangerouslySetInnerHTML={{ __html: content }}
+            />
+          </ScrollArea>
+          <div className="flex justify-end pt-4 border-t">
+            <Button onClick={onClose} variant="outline">
+              {t('common.close')}
+            </Button>
+          </div>
+        </ModalBody>
+      </ModalContent>
+    </Modal>
   );
 };

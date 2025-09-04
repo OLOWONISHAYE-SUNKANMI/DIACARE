@@ -15,7 +15,6 @@ import {
   Clock,
   TrendingUp,
 } from 'lucide-react';
-import { toast } from '@/hooks/use-toast';
 import { EarningsTable } from '@/components/ui/EarningsTable';
 import { PatientManagement } from '@/components/ui/PatientManagement';
 import { QuickActions } from '@/components/ui/QuickActions';
@@ -25,6 +24,7 @@ import { ProfessionalNotificationCenter } from '@/components/ui/ProfessionalNoti
 import { ProfessionalConsultationDashboard } from '@/components/ui/ProfessionalConsultationDashboard';
 
 import LanguageToggle from '../ui/LanguageToggle';
+import { toast } from 'sonner';
 
 interface DemoUser {
   id: string;
@@ -57,10 +57,14 @@ export const ProfessionalDashboard = () => {
   const handleLogout = () => {
     localStorage.removeItem('demo_professional_mode');
     localStorage.removeItem('demo_user_data');
-    toast({
-      title: 'Déconnexion',
-      description: 'Vous avez été déconnecté du mode demo',
-    });
+    // toast({
+    //   title: 'Déconnexion',
+    //   description: 'Vous avez été déconnecté du mode demo',
+    // });
+    toast.success('Déconnexion', {
+  description: 'Vous avez été déconnecté du mode demo',
+  duration: 4000, // optional
+});
     navigate('/auth');
   };
 
