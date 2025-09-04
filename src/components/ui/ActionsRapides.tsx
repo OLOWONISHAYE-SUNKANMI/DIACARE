@@ -1201,6 +1201,8 @@ import PhotoAnalysisModal from '@/components/modals/PhotoAnalysisModal';
 import { useTranslation } from 'react-i18next';
 import { SelectPortal } from '@radix-ui/react-select';
 import { useMeals } from '@/contexts/MealContext';
+import { useMedications } from '@/contexts/MedicationContext';
+import { useActivities } from '@/contexts/ActivityContext';
 
 interface ActionsRapidesProps {
   onTabChange?: (tab: string) => void;
@@ -1222,6 +1224,8 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
     const { addReading } = useGlucose();
     const { t } = useTranslation();
     const { addMeal } = useMeals();
+    const { addMedication } = useMedications();
+    const { addActivity } = useActivities();
 
     // States for modals
     const [isGlucoseModalOpen, setIsGlucoseModalOpen] = useState(false);
@@ -1337,8 +1341,9 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
       }
     };
 
-    const handleMedicationSubmit = (e: React.FormEvent) => {
+    const handleMedicationSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
+
       if (!medication || !dose) {
         toast({
           title: 'Erreur',
@@ -1347,17 +1352,44 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
         });
         return;
       }
-      toast({
-        title: 'Médicament enregistré',
-        description: `${medication} - ${dose} unités pris avec succès`,
-      });
-      setMedication('');
-      setDose('');
-      setIsMedicationModalOpen(false);
-      onMedicamentClick?.();
+
+      try {
+        await addMedication({
+          medication_name: medication,
+          dose: Number(dose),
+          dose_unit: 'units', // default (you can make this dynamic later if needed)
+          notes: undefined,
+        });
+
+        toast({
+          title: 'Médicament enregistré',
+          description: `${medication} - ${dose} unités pris avec succès`,
+        });
+
+        setMedication('');
+        setDose('');
+        setIsMedicationModalOpen(false);
+        onMedicamentClick?.();
+      } catch (err) {
+        console.error(err);
+        toast({
+          title: 'Erreur',
+          description: "Impossible d'ajouter le médicament",
+          variant: 'destructive',
+        });
+      }
+    };
+    // Mapping French UI values to DB-accepted values
+    const activityTypeMapping: Record<string, string> = {
+      marche: 'walking',
+      course: 'running',
+      velo: 'cycling',
+      natation: 'swimming',
+      musculation: 'strength',
+      autre: 'other',
     };
 
-    const handleActivitySubmit = (e: React.FormEvent) => {
+    const handleActivitySubmit = async (e: React.FormEvent) => {
       e.preventDefault();
       if (!activity || !duration) {
         toast({
@@ -1367,14 +1399,33 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
         });
         return;
       }
-      toast({
-        title: 'Activité enregistrée',
-        description: `${activity} pendant ${duration} minutes`,
-      });
-      setActivity('');
-      setDuration('');
-      setIsActivityModalOpen(false);
-      onActivityClick?.();
+
+      try {
+        await addActivity({
+          activity_name: activity,
+          activity_type: activityTypeMapping[activity] || 'other', // mapped to DB
+          duration_minutes: Number(duration),
+          intensity: 'moderate', // default value
+          notes: undefined,
+        });
+
+        toast({
+          title: 'Activité enregistrée',
+          description: `${activity} pendant ${duration} minutes`,
+        });
+
+        setActivity('');
+        setDuration('');
+        setIsActivityModalOpen(false);
+        onActivityClick?.();
+      } catch (err) {
+        console.error(err);
+        toast({
+          title: 'Erreur',
+          description: "Impossible d'ajouter l'activité",
+          variant: 'destructive',
+        });
+      }
     };
 
     const handleRappelsClick = () => {
@@ -1842,6 +1893,7 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
                 </ModalBody>
               </ModalContent>
             </Modal>
+
             {/* Rappels */}
             <button
               onClick={handleRappelsClick}
@@ -1851,7 +1903,7 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
                 <span className="text-lg sm:text-xl">⏰</span>
               </div>
               <span className="text-xs sm:text-sm font-medium text-gray-700 text-center leading-tight">
-                Rappels
+                Reminders
               </span>
             </button>
           </div>
