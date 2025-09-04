@@ -15,107 +15,133 @@ import {
   AreaChart,
   Legend,
 } from 'recharts';
+import { useMeals } from '@/contexts/MealContext';
+import { useMedications } from '@/contexts/MedicationContext';
+import { useActivities } from '@/contexts/ActivityContext';
 
 const ChartsScreen = () => {
   const { t } = useTranslation();
-  // Enhanced glucose data with timestamps and context
-  const glucoseData = [
-    {
-      time: '00:00',
-      value: 95,
-      hour: 0,
-      formattedTime: t('analysis.time.midnight'),
-      context: t('analysis.context.fasting'),
-    },
-    {
-      time: '02:00',
-      value: 140,
-      hour: 2,
-      formattedTime: '02h',
-      context: t('analysis.context.postMeal'),
-    },
-    {
-      time: '04:00',
-      value: 180,
-      hour: 4,
-      formattedTime: '04h',
-      context: t('analysis.context.postMeal'),
-    },
-    {
-      time: '06:00',
-      value: 165,
-      hour: 6,
-      formattedTime: '06h',
-      context: t('analysis.context.morning'),
-    },
-    {
-      time: '08:00',
-      value: 120,
-      hour: 8,
-      formattedTime: '08h',
-      context: t('analysis.context.breakfast'),
-    },
-    {
-      time: '10:00',
-      value: 85,
-      hour: 10,
-      formattedTime: '10h',
-      context: t('analysis.context.activity'),
-    },
-    {
-      time: '12:00',
-      value: 110,
-      hour: 12,
-      formattedTime: t('analysis.time.noon'),
-      context: t('analysis.context.lunch'),
-    },
-    {
-      time: '14:00',
-      value: 155,
-      hour: 14,
-      formattedTime: '14h',
-      context: t('analysis.context.postMeal'),
-    },
-    {
-      time: '16:00',
-      value: 190,
-      hour: 16,
-      formattedTime: '16h',
-      context: t('analysis.context.snack'),
-    },
-    {
-      time: '18:00',
-      value: 170,
-      hour: 18,
-      formattedTime: '18h',
-      context: t('analysis.context.dinner'),
-    },
-    {
-      time: '20:00',
-      value: 130,
-      hour: 20,
-      formattedTime: '20h',
-      context: t('analysis.context.postMeal'),
-    },
-    {
-      time: '22:00',
-      value: 105,
-      hour: 22,
-      formattedTime: '22h',
-      context: t('analysis.context.evening'),
-    },
-  ];
+
+  const { meals } = useMeals();
+  const { medications } = useMedications();
+  const { activities } = useActivities();
+
+  // Utility to format ISO timestamp to "HH:mm"
+  const formatTime = (iso: string) => {
+    const date = new Date(iso);
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    return `${hours}:${minutes}`;
+  };
+
+  // Transform live data into chart-friendly format
+  const generateChartData = (
+    meals: any[],
+    medications: any[],
+    activities: any[],
+    t: any
+  ) => {
+    const data: any[] = [];
+
+    // 1️ Meals
+    meals.forEach(meal => {
+      data.push({
+        time: formatTime(meal.meal_time),
+        value: meal.total_carbs,
+        formattedTime: formatTime(meal.meal_time),
+        context: t(`analysis.context.${meal.meal_type}`) || meal.meal_type,
+        type: 'meal',
+      });
+    });
+
+    // Medications
+    medications.forEach(med => {
+      data.push({
+        time: formatTime(med.medication_time),
+        value: med.dose, // insulin dose
+        formattedTime: formatTime(med.medication_time),
+        context: t(`analysis.context.medication`) + `: ${med.medication_name}`,
+        type: 'medication',
+      });
+    });
+
+    //  Activities
+    activities.forEach(act => {
+      data.push({
+        time: formatTime(act.activity_time),
+        value: act.calories_per_minute || 0,
+        formattedTime: formatTime(act.activity_time),
+        context: t(`analysis.context.activity`) + `: ${act.activity_type}`,
+        type: 'activity',
+      });
+    });
+
+    //  Optional: sort by time
+    data.sort((a, b) => {
+      const [ah, am] = a.time.split(':').map(Number);
+      const [bh, bm] = b.time.split(':').map(Number);
+      return ah * 60 + am - (bh * 60 + bm);
+    });
+
+    return data;
+  };
+
+  const chartData = generateChartData(meals, medications, activities, t);
+
+  const enhancedGlucoseData = chartData.map(point => {
+    const hour = new Date(point.time).getHours();
+
+    const mealsAtHour = meals.filter(
+      m => new Date(m.meal_time).getHours() === hour
+    );
+    const medsAtHour = medications.filter(
+      m => new Date(m.medication_time).getHours() === hour
+    );
+    const activitiesAtHour = activities.filter(
+      a => new Date(a.activity_time).getHours() === hour
+    );
+
+    return {
+      ...point,
+      hour,
+      meals: mealsAtHour,
+      medications: medsAtHour,
+      activities: activitiesAtHour,
+    };
+  });
 
   // Custom tooltip component
-  const CustomTooltip = ({ active, payload, label }: any) => {
+  const CustomTooltip = ({ active, payload }: any) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
+
       return (
         <div className="bg-card border border-border rounded-lg p-3 shadow-lg">
           <p className="font-medium text-foreground">{`${data.formattedTime}`}</p>
           <p className="text-sm text-muted-foreground">
             {t('analysis.contextChart')}: {data.context}
           </p>
+
+          {data.meal && (
+            <p className="text-sm text-blue-500">
+              🍽 {data.meal.meal_name} ({data.meal.portion_grams}g)
+            </p>
+          )}
+
+          {data.medication && (
+            <p className="text-sm text-green-500">
+              💊 {data.medication.medication_name} - {data.medication.dose}{' '}
+              {data.medication.dose_unit}
+            </p>
+          )}
+
+          {data.activity && (
+            <p className="text-sm text-purple-500">
+              🏃 {data.activity.activity_name} -{' '}
+              {data.activity.duration_minutes} min
+            </p>
+          )}
+
           <p
             className="text-lg font-bold"
             style={{ color: getGlucoseColor(data.value) }}
@@ -136,15 +162,32 @@ const ChartsScreen = () => {
     return 'hsl(var(--glucose-very-high))';
   };
 
-  // Custom dot component for glucose points
+  // Custom dot component with type-based coloring
   const CustomDot = (props: any) => {
     const { cx, cy, payload } = props;
+
+    let fillColor = getGlucoseColor(payload.value);
+    let radius = 4;
+
+    if (payload.meal) {
+      fillColor = '#3b82f6';
+      radius = 6;
+    }
+    if (payload.medication) {
+      fillColor = '#10b981';
+      radius = 6;
+    }
+    if (payload.activity) {
+      fillColor = '#8b5cf6';
+      radius = 6;
+    }
+
     return (
       <circle
         cx={cx}
         cy={cy}
-        r={4}
-        fill={getGlucoseColor(payload.value)}
+        r={radius}
+        fill={fillColor}
         stroke="white"
         strokeWidth={2}
         className="drop-shadow-sm"
@@ -152,15 +195,57 @@ const ChartsScreen = () => {
     );
   };
 
-  const weeklyTrends = [
-    { day: 'L', percentage: 75, color: 'glucose-target' },
-    { day: 'M', percentage: 82, color: 'glucose-target' },
-    { day: 'M', percentage: 65, color: 'glucose-limit-high' },
-    { day: 'J', percentage: 88, color: 'glucose-target' },
-    { day: 'V', percentage: 70, color: 'glucose-target' },
-    { day: 'S', percentage: 60, color: 'glucose-limit-high' },
-    { day: 'D', percentage: 78, color: 'glucose-target' },
-  ];
+  // Count points in each range
+  const totalPoints = enhancedGlucoseData.length;
+  const veryLowCount = enhancedGlucoseData.filter(d => d.value < 70).length;
+  const targetCount = enhancedGlucoseData.filter(
+    d => d.value >= 70 && d.value < 140
+  ).length;
+  const highCount = enhancedGlucoseData.filter(d => d.value >= 140).length;
+
+  // Convert to percentages
+  const veryLowPercent = Math.round((veryLowCount / totalPoints) * 100);
+  const targetPercent = Math.round((targetCount / totalPoints) * 100);
+  const highPercent = Math.round((highCount / totalPoints) * 100);
+
+  const glucoseValues = enhancedGlucoseData.map(d => d.value);
+  const averageGlucose = Math.round(
+    glucoseValues.reduce((sum, val) => sum + val, 0) / glucoseValues.length
+  );
+
+  const mean = averageGlucose;
+  const variance =
+    glucoseValues.reduce((sum, val) => sum + (val - mean) ** 2, 0) /
+    glucoseValues.length;
+  const stdDev = Math.sqrt(variance);
+  const cvPercent = Math.round((stdDev / mean) * 100);
+
+  const estimatedHbA1c = ((averageGlucose + 46.7) / 28.7).toFixed(1);
+
+  const maxGlucose = Math.max(...glucoseValues);
+
+  // Compute live weekly trends based on glucose values in target range
+  const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+  const weeklyTrends = daysOfWeek.map((day, index) => {
+    // Filter data points that fall on this day
+    const dayData = enhancedGlucoseData.filter(d => {
+      const date = new Date(d.time); // Ensure d.time is ISO or a Date
+      return date.getDay() === index;
+    });
+
+    // Count how many points are in the target range (70-140)
+    const targetCount = dayData.filter(
+      d => d.value >= 70 && d.value < 140
+    ).length;
+
+    // Compute percentage
+    const percent = dayData.length
+      ? Math.round((targetCount / dayData.length) * 100)
+      : 0;
+
+    return { day: day[0], percentage: percent, color: 'glucose-target' }; // Use first letter of day
+  });
 
   return (
     <div className="flex-1 p-4 space-y-6 pb-24 animate-fade-in">
@@ -171,7 +256,6 @@ const ChartsScreen = () => {
         </h2>
         <p className="text-muted-foreground">{t('charts.subtitle')}</p>
       </div>
-
       {/* Glucose Analysis Chart */}
       <Card className="border-medical-teal/20">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
@@ -189,7 +273,8 @@ const ChartsScreen = () => {
           <div className="h-80">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart
-                data={glucoseData}
+                // data={glucoseData}
+                data={enhancedGlucoseData}
                 margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
               >
                 <CartesianGrid
@@ -318,7 +403,6 @@ const ChartsScreen = () => {
           </div>
         </CardContent>
       </Card>
-
       {/* Time in Range */}
       <Card className="border-medical-teal/20">
         <CardHeader>
@@ -330,66 +414,95 @@ const ChartsScreen = () => {
         <CardContent className="space-y-4">
           {/* Horizontal bar */}
           <div className="relative h-8 bg-muted rounded-full overflow-hidden">
-            <div className="absolute left-0 top-0 h-full w-[12%] bg-glucose-very-low"></div>
-            <div className="absolute left-[12%] top-0 h-full w-[68%] bg-glucose-target"></div>
-            <div className="absolute right-0 top-0 h-full w-[20%] bg-glucose-very-high"></div>
+            {/* Very Low */}
+            <div
+              className="absolute top-0 h-full bg-glucose-very-low"
+              style={{ width: `${veryLowPercent}%`, left: '0%' }}
+            ></div>
+
+            {/* Target */}
+            <div
+              className="absolute top-0 h-full bg-glucose-target"
+              style={{ width: `${targetPercent}%`, left: `${veryLowPercent}%` }}
+            ></div>
+
+            {/* High */}
+            <div
+              className="absolute top-0 h-full bg-glucose-very-high"
+              style={{
+                width: `${highPercent}%`,
+                left: `${veryLowPercent + targetPercent}%`,
+              }}
+            ></div>
           </div>
 
           {/* Labels */}
           <div className="flex justify-between text-sm">
             <span className="text-glucose-very-low font-medium">
-              12% {t('analysis.state.four')}
+              {veryLowPercent}% {t('analysis.state.four')}
             </span>
             <span className="text-glucose-target font-medium">
-              68% {t('analysis.state.three')}
+              {targetPercent}% {t('analysis.state.three')}
             </span>
             <span className="text-glucose-very-high font-medium">
-              20% {t('analysis.state.one')}
+              {highPercent}% {t('analysis.state.one')}
             </span>
           </div>
 
+          {/* Goal info */}
           <div className="text-center text-xs text-muted-foreground">
             {t('target.goal')} : &gt;70% {t('target.target')}
           </div>
         </CardContent>
       </Card>
-
       {/* Statistics Grid */}
       <div className="grid grid-cols-2 gap-3">
+        {/* Average Glucose */}
         <Card className="border-medical-teal/20">
           <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold text-medical-teal">132</div>
+            <div className="text-2xl font-bold text-medical-teal">
+              {averageGlucose}
+            </div>
             <div className="text-xs text-muted-foreground">
               {t('mode.average')} mg/dL
             </div>
           </CardContent>
         </Card>
+
+        {/* Glucose Variability (CV%) */}
         <Card className="border-medical-teal/20">
           <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold text-glucose-limit-high">42</div>
+            <div className="text-2xl font-bold text-glucose-limit-high">
+              {cvPercent}
+            </div>
             <div className="text-xs text-muted-foreground">
               {t('mode.variability')} CV%
             </div>
           </CardContent>
         </Card>
+
+        {/* Estimated HbA1c */}
         <Card className="border-medical-teal/20">
           <CardContent className="p-4 text-center">
             <div className="text-2xl font-bold text-glucose-very-high">
-              8.2%
+              {estimatedHbA1c}%
             </div>
             <div className="text-xs text-muted-foreground">
               HbA1c {t('mode.estimated')}
             </div>
           </CardContent>
         </Card>
+
+        {/* Maximum Glucose */}
         <Card className="border-medical-teal/20">
           <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold text-glucose-target">156</div>
+            <div className="text-2xl font-bold text-glucose-target">
+              {maxGlucose}
+            </div>
             <div className="text-xs text-muted-foreground">Pic Max mg/dL</div>
           </CardContent>
         </Card>
       </div>
-
       {/* Weekly Trends */}
       <Card className="border-medical-teal/20">
         <CardHeader>
