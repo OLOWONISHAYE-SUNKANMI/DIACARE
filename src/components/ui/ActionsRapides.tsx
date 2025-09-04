@@ -1309,9 +1309,9 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
         await addMeal({
           meal_name: foodName,
           carbs_per_100g: carbs ? Number(carbs) : undefined,
-          portion_grams: portion ? Number(portion) : 100, dynamic portion
+          portion_grams: portion ? Number(portion) : 100,
           meal_type: mealType,
-          notes: notes || undefined, 
+          notes: notes || undefined, // ✅ optional notes
         });
 
         toast({
