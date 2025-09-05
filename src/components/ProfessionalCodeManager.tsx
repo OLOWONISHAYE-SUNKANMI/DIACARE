@@ -50,7 +50,10 @@ interface PatientData {
   }>;
 }
 
-const ProfessionalCodeManager = () => {
+const ProfessionalCodeManager: React.FC = () => {
+  const { t } = useTranslation();
+  const { toast } = useToast();
+
   const [professionalCode, setProfessionalCode] =
     useState<ProfessionalCode | null>(null);
   const [patientAccessCode, setPatientAccessCode] = useState('');
@@ -58,15 +61,16 @@ const ProfessionalCodeManager = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [isAccessing, setIsAccessing] = useState(false);
   const [showPatientData, setShowPatientData] = useState(false);
-  const { toast } = useToast();
-  const { t } = useTranslation();
 
+  // Generate professional code
   const generateProfessionalCode = async () => {
     setIsGenerating(true);
     try {
-      // Simulation de l'appel à l'edge function
       const mockCode: ProfessionalCode = {
-        code: `DARE-END-${Date.now().toString().slice(-6)}-${Math.random().toString(36).substring(2, 6).toUpperCase()}`,
+        code: `DARE-END-${Date.now().toString().slice(-6)}-${Math.random()
+          .toString(36)
+          .substring(2, 6)
+          .toUpperCase()}`,
         generated_at: new Date().toISOString(),
         specialty: t('applicationCard.professional_endocrinologist'),
         is_active: true,
@@ -74,46 +78,41 @@ const ProfessionalCodeManager = () => {
 
       setProfessionalCode(mockCode);
 
-      try {
-        toast({
-          title: t('professionalCodeManager.code_generated_title'),
-          description: t('professionalCodeManager.code_generated_description'),
-        });
-      } catch (error) {
-        toast({
-          title: t('professionalCodeManager.code_error_title'),
-          description: t('professionalCodeManager.code_error_description'),
-          variant: 'destructive',
-        });
-      }
+      toast({
+        title: t('professionalCodeManager.code_generated_title'),
+        description: t('professionalCodeManager.code_generated_description'),
+        type: 'success',
+      });
     } finally {
       setIsGenerating(false);
     }
   };
 
+  // Copy code to clipboard
   const copyCodeToClipboard = () => {
-    if (professionalCode) {
-      navigator.clipboard.writeText(professionalCode.code);
-      toast({
-        title: t('professionalCodeManager.code_copied_title'),
-        description: t('professionalCodeManager.code_copied_description'),
-      });
-    }
+    if (!professionalCode) return;
+
+    navigator.clipboard.writeText(professionalCode.code);
+    toast({
+      title: t('professionalCodeManager.code_copied_title'),
+      description: t('professionalCodeManager.code_copied_description'),
+      type: 'success',
+    });
   };
 
+  // Access patient data
   const accessPatientData = async () => {
     if (!patientAccessCode.trim()) {
       toast({
         title: t('professionalCodeManager.missing_code_title'),
         description: t('professionalCodeManager.missing_code_description'),
-        variant: 'destructive',
+        type: 'error',
       });
       return;
     }
 
     setIsAccessing(true);
     try {
-      // Simulation de l'accès aux données patient
       const mockPatientData: PatientData = {
         id: patientAccessCode,
         first_name: 'Marie',
@@ -144,12 +143,13 @@ const ProfessionalCodeManager = () => {
       toast({
         title: t('professionalCodeManager.access_granted_title'),
         description: t('professionalCodeManager.access_granted_description'),
+        type: 'success',
       });
     } catch (error) {
       toast({
         title: t('professionalCodeManager.access_denied_title'),
         description: t('professionalCodeManager.access_denied_description'),
-        variant: 'destructive',
+        type: 'error',
       });
     } finally {
       setIsAccessing(false);
@@ -158,7 +158,7 @@ const ProfessionalCodeManager = () => {
 
   return (
     <div className="space-y-6">
-      {/* Génération du code professionnel */}
+      {/* Professional Code Generation */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center">
@@ -225,7 +225,7 @@ const ProfessionalCodeManager = () => {
         </CardContent>
       </Card>
 
-      {/* Accès aux données patient */}
+      {/* Patient Data Access */}
       {professionalCode && (
         <Card>
           <CardHeader>
@@ -270,7 +270,7 @@ const ProfessionalCodeManager = () => {
         </Card>
       )}
 
-      {/* Modale données patient */}
+      {/* Patient Data Modal */}
       <Dialog open={showPatientData} onOpenChange={setShowPatientData}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>

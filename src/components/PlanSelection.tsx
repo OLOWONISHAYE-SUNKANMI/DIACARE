@@ -23,8 +23,6 @@ interface SubscriptionPlan {
   max_family_members: number;
 }
 
-const { t } = useTranslation();
-
 interface PlanSelectionProps {
   onPlanSelected: (planId: string) => void;
   onClose: () => void;
@@ -34,6 +32,7 @@ const PlanSelection: React.FC<PlanSelectionProps> = ({
   onPlanSelected,
   onClose,
 }) => {
+  const { t } = useTranslation();
   const [plans, setPlans] = useState<SubscriptionPlan[]>([]);
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
