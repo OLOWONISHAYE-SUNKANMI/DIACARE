@@ -29,7 +29,7 @@ const GlucoseWidget = () => {
         status: 'low',
         color: 'text-destructive',
         bgColor: 'bg-destructive/10',
-        message: 'Glycémie basse',
+        message: t('getGlucoseStatus.status_low'),
         icon: <AlertTriangle className="w-4 h-4" />,
       };
     if (value <= 180)
@@ -37,14 +37,14 @@ const GlucoseWidget = () => {
         status: 'normal',
         color: 'text-medical-green',
         bgColor: 'bg-medical-green-light',
-        message: 'Dans la normale',
+        message: t('getGlucoseStatus.status_normal'),
         icon: <CheckCircle className="w-4 h-4" />,
       };
     return {
       status: 'high',
       color: 'text-warning',
       bgColor: 'bg-warning/10',
-      message: 'Glycémie élevée',
+      message: t('getGlucoseStatus.status_high'),
       icon: <AlertTriangle className="w-4 h-4" />,
     };
   };

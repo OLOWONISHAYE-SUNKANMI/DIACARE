@@ -1169,6 +1169,11 @@ export const fr = {
     emergencyContact: 'Contact d’urgence',
   },
 
+  toastMessage: {
+    title: 'Nouvelle entrée',
+    description: 'Fonctionnalité disponible prochainement',
+  },
+
   //professional login card
   professionalLoginCard: {
     title: 'Professionnel de santé',
@@ -1456,5 +1461,49 @@ export const fr = {
       title: 'Paramètres du compte',
       writeup: 'Paramètres du compte en cours de développement...',
     },
+  },
+
+  //fixes
+  getGlucoseStatus: {
+    status_low: 'Glycémie basse',
+    status_normal: 'Dans la normale',
+    status_high: 'Glycémie élevée',
+  },
+
+  foodNamePlaceholder: {
+    placeholder_foodName: 'Ex: Pomme, Riz, Salade...',
+  },
+
+  mealType: {
+    label_mealType: 'Type de repas',
+    option_breakfast: 'Petit-déjeuner',
+    option_lunch: 'Déjeuner',
+    option_dinner: 'Dîner',
+    option_snack: 'Snack',
+  },
+
+  foodDetailsPlaceholder: {
+    placeholder_foodDetails: 'Ex: Avec du poulet, sauce légère...',
+  },
+
+  blogScreenFixes: {
+    title_diabetesNews: 'Actualités internationales sur le diabète',
+    placeholder_searchNews: 'Rechercher des actualités...',
+  },
+
+  profileScreenFixes: {
+    status_unverifiedProfile: 'Profil non vérifié',
+    label_weight: 'Poids',
+    label_professionalLicense: 'Licence professionnelle',
+    label_specialty: 'Spécialité',
+    action_editProfile: 'Modifier le profil',
+    label_firstName: 'Prénom',
+    label_lastName: 'Nom',
+    label_phone: 'Téléphone',
+  },
+
+  professionalNotification: {
+    title_consultationRequests: 'Demandes de consultation',
+    message_noRequests: 'Aucune demande',
   },
 };

@@ -1,3 +1,9 @@
-import { useToast, toast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 
-export { useToast, toast };
+export { useToast };
+
+//news page - title
+//home page
+// meal journal
+//news page - placeholder
+// doses - programmer infection
