@@ -1,7 +1,8 @@
-import { Component, ErrorInfo, ReactNode } from "react";
-import { AlertTriangle, RefreshCw, Home } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Component, ErrorInfo, ReactNode } from 'react';
+import { AlertTriangle, RefreshCw, Home } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   children: ReactNode;
@@ -13,9 +14,11 @@ interface State {
   errorInfo?: ErrorInfo;
 }
 
+const { t } = useTranslation();
+
 class ErrorBoundary extends Component<Props, State> {
   public state: State = {
-    hasError: false
+    hasError: false,
   };
 
   public static getDerivedStateFromError(error: Error): State {
@@ -44,20 +47,25 @@ class ErrorBoundary extends Component<Props, State> {
               <div className="mx-auto w-16 h-16 bg-destructive/10 rounded-full flex items-center justify-center mb-4">
                 <AlertTriangle className="w-8 h-8 text-destructive" />
               </div>
-              <CardTitle className="text-destructive text-xl">Oups! Une erreur s'est produite</CardTitle>
+              <CardTitle className="text-destructive text-xl">
+                {t('errorBoundary.error_occurred')}
+              </CardTitle>
             </CardHeader>
             <CardContent className="text-center space-y-4">
               <p className="text-muted-foreground text-sm">
-                Une erreur inattendue s'est produite dans l'application DARE. 
-                Notre équipe technique a été informée automatiquement.
+                {t('errorBoundary.unexpected_error_message')}
               </p>
-              
+
               {process.env.NODE_ENV === 'development' && this.state.error && (
                 <div className="bg-muted p-3 rounded text-xs text-left">
-                  <p className="font-mono text-destructive mb-2">{this.state.error.message}</p>
+                  <p className="font-mono text-destructive mb-2">
+                    {this.state.error.message}
+                  </p>
                   {this.state.errorInfo && (
                     <details className="mt-2">
-                      <summary className="cursor-pointer text-muted-foreground">Stack trace</summary>
+                      <summary className="cursor-pointer text-muted-foreground">
+                        Stack trace
+                      </summary>
                       <pre className="whitespace-pre-wrap text-xs mt-2">
                         {this.state.errorInfo.componentStack}
                       </pre>
@@ -65,27 +73,27 @@ class ErrorBoundary extends Component<Props, State> {
                   )}
                 </div>
               )}
-              
+
               <div className="flex gap-2">
-                <Button 
+                <Button
                   onClick={this.handleReload}
                   className="flex-1 bg-medical-teal hover:bg-medical-teal/90"
                 >
                   <RefreshCw className="w-4 h-4 mr-2" />
-                  Redémarrer
+                  {t('errorBoundary.button_restart')}
                 </Button>
-                <Button 
+                <Button
                   onClick={this.handleGoHome}
                   variant="outline"
                   className="flex-1"
                 >
                   <Home className="w-4 h-4 mr-2" />
-                  Accueil
+                  {t('errorBoundary.button_home')}
                 </Button>
               </div>
-              
+
               <p className="text-xs text-muted-foreground border-t pt-4">
-                💪 DARE - Osez vaincre le diabète ensemble
+                {t('errorBoundary.footer_text')}
               </p>
             </CardContent>
           </Card>
