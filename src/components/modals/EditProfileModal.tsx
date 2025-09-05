@@ -12,6 +12,8 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 
+import { useTranslation } from 'react-i18next';
+
 type EditProfileModalProps = {
   form: any;
   loading?: boolean;
@@ -38,6 +40,8 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
     }
   };
 
+  const { t } = useTranslation();
+
   return (
     <>
       {/* Trigger button or element */}
@@ -52,7 +56,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
         <ModalContent p={4}>
           {' '}
           <ModalHeader fontSize="lg" p={2}>
-            Edit Profile
+            {t('profileScreenFixes.action_editProfile')}
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody p={2}>
@@ -62,7 +66,9 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
             >
               {/* First Name */}
               <div className="flex flex-col">
-                <label className="text-sm mb-1">First Name</label>
+                <label className="text-sm mb-1">
+                  {t('profileScreenFixes.label_firstName')}
+                </label>
                 <Input
                   size="sm"
                   value={form.first_name || ''}
@@ -80,7 +86,9 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
 
               {/* Last Name */}
               <div className="flex flex-col">
-                <label className="text-sm mb-1">Last Name</label>
+                <label className="text-sm mb-1">
+                  {t('profileScreenFixes.label_lastName')}
+                </label>
                 <Input
                   size="sm"
                   value={form.last_name || ''}
@@ -98,7 +106,9 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
 
               {/* Phone */}
               <div className="flex flex-col">
-                <label className="text-sm mb-1">Phone</label>
+                <label className="text-sm mb-1">
+                  {t('profileScreenFixes.label_phone')}
+                </label>
                 <Input
                   size="sm"
                   value={form.phone || ''}
@@ -116,7 +126,9 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
 
               {/* Specialty */}
               <div className="flex flex-col">
-                <label className="text-sm mb-1">Specialty</label>
+                <label className="text-sm mb-1">
+                  {t('profileScreenFixes.label_specialty')}
+                </label>
                 <Input
                   size="sm"
                   value={form.specialty || ''}
@@ -134,7 +146,9 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
 
               {/* Professional License */}
               <div className="flex flex-col sm:col-span-2">
-                <label className="text-sm mb-1">Professional License</label>
+                <label className="text-sm mb-1">
+                  {t('profileScreenFixes.label_professionalLicense')}
+                </label>
                 <Input
                   size="sm"
                   value={form.professional_license || ''}

@@ -416,7 +416,9 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
                         <Label htmlFor="foodName">{t('Journal.title1')}</Label>
                         <Input
                           id="foodName"
-                          placeholder="Ex: Pomme, Riz, Salade..."
+                          placeholder={t(
+                            'foodNamePlaceholder.placeholder_foodName'
+                          )}
                           value={foodName}
                           onChange={e => setFoodName(e.target.value)}
                           className="mt-1"
@@ -425,17 +427,27 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
                       </div>
 
                       <div>
-                        <Label htmlFor="mealType">Type de repas</Label>
+                        <Label htmlFor="mealType">
+                          {t('mealType.label_mealType')}
+                        </Label>
                         <select
                           id="mealType"
                           value={mealType}
                           onChange={e => setMealType(e.target.value)}
                           className="mt-1 block w-full border rounded p-2"
                         >
-                          <option value="breakfast">Petit-déjeuner</option>
-                          <option value="lunch">Déjeuner</option>
-                          <option value="dinner">Dîner</option>
-                          <option value="snack">Snack</option>
+                          <option value="breakfast">
+                            {t('mealType.option_breakfast')}
+                          </option>
+                          <option value="lunch">
+                            {t('mealType.option_lunch')}
+                          </option>
+                          <option value="dinner">
+                            {t('mealType.option_dinner')}
+                          </option>
+                          <option value="snack">
+                            {t('mealType.option_snack')}
+                          </option>
                         </select>
                       </div>
 
@@ -470,7 +482,9 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
                         <Label htmlFor="notes">Notes</Label>
                         <Input
                           id="notes"
-                          placeholder="Ex: Avec du poulet, sauce légère..."
+                          placeholder={t(
+                            'foodDetailsPlaceholder.placeholder_foodDetails'
+                          )}
                           value={notes}
                           onChange={e => setNotes(e.target.value)}
                           className="mt-1"

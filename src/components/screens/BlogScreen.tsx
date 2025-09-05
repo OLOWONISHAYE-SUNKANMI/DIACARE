@@ -544,7 +544,7 @@ L'application DARE AI sera la première à intégrer cette technologie dès sept
           <span className="text-medical-teal">DARE</span> News
         </h1>
         <p className="text-muted-foreground">
-          Actualités internationales sur le diabète
+          {t('blogScreenFixes.title_diabetesNews')}
         </p>
       </div>
 
@@ -552,7 +552,7 @@ L'application DARE AI sera la première à intégrer cette technologie dès sept
       <div className="relative">
         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
         <Input
-          placeholder="Rechercher des actualités..."
+          placeholder={t('blogScreenFixes.placeholder_searchNews')}
           value={searchQuery}
           onChange={e => setSearchQuery(e.target.value)}
           className="pl-10"
