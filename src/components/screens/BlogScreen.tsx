@@ -549,30 +549,33 @@ L'application DARE AI sera la première à intégrer cette technologie dès sept
       </div>
 
       {/* Barre de recherche */}
-      <div className="relative">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-        <Input
-          placeholder="Rechercher des actualités..."
-          value={searchQuery}
-          onChange={e => setSearchQuery(e.target.value)}
-          className="pl-10"
-        />
-      </div>
+{/* Search bar */}
+<div className="flex items-center max-w-md w-full mx-auto rounded-md border bg-white px-3">
+  <Search className="text-muted-foreground w-4 h-4 mr-2 shrink-0" />
+  <Input
+    placeholder="Rechercher des actualités..."
+    value={searchQuery}
+    onChange={(e) => setSearchQuery(e.target.value)}
+    className="border-0 shadow-none focus-visible:ring-0 p-0 text-sm md:text-base"
+  />
+</div>
 
-      {/* Filtres catégories */}
-      <div className="flex gap-2 overflow-x-auto pb-2">
-        {categories.map(category => (
-          <Button
-            key={category}
-            variant={activeCategory === category ? 'default' : 'outline'}
-            size="sm"
-            onClick={() => setActiveCategory(category)}
-            className="whitespace-nowrap"
-          >
-            {category}
-          </Button>
-        ))}
-      </div>
+
+{/* Filter buttons */}
+<div className="flex flex-wrap md:flex-nowrap gap-2 overflow-x-auto md:overflow-visible pb-2 scrollbar-hide">
+  {categories.map((category) => (
+    <Button
+      key={category}
+      variant={activeCategory === category ? "default" : "outline"}
+      size="sm"
+      onClick={() => setActiveCategory(category)}
+      className="whitespace-nowrap text-xs md:text-sm"
+    >
+      {category}
+    </Button>
+  ))}
+</div>
+
 
       {/* Articles */}
       <div className="space-y-4">
