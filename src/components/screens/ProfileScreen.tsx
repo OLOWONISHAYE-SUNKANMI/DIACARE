@@ -529,7 +529,7 @@ const ProfileScreen = () => {
                 variant="default"
                 className="bg-red-100 text-red-700 border-red-200"
               >
-                {t('profileScreen.notVerified')}
+                {t('profileScreenFixes.status_unverifiedProfile')}
               </Badge>
             )}
 
@@ -562,7 +562,7 @@ const ProfileScreen = () => {
                 {weight}
               </div>
               <div className="text-xs text-muted-foreground">
-                kg • {t('profileScreen.weight')}
+                kg • {t('profileScreenFixes.label_weight')}
               </div>
             </CardContent>
           </Card>
@@ -618,7 +618,7 @@ const ProfileScreen = () => {
             </div>
             <div>
               <span className="text-muted-foreground">
-                {t('profileScreen.professionalLicense')}
+                {t('profileScreenFixes.label_professionalLicense')}
               </span>
               <p className="font-medium">
                 {profile.professional_license || t('profileScreen.notSet')}
@@ -626,7 +626,7 @@ const ProfileScreen = () => {
             </div>
             <div>
               <span className="text-muted-foreground">
-                {t('profileScreen.specialty')}
+                {t('profileScreenFixes.label_specialty')}
               </span>
               <p className="font-medium">
                 {profile.specialty || t('profileScreen.notSet')}

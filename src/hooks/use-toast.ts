@@ -61,8 +61,8 @@
 //   };
 // }
 
-import { toast as sonnerToast } from 'sonner';
 import { useTranslation } from 'react-i18next';
+import { toast as sonnerToast } from 'sonner';
 
 type ToastOptions = {
   title: string;

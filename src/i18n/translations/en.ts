@@ -864,7 +864,7 @@ export const en = {
     carbs: 'Meal Carbs',
     dose: 'Calculated Dose',
     meal: 'Meal',
-    button: 'Programmer Infection',
+    button: 'Schedule an injection',
   },
 
   injection: {
@@ -1389,5 +1389,73 @@ export const en = {
       title: 'Account settings',
       writeup: 'Account settings under development...',
     },
+  },
+
+  //fixes
+  getGlucoseStatus: {
+    status_low: 'Low blood sugar',
+    status_normal: 'Within normal range',
+    status_high: 'High blood sugar',
+  },
+
+  foodNamePlaceholder: {
+    placeholder_foodName: 'Ex: Apple, Rice, Salad...',
+  },
+
+  mealType: {
+    label_mealType: 'Meal type',
+    option_breakfast: 'Breakfast',
+    option_lunch: 'Lunch',
+    option_dinner: 'Dinner',
+    option_snack: 'Snack',
+  },
+
+  foodDetailsPlaceholder: {
+    placeholder_foodDetails: 'Ex: With chicken, light sauce...',
+  },
+
+  blogScreenFixes: {
+    title_diabetesNews: 'International news on diabetes',
+    placeholder_searchNews: 'Search news...',
+  },
+
+  profileScreenFixes: {
+    status_unverifiedProfile: 'Unverified Profile',
+    label_weight: 'Weight',
+    label_professionalLicense: 'Professional license',
+    label_specialty: 'Specialty',
+    action_editProfile: 'Edit Profile',
+    label_firstName: 'First Name',
+    label_lastName: 'Last Name',
+    label_phone: 'Phone',
+  },
+
+  professionalAccess: {
+    title: 'Professional Access Request',
+    firstName: 'First Name',
+    lastName: 'Last Name',
+    email: 'Email',
+    phone: 'Phone',
+    profession: 'Profession',
+    selectProfession: 'Select your profession',
+    doctor: 'Doctor',
+    nurse: 'Nurse',
+    diabetologist: 'Diabetologist',
+    nutritionist: 'Nutritionist',
+    pharmacist: 'Pharmacist',
+    other: 'Other',
+    licenseNumber: 'License Number',
+    institution: 'Institution',
+    motivation: 'Motivation',
+    motivationPlaceholder: 'Explain why you want to access DiabCare...',
+    requestSent: 'Request Sent',
+    requestSentDescription:
+      'Your professional access request has been successfully sent',
+    requestError: 'Error sending the request',
+  },
+
+  professionalNotification: {
+    title_consultationRequests: 'Consultation Requests',
+    message_noRequests: 'No Requests',
   },
 };
