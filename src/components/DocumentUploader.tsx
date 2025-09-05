@@ -11,14 +11,13 @@ interface DocumentUploaderProps {
   acceptedTypes?: string[];
 }
 
-const { t } = useTranslation();
-
 export const DocumentUploader: React.FC<DocumentUploaderProps> = ({
   documents,
   setDocuments,
   maxFiles = 5,
   acceptedTypes = ['.pdf', '.jpg', '.jpeg', '.png', '.doc', '.docx'],
 }) => {
+  const { t } = useTranslation();
   const [dragActive, setDragActive] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);
 
