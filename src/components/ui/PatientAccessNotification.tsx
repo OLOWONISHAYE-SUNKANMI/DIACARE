@@ -15,7 +15,6 @@ interface AccessRequest {
   permission_status: string;
   max_consultations: number;
 }
-const { t } = useTranslation();
 
 interface PatientAccessNotificationProps {
   accessRequest: AccessRequest;
@@ -26,6 +25,7 @@ const PatientAccessNotification = ({
   accessRequest,
   onResponse,
 }: PatientAccessNotificationProps) => {
+  const { t } = useTranslation();
   const [isResponding, setIsResponding] = useState(false);
   const { toast } = useToast();
 
