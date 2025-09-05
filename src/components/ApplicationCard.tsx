@@ -37,7 +37,6 @@ interface Application {
   created_at: string;
 }
 
-const { t } = useTranslation();
 interface ApplicationCardProps {
   application: Application;
   onSelect: (application: Application) => void;
@@ -51,6 +50,7 @@ export const ApplicationCard: React.FC<ApplicationCardProps> = ({
   onApprove,
   onReject,
 }) => {
+  const { t } = useTranslation();
   const getInitials = (firstName: string, lastName: string) => {
     return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
   };
@@ -228,6 +228,8 @@ export const ApplicationDetails: React.FC<ApplicationDetailsProps> = ({
         return '⚕️';
     }
   };
+
+  const { t } = useTranslation();
 
   const getSpecialtyLabel = (type: string) => {
     const labels = {

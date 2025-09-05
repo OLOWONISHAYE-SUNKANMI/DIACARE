@@ -1610,4 +1610,368 @@ export const en = {
     confidentiality_notice:
       'Confidentiality: This data is strictly confidential and protected by medical secrecy. Any unauthorized use is subject to penalties.',
   },
+
+  blogScreenRead: {
+    nutrition_guide_content_one: `# Nutrition Guide for People with Diabetes
+
+## Introduction
+A balanced diet is the cornerstone of diabetes management. This guide provides the basics for adopting healthy eating habits that will help you control your blood sugar while maintaining an optimal quality of life.
+
+## Basic Principles
+
+### 1. Macronutrient Distribution
+- **Carbohydrates**: 45-65% of total energy intake
+- **Proteins**: 15-20% of total energy intake  
+- **Fats**: 20-35% of total energy intake
+
+### 2. Glycemic Index
+Prioritize foods with a low or moderate glycemic index:
+- **Low GI (< 55)**: Green vegetables, legumes, quinoa, oats
+- **Moderate GI (55-70)**: Whole grain bread, brown rice, sweet potato
+- **High GI (> 70)**: Limit - white bread, potatoes, sugar
+
+## Recommended Foods
+
+### Vegetables (as much as you want)
+- Broccoli, spinach, zucchini, eggplant
+- Tomatoes, bell peppers, cucumbers
+- Cauliflower, green beans, asparagus
+
+### Quality Proteins
+- Fatty fish: salmon, mackerel, sardines
+- Skinless poultry: chicken, turkey
+- Legumes: lentils, chickpeas, beans
+- Eggs (in moderation)
+- Tofu and soy-based products
+
+### Complex Carbohydrates
+- Quinoa, oats, barley
+- Whole grain bread, whole grain pasta
+- Brown rice, legumes
+- Sweet potato (in moderation)
+
+### Healthy Fats
+- Olive oil, avocado
+- Nuts, almonds, seeds
+- Fatty fish
+
+## Foods to Limit
+
+### Simple Sugars
+- Sweets, pastries, sodas
+- Very sweet fruits in excess
+- Honey, maple syrup (occasionally)
+
+### Saturated Fats
+- Fatty meats, processed meats
+- Fatty cheeses, excess butter
+- Fried foods, fast food
+
+## Practical Strategies
+
+### Meal Planning
+1. **Plate Method**:
+   - 1/2 plate: non-starchy vegetables
+   - 1/4 plate: lean proteins
+   - 1/4 plate: complex carbohydrates
+
+2. **Regular Schedule**: 3 meals + 1-2 snacks if needed
+
+3. **Portion Control**:
+   - Use smaller plates
+   - Weigh your food initially to learn portion sizes
+   - Listen to your satiety signals
+
+### Managing Cravings
+- Drink water before meals
+- Include fiber in every meal
+- Prepare healthy snacks in advance
+- Eat slowly and mindfully
+
+## Diabetes Type-Specific Advice
+
+### Type 1
+- Count carbohydrates to adjust insulin
+- Watch for hypoglycemia during exercise
+- Appropriate sugar intake in case of hypoglycemia
+
+### Type 2
+- Weight loss if necessary (5-10%)
+- Regular physical activity after meals
+- Monitor blood pressure
+
+## Hydration
+- 1.5 to 2 liters of water per day
+- Avoid sugary drinks
+- Tea and coffee without sugar are allowed
+- Alcohol in moderation and never on an empty stomach
+
+## Supplements and Vitamins
+Consult your doctor before taking:
+- Vitamin D (often deficient)
+- Magnesium
+- Omega-3
+- Chromium (scientific controversy)
+
+## Conclusion
+A diabetes-friendly diet is not restrictive but balanced. It allows you to enjoy the pleasures of the table while maintaining stable blood sugar. Do not hesitate to consult a specialized nutritionist for a personalized plan.`,
+    nutrition_guide_content_two: `# Complete Guide on Type 1 and Type 2 Diabetes
+
+## What is Diabetes?
+
+Diabetes is a chronic disease characterized by hyperglycemia (high blood sugar) due to a defect in insulin secretion or action. There are several types of diabetes, but the most common are Type 1 and Type 2.
+
+## Type 1 Diabetes
+
+### Definition
+Type 1 diabetes is an autoimmune disease where the immune system destroys the beta cells of the pancreas that produce insulin. It accounts for 5-10% of diabetes cases.
+
+### Characteristics
+- **Onset**: Usually before 30 years old, often in childhood
+- **Progression**: Rapid, over a few weeks or months
+- **Heredity**: Low genetic component (3-5% family risk)
+- **Weight**: Often normal weight or underweight
+
+### Symptoms
+The classic "4 Ps":
+- **Polyuria**: frequent and excessive urination
+- **Polydipsia**: intense thirst
+- **Polyphagia**: excessive hunger
+- **Rapid weight loss**: unexplained
+
+Other symptoms:
+- Extreme fatigue
+- Blurred vision
+- Recurrent infections
+- Fruity breath (ketosis)
+
+### Diagnosis
+- **Fasting blood glucose** ≥ 126 mg/dL (7 mmol/L) twice
+- **Random blood glucose** ≥ 200 mg/dL (11.1 mmol/L) with symptoms
+- **HbA1c** ≥ 6.5% (48 mmol/mol)
+- **Glucose tolerance test**: blood glucose ≥ 200 mg/dL at 2h
+
+### Treatment
+**Insulin therapy required**:
+- Basal insulin (long-acting): covers baseline needs
+- Prandial insulin (rapid-acting): covers meals
+- Possible methods: pens, insulin pump
+
+**Monitoring**:
+- Blood glucose 4-6 times/day minimum
+- HbA1c every 3 months (goal < 7%)
+- Monitoring for complications
+
+## Type 2 Diabetes
+
+### Definition
+Type 2 diabetes results from insulin resistance and/or a deficit in insulin secretion. It accounts for 90-95% of diabetes cases.
+
+### Characteristics
+- **Onset**: Usually after 40 years old (increasingly younger)
+- **Progression**: Gradual, often asymptomatic at first
+- **Heredity**: Strong genetic component (30-40% family risk)
+- **Weight**: Often overweight or obese (80% of cases)
+
+### Risk Factors
+- Age > 45
+- Overweight/obesity (BMI > 25)
+- Family history of diabetes
+- Sedentary lifestyle
+- High blood pressure
+- Dyslipidemia
+- History of gestational diabetes
+- Polycystic ovary syndrome (PCOS)
+- Ethnic origin (African, Hispanic, Asian)
+
+### Symptoms
+Often asymptomatic at first, then:
+- Fatigue
+- Moderate thirst
+- Frequent urination
+- Recurrent infections (yeast infections, UTIs)
+- Slow wound healing
+- Blurred vision
+
+### Diagnosis
+Same criteria as Type 1, but slower progression.
+
+### Treatments
+
+**1. Lifestyle Measures (first line)**
+- Weight loss (5-10% of initial weight)
+- Balanced diet
+- Regular physical activity (150 min/week)
+- Smoking cessation
+
+**2. Oral Medications**
+- **Metformin**: first-line, reduces hepatic glucose production
+- **Sulfonylureas**: stimulate insulin secretion
+- **Glinides**: rapid insulin stimulation
+- **Alpha-glucosidase inhibitors**: slow carbohydrate absorption
+- **Thiazolidinediones**: improve insulin sensitivity
+- **DPP-4 inhibitors**: increase insulin, decrease glucagon
+- **GLP-1 agonists**: injectable, affect satiety
+
+**3. Insulin (if other treatments fail)**
+
+## Common Complications
+
+### Acute Complications
+**Hypoglycemia** (< 70 mg/dL):
+- Symptoms: tremors, sweating, palpitations, confusion
+- Treatment: 15g fast-acting carbs (3 sugar cubes)
+
+**Severe Hyperglycemia**:
+- Type 1: diabetic ketoacidosis (emergency)
+- Type 2: hyperosmolar coma (emergency)
+
+### Chronic Complications
+**Microvascular**:
+- **Retinopathy**: damage to retinal vessels
+- **Nephropathy**: kidney damage
+- **Neuropathy**: nerve damage (feet, hands)
+
+**Macrovascular**:
+- Myocardial infarction (risk x2-4)
+- Stroke
+- Peripheral artery disease
+
+**Other**:
+- Diabetic foot
+- Recurrent infections
+- Erectile dysfunction
+
+## Complication Prevention
+
+### Glycemic Control
+- **HbA1c target**: < 7% (customizable by age/comorbidities)
+- **Regular self-monitoring**
+- **Therapeutic adjustment** based on results
+
+### Cardiovascular Risk Control
+- **Blood pressure**: < 140/90 mmHg (< 130/80 if possible)
+- **Cholesterol**: LDL < 100 mg/dL (< 70 mg/dL if high risk)
+- **Smoking cessation** mandatory
+
+### Regular Monitoring
+- **Ophthalmologic**: annual eye exam
+- **Nephrologic**: annual creatinine and microalbuminuria
+- **Podiatric**: regular foot exams
+- **Cardiologic**: ECG, Doppler if needed
+
+## Living with Diabetes
+
+### Daily Life
+- **Diet**: balanced, regular, adapted
+- **Physical activity**: 30 min/day minimum
+- **Stress management**: relaxation techniques
+- **Sleep**: 7-8 hours/night, quality important
+
+### Special Situations
+- **Travel**: bring medications, prescriptions
+- **Illness**: enhanced monitoring, treatment adjustment
+- **Pregnancy**: specialized follow-up, strict glycemic targets
+- **Sports**: insulin/diet adjustment according to effort
+
+### Therapeutic Education
+- Group or individual education programs
+- Learning self-management
+- Psychological support if needed
+- Patient associations
+
+## Innovations and Perspectives
+
+### Technologies
+- **Continuous glucose sensors**: needle-free monitoring
+- **Smart insulin pumps**
+- **Artificial pancreas**: in development
+- **Mobile apps**: management support
+
+### Research
+- **Cell therapies**: islet transplantation, stem cells
+- **Immunotherapies**: Type 1 prevention
+- **Innovative medications**: new therapeutic classes
+
+## Conclusion
+
+Diabetes is a complex but manageable disease. Early and appropriate management, combined with a healthy lifestyle, prevents complications and maintains optimal quality of life. Patient education and healthcare team support are essential for long-term successful management.
+
+Never hesitate to ask questions to your medical team and actively participate in your care.`,
+    nutrition_guide_content_three: `A major medical breakthrough has just been announced: the Zimislecel treatment, a stem cell therapy, has enabled 83% of patients with severe Type 1 diabetes to completely stop their insulin injections after a single infusion.
+
+The study, published this month, followed 12 volunteers for one year. Ten of them no longer needed insulin, while the other two were able to drastically reduce their doses. No episodes of severe hypoglycemia were reported.
+
+"This is revolutionary," says Dr. Jennifer Martinez, principal investigator. "We may be witnessing the end of the daily insulin injection era for these patients."
+
+The treatment uses stem cells engineered to become pancreatic islet cells, responsible for insulin production. This approach represents the culmination of decades of research in regenerative medicine.
+
+The FDA is currently reviewing this treatment for accelerated approval, which could revolutionize Type 1 diabetes management as early as 2026.`,
+    nutrition_guide_content_four: `A major innovation in the treatment of diabetic wounds has just been unveiled: a "smart" gel that combines microscopic healing vesicles with a specialized hydrogel, restoring blood flow and dramatically accelerating healing.
+
+This revolutionary therapy, developed by an international team, uses healing messengers encapsulated in nanovesicles that are gradually released upon contact with the wound. The gel stimulates the formation of new blood vessels while protecting the injured area.
+
+The results from clinical tests are impressive:
+- Healing 5 times faster than conventional treatments
+- Complete restoration of blood flow within 72 hours
+- 85% reduction in the risk of amputation
+- No major side effects reported
+
+"This technology will save thousands of limbs each year," says Dr. Sarah Chen, a specialist dermatologist. "We are moving from weeks of treatment to just a few days."
+
+The gel will be available in European hospitals starting September 2025, following regulatory approval.`,
+    nutrition_guide_content_five: `An international team of researchers has developed "smart insulin" capable of automatically adapting to blood glucose fluctuations. This innovation could revolutionize diabetes treatment by eliminating the risk of hypoglycemia.
+
+The principle relies on nanoparticles that release insulin only in the presence of high glucose levels. Early clinical trials on 45 type 1 diabetic patients show outstanding results:
+
+- 75% reduction in hypoglycemic episodes  
+- Time in target glucose range increased to 95%  
+- Drastic simplification of treatment (one injection per week)
+
+"This is the Holy Grail of diabetes treatment," says Dr. Li Wei, lead investigator. "This insulin 'thinks' for the patient."
+
+Commercialization could begin as early as 2026 after phase III trial approval.`,
+    nutrition_guide_content_six: `An international team of researchers has developed “smart insulin” capable of automatically adapting to blood glucose fluctuations. This innovation could revolutionize diabetes treatment by eliminating the risks of hypoglycemia.
+
+The principle relies on nanoparticles that release insulin only in the presence of high glucose. Early clinical trials on 45 type 1 diabetic patients show exceptional results:
+
+- 75% reduction in hypoglycemic episodes
+- Time in target glucose range increased to 95%
+- Drastic simplification of treatment (one injection per week)
+
+“This is the Holy Grail of diabetes treatment,” says Dr. Li Wei, lead investigator. “This insulin 'thinks' for the patient.”
+
+Commercialization could begin as early as 2026 following phase III trial approval.`,
+    nutrition_guide_content_seven: `At 65 years old and diabetic for 30 years, James Thompson accomplished the feat of finishing the prestigious Boston Marathon in 3 hours and 42 minutes. His journey now inspires thousands of people around the world.
+
+“When I was diagnosed with diabetes at 35, I thought my athletic life was over,” James confides. “I was wrong. Diabetes is not a limitation; it’s a challenge to overcome.”
+
+His training routine includes:
+- Glucose monitoring every 30 minutes during exercise
+- Nutrition strategy tailored with his endocrinologist
+- Progressive training over 18 months
+- Medical support team during the race
+
+“James proves that well-managed diabetes doesn’t stop any dream,” says his doctor. His story is now the subject of a documentary and an upcoming book.
+
+He is now preparing for the Ironman in Hawaii for his 66th birthday.`,
+    nutrition_guide_content_eight: `Medical artificial intelligence reaches a new milestone in 2025: the latest version of the predictive algorithm developed jointly by Google Health and Stanford University achieves 97% accuracy in preventing hypoglycemia, with alerts up to 45 minutes in advance.
+
+This next-generation AI now analyzes over 150 biomarkers in real time:
+- Micro glucose variations via ultra-sensitive sensors
+- Voice analysis and emotion recognition
+- Sleep patterns and physiological stress
+- Weather data and geolocated activity
+- Dietary history via image recognition
+
+Deployed on 15,000 patients across 12 countries, the AI shows exceptional results:
+- 97% predictive accuracy (vs 94% in 2024)
+- 82% reduction in severe hypoglycemia
+- Predictions up to 45 minutes in advance
+- Native integration with all glucose sensors
+
+“We are entering the era of total prevention,” says Dr. Lisa Wang, Director of Google Health Diabetes. “Severe hypoglycemia becomes a preventable event.”
+
+The DARE AI app will be the first to integrate this technology starting September 2025, with CE certification and FDA approval.`,
+  },
 };
