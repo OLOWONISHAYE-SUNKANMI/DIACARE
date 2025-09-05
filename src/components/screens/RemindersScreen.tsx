@@ -195,16 +195,16 @@ export const RemindersScreen: React.FC = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-4 space-y-6">
+  <div className="max-w-6xl mx-auto p-4 space-y-6">
       {/* Header */}
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"> {/* 📌 stacked on mobile */}
         <div>
-          <h1 className="text-3xl font-bold">⏰ {t("reminderScreen.title")}</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-2xl sm:text-3xl font-bold">⏰ {t("reminderScreen.title")}</h1>
+          <p className="text-muted-foreground text-sm sm:text-base">
             {t("reminderScreen.subtitle")}
           </p>
         </div>
-        <Button onClick={() => setIsCreateModalOpen(true)}>
+        <Button className="w-full sm:w-auto" onClick={() => setIsCreateModalOpen(true)}> {/* 📌 full width button on mobile */}
           <Plus className="w-4 h-4 mr-2" />
           {t("reminderScreen.button2")}
         </Button>
@@ -214,28 +214,32 @@ export const RemindersScreen: React.FC = () => {
       {upcomingReminders.length > 0 && (
         <Card className="border-orange-200 bg-orange-50">
           <CardHeader>
-            <CardTitle className="flex items-center text-orange-800">
+            <CardTitle className="flex items-center text-orange-800 text-base sm:text-lg">
               🔔 Rappels à venir (2h)
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-2">
+            <div className="space-y-3">
               {upcomingReminders.map(reminder => {
                 const typeInfo = reminders.length > 0 ? 
                   useReminders().getReminderTypeInfo(reminder.reminder_type) : 
                   { icon: '⏰', name: 'Rappel' };
                 
                 return (
-                  <div key={reminder.id} className="flex items-center justify-between p-2 bg-white rounded">
-                    <div className="flex items-center space-x-2">
+                  <div 
+                    key={reminder.id} 
+                    className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 bg-white rounded gap-2"
+                  > {/* 📌 stacks on mobile */}
+                    <div className="flex flex-wrap items-center gap-2 text-sm">
                       <span>{typeInfo.icon}</span>
                       <span className="font-medium">{reminder.title}</span>
-                      <span className="text-sm text-muted-foreground">à {reminder.scheduled_time}</span>
+                      <span className="text-muted-foreground">à {reminder.scheduled_time}</span>
                     </div>
-                    <div className="flex space-x-1">
+                    <div className="flex gap-2">
                       <Button
                         size="sm"
                         onClick={() => logReminderAction(reminder.id, 'completed')}
+                        className="w-full sm:w-auto"
                       >
                         Fait
                       </Button>
@@ -251,8 +255,10 @@ export const RemindersScreen: React.FC = () => {
       {/* Today's Reminders */}
       {todaysReminders.length > 0 && (
         <div>
-          <h2 className="text-xl font-semibold mb-4">📅 Aujourd'hui ({todaysReminders.length})</h2>
-          <div className="grid gap-4 md:grid-cols-2">
+          <h2 className="text-lg sm:text-xl font-semibold mb-4">
+            📅 Aujourd'hui ({todaysReminders.length})
+          </h2>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"> {/* 📌 responsive grid */}
             {todaysReminders.map(reminder => (
               <ReminderCard
                 key={reminder.id}
@@ -269,25 +275,30 @@ export const RemindersScreen: React.FC = () => {
 
       {/* All Reminders */}
       <div>
-        <h2 className="text-xl font-semibold mb-4">
+        <h2 className="text-lg sm:text-xl font-semibold mb-4">
           📋 {t("reminderScreen.newReminder.title")} ({reminders.length})
         </h2>
         {reminders.length === 0 ? (
           <Card>
             <CardContent className="text-center py-12">
-              <div className="text-6xl mb-4">⏰</div>
-              <h3 className="text-lg font-semibold mb-2">{t("reminderScreen.newReminder.reminderSet")}</h3>
-              <p className="text-muted-foreground mb-4">
+              <div className="text-5xl sm:text-6xl mb-4">⏰</div>
+              <h3 className="text-base sm:text-lg font-semibold mb-2">
+                {t("reminderScreen.newReminder.reminderSet")}
+              </h3>
+              <p className="text-muted-foreground mb-4 text-sm sm:text-base">
                 {t("reminderScreen.newReminder.writeup")}
               </p>
-              <Button onClick={() => setIsCreateModalOpen(true)}>
+              <Button 
+                onClick={() => setIsCreateModalOpen(true)} 
+                className="w-full sm:w-auto"
+              > {/* 📌 full width button on mobile */}
                 <Plus className="w-4 h-4 mr-2" />
                 {t("reminderScreen.button1")}
               </Button>
             </CardContent>
           </Card>
         ) : (
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"> {/* 📌 responsive grid */}
             {reminders.map(reminder => (
               <ReminderCard
                 key={reminder.id}
