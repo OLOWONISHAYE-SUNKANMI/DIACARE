@@ -544,7 +544,7 @@ L'application DARE AI sera la première à intégrer cette technologie dès sept
           <span className="text-medical-teal">DARE</span> News
         </h1>
         <p className="text-muted-foreground">
-          Actualités internationales sur le diabète
+          {t('blogScreenFixes.title_diabetesNews')}
         </p>
       </div>
 
