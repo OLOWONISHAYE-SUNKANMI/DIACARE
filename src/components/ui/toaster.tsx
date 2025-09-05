@@ -1,4 +1,4 @@
-import { useToast } from "@/hooks/use-toast"
+import { useToast } from '@/hooks/use-toast';
 import {
   Toast,
   ToastClose,
@@ -6,10 +6,13 @@ import {
   ToastProvider,
   ToastTitle,
   ToastViewport,
-} from "@/components/ui/toast"
+} from '@/components/ui/toast';
+import { useTranslation } from 'react-i18next';
+import { Title } from '@radix-ui/react-dialog';
 
 export function Toaster() {
-  const { toasts } = useToast()
+  const { toasts } = useToast();
+  const { t } = useTranslation();
 
   return (
     <ToastProvider>
@@ -17,19 +20,21 @@ export function Toaster() {
         return (
           <Toast key={id} {...props}>
             <div className="grid gap-1">
-              {title && <ToastTitle>{title}</ToastTitle>}
+              {title && <ToastTitle>{t('toastMessage.title')}</ToastTitle>}
               {description && (
-                <ToastDescription>{description}</ToastDescription>
+                <ToastDescription>
+                  {t('toastMessage.description')}
+                </ToastDescription>
               )}
             </div>
             {action}
             <ToastClose />
           </Toast>
-        )
+        );
       })}
       {/* {toasts.length > 0 && <ToastViewport />} */}
       
       <ToastViewport />
     </ToastProvider>
-  )
+  );
 }
