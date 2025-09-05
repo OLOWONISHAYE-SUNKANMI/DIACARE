@@ -1599,4 +1599,66 @@ export const fr = {
     choose_language_description:
       'Sélectionnez votre langue préférée pour continuer',
   },
+
+  planSelection: {
+    loading_plans: 'Chargement des forfaits...',
+    plans_error_title: 'Erreur',
+    plans_error_description: 'Impossible de charger les forfaits',
+    choose_plan_title: 'Choisissez votre forfait DiaCare',
+    choose_plan_description:
+      'Sélectionnez le forfait qui correspond le mieux à vos besoins',
+    badge_recommended_family: 'Recommandé pour la famille',
+    per_month: 'par mois',
+    selected: 'Sélectionné',
+    choose_this_plan: 'Choisir ce forfait',
+    payment_secure: '💳 Paiement sécurisé par Flutterwave',
+    payment_method_card: '• Cartes bancaires (Visa, Mastercard, etc.)',
+    payment_method_mobile: '• Mobile Money (Orange Money, MTN, Wave, etc.)',
+    payment_method_bank: '• Virements bancaires locaux',
+    payment_method_patient_code:
+      '• Code patient généré automatiquement après paiement',
+  },
+
+  professionalCodeManager: {
+    code_generated_title: 'Code généré avec succès',
+    code_generated_description:
+      "Votre code d'identification professionnel est prêt",
+    code_error_title: 'Erreur',
+    code_error_description: 'Impossible de générer le code professionnel',
+    code_copied_title: 'Code copié',
+    code_copied_description: 'Le code a été copié dans le presse-papiers',
+    missing_code_title: 'Code manquant',
+    missing_code_description: "Veuillez saisir un code d'accès patient",
+    meal_fasting: 'À jeun',
+    meal_after_meal: 'Après repas',
+    meal_before_dinner: 'Avant dîner',
+    access_granted_title: 'Accès autorisé',
+    access_granted_description: 'Données patient récupérées avec succès',
+    access_denied_title: 'Accès refusé',
+    access_denied_description: "Code d'accès invalide ou patient introuvable",
+    professional_id_code: "Code d'identification professionnel",
+    professional_code_description:
+      'Générez votre code unique pour accéder aux données patients DARE',
+    generate_professional_code: 'Générer mon code professionnel',
+    generated_on: 'Généré le',
+    badge_active: 'Actif',
+    professional_code_warning:
+      "Important : Ce code est personnel et confidentiel. Ne le partagez jamais. Il vous permet d'accéder aux données sensibles des patients.",
+    patient_data_access_title: 'Accès données patient',
+    patient_data_access_description:
+      "Utilisez votre code professionnel pour accéder aux données d'un patient",
+    patient_code_label: "Code d'accès patient",
+    patient_code_placeholder: 'Saisissez le code patient...',
+    all_access_tracked: 'Tous les accès sont tracés et sécurisés',
+    secure_patient_data_title: 'Données Patient - Accès Sécurisé',
+    secure_patient_data_description:
+      'Informations médicales sensibles - Usage strictement professionnel',
+    patient_information: 'Informations Patient',
+    last_name: 'Nom',
+    first_name: 'Prénom',
+    diabetes_type: 'Type de diabète',
+    recent_glucose_readings: 'Relevés glycémiques récents',
+    confidentiality_notice:
+      'Confidentialité : Ces données sont strictement confidentielles et protégées par le secret médical. Toute utilisation non autorisée est passible de sanctions.',
+  },
 };

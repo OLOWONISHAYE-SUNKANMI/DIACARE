@@ -1549,4 +1549,65 @@ export const en = {
     choose_language_title: 'Choose your language',
     choose_language_description: 'Select your preferred language to continue',
   },
+
+  planSelection: {
+    loading_plans: 'Loading plans...',
+    plans_error_title: 'Error',
+    plans_error_description: 'Unable to load plans',
+    choose_plan_title: 'Choose your DiaCare plan',
+    choose_plan_description: 'Select the plan that best fits your needs',
+    badge_recommended_family: 'Recommended for family',
+    per_month: 'per month',
+    selected: 'Selected',
+    choose_this_plan: 'Choose this plan',
+    payment_secure: '💳 Secure payment via Flutterwave',
+    payment_method_card: '• Bank cards (Visa, Mastercard, etc.)',
+    payment_method_mobile: '• Mobile Money (Orange Money, MTN, Wave, etc.)',
+    payment_method_bank: '• Local bank transfers',
+    payment_method_patient_code:
+      '• Patient code generated automatically after payment',
+  },
+
+  professionalCodeManager: {
+    code_generated_title: 'Code generated successfully',
+    code_generated_description:
+      'Your professional identification code is ready',
+    code_error_title: 'Error',
+    code_error_description: 'Unable to generate the professional code',
+    code_copied_title: 'Code copied',
+    code_copied_description: 'The code has been copied to the clipboard',
+    missing_code_title: 'Code missing',
+    missing_code_description: 'Please enter a patient access code',
+    meal_fasting: 'Fasting',
+    meal_after_meal: 'After meal',
+    meal_before_dinner: 'Before dinner',
+    access_granted_title: 'Access granted',
+    access_granted_description: 'Patient data retrieved successfully',
+    access_denied_title: 'Access denied',
+    access_denied_description: 'Invalid access code or patient not found',
+    professional_id_code: 'Professional identification code',
+    professional_code_description:
+      'Generate your unique code to access DARE patient data',
+    generate_professional_code: 'Generate my professional code',
+    generated_on: 'Generated on',
+    badge_active: 'Active',
+    professional_code_warning:
+      'Important: This code is personal and confidential. Never share it. It allows you to access sensitive patient data.',
+    patient_data_access_title: 'Patient data access',
+    patient_data_access_description:
+      "Use your professional code to access a patient's data",
+    patient_code_label: 'Patient access code',
+    patient_code_placeholder: 'Enter the patient code...',
+    all_access_tracked: 'All accesses are tracked and secure',
+    secure_patient_data_title: 'Patient Data - Secure Access',
+    secure_patient_data_description:
+      'Sensitive medical information - Strictly professional use',
+    patient_information: 'Patient Information',
+    last_name: 'Last Name',
+    first_name: 'First Name',
+    diabetes_type: 'Diabetes Type',
+    recent_glucose_readings: 'Recent Glucose Readings',
+    confidentiality_notice:
+      'Confidentiality: This data is strictly confidential and protected by medical secrecy. Any unauthorized use is subject to penalties.',
+  },
 };
