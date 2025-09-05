@@ -15,10 +15,11 @@ import {
   FileText,
   Calendar,
   Award,
-  Clock
+  Clock,
 } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { fr } from 'date-fns/locale';
+import { useTranslation } from 'react-i18next';
 
 interface Application {
   id: string;
@@ -36,6 +37,7 @@ interface Application {
   created_at: string;
 }
 
+const { t } = useTranslation();
 interface ApplicationCardProps {
   application: Application;
   onSelect: (application: Application) => void;
@@ -47,7 +49,7 @@ export const ApplicationCard: React.FC<ApplicationCardProps> = ({
   application,
   onSelect,
   onApprove,
-  onReject
+  onReject,
 }) => {
   const getInitials = (firstName: string, lastName: string) => {
     return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
@@ -78,14 +80,16 @@ export const ApplicationCard: React.FC<ApplicationCardProps> = ({
 
   const getSpecialtyLabel = (type: string) => {
     const labels = {
-      'endocrinologist': 'Endocrinologue',
-      'diabetologist': 'Diabétologue',
-      'nutritionist': 'Nutritionniste',
-      'general_practitioner': 'Médecin généraliste',
-      'nurse': 'Infirmier(e) spécialisé(e)',
-      'pharmacist': 'Pharmacien',
-      'psychologist': 'Psychologue',
-      'podiatrist': 'Podologue'
+      endocrinologist: t('applicationCard.professional_endocrinologist'),
+      diabetologist: t('applicationCard.professional_diabetologist'),
+      nutritionist: t('applicationCard.professional_nutritionist'),
+      general_practitioner: t(
+        'applicationCard.professional_generalPractitioner'
+      ),
+      nurse: t('applicationCard.professional_nurse'),
+      pharmacist: t('applicationCard.professional_pharmacist'),
+      psychologist: t('applicationCard.professional_psychologist'),
+      podiatrist: t('applicationCard.professional_podiatrist'),
     };
     return labels[type as keyof typeof labels] || type;
   };
@@ -99,21 +103,26 @@ export const ApplicationCard: React.FC<ApplicationCardProps> = ({
               {getInitials(application.first_name, application.last_name)}
             </AvatarFallback>
           </Avatar>
-          
+
           <div>
             <h3 className="text-lg font-bold text-foreground">
               Dr. {application.first_name} {application.last_name}
             </h3>
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <span className="text-lg">{getSpecialtyIcon(application.professional_type)}</span>
+              <span className="text-lg">
+                {getSpecialtyIcon(application.professional_type)}
+              </span>
               <span>{getSpecialtyLabel(application.professional_type)}</span>
             </div>
           </div>
         </div>
 
-        <Badge variant="outline" className="bg-status-warning-bg text-status-warning border-status-warning/20">
+        <Badge
+          variant="outline"
+          className="bg-status-warning-bg text-status-warning border-status-warning/20"
+        >
           <Clock className="h-3 w-3 mr-1" />
-          En attente
+          {t('applicationCard.badge_pending')}
         </Badge>
       </div>
 
@@ -122,29 +131,34 @@ export const ApplicationCard: React.FC<ApplicationCardProps> = ({
           <Mail className="h-4 w-4" />
           <span className="truncate">{application.email}</span>
         </div>
-        
+
         <div className="flex items-center gap-2 text-muted-foreground">
           <Phone className="h-4 w-4" />
           <span>{application.phone}</span>
         </div>
-        
+
         <div className="flex items-center gap-2 text-muted-foreground">
           <MapPin className="h-4 w-4" />
-          <span>{application.city}, {application.country}</span>
+          <span>
+            {application.city}, {application.country}
+          </span>
         </div>
-        
+
         <div className="flex items-center gap-2 text-muted-foreground">
           <Building2 className="h-4 w-4" />
-          <span className="truncate">{application.institution || 'Non spécifiée'}</span>
+          <span className="truncate">
+            {application.institution || t('applicationCard.notSpecified')}
+          </span>
         </div>
       </div>
 
       <div className="flex items-center gap-2 text-xs text-muted-foreground mb-4">
         <Calendar className="h-3 w-3" />
         <span>
-          Candidature déposée {formatDistanceToNow(new Date(application.created_at), { 
-            addSuffix: true, 
-            locale: fr 
+          {t('applicationCard.application_submitted')}{' '}
+          {formatDistanceToNow(new Date(application.created_at), {
+            addSuffix: true,
+            locale: fr,
           })}
         </span>
       </div>
@@ -161,16 +175,16 @@ export const ApplicationCard: React.FC<ApplicationCardProps> = ({
           <FileText className="h-4 w-4 mr-1" />
           Examiner
         </Button>
-        
+
         <Button
           size="sm"
           onClick={() => onApprove(application)}
           className="bg-success text-success-foreground hover:bg-success/90 flex-1 min-w-24"
         >
           <CheckCircle className="h-4 w-4 mr-1" />
-          Approuver
+          {t('applicationCard.button_approve')}
         </Button>
-        
+
         <Button
           size="sm"
           variant="destructive"
@@ -178,7 +192,7 @@ export const ApplicationCard: React.FC<ApplicationCardProps> = ({
           className="flex-1 min-w-24"
         >
           <XCircle className="h-4 w-4 mr-1" />
-          Rejeter
+          {t('applicationCard.button_reject')}
         </Button>
       </div>
     </Card>
@@ -189,7 +203,9 @@ interface ApplicationDetailsProps {
   application: Application;
 }
 
-export const ApplicationDetails: React.FC<ApplicationDetailsProps> = ({ application }) => {
+export const ApplicationDetails: React.FC<ApplicationDetailsProps> = ({
+  application,
+}) => {
   const getSpecialtyIcon = (type: string) => {
     switch (type) {
       case 'endocrinologist':
@@ -215,14 +231,16 @@ export const ApplicationDetails: React.FC<ApplicationDetailsProps> = ({ applicat
 
   const getSpecialtyLabel = (type: string) => {
     const labels = {
-      'endocrinologist': 'Endocrinologue',
-      'diabetologist': 'Diabétologue',
-      'nutritionist': 'Nutritionniste',
-      'general_practitioner': 'Médecin généraliste',
-      'nurse': 'Infirmier(e) spécialisé(e)',
-      'pharmacist': 'Pharmacien',
-      'psychologist': 'Psychologue',
-      'podiatrist': 'Podologue'
+      endocrinologist: t('applicationCard.professional_endocrinologist'),
+      diabetologist: t('applicationCard.professional_diabetologist'),
+      nutritionist: t('applicationCard.professional_nutritionist'),
+      general_practitioner: t(
+        'applicationCard.professional_generalPractitioner'
+      ),
+      nurse: t('applicationCard.professional_nurse'),
+      pharmacist: t('applicationCard.professional_pharmacist'),
+      psychologist: t('applicationCard.professional_psychologist'),
+      podiatrist: t('applicationCard.professional_podiatrist'),
     };
     return labels[type as keyof typeof labels] || type;
   };
@@ -235,14 +253,18 @@ export const ApplicationDetails: React.FC<ApplicationDetailsProps> = ({ applicat
             {`${application.first_name.charAt(0)}${application.last_name.charAt(0)}`.toUpperCase()}
           </AvatarFallback>
         </Avatar>
-        
+
         <h2 className="text-xl font-bold text-foreground">
           Dr. {application.first_name} {application.last_name}
         </h2>
-        
+
         <div className="flex items-center justify-center gap-2 text-muted-foreground mt-1">
-          <span className="text-xl">{getSpecialtyIcon(application.professional_type)}</span>
-          <span className="font-medium">{getSpecialtyLabel(application.professional_type)}</span>
+          <span className="text-xl">
+            {getSpecialtyIcon(application.professional_type)}
+          </span>
+          <span className="font-medium">
+            {getSpecialtyLabel(application.professional_type)}
+          </span>
         </div>
       </div>
 
@@ -250,93 +272,118 @@ export const ApplicationDetails: React.FC<ApplicationDetailsProps> = ({ applicat
         <div>
           <h3 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
             <User className="h-4 w-4" />
-            Informations personnelles
+            {t('applicationCard.personalInfo_title')}
           </h3>
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Email :</span>
-              <span className="font-medium text-right text-foreground">{application.email}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">Téléphone :</span>
-              <span className="font-medium text-foreground">{application.phone}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">Localisation :</span>
-              <span className="font-medium text-right text-foreground">{application.city}, {application.country}</span>
-            </div>
-          </div>
-        </div>
-
-        <Separator />
-
-        <div>
-          <h3 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
-            <Award className="h-4 w-4" />
-            Qualifications professionnelles
-          </h3>
-          <div className="space-y-2 text-sm">
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">N° Licence :</span>
-              <span className="font-medium font-mono text-foreground">{application.license_number}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">Institution :</span>
+              <span className="text-muted-foreground">
+                {t('applicationCard.personalInfo_email')}
+              </span>
               <span className="font-medium text-right text-foreground">
-                {application.institution || 'Non spécifiée'}
+                {application.email}
+              </span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">
+                {t('applicationCard.personalInfo_phone')}
+              </span>
+              <span className="font-medium text-foreground">
+                {application.phone}
+              </span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">
+                {t('applicationCard.personalInfo_location')}
+              </span>
+              <span className="font-medium text-right text-foreground">
+                {application.city}, {application.country}
               </span>
             </div>
           </div>
         </div>
+      </div>
 
-        <Separator />
+      <Separator />
 
-        <div>
-          <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
-            <FileText className="h-4 w-4" />
-            Documents justificatifs ({application.documents?.length || 0})
-          </h3>
-          
-          {application.documents && application.documents.length > 0 ? (
-            <div className="space-y-2">
-              {application.documents.map((doc, index) => (
-                <div key={index} className="flex items-center justify-between p-2 bg-muted/30 rounded border border-border">
-                  <div className="flex items-center gap-2">
-                    <FileText className="h-4 w-4 text-medical-blue" />
-                    <span className="text-sm text-foreground">Document {index + 1}</span>
-                  </div>
-                  <Button 
-                    size="sm" 
-                    variant="outline"
-                    onClick={() => window.open(doc, '_blank')}
-                    className="h-6 px-2 text-xs"
-                  >
-                    Voir
-                  </Button>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-4 text-muted-foreground bg-muted/30 rounded border-2 border-dashed border-border">
-              <FileText className="h-8 w-8 mx-auto mb-2 text-muted-foreground/50" />
-              <p className="text-sm">Aucun document</p>
-            </div>
-          )}
-        </div>
-
-        <Separator />
-
-        <div className="text-xs text-muted-foreground text-center">
-          <div className="flex items-center justify-center gap-1">
-            <Calendar className="h-3 w-3" />
-            Candidature déposée le {new Date(application.created_at).toLocaleDateString('fr-FR', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-              hour: '2-digit',
-              minute: '2-digit'
-            })}
+      <div>
+        <h3 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+          <Award className="h-4 w-4" />
+          {t('applicationCard.professionalQualifications_title')}
+        </h3>
+        <div className="space-y-2 text-sm">
+          <div className="flex justify-between">
+            <span className="text-muted-foreground">
+              {t('applicationCard.professionalQualifications_licenseNumber')}
+            </span>
+            <span className="font-medium font-mono text-foreground">
+              {application.license_number}
+            </span>
           </div>
+          <div className="flex justify-between">
+            <span className="text-muted-foreground">
+              {t('applicationCard.professionalQualifications_institution')}
+            </span>
+            <span className="font-medium text-right text-foreground">
+              {application.institution || t('applicationCard.notSpecified')}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <Separator />
+
+      <div>
+        <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
+          <FileText className="h-4 w-4" />
+          {t('applicationCard.documents_title')} (
+          {application.documents?.length || 0})
+        </h3>
+
+        {application.documents && application.documents.length > 0 ? (
+          <div className="space-y-2">
+            {application.documents.map((doc, index) => (
+              <div
+                key={index}
+                className="flex items-center justify-between p-2 bg-muted/30 rounded border border-border"
+              >
+                <div className="flex items-center gap-2">
+                  <FileText className="h-4 w-4 text-medical-blue" />
+                  <span className="text-sm text-foreground">
+                    {t('applicationCard.documents_label')} {index + 1}
+                  </span>
+                </div>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => window.open(doc, '_blank')}
+                  className="h-6 px-2 text-xs"
+                >
+                  {t('applicationCard.button_view')}
+                </Button>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-4 text-muted-foreground bg-muted/30 rounded border-2 border-dashed border-border">
+            <FileText className="h-8 w-8 mx-auto mb-2 text-muted-foreground/50" />
+            <p className="text-sm">{t('applicationCard.noDocument')}</p>
+          </div>
+        )}
+      </div>
+
+      <Separator />
+
+      <div className="text-xs text-muted-foreground text-center">
+        <div className="flex items-center justify-center gap-1">
+          <Calendar className="h-3 w-3" />
+          {t('applicationCard.application_submitted_on')}{' '}
+          {new Date(application.created_at).toLocaleDateString('fr-FR', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+          })}
         </div>
       </div>
     </Card>
