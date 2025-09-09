@@ -9,7 +9,6 @@ import {
 } from 'lucide-react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
@@ -23,6 +22,7 @@ import {
   ModalFooter,
   Text,
   Box,
+  Button,
 } from '@chakra-ui/react';
 
 interface Article {
@@ -194,7 +194,8 @@ const BlogScreen = () => {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="ml-2 text-medical-teal hover:bg-medical-teal/10"
+                  width={'max-content'}
+                  className="p-3 ml-2 text-medical-teal hover:bg-medical-teal/10"
                   onClick={() => setSelectedArticle(article)}
                 >
                   <ArrowRight className="w-4 h-4" />
