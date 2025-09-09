@@ -1,142 +1,230 @@
-import { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import {
   BookOpen,
-  PenTool,
-  AlertTriangle,
   CheckCircle,
   XCircle,
   TrendingUp,
   Clock,
   Syringe,
-  X,
-  Droplets,
-  Plus,
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Alert, AlertDescription } from '@/components/ui/alert';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { useToast } from '@/hooks/use-toast';
 import { useTranslation } from 'react-i18next';
-import AddGlucoseModal from '@/components/modals/AddGlucoseModal';
-import InsulinInjectionModal from '@/components/modals/InsulinInjectionModal';
+import { format, isToday, isYesterday } from 'date-fns';
+
+import { useMeals } from '@/contexts/MealContext';
+import { useMedications } from '@/contexts/MedicationContext';
+import { useActivities } from '@/contexts/ActivityContext';
+import { useGlucose } from '@/contexts/GlucoseContext';
 
 interface JournalScreenProps {
   showAlert: boolean;
   setShowAlert: (show: boolean) => void;
 }
 
+type JournalEntry = {
+  id: string;
+  date: string;
+  time: string;
+  fullDate: string;
+  glucose?: number;
+  glucoseStatus?: string;
+  glucoseColor?: string;
+  glucoseBg?: string;
+  insulin?: {
+    type: string;
+    dose: number;
+    injectionTime: string | null;
+    status: 'injected' | 'missed';
+  };
+  meal?: {
+    name: string;
+    portion: number;
+    carbs: number;
+  };
+  activity?: {
+    name: string;
+    duration: number;
+    calories: number;
+  };
+  context: string;
+  timestamp: Date;
+};
+
 const JournalScreen = ({ showAlert, setShowAlert }: JournalScreenProps) => {
-  const [selectedPeriod, setSelectedPeriod] = useState('today');
-  const [isGlucoseModalOpen, setIsGlucoseModalOpen] = useState(false);
-  const [isInsulinModalOpen, setIsInsulinModalOpen] = useState(false);
+  const [selectedPeriod, setSelectedPeriod] = useState<
+    'today' | 'week' | 'month'
+  >('today');
   const { toast } = useToast();
   const { t } = useTranslation();
 
-  const handleGlucoseEntry = (glucoseData: any) => {
-    console.log('Nouvelle entrée glycémie:', glucoseData);
-    toast({
-      title: t('journal.glucose') + ' ' + t('common.save'),
-      description: `${glucoseData.value} mg/dL - ${glucoseData.context}`,
-    });
-  };
+  const { meals } = useMeals();
+  const { medications } = useMedications();
+  const { activities } = useActivities();
+  const { readings } = useGlucose();
 
-  const handleInsulinEntry = (insulinData: any) => {
-    console.log('Nouvelle injection insuline:', insulinData);
-    toast({
-      title: t('journal.insulin') + ' ' + t('common.save'),
-      description: `${insulinData.insulinType} ${insulinData.dose}UI`,
-    });
-  };
+  //  Transform DB → JournalEntry
+  const buildEntries = useMemo(() => {
+    const entries: JournalEntry[] = [];
 
-  const journalEntries = [
-    {
-      id: 1,
-      date: t('journalEntries.id1.date'),
-      time: '15h30',
-      fullDate: '15 Nov 2024',
-      glucose: 142,
-      glucoseStatus: t('journalEntries.id1.glucoseStatus'),
-      glucoseColor: 'text-amber-600',
-      glucoseBg: 'bg-amber-50',
-      insulin: {
-        type: 'Humalog',
-        dose: 8,
-        injectionTime: '15h35',
-        status: 'injected',
-      },
-      context: t('journalEntries.id1.context'),
-    },
-    {
-      id: 2,
-      date: t('journalEntries.id2.date'),
-      time: '08h00',
-      fullDate: '15 Nov 2024',
-      glucose: 118,
-      glucoseStatus: t('journalEntries.id2.glucoseStatus'),
-      glucoseColor: 'text-emerald-600',
-      glucoseBg: 'bg-emerald-50',
-      insulin: {
-        type: 'Lantus',
-        dose: 20,
-        injectionTime: '08h05',
-        status: 'injected',
-      },
-      context: t('journalEntries.id2.context'),
-    },
-    {
-      id: 3,
-      date: t('journalEntries.id3.date'),
-      time: '18h45',
-      fullDate: '14 Nov 2024',
-      glucose: 156,
-      glucoseStatus: t('journalEntries.id3.glucoseStatus'),
-      glucoseColor: 'text-red-600',
-      glucoseBg: 'bg-red-50',
-      insulin: {
-        type: 'Humalog',
-        dose: 6,
-        injectionTime: null,
-        status: 'missed',
-      },
-      context: t('journalEntries.id3.context'),
-    },
-    {
-      id: 4,
-      date: t('journalEntries.id4.date'),
-      time: '12h15',
-      fullDate: '14 Nov 2024',
-      glucose: 98,
-      glucoseStatus: t('journalEntries.id4.glucoseStatus'),
-      glucoseColor: 'text-emerald-600',
-      glucoseBg: 'bg-emerald-50',
-      insulin: {
-        type: 'Humalog',
-        dose: 7,
-        injectionTime: '12h20',
-        status: 'injected',
-      },
-      context: t('journalEntries.id4.context'),
-    },
-    {
-      id: 5,
-      date: t('journalEntries.id5.date'),
-      time: '20h30',
-      fullDate: '13 Nov 2024',
-      glucose: 88,
-      glucoseStatus: t('journalEntries.id5.glucoseStatus'),
-      glucoseColor: 'text-emerald-600',
-      glucoseBg: 'bg-emerald-50',
-      insulin: {
-        type: 'Humalog',
-        dose: 5,
-        injectionTime: '20h35',
-        status: 'injected',
-      },
-      context: t('journalEntries.id5.context'),
-    },
-  ];
+    // Glucose
+    readings.forEach(r => {
+      const value = r.value;
+      let status = t('journal.normal');
+      let color = 'text-emerald-600';
+      let bg = 'bg-emerald-50';
+      if (value < 70) {
+        status = t('journal.low');
+        color = 'text-red-600';
+        bg = 'bg-red-50';
+      } else if (value > 180) {
+        status = t('journal.high');
+        color = 'text-amber-600';
+        bg = 'bg-amber-50';
+      }
+
+      const d = new Date(r.timestamp);
+      entries.push({
+        id: r.id,
+        date: d.toLocaleDateString(),
+        time: d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        fullDate: d.toLocaleDateString(undefined, {
+          day: '2-digit',
+          month: 'short',
+          year: 'numeric',
+        }),
+        glucose: value,
+        glucoseStatus: status,
+        glucoseColor: color,
+        glucoseBg: bg,
+        context: r.context || t('journal.glucose'),
+        timestamp: d,
+      });
+    });
+
+    // Medications (Insulin)
+    medications.forEach(m => {
+      const d = new Date(m.medication_time);
+      entries.push({
+        id: m.id,
+        date: d.toLocaleDateString(),
+        time: d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        fullDate: d.toLocaleDateString(undefined, {
+          day: '2-digit',
+          month: 'short',
+          year: 'numeric',
+        }),
+        insulin: {
+          type: m.medication_name,
+          dose: m.dose,
+          injectionTime: d.toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit',
+          }),
+          status: 'injected', // replace if your DB tracks missed injections
+        },
+        context: t('journal.medication'),
+        timestamp: d,
+      });
+    });
+
+    // Meals
+    meals.forEach(meal => {
+      const d = new Date(meal.meal_time);
+      entries.push({
+        id: meal.id,
+        date: d.toLocaleDateString(),
+        time: d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        fullDate: d.toLocaleDateString(undefined, {
+          day: '2-digit',
+          month: 'short',
+          year: 'numeric',
+        }),
+        meal: {
+          name: meal.meal_name,
+          portion: meal.portion_grams,
+          carbs: meal.total_carbs,
+        },
+        context: t('journal.meal'),
+        timestamp: d,
+      });
+    });
+
+    // Activities
+    activities.forEach(act => {
+      const d = new Date(act.activity_time);
+      entries.push({
+        id: act.id,
+        date: d.toLocaleDateString(),
+        time: d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        fullDate: d.toLocaleDateString(undefined, {
+          day: '2-digit',
+          month: 'short',
+          year: 'numeric',
+        }),
+        activity: {
+          name: act.activity_name,
+          duration: act.duration_minutes,
+          calories: act.total_calories_burned,
+        },
+        context: t('journal.activity'),
+        timestamp: d,
+      });
+    });
+
+    return entries.sort(
+      (a, b) => b.timestamp.getTime() - a.timestamp.getTime()
+    );
+  }, [readings, medications, meals, activities, t]);
+
+  const groupedEntries = useMemo(() => {
+    const groups: Record<string, JournalEntry[]> = {};
+
+    buildEntries.forEach(entry => {
+      const dayKey = entry.date; // already formatted as local date
+      if (!groups[dayKey]) groups[dayKey] = [];
+      groups[dayKey].push(entry);
+    });
+
+    // Sort groups by date (newest first)
+    const sortedGroups = Object.entries(groups).sort(
+      ([a], [b]) => new Date(b).getTime() - new Date(a).getTime()
+    );
+
+    return sortedGroups.map(([day, items]) => ({
+      day,
+      label: isToday(new Date(day))
+        ? 'Today'
+        : isYesterday(new Date(day))
+        ? 'Yesterday'
+        : format(new Date(day), 'EEEE, MMM d'),
+      entries: items,
+    }));
+  }, [buildEntries]);
+
+  //  Filter by period
+  const filteredEntries = useMemo(() => {
+    const now = new Date();
+    return buildEntries.filter(entry => {
+      const d = entry.timestamp;
+      if (selectedPeriod === 'today') {
+        return d.toDateString() === now.toDateString();
+      }
+      if (selectedPeriod === 'week') {
+        const weekAgo = new Date();
+        weekAgo.setDate(now.getDate() - 7);
+        return d >= weekAgo;
+      }
+      if (selectedPeriod === 'month') {
+        const monthAgo = new Date();
+        monthAgo.setMonth(now.getMonth() - 1);
+        return d >= monthAgo;
+      }
+      return true;
+    });
+  }, [buildEntries, selectedPeriod]);
 
   return (
     <div className="flex-1 p-4 space-y-6 pb-24">
@@ -148,48 +236,13 @@ const JournalScreen = ({ showAlert, setShowAlert }: JournalScreenProps) => {
         <p className="text-muted-foreground">{t('journal.subtitle')}</p>
       </div>
 
-      {/* Rappel Insuline */}
-      {showAlert && (
-        <Alert className="border-red-200 bg-red-50 animate-scale-in">
-          <AlertTriangle className="h-4 w-4 text-red-600" />
-          <AlertDescription className="text-red-800 pr-8">
-            <strong>{t('journal.insulinReminder')}</strong> - 19h00 Lantus 20UI
-          </AlertDescription>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="absolute top-2 right-2 h-6 w-6 p-0 text-red-600 hover:bg-red-100"
-            onClick={() => setShowAlert(false)}
-          >
-            <X className="h-4 w-4" />
-          </Button>
-        </Alert>
-      )}
-
-      {/* Boutons Nouvelles Entrées */}
-      <div className="grid grid-cols-2 gap-3">
-        <AddGlucoseModal onGlucoseAdd={handleGlucoseEntry}>
-          <Button className="w-full bg-medical-teal hover:bg-medical-teal/90 text-white font-medium py-3 transition-all hover:scale-105 transform duration-200">
-            <Droplets className="w-5 h-5 mr-2" />
-            {t('journal.glucose')}
-          </Button>
-        </AddGlucoseModal>
-
-        <InsulinInjectionModal onInsulinAdd={handleInsulinEntry}>
-          <Button className="w-full bg-medical-blue hover:bg-medical-blue/90 text-white font-medium py-3 transition-all hover:scale-105 transform duration-200">
-            <Syringe className="w-5 h-5 mr-2" />
-            {t('journal.insulin')}
-          </Button>
-        </InsulinInjectionModal>
-      </div>
-
-      {/* Filtres de période */}
+      {/* Period Filters */}
       <Card className="border-medical-teal/20">
         <CardContent className="p-4">
           <ToggleGroup
             type="single"
             value={selectedPeriod}
-            onValueChange={setSelectedPeriod}
+            onValueChange={val => val && setSelectedPeriod(val as any)}
             className="grid grid-cols-3 gap-2"
           >
             <ToggleGroupItem
@@ -214,9 +267,9 @@ const JournalScreen = ({ showAlert, setShowAlert }: JournalScreenProps) => {
         </CardContent>
       </Card>
 
-      {/* Entrées du carnet */}
+      {/* Journal Entries */}
       <div className="space-y-4">
-        {journalEntries.map(entry => (
+        {filteredEntries.map(entry => (
           <Card
             key={entry.id}
             className="border-medical-teal/20 hover:shadow-md transition-shadow"
@@ -237,124 +290,107 @@ const JournalScreen = ({ showAlert, setShowAlert }: JournalScreenProps) => {
                 </span>
               </div>
             </CardHeader>
-            <CardContent className="space-y-4">
-              {/* Glycémie avec context africain */}
-              <div
-                className={`p-4 rounded-lg ${entry.glucoseBg} border border-opacity-20`}
-              >
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className="text-3xl font-bold text-foreground">
-                      {entry.glucose}{' '}
-                      <span className="text-lg font-normal text-muted-foreground">
-                        mg/dL
-                      </span>
-                    </div>
-                    <div
-                      className={`text-sm font-medium ${entry.glucoseColor}`}
-                    >
-                      {entry.glucoseStatus}
-                    </div>
-                  </div>
-                  <TrendingUp className={`w-6 h-6 ${entry.glucoseColor}`} />
-                </div>
-              </div>
 
-              {/* Détails Insuline */}
-              <div className="bg-gray-50 p-4 rounded-lg border">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <Syringe className="w-4 h-4 text-muted-foreground" />
+            <CardContent className="space-y-4">
+              {/* Glucose */}
+              {entry.glucose !== undefined && (
+                <div
+                  className={`p-4 rounded-lg ${entry.glucoseBg} border border-opacity-20`}
+                >
+                  <div className="flex items-center justify-between">
                     <div>
-                      <div className="font-medium text-foreground">
-                        {entry.insulin.type} {entry.insulin.dose}UI
-                      </div>
-                      <div className="text-sm text-muted-foreground flex items-center space-x-1">
-                        <Clock className="w-3 h-3" />
-                        <span>
-                          {entry.insulin.status === 'injected'
-                            ? `${t('journal.injected')} ${entry.insulin.injectionTime}`
-                            : t('journal.missed')}
+                      <div className="text-3xl font-bold text-foreground">
+                        {entry.glucose}
+                        <span className="text-lg font-normal text-muted-foreground ml-1">
+                          mg/dL
                         </span>
                       </div>
+                      <div
+                        className={`text-sm font-medium ${entry.glucoseColor}`}
+                      >
+                        {entry.glucoseStatus}
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex items-center">
-                    {entry.insulin.status === 'injected' ? (
-                      <CheckCircle className="w-6 h-6 text-emerald-600" />
-                    ) : (
-                      <XCircle className="w-6 h-6 text-red-600" />
-                    )}
+                    <TrendingUp className={`w-6 h-6 ${entry.glucoseColor}`} />
                   </div>
                 </div>
-              </div>
+              )}
+
+              {/* Insulin / Medication */}
+              {entry.insulin && (
+                <div className="bg-gray-50 p-4 rounded-lg border">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-3">
+                      <Syringe className="w-4 h-4 text-muted-foreground" />
+                      <div>
+                        <div className="font-medium text-foreground">
+                          {entry.insulin.type} {entry.insulin.dose}UI
+                        </div>
+                        <div className="text-sm text-muted-foreground flex items-center space-x-1">
+                          <Clock className="w-3 h-3" />
+                          <span>
+                            {entry.insulin.status === 'injected'
+                              ? `${t('journal.injected')} ${
+                                  entry.insulin.injectionTime
+                                }`
+                              : t('journal.missed')}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-center">
+                      {entry.insulin.status === 'injected' ? (
+                        <CheckCircle className="w-6 h-6 text-emerald-600" />
+                      ) : (
+                        <XCircle className="w-6 h-6 text-red-600" />
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Meal Entry */}
+              {entry.meal && (
+                <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <div className="font-medium text-foreground">
+                        {entry.meal.name}
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        {entry.meal.portion}g • {entry.meal.carbs}g carbs
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Activity Entry */}
+              {entry.activity && (
+                <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <div className="font-medium text-foreground">
+                        {entry.activity.name}
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        {entry.activity.duration} min •{' '}
+                        {entry.activity.calories} cal
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
             </CardContent>
           </Card>
         ))}
+
+        {filteredEntries.length === 0 && (
+          <p className="text-center text-muted-foreground">
+            {t('journal.noEntries')}
+          </p>
+        )}
       </div>
-
-      {/* Résumé hebdomadaire */}
-      <Card className="border-medical-teal/20">
-        <CardHeader>
-          <CardTitle className="text-lg font-semibold text-foreground flex items-center space-x-2">
-            <TrendingUp className="w-5 h-5 text-medical-teal" />
-            <span>{t('journal.weeklyStats.title')}</span>
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 gap-4">
-            <div className="flex items-center justify-between p-3 bg-emerald-50 rounded-lg border border-emerald-200">
-              <span className="text-emerald-800 font-medium">
-                {t('journal.weeklyStats.inTarget')}
-              </span>
-              <Badge
-                variant="secondary"
-                className="bg-emerald-100 text-emerald-800"
-              >
-                68% (16/24)
-              </Badge>
-            </div>
-            <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg border border-blue-200">
-              <span className="text-blue-800 font-medium">
-                {t('journal.weeklyStats.onTimeInjections')}
-              </span>
-              <Badge variant="secondary" className="bg-blue-100 text-blue-800">
-                91% (21/23)
-              </Badge>
-            </div>
-            <div className="flex items-center justify-between p-3 bg-purple-50 rounded-lg border border-purple-200">
-              <span className="text-purple-800 font-medium">
-                {t('journal.weeklyStats.avgGlucose')}
-              </span>
-              <Badge
-                variant="secondary"
-                className="bg-purple-100 text-purple-800"
-              >
-                132 mg/dL
-              </Badge>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Conseil DARE personnalisé */}
-      <Card className="border-medical-teal bg-gradient-to-r from-medical-teal/5 to-medical-teal/10">
-        <CardContent className="p-4">
-          <div className="flex items-start space-x-3">
-            <div className="bg-medical-teal rounded-full p-2 flex-shrink-0">
-              <BookOpen className="w-4 h-4 text-white" />
-            </div>
-            <div>
-              <h4 className="font-semibold text-medical-teal mb-2">
-                {t('journal.advice.title')}
-              </h4>
-              <p className="text-sm text-foreground/80">
-                {t('journal.advice.example')}
-              </p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
     </div>
   );
 };
