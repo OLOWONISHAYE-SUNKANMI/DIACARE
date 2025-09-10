@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { RefreshCw } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface AccessRequest {
   id: string;
@@ -22,6 +23,7 @@ interface AccessRequest {
 }
 
 const PatientAccessScreen = () => {
+  const { t } = useTranslation();
   const [accessRequests, setAccessRequests] = useState<AccessRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
@@ -31,7 +33,7 @@ const PatientAccessScreen = () => {
 
     try {
       setLoading(true);
-      
+
       // Get user's patient access code
       const { data: patientCode, error: codeError } = await supabase
         .from('patient_access_codes')
@@ -69,15 +71,35 @@ const PatientAccessScreen = () => {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'pending':
-        return <Badge variant="secondary">En attente</Badge>;
+        return (
+          <Badge variant="secondary">
+            {t('patientAccessScreen.status.pending')}
+          </Badge>
+        );
       case 'approved':
-        return <Badge className="bg-emerald-600">Approuvé</Badge>;
+        return (
+          <Badge className="bg-emerald-600">
+            {t('patientAccessScreen.status.approved')}
+          </Badge>
+        );
       case 'denied':
-        return <Badge variant="destructive">Refusé</Badge>;
+        return (
+          <Badge variant="destructive">
+            {t('patientAccessScreen.status.denied')}
+          </Badge>
+        );
       case 'expired':
-        return <Badge variant="outline">Expiré</Badge>;
+        return (
+          <Badge variant="outline">
+            {t('patientAccessScreen.status.expired')}
+          </Badge>
+        );
       default:
-        return <Badge variant="outline">{status}</Badge>;
+        return (
+          <Badge variant="outline">
+            {t('patientAccessScreen.status.default', { status })}
+          </Badge>
+        );
     }
   };
 
@@ -88,31 +110,41 @@ const PatientAccessScreen = () => {
       month: '2-digit',
       year: 'numeric',
       hour: '2-digit',
-      minute: '2-digit'
+      minute: '2-digit',
     });
   };
 
   if (loading) {
     return (
       <div className="p-6">
-        <LoadingSpinner text="Chargement des demandes d'accès..." />
+        <LoadingSpinner
+          text={t('patientAccessScreen.loading.accessRequests')}
+        />
       </div>
     );
   }
 
-  const pendingRequests = accessRequests.filter(req => req.permission_status === 'pending');
-  const processedRequests = accessRequests.filter(req => req.permission_status !== 'pending');
+  const pendingRequests = accessRequests.filter(
+    req => req.permission_status === 'pending'
+  );
+  const processedRequests = accessRequests.filter(
+    req => req.permission_status !== 'pending'
+  );
 
   return (
     <div className="p-6 space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-foreground">Accès Professionnels</h2>
-          <p className="text-muted-foreground">Gérez les demandes d'accès à vos données médicales</p>
+          <h2 className="text-2xl font-bold text-foreground">
+            {t('patientAccessScreen.access.title')}
+          </h2>
+          <p className="text-muted-foreground">
+            {t('patientAccessScreen.access.subtitle')}
+          </p>
         </div>
         <Button onClick={fetchAccessRequests} variant="outline" size="sm">
           <RefreshCw className="w-4 h-4 mr-2" />
-          Actualiser
+          {t('patientAccessScreen.access.refresh')}
         </Button>
       </div>
 
@@ -120,7 +152,9 @@ const PatientAccessScreen = () => {
       {pendingRequests.length > 0 && (
         <div className="space-y-4">
           <h3 className="text-lg font-semibold text-foreground">
-            ⏳ Demandes en attente ({pendingRequests.length})
+            {t('patientAccessScreen.requests.pending', {
+              count: pendingRequests.length,
+            })}
           </h3>
           {pendingRequests.map(request => (
             <PatientAccessNotification
@@ -135,16 +169,16 @@ const PatientAccessScreen = () => {
       {/* Processed Requests History */}
       <div className="space-y-4">
         <h3 className="text-lg font-semibold text-foreground">
-          📋 Historique des accès
+          {t('patientAccessScreen.access.history')}
         </h3>
-        
+
         {processedRequests.length === 0 ? (
           <Card>
             <CardContent className="p-6 text-center text-muted-foreground">
               <div className="w-16 h-16 bg-muted rounded-full mx-auto mb-4 flex items-center justify-center">
                 <span className="text-2xl">📋</span>
               </div>
-              Aucun historique d'accès pour le moment
+              {t('patientAccessScreen.access.emptyHistory')}
             </CardContent>
           </Card>
         ) : (
@@ -162,12 +196,18 @@ const PatientAccessScreen = () => {
                 <CardContent className="pt-0">
                   <div className="grid grid-cols-2 gap-4 text-sm">
                     <div>
-                      <strong>Demandé le:</strong>
+                      <strong>
+                        {t('patientAccessScreen.access.requestedOn')}
+                      </strong>
+
                       <br />
                       {formatDate(request.created_at)}
                     </div>
                     <div>
-                      <strong>Répondu le:</strong>
+                      <strong>
+                        {t('patientAccessScreen.access.respondedOn')}
+                      </strong>
+
                       <br />
                       {formatDate(request.approved_at)}
                     </div>
@@ -182,13 +222,20 @@ const PatientAccessScreen = () => {
                       {formatDate(request.expires_at)}
                     </div>
                   </div>
-                  
+
                   {request.allowed_data_sections.length > 0 && (
                     <div className="mt-3">
-                      <strong className="text-sm">Données autorisées:</strong>
+                      <strong className="text-sm">
+                        {t('patientAccessScreen.access.authorizedData')}
+                      </strong>
+
                       <div className="flex flex-wrap gap-1 mt-1">
                         {request.allowed_data_sections.map(section => (
-                          <Badge key={section} variant="outline" className="text-xs">
+                          <Badge
+                            key={section}
+                            variant="outline"
+                            className="text-xs"
+                          >
                             {section}
                           </Badge>
                         ))}
@@ -208,10 +255,11 @@ const PatientAccessScreen = () => {
             <div className="w-20 h-20 bg-muted rounded-full mx-auto mb-4 flex items-center justify-center">
               <span className="text-3xl">🔐</span>
             </div>
-            <h3 className="text-lg font-semibold mb-2">Aucune demande d'accès</h3>
+            <h3 className="text-lg font-semibold mb-2">
+              {t('patientAccessScreen.access.noRequestTitle')}
+            </h3>
             <p className="text-muted-foreground">
-              Les professionnels de santé pourront demander l'accès à vos données médicales.
-              Vous recevrez une notification pour chaque demande.
+              {t('patientAccessScreen.access.noRequestDescription')}
             </p>
           </CardContent>
         </Card>

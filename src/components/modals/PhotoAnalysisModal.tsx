@@ -1,10 +1,15 @@
-import React, { useState } from "react";
-import { Camera, CameraResultType, CameraSource } from "@capacitor/camera";
-import { X, Camera as CameraIcon, Image as ImageIcon, Loader2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
+import React, { useState } from 'react';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import {
+  X,
+  Camera as CameraIcon,
+  Image as ImageIcon,
+  Loader2,
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 import {
   Modal,
   ModalOverlay,
@@ -12,18 +17,32 @@ import {
   ModalHeader,
   ModalBody,
   ModalCloseButton,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react';
+import { useTranslation } from 'react-i18next';
 
 interface PhotoAnalysisModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onFoodAnalyzed: (food: { name: string; carbs: number; analysis: string }) => void;
+  onFoodAnalyzed: (food: {
+    name: string;
+    carbs: number;
+    analysis: string;
+  }) => void;
 }
 
-const PhotoAnalysisModal = ({ isOpen, onClose, onFoodAnalyzed }: PhotoAnalysisModalProps) => {
+const PhotoAnalysisModal = ({
+  isOpen,
+  onClose,
+  onFoodAnalyzed,
+}: PhotoAnalysisModalProps) => {
+  const { t } = useTranslation();
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [analysisResult, setAnalysisResult] = useState<{ name: string; carbs: number; analysis: string } | null>(null);
+  const [analysisResult, setAnalysisResult] = useState<{
+    name: string;
+    carbs: number;
+    analysis: string;
+  } | null>(null);
   const { toast } = useToast();
 
   const takePicture = async (source: CameraSource) => {
@@ -33,24 +52,25 @@ const PhotoAnalysisModal = ({ isOpen, onClose, onFoodAnalyzed }: PhotoAnalysisMo
         allowEditing: true,
         resultType: CameraResultType.DataUrl,
         source: source,
-        promptLabelHeader: "Photo du repas",
-        promptLabelPhoto: "Prendre une photo",
-        promptLabelPicture: "Choisir depuis la galerie"
+        promptLabelHeader: t('photoAnalysisModal.camera.mealPhotoHeader'),
+        promptLabelPhoto: t('photoAnalysisModal.camera.takePhoto'),
+        promptLabelPicture: t('photoAnalysisModal.camera.chooseFromGallery'),
       });
 
       if (image.dataUrl) {
         setSelectedImage(image.dataUrl);
         toast({
-          title: "Photo capturée",
-          description: "Vous pouvez maintenant analyser cette image",
+          title: t('photoAnalysisModal.toast.photoCaptured'),
+          description: t('photoAnalysisModal.toast.photoCapturedDescription'),
         });
       }
     } catch (error) {
-      console.error("Erreur lors de la prise de photo:", error);
+      console.error(t('photoAnalysisModal.console.photoCaptureError'), error);
+
       toast({
-        title: "Erreur",
-        description: "Impossible de prendre la photo",
-        variant: "destructive",
+        title: t('photoAnalysisModal.toast.error'),
+        description: t('photoAnalysisModal.toast.photoCaptureFailed'),
+        variant: 'destructive',
       });
     }
   };
@@ -61,39 +81,36 @@ const PhotoAnalysisModal = ({ isOpen, onClose, onFoodAnalyzed }: PhotoAnalysisMo
     setIsAnalyzing(true);
     try {
       // Appel à l'edge function pour analyser l'image avec OpenAI GPT-4 Vision
-      const { data, error } = await supabase.functions.invoke('analyze-food-image', {
-        body: { 
-          image: selectedImage,
-          prompt: `Analyse cette image de nourriture et estime:
-          1. Le nom du plat/aliment principal
-          2. La quantité approximative de glucides en grammes
-          3. Une brève description de ce que tu vois
-          
-          Réponds au format JSON: {"name": "nom du plat", "carbs": nombre, "analysis": "description"}`
+      const { data, error } = await supabase.functions.invoke(
+        'analyze-food-image',
+        {
+          body: {
+            image: selectedImage,
+            prompt: t('photoAnalysisModal.ai.analyzeFoodPrompt'),
+          },
         }
-      });
+      );
 
       if (error) throw error;
 
       // Pour la démo, utilisons des données simulées
       const mockResult = {
-        name: "Assiette de pâtes à la sauce tomate",
+        name: t('photoAnalysisModal.ai.mockResult.name'),
         carbs: 45,
-        analysis: "Je vois une assiette de pâtes avec de la sauce tomate. La portion semble être d'environ 100g de pâtes cuites, ce qui représente approximativement 45g de glucides."
+        analysis: t('photoAnalysisModal.ai.mockResult.analysis'),
       };
 
       setAnalysisResult(mockResult);
       toast({
-        title: "Analyse terminée",
-        description: "L'IA a analysé votre repas avec succès",
+        title: t('photoAnalysisModal.toast.analysisComplete'),
+        description: t('photoAnalysisModal.toast.analysisCompleteDescription'),
       });
-
     } catch (error) {
-      console.error("Erreur lors de l'analyse:", error);
+      console.error(t('photoAnalysisModal.console.analysisError'), error);
       toast({
-        title: "Erreur",
-        description: "Impossible d'analyser l'image",
-        variant: "destructive",
+        title: t('photoAnalysisModal.toast.error'),
+        description: t('photoAnalysisModal.toast.analysisFailed'),
+        variant: 'destructive',
       });
     } finally {
       setIsAnalyzing(false);
@@ -119,8 +136,12 @@ const PhotoAnalysisModal = ({ isOpen, onClose, onFoodAnalyzed }: PhotoAnalysisMo
     <Modal isOpen={isOpen} onClose={onClose} isCentered size="md">
       <ModalOverlay />
       <ModalContent maxW="md" p={0}>
-        <ModalHeader display="flex" alignItems="center" justifyContent="space-between">
-          <span>📸 Analyse Photo + IA</span>
+        <ModalHeader
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
+        >
+          <span>{t('photoAnalysisModal.modal.header')}</span>
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
@@ -128,29 +149,29 @@ const PhotoAnalysisModal = ({ isOpen, onClose, onFoodAnalyzed }: PhotoAnalysisMo
             {!selectedImage ? (
               <div className="space-y-3">
                 <p className="text-sm text-gray-600 mb-4">
-                  Prenez une photo de votre repas pour que l'IA estime automatiquement les glucides.
+                  {t('photoAnalysisModal.modal.instructions')}
                 </p>
-                <Button 
+                <Button
                   onClick={() => takePicture(CameraSource.Camera)}
                   className="w-full flex items-center gap-2"
                 >
                   <CameraIcon className="w-4 h-4" />
-                  Prendre une photo
+                  {t('photoAnalysisModal.modal.takePhoto')}
                 </Button>
-                <Button 
+                <Button
                   onClick={() => takePicture(CameraSource.Photos)}
                   variant="outline"
                   className="w-full flex items-center gap-2"
                 >
                   <ImageIcon className="w-4 h-4" />
-                  Choisir depuis la galerie
+                  {t('photoAnalysisModal.modal.chooseFromGallery')}
                 </Button>
               </div>
             ) : (
               <div className="space-y-4">
                 <div className="relative">
-                  <img 
-                    src={selectedImage} 
+                  <img
+                    src={selectedImage}
                     alt="Repas à analyser"
                     className="w-full h-48 object-cover rounded-lg"
                   />
@@ -160,11 +181,11 @@ const PhotoAnalysisModal = ({ isOpen, onClose, onFoodAnalyzed }: PhotoAnalysisMo
                     onClick={resetModal}
                     className="absolute top-2 right-2"
                   >
-                    Changer
+                    {t('photoAnalysisModal.modal.change')}
                   </Button>
                 </div>
                 {!analysisResult && (
-                  <Button 
+                  <Button
                     onClick={analyzeImage}
                     disabled={isAnalyzing}
                     className="w-full flex items-center gap-2"
@@ -172,29 +193,44 @@ const PhotoAnalysisModal = ({ isOpen, onClose, onFoodAnalyzed }: PhotoAnalysisMo
                     {isAnalyzing ? (
                       <>
                         <Loader2 className="w-4 h-4 animate-spin" />
-                        Analyse en cours...
+                        {t('photoAnalysisModal.modal.analyzing')}
                       </>
                     ) : (
-                      <>
-                        🤖 Analyser avec l'IA
-                      </>
+                      <>{t('photoAnalysisModal.modal.analyzeAI')}</>
                     )}
                   </Button>
                 )}
                 {analysisResult && (
                   <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                    <h3 className="font-medium text-blue-800 mb-3">Résultat de l'analyse IA:</h3>
+                    <h3 className="font-medium text-blue-800 mb-3">
+                      {t('photoAnalysisModal.modal.analysisResult')}
+                    </h3>
                     <div className="space-y-2 text-sm">
-                      <p><strong>Plat identifié:</strong> {analysisResult.name}</p>
-                      <p><strong>Glucides estimés:</strong> {analysisResult.carbs}g</p>
-                      <p><strong>Analyse:</strong> {analysisResult.analysis}</p>
+                      <p>
+                        <strong>
+                          {t('photoAnalysisModal.modal.dishIdentified')}
+                        </strong>{' '}
+                        {analysisResult.name}
+                      </p>
+                      <p>
+                        <strong>
+                          {t('photoAnalysisModal.modal.estimatedCarbs')}
+                        </strong>{' '}
+                        {analysisResult.carbs}g
+                      </p>
+                      <p>
+                        <strong>
+                          {t('photoAnalysisModal.modal.analysis')}
+                        </strong>{' '}
+                        {analysisResult.analysis}
+                      </p>
                     </div>
-                    <Button 
+                    <Button
                       onClick={handleAddFood}
                       className="w-full mt-4"
                       size="sm"
                     >
-                      Ajouter au journal
+                      {t('photoAnalysisModal.modal.addToJournal')}
                     </Button>
                   </div>
                 )}

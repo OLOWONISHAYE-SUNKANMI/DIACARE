@@ -46,7 +46,7 @@ const NativeHeader = ({ userName }: NativeHeaderProps) => {
           <button
             className="w-9 h-9 sm:w-11 sm:h-11 bg-white/20 rounded-xl sm:rounded-2xl flex items-center justify-center backdrop-blur-sm active:scale-95 transition-transform"
             onClick={() => {
-              alert('Notifications - Fonctionnalité en développement');
+              alert(t('nativeHeaderFixes.notifications.inDevelopment'));
             }}
           >
             <Bell className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
@@ -54,7 +54,7 @@ const NativeHeader = ({ userName }: NativeHeaderProps) => {
           <button
             className="w-9 h-9 sm:w-11 sm:h-11 bg-white/20 rounded-xl sm:rounded-2xl flex items-center justify-center backdrop-blur-sm active:scale-95 transition-transform"
             onClick={() => {
-              alert('Paramètres - Fonctionnalité en développement');
+              alert(t('nativeHeaderFixes.settings.inDevelopment'));
             }}
           >
             <Settings className="w-4 h-4 sm:w-5 sm:h-5 text-white" />

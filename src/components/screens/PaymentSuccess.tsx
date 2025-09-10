@@ -3,70 +3,92 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle, Copy, User, Calendar, Mail, ArrowRight } from 'lucide-react';
+import {
+  CheckCircle,
+  Copy,
+  User,
+  Calendar,
+  Mail,
+  ArrowRight,
+} from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
+import { useTranslation } from 'react-i18next';
 
 const PaymentSuccess: React.FC = () => {
+  const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { user } = useAuth();
   const { toast } = useToast();
-  
+
   const [loading, setLoading] = useState(true);
   const [patientCode, setPatientCode] = useState<string>('');
   const [subscriptionDetails, setSubscriptionDetails] = useState<any>(null);
   const [error, setError] = useState<string>('');
 
+  const items = [
+    t('paymentSuccess.benefits.list.fullAccess'),
+    t('paymentSuccess.benefits.list.consultations'),
+    t('paymentSuccess.benefits.list.chatNews'),
+    t('paymentSuccess.benefits.list.alerts'),
+  ];
+
   useEffect(() => {
     const sessionId = searchParams.get('session_id');
     const testMode = searchParams.get('test_mode'); // Pour détecter le mode test
-    
+
     if (sessionId) {
       verifyPayment(sessionId);
     } else if (testMode === 'true') {
       // Mode test - simuler une réponse réussie
       setPatientCode('TEST123');
       setSubscriptionDetails({
-        current_period_end: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
+        current_period_end: new Date(
+          Date.now() + 30 * 24 * 60 * 60 * 1000
+        ).toISOString(),
       });
       setLoading(false);
+
       toast({
-        title: "Paiement confirmé !",
-        description: "Votre abonnement DiaCare est maintenant actif (Mode Test).",
+        title: t('paymentSuccess.toast.paymentConfirmed.title'),
+        description: t('paymentSuccess.toast.paymentConfirmed.description'),
       });
     } else {
-      setError('Session ID manquant');
+      setError(t('paymentSuccess.errors.missingSessionId'));
       setLoading(false);
     }
   }, [searchParams]);
 
   const verifyPayment = async (sessionId: string) => {
     try {
-      const { data, error } = await supabase.functions.invoke('verify-payment', {
-        body: { sessionId }
-      });
+      const { data, error } = await supabase.functions.invoke(
+        'verify-payment',
+        {
+          body: { sessionId },
+        }
+      );
 
       if (error) throw error;
 
       if (data.success) {
         setPatientCode(data.patientCode);
         setSubscriptionDetails(data.subscription);
-        
+
         toast({
-          title: "Paiement confirmé !",
-          description: "Votre abonnement DiaCare est maintenant actif.",
+          title: t('paymentSuccess.payment.successTitle'),
+          description: t('paymentSuccess.payment.successDescription'),
         });
       } else {
-        throw new Error('Échec de la vérification du paiement');
+        throw new Error(t('paymentSuccess.payment.verifyError'));
       }
     } catch (err: any) {
-      setError(err.message || 'Erreur lors de la vérification du paiement');
+      setError(err.message || t('payment.verifyError'));
       toast({
-        title: "Erreur",
-        description: "Impossible de vérifier le paiement",
-        variant: "destructive",
+        title: t('common.error'), // if you already have a "Erreur / Error" key in common.json
+        description: t('payment.verifyErrorToast'),
+        variant: 'destructive',
       });
     } finally {
       setLoading(false);
@@ -76,8 +98,10 @@ const PaymentSuccess: React.FC = () => {
   const copyPatientCode = () => {
     navigator.clipboard.writeText(patientCode);
     toast({
-      title: "Code copié !",
-      description: "Le code patient a été copié dans le presse-papiers.",
+      title: t('paymentSuccess.toast.copyCode.title'),
+      description: t('paymentSuccess.toast.copyCode.description', {
+        code: patientCode,
+      }),
     });
   };
 
@@ -91,7 +115,7 @@ const PaymentSuccess: React.FC = () => {
         <Card className="w-full max-w-md">
           <CardContent className="p-8 text-center">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-            <p>Vérification du paiement en cours...</p>
+            <p>{t('paymentSuccess.payment.verifying')}</p>
           </CardContent>
         </Card>
       </div>
@@ -106,10 +130,14 @@ const PaymentSuccess: React.FC = () => {
             <div className="w-16 h-16 mx-auto bg-destructive/20 rounded-full flex items-center justify-center">
               <span className="text-2xl">❌</span>
             </div>
-            <h3 className="text-xl font-semibold text-destructive">Erreur de paiement</h3>
-            <p className="text-muted-foreground">{error}</p>
+            <h3 className="text-xl font-semibold text-destructive">
+              {t('paymentSuccess.payment.errorTitle')}
+            </h3>
+            <p className="text-muted-foreground">
+              {t('paymentSuccess.payment.errorMessage', { error })}
+            </p>
             <Button onClick={() => navigate('/auth')} variant="outline">
-              Retour à l'authentification
+              {t('paymentSuccess.payment.backToAuth')}
             </Button>
           </CardContent>
         </Card>
@@ -124,9 +152,11 @@ const PaymentSuccess: React.FC = () => {
           <div className="w-20 h-20 mx-auto bg-success/20 rounded-full flex items-center justify-center mb-4">
             <CheckCircle className="w-10 h-10 text-success" />
           </div>
-          <CardTitle className="text-2xl text-success">Paiement confirmé !</CardTitle>
+          <CardTitle className="text-2xl text-success">
+            {t('paymentSuccess.payment.successTitle')}
+          </CardTitle>
           <p className="text-muted-foreground">
-            Félicitations ! Votre abonnement DiaCare est maintenant actif.
+            {t('paymentSuccess.payment.successMessage')}
           </p>
         </CardHeader>
 
@@ -134,16 +164,16 @@ const PaymentSuccess: React.FC = () => {
           {/* Code Patient */}
           <div className="bg-gradient-to-r from-primary/10 to-success/10 rounded-lg p-6 text-center">
             <h3 className="text-lg font-semibold text-foreground mb-2">
-              Votre code patient DiaCare
+              {t('paymentSuccess.patient.codeTitle')}
             </h3>
             <div className="bg-background rounded-lg p-4 mb-4">
               <div className="text-3xl font-bold text-primary tracking-wider">
                 {patientCode}
               </div>
             </div>
-            <Button 
+            <Button
               onClick={copyPatientCode}
-              variant="outline" 
+              variant="outline"
               size="sm"
               className="gap-2"
             >
@@ -151,21 +181,25 @@ const PaymentSuccess: React.FC = () => {
               Copier le code
             </Button>
             <p className="text-sm text-muted-foreground mt-2">
-              Utilisez ce code pour accéder à vos fonctionnalités et le partager avec votre famille
+              {t('paymentSuccess.patient.codeUsage')}
             </p>
           </div>
 
           {/* Détails de l'abonnement */}
           <div className="grid gap-4">
             <div className="flex items-center justify-between py-2 border-b">
-              <span className="text-muted-foreground">Statut de l'abonnement</span>
+              <span className="text-muted-foreground">
+                {t('paymentSuccess.subscription.status')}
+              </span>
               <Badge className="bg-success/10 text-success border-success/20">
-                Actif
+                {t('paymentSuccess.subscription.active')}
               </Badge>
             </div>
-            
+
             <div className="flex items-center justify-between py-2 border-b">
-              <span className="text-muted-foreground">Email du compte</span>
+              <span className="text-muted-foreground">
+                {t('paymentSuccess.account.email')}
+              </span>
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-muted-foreground" />
                 <span className="text-sm">{user?.email}</span>
@@ -174,11 +208,15 @@ const PaymentSuccess: React.FC = () => {
 
             {subscriptionDetails?.current_period_end && (
               <div className="flex items-center justify-between py-2 border-b">
-                <span className="text-muted-foreground">Prochaine facturation</span>
+                <span className="text-muted-foreground">
+                  {t('paymentSuccess.billing.next')}
+                </span>
                 <div className="flex items-center gap-2">
                   <Calendar className="w-4 h-4 text-muted-foreground" />
                   <span className="text-sm">
-                    {new Date(subscriptionDetails.current_period_end).toLocaleDateString('fr-FR')}
+                    {new Date(
+                      subscriptionDetails.current_period_end
+                    ).toLocaleDateString('fr-FR')}
                   </span>
                 </div>
               </div>
@@ -187,24 +225,16 @@ const PaymentSuccess: React.FC = () => {
 
           {/* Avantages */}
           <div className="bg-muted/50 rounded-lg p-4">
-            <h4 className="font-semibold text-foreground mb-3">🎉 Vos avantages DiaCare</h4>
+            <h4 className="font-semibold text-foreground mb-3">
+              {t('paymentSuccess.benefits.title')}
+            </h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li className="flex items-center gap-2">
-                <CheckCircle className="w-4 h-4 text-success" />
-                Accès complet à toutes les fonctionnalités DiaCare
-              </li>
-              <li className="flex items-center gap-2">
-                <CheckCircle className="w-4 h-4 text-success" />
-                10 téléconsultations par mois
-              </li>
-              <li className="flex items-center gap-2">
-                <CheckCircle className="w-4 h-4 text-success" />
-                DiaCare Chat et DiaCare News
-              </li>
-              <li className="flex items-center gap-2">
-                <CheckCircle className="w-4 h-4 text-success" />
-                Alertes personnalisées et suivi glycémie
-              </li>
+              {items.map((item, index) => (
+                <li key={index} className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-success" />
+                  {item}
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -214,11 +244,12 @@ const PaymentSuccess: React.FC = () => {
               <Mail className="w-5 h-5 text-blue-600 mt-0.5" />
               <div>
                 <h4 className="font-medium text-blue-900 dark:text-blue-100">
-                  Email de confirmation envoyé
+                  {t('paymentSuccess.confirmationEmail.title')}
                 </h4>
                 <p className="text-sm text-blue-700 dark:text-blue-300 mt-1">
-                  Un email avec votre code patient et toutes les informations importantes 
-                  a été envoyé à {user?.email}
+                  {t('paymentSuccess.confirmationEmail.message', {
+                    email: user?.email,
+                  })}
                 </p>
               </div>
             </div>
@@ -228,14 +259,14 @@ const PaymentSuccess: React.FC = () => {
           <div className="flex flex-col sm:flex-row gap-3 pt-4">
             <Button onClick={goToProfile} className="flex-1 gap-2">
               <User className="w-4 h-4" />
-              Compléter mon profil
+              {t('paymentSuccess.buttons.completeProfile')}
             </Button>
-            <Button 
-              onClick={() => navigate('/')} 
-              variant="outline" 
+            <Button
+              onClick={() => navigate('/')}
+              variant="outline"
               className="flex-1 gap-2"
             >
-              Accéder à DiaCare
+              {t('paymentSuccess.buttons.accessApp')}
               <ArrowRight className="w-4 h-4" />
             </Button>
           </div>

@@ -1,10 +1,17 @@
-import { useState } from "react";
-import { X } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useToast } from "@/hooks/use-toast";
+import { useState } from 'react';
+import { X } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { useToast } from '@/hooks/use-toast';
+import { useTranslation } from 'react-i18next';
 
 interface SimpleActivityModalProps {
   isOpen: boolean;
@@ -12,51 +19,51 @@ interface SimpleActivityModalProps {
 }
 
 const SimpleActivityModal = ({ isOpen, onClose }: SimpleActivityModalProps) => {
-  const [activity, setActivity] = useState("");
-  const [duration, setDuration] = useState("");
+  const { t } = useTranslation();
+  const [activity, setActivity] = useState('');
+  const [duration, setDuration] = useState('');
   const { toast } = useToast();
 
   if (!isOpen) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!activity || !duration) {
       toast({
-        title: "Erreur",
-        description: "Veuillez remplir tous les champs",
-        variant: "destructive",
+        title: t('simpleActivityModal.toast.error'),
+        description: t('simpleActivityModal.toast.fillAllFields'),
+        variant: 'destructive',
       });
       return;
     }
 
     toast({
-      title: "Activité enregistrée",
-      description: `${activity} pendant ${duration} minutes`,
+      title: t('simpleActivityModal.toast.activitySaved', {
+        activity,
+        duration,
+      }),
     });
 
-    setActivity("");
-    setDuration("");
+    setActivity('');
+    setDuration('');
     onClose();
   };
 
   return (
     <div className="fixed inset-0 z-50">
       {/* Overlay */}
-      <div 
-        className="absolute inset-0 bg-black/50"
-        onClick={onClose}
-      />
-      
+      <div className="absolute inset-0 bg-black/50" onClick={onClose} />
+
       {/* Modal - Simple top positioning */}
-      <div 
+      <div
         className="absolute top-20 left-1/2 transform -translate-x-1/2 bg-white rounded-xl p-6 shadow-2xl w-full max-w-md"
         style={{ top: '120px' }}
       >
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl font-semibold text-gray-900">
-            🏃 Activité Physique
+            {t('simpleActivityModal.activity.header')}
           </h2>
           <button
             onClick={onClose}
@@ -69,29 +76,49 @@ const SimpleActivityModal = ({ isOpen, onClose }: SimpleActivityModalProps) => {
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <Label htmlFor="activity">Type d'activité</Label>
+            <Label htmlFor="activity">
+              {t('simpleActivityModal.activity.typeLabel')}
+            </Label>
             <Select value={activity} onValueChange={setActivity}>
               <SelectTrigger className="mt-1">
-                <SelectValue placeholder="Sélectionner une activité" />
+                <SelectValue
+                  placeholder={t(
+                    'simpleActivityModal.activity.typePlaceholder'
+                  )}
+                />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="marche">Marche</SelectItem>
-                <SelectItem value="course">Course</SelectItem>
-                <SelectItem value="velo">Vélo</SelectItem>
-                <SelectItem value="natation">Natation</SelectItem>
-                <SelectItem value="musculation">Musculation</SelectItem>
-                <SelectItem value="autre">Autre</SelectItem>
+                <SelectItem value="marche">
+                  {t('simpleActivityModal.activity.options.walking')}
+                </SelectItem>
+                <SelectItem value="course">
+                  {t('simpleActivityModal.activity.options.running')}
+                </SelectItem>
+                <SelectItem value="velo">
+                  {t('simpleActivityModal.activity.options.cycling')}
+                </SelectItem>
+                <SelectItem value="natation">
+                  {t('simpleActivityModal.activity.options.swimming')}
+                </SelectItem>
+                <SelectItem value="musculation">
+                  {t('simpleActivityModal.activity.options.strength')}
+                </SelectItem>
+                <SelectItem value="autre">
+                  {t('simpleActivityModal.activity.options.other')}
+                </SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <div>
-            <Label htmlFor="duration">Durée (minutes)</Label>
+            <Label htmlFor="duration">
+              {t('simpleActivityModal.activity.durationLabel')}
+            </Label>
             <Input
               id="duration"
               type="number"
               value={duration}
-              onChange={(e) => setDuration(e.target.value)}
+              onChange={e => setDuration(e.target.value)}
               placeholder="Ex: 30"
               className="mt-1"
             />
@@ -104,10 +131,10 @@ const SimpleActivityModal = ({ isOpen, onClose }: SimpleActivityModalProps) => {
               onClick={onClose}
               className="flex-1"
             >
-              Annuler
+              {t('simpleActivityModal.buttons.cancel')}
             </Button>
             <Button type="submit" className="flex-1">
-              Enregistrer
+              {t('simpleActivityModal.buttons.save')}
             </Button>
           </div>
         </form>

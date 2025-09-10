@@ -93,10 +93,11 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
 
       if (!glucoseValue || isNaN(Number(glucoseValue))) {
         toast({
-          title: 'Erreur',
-          description: 'Veuillez entrer une valeur de glycémie valide',
+          title: t('actionsRapides.toast.error.title'),
+          description: t('actionsRapides.toast.error.description'),
           variant: 'destructive',
         });
+
         return;
       }
 
@@ -121,10 +122,10 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
         setIsGlucoseModalOpen(false);
         onGlycemieClick?.();
       } catch (error: any) {
-        console.error('Erreur ajout glycémie:', error);
+        console.error(t('actionsRapides.errorAddGlucose'), error);
         toast({
-          title: 'Erreur',
-          description: "Impossible d'enregistrer votre mesure",
+          title: t('actionsRapides.toastErrorTitle'),
+          description: t('actionsRapides.toastErrorDescription'),
           variant: 'destructive',
         });
       } finally {
@@ -137,8 +138,8 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
 
       if (!foodName) {
         toast({
-          title: 'Erreur',
-          description: "Veuillez entrer un nom d'aliment",
+          title: t('actionsRapides.toastErrorTitle'),
+          description: t('actionsRapides.toastFoodNameError'),
           variant: 'destructive',
         });
         return;
@@ -156,8 +157,10 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
         });
 
         toast({
-          title: 'Repas ajouté',
-          description: `${foodName} a été ajouté à votre journal`,
+          title: t('actionsRapides.toastMealAddedTitle'),
+          description: t('actionsRapides.toastMealAddedDescription', {
+            foodName,
+          }),
         });
 
         setFoodName('');
@@ -170,8 +173,8 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
       } catch (err) {
         console.error(err);
         toast({
-          title: 'Erreur',
-          description: "Impossible d'ajouter le repas",
+          title: t('actionsRapides.toastErrorTitle'),
+          description: t('actionsRapides.toastMealAddError'),
           variant: 'destructive',
         });
       } finally {
@@ -184,8 +187,8 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
 
       if (!medication || !dose) {
         toast({
-          title: 'Erreur',
-          description: 'Veuillez remplir tous les champs',
+          title: t('actionsRapides.toastErrorTitle'),
+          description: t('actionsRapides.toastFillAllFields'),
           variant: 'destructive',
         });
         return;
@@ -202,8 +205,11 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
         });
 
         toast({
-          title: 'Médicament enregistré',
-          description: `${medication} - ${dose} unités pris avec succès`,
+          title: t('actionsRapides.toastMedicationSavedTitle'),
+          description: t('actionsRapides.toastMedicationSavedDescription', {
+            medication,
+            dose,
+          }),
         });
 
         setMedication('');
@@ -213,8 +219,8 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
       } catch (err) {
         console.error(err);
         toast({
-          title: 'Erreur',
-          description: "Impossible d'ajouter le médicament",
+          title: t('actionsRapides.toastErrorTitle'),
+          description: t('actionsRapides.toastMedicationAddError'),
           variant: 'destructive',
         });
       } finally {
@@ -237,8 +243,8 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
 
       if (!activity || !duration) {
         toast({
-          title: 'Erreur',
-          description: 'Veuillez remplir tous les champs',
+          title: t('actionsRapides.toastErrorTitle'),
+          description: t('actionsRapides.toastFillAllFields'),
           variant: 'destructive',
         });
         return;
@@ -256,8 +262,11 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
         });
 
         toast({
-          title: 'Activité enregistrée',
-          description: `${activity} pendant ${duration} minutes`,
+          title: t('actionsRapides.toastActivitySavedTitle'),
+          description: t('actionsRapides.toastActivitySavedDescription', {
+            activity,
+            duration,
+          }),
         });
 
         setActivity('');
@@ -267,8 +276,8 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
       } catch (err) {
         console.error(err);
         toast({
-          title: 'Erreur',
-          description: "Impossible d'ajouter l'activité",
+          title: t('actionsRapides.toastErrorTitle'),
+          description: t('actionsRapides.toastActivityAddError'),
           variant: 'destructive',
         });
       } finally {
@@ -347,7 +356,7 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
                       disabled={glucoseLoading}
                     >
                       {glucoseLoading
-                        ? 'Enregistrement...'
+                        ? t('actionsRapides.loadingSave')
                         : t('Actions.button')}
                     </Button>
                   </form>
@@ -496,7 +505,9 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
                         className="w-full"
                         disabled={mealLoading}
                       >
-                        {mealLoading ? 'Ajout...' : t('Journal.button')}
+                        {mealLoading
+                          ? t('actionsRapides.loadingAdd')
+                          : t('Journal.button')}
                       </Button>
                     </form>
                   </div>
@@ -524,13 +535,15 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
             >
               <ModalOverlay />
               <ModalContent py={3}>
-                <ModalHeader>💊 {t('Medication.subtitle')}</ModalHeader>
+                <ModalHeader>
+                  💊 {t('actionsRapides.Medication.subtitle')}
+                </ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
                   <form onSubmit={handleMedicationSubmit} className="space-y-4">
                     <div>
                       <Label htmlFor="medication">
-                        {t('Medication.title2')}
+                        {t('actionsRapides.Medication.title2')}
                       </Label>
                       <Select value={medication} onValueChange={setMedication}>
                         <SelectTrigger className="mt-1">
@@ -540,129 +553,181 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
                         </SelectTrigger>
 
                         <SelectContent className="z-[9999] bg-white dark:bg-gray-900 shadow-lg rounded-lg">
-                          {/* Insulines ultra-rapides */}
+                          {/* Ultra-rapid insulins */}
                           <SelectItem value="insuline-ultra-rapide">
-                            {t('medication.select.option.one')}
+                            {t('actionsRapides.Medication.select.option.one')}
                           </SelectItem>
                           <SelectItem value="humalog">
-                            {t('Medication.select.option.two')}
+                            {t('actionsRapides.Medication.select.option.two')}
                           </SelectItem>
                           <SelectItem value="novorapid">
-                            {t('Medication.select.option.three')}
+                            {t('actionsRapides.Medication.select.option.three')}
                           </SelectItem>
                           <SelectItem value="apidra">
-                            {t('Medication.select.option.four')}
+                            {t('actionsRapides.Medication.select.option.four')}
                           </SelectItem>
                           <SelectItem value="fiasp">
-                            {t('Medication.select.option.five')}
+                            {t('actionsRapides.Medication.select.option.five')}
                           </SelectItem>
 
-                          {/* Rapid Insulins */}
+                          {/* Rapid insulins */}
                           <SelectItem value="insuline-rapide">
-                            {t('Medication.select.option.six')}
+                            {t('actionsRapides.Medication.select.option.six')}
                           </SelectItem>
                           <SelectItem value="actrapid">
-                            {t('Medication.select.option.seven')}
+                            {t('actionsRapides.Medication.select.option.seven')}
                           </SelectItem>
                           <SelectItem value="humulin-r">
-                            {t('Medication.select.option.eight')}
+                            {t('actionsRapides.Medication.select.option.eight')}
                           </SelectItem>
                           <SelectItem value="insuman-rapid">
-                            {t('Medication.select.option.nine')}
+                            {t('actionsRapides.Medication.select.option.nine')}
                           </SelectItem>
 
-                          {/* Intermediate Insulins */}
+                          {/* Intermediate insulins */}
                           <SelectItem value="insuline-intermediaire">
-                            {t('Medication.select.option.ten')}
+                            {t('actionsRapides.Medication.select.option.ten')}
                           </SelectItem>
                           <SelectItem value="insulatard">
-                            {t('Medication.select.option.eleven')}
+                            {t(
+                              'actionsRapides.Medication.select.option.eleven'
+                            )}
                           </SelectItem>
                           <SelectItem value="humulin-n">
-                            {t('Medication.select.option.twelve')}
+                            {t(
+                              'actionsRapides.Medication.select.option.twelve'
+                            )}
                           </SelectItem>
                           <SelectItem value="insuman-basal">
-                            {t('Medication.select.option.thirteen')}
+                            {t(
+                              'actionsRapides.Medication.select.option.thirteen'
+                            )}
                           </SelectItem>
 
-                          {/* Long-Acting Insulins */}
+                          {/* Long-acting insulins */}
                           <SelectItem value="insuline-lente">
-                            {t('Medication.select.option.fourteen')}
+                            {t(
+                              'actionsRapides.Medication.select.option.fourteen'
+                            )}
                           </SelectItem>
                           <SelectItem value="lantus">
-                            {t('Medication.select.option.fifteen')}
+                            {t(
+                              'actionsRapides.Medication.select.option.fifteen'
+                            )}
                           </SelectItem>
                           <SelectItem value="levemir">
-                            {t('Medication.select.option.sixteen')}
+                            {t(
+                              'actionsRapides.Medication.select.option.sixteen'
+                            )}
                           </SelectItem>
                           <SelectItem value="toujeo">
-                            {t('Medication.select.option.seventeen')}
+                            {t(
+                              'actionsRapides.Medication.select.option.seventeen'
+                            )}
                           </SelectItem>
                           <SelectItem value="tresiba">
-                            {t('Medication.select.option.eighteen')}
+                            {t(
+                              'actionsRapides.Medication.select.option.eighteen'
+                            )}
                           </SelectItem>
                           <SelectItem value="abasaglar">
-                            {t('Medication.select.option.nineteen')}
+                            {t(
+                              'actionsRapides.Medication.select.option.nineteen'
+                            )}
                           </SelectItem>
 
-                          {/* Mixed Insulins */}
+                          {/* Mixed insulins */}
                           <SelectItem value="insuline-mixte">
-                            {t('Medication.select.option.twenty')}
+                            {t(
+                              'actionsRapides.Medication.select.option.twenty'
+                            )}
                           </SelectItem>
                           <SelectItem value="novomix">
-                            {t('Medication.select.option.twentyone')}
+                            {t(
+                              'actionsRapides.Medication.select.option.twentyone'
+                            )}
                           </SelectItem>
                           <SelectItem value="humalog-mix">
-                            {t('Medication.select.option.twentytwo')}
+                            {t(
+                              'actionsRapides.Medication.select.option.twentytwo'
+                            )}
                           </SelectItem>
                           <SelectItem value="humulin-mix">
-                            {t('Medication.select.option.twentythree')}
+                            {t(
+                              'actionsRapides.Medication.select.option.twentythree'
+                            )}
                           </SelectItem>
                           <SelectItem value="insuman-comb">
-                            {t('Medication.select.option.twentyfour')}
+                            {t(
+                              'actionsRapides.Medication.select.option.twentyfour'
+                            )}
                           </SelectItem>
 
-                          {/* Other Antidiabetics */}
+                          {/* Other antidiabetics */}
                           <SelectItem value="metformine">
-                            {t('Medication.select.option.twentyfive')}
+                            {t(
+                              'actionsRapides.Medication.select.option.twentyfive'
+                            )}
                           </SelectItem>
                           <SelectItem value="glucophage">
-                            {t('Medication.select.option.twentysix')}
+                            {t(
+                              'actionsRapides.Medication.select.option.twentysix'
+                            )}
                           </SelectItem>
                           <SelectItem value="stagid">
-                            {t('Medication.select.option.twentyseven')}
+                            {t(
+                              'actionsRapides.Medication.select.option.twentyseven'
+                            )}
                           </SelectItem>
                           <SelectItem value="gliclazide">
-                            {t('Medication.select.option.twentyeight')}
+                            {t(
+                              'actionsRapides.Medication.select.option.twentyeight'
+                            )}
                           </SelectItem>
                           <SelectItem value="diamicron">
-                            {t('Medication.select.option.twentynine')}
+                            {t(
+                              'actionsRapides.Medication.select.option.twentynine'
+                            )}
                           </SelectItem>
                           <SelectItem value="victoza">
-                            {t('Medication.select.option.thirty')}
+                            {t(
+                              'actionsRapides.Medication.select.option.thirty'
+                            )}
                           </SelectItem>
                           <SelectItem value="ozempic">
-                            {t('Medication.select.option.thirtyone')}
+                            {t(
+                              'actionsRapides.Medication.select.option.thirtyone'
+                            )}
                           </SelectItem>
                           <SelectItem value="trulicity">
-                            {t('Medication.select.option.thirtytwo')}
+                            {t(
+                              'actionsRapides.Medication.select.option.thirtytwo'
+                            )}
                           </SelectItem>
                           <SelectItem value="januvia">
-                            {t('Medication.select.option.thirtythree')}
+                            {t(
+                              'actionsRapides.Medication.select.option.thirtythree'
+                            )}
                           </SelectItem>
                           <SelectItem value="forxiga">
-                            {t('Medication.select.option.thirtyfour')}
+                            {t(
+                              'actionsRapides.Medication.select.option.thirtyfour'
+                            )}
                           </SelectItem>
 
                           <SelectItem value="autre">
-                            {t('Medication.select.option.thirtyfive')}
+                            {t(
+                              'actionsRapides.Medication.select.option.thirtyfive'
+                            )}
                           </SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
+
                     <div>
                       <Label htmlFor="dose">
-                        {t('Medication.dose')} {t('Medication.unit')}
+                        {t('actionsRapides.Medication.dose')}{' '}
+                        {t('Medication.unit')}
                       </Label>
                       <Input
                         id="dose"
@@ -673,14 +738,15 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
                         className="mt-1"
                       />
                     </div>
+
                     <Button
                       type="submit"
                       className="w-full"
                       disabled={medicationLoading}
                     >
                       {medicationLoading
-                        ? 'Enregistrement...'
-                        : t('Medication.button')}
+                        ? t('actionsRapides.loadingSave')
+                        : t('actionsRapides.Medication.button')}
                     </Button>
                   </form>
                 </ModalBody>
@@ -770,7 +836,7 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
                       disabled={activityLoading}
                     >
                       {activityLoading
-                        ? 'Enregistrement...'
+                        ? t('actionsRapides.loadingSave')
                         : t('Activity.button')}
                     </Button>
                   </form>
@@ -801,11 +867,15 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
             setFoodName(food.name);
             setCarbs(food.carbs.toString());
             toast({
-              title: 'Produit ajouté',
-              description: `${food.name} - ${food.carbs}g de glucides`,
+              title: t('actionsRapides.Food.barcode.title'),
+              description: t('actionsRapides.Food.barcode.description', {
+                food: food.name,
+                carbs: food.carbs,
+              }),
             });
           }}
         />
+
         <PhotoAnalysisModal
           isOpen={isPhotoModalOpen}
           onClose={() => setIsPhotoModalOpen(false)}
@@ -813,8 +883,11 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = React.memo(
             setFoodName(food.name);
             setCarbs(food.carbs.toString());
             toast({
-              title: 'Analyse terminée',
-              description: `${food.name} - ${food.carbs}g de glucides estimés`,
+              title: t('actionsRapides.Food.photo.title'),
+              description: t('actionsRapides.Food.photo.description', {
+                food: food.name,
+                carbs: food.carbs,
+              }),
             });
           }}
         />

@@ -5,8 +5,12 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useAdminNotifications } from '@/hooks/useAdminNotifications';
-import { ApplicationCard, ApplicationDetails } from '@/components/ApplicationCard';
+import {
+  ApplicationCard,
+  ApplicationDetails,
+} from '@/components/ApplicationCard';
 import { AlertCircle, RefreshCw } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface Application {
   id: string;
@@ -25,15 +29,21 @@ interface Application {
 }
 
 export const AdminApplicationReview: React.FC = () => {
+  const { t } = useTranslation();
   const { toast } = useToast();
   const { showAdminNotification } = useAdminNotifications(true);
-  
-  const [pendingApplications, setPendingApplications] = useState<Application[]>([]);
-  const [selectedApplication, setSelectedApplication] = useState<Application | null>(null);
+
+  const [pendingApplications, setPendingApplications] = useState<Application[]>(
+    []
+  );
+  const [selectedApplication, setSelectedApplication] =
+    useState<Application | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isProcessing, setIsProcessing] = useState(false);
   const [rejectionReason, setRejectionReason] = useState('');
-  const [showRejectionForm, setShowRejectionForm] = useState<string | null>(null);
+  const [showRejectionForm, setShowRejectionForm] = useState<string | null>(
+    null
+  );
 
   useEffect(() => {
     loadPendingApplications();
@@ -48,21 +58,21 @@ export const AdminApplicationReview: React.FC = () => {
         .select('*')
         .eq('status', 'pending')
         .order('created_at', { ascending: false });
-      
+
       if (error) throw error;
-      
+
       // Transform the data to ensure documents is an array
       const transformedData = (data || []).map(app => ({
         ...app,
-        documents: Array.isArray(app.documents) ? app.documents : []
+        documents: Array.isArray(app.documents) ? app.documents : [],
       })) as Application[];
-      
+
       setPendingApplications(transformedData);
     } catch (error: any) {
       toast({
-        title: "Erreur",
-        description: "Impossible de charger les candidatures",
-        variant: "destructive"
+        title: t('adminDashboardScreen.errorTitle'),
+        description: 'Impossible de charger les candidatures',
+        variant: 'destructive',
       });
     } finally {
       setIsLoading(false);
@@ -78,9 +88,9 @@ export const AdminApplicationReview: React.FC = () => {
           event: '*',
           schema: 'public',
           table: 'professional_applications',
-          filter: 'status=eq.pending'
+          filter: 'status=eq.pending',
         },
-        (payload) => {
+        payload => {
           console.log('Realtime update:', payload);
           loadPendingApplications(); // Refresh the list
         }
@@ -92,7 +102,11 @@ export const AdminApplicationReview: React.FC = () => {
     };
   };
 
-  const sendNotificationEmail = async (type: string, applicationData: any, additionalData?: any) => {
+  const sendNotificationEmail = async (
+    type: string,
+    applicationData: any,
+    additionalData?: any
+  ) => {
     try {
       await supabase.functions.invoke('send-professional-emails', {
         body: {
@@ -104,10 +118,10 @@ export const AdminApplicationReview: React.FC = () => {
             professionalType: applicationData.professional_type,
             country: applicationData.country,
             email: applicationData.email,
-            institution: applicationData.institution
+            institution: applicationData.institution,
           },
-          ...additionalData
-        }
+          ...additionalData,
+        },
       });
     } catch (error) {
       console.error('Error sending email:', error);
@@ -118,10 +132,13 @@ export const AdminApplicationReview: React.FC = () => {
     setIsProcessing(true);
     try {
       // Use the database function to approve and generate code
-      const { data, error } = await supabase.rpc('approve_professional_application', {
-        application_id: application.id,
-        reviewer_id: (await supabase.auth.getUser()).data.user?.id
-      });
+      const { data, error } = await supabase.rpc(
+        'approve_professional_application',
+        {
+          application_id: application.id,
+          reviewer_id: (await supabase.auth.getUser()).data.user?.id,
+        }
+      );
 
       if (error) throw error;
 
@@ -136,27 +153,35 @@ export const AdminApplicationReview: React.FC = () => {
 
       // Send approval email with the professional code
       await sendNotificationEmail('approval', updatedApp, {
-        professionalCode: updatedApp.professional_code
+        professionalCode: updatedApp.professional_code,
       });
 
       // Remove from pending list
-      setPendingApplications(prev => prev.filter(app => app.id !== application.id));
-      
+      setPendingApplications(prev =>
+        prev.filter(app => app.id !== application.id)
+      );
+
       // Clear selection if it was the approved application
       if (selectedApplication?.id === application.id) {
         setSelectedApplication(null);
       }
 
       toast({
-        title: "Candidature approuvée !",
-        description: `${application.first_name} ${application.last_name} a été approuvé(e)`,
+        title: t('adminApplicationReview.applicationApprovedTitle'),
+        description: t(
+          'adminApplicationReview.applicationApprovedDescription',
+          {
+            firstName: application.first_name,
+            lastName: application.last_name,
+          }
+        ),
       });
-
     } catch (error: any) {
       toast({
-        title: "Erreur",
-        description: error.message || "Impossible d'approuver la candidature",
-        variant: "destructive"
+        title: t('adminApplicationReview.errorTitle'),
+        description:
+          error.message || t('adminApplicationReview.applicationApproveError'),
+        variant: 'destructive',
       });
     } finally {
       setIsProcessing(false);
@@ -166,9 +191,9 @@ export const AdminApplicationReview: React.FC = () => {
   const rejectApplication = async (application: Application) => {
     if (!rejectionReason.trim()) {
       toast({
-        title: "Motif requis",
-        description: "Veuillez indiquer le motif du rejet",
-        variant: "destructive"
+        title: t('adminApplicationReview.reasonRequiredTitle'),
+        description: t('adminApplicationReview.reasonRequiredDescription'),
+        variant: 'destructive',
       });
       return;
     }
@@ -181,7 +206,7 @@ export const AdminApplicationReview: React.FC = () => {
           status: 'rejected',
           reviewed_by: (await supabase.auth.getUser()).data.user?.id,
           reviewed_at: new Date().toISOString(),
-          rejection_reason: rejectionReason
+          rejection_reason: rejectionReason,
         })
         .eq('id', application.id);
 
@@ -189,12 +214,14 @@ export const AdminApplicationReview: React.FC = () => {
 
       // Send rejection email
       await sendNotificationEmail('rejection', application, {
-        rejectionReason
+        rejectionReason,
       });
 
       // Remove from pending list
-      setPendingApplications(prev => prev.filter(app => app.id !== application.id));
-      
+      setPendingApplications(prev =>
+        prev.filter(app => app.id !== application.id)
+      );
+
       // Clear selection if it was the rejected application
       if (selectedApplication?.id === application.id) {
         setSelectedApplication(null);
@@ -205,15 +232,21 @@ export const AdminApplicationReview: React.FC = () => {
       setShowRejectionForm(null);
 
       toast({
-        title: "Candidature rejetée",
-        description: `${application.first_name} ${application.last_name} a été rejeté(e)`,
+        title: t('adminApplicationReview.applicationRejectedTitle'),
+        description: t(
+          'adminApplicationReview.applicationRejectedDescription',
+          {
+            firstName: application.first_name,
+            lastName: application.last_name,
+          }
+        ),
       });
-
     } catch (error: any) {
       toast({
-        title: "Erreur",
-        description: error.message || "Impossible de rejeter la candidature",
-        variant: "destructive"
+        title: t('adminApplicationReview.errorTitle'),
+        description:
+          error.message || t('adminApplicationReview.applicationRejectError'),
+        variant: 'destructive',
       });
     } finally {
       setIsProcessing(false);
@@ -230,7 +263,9 @@ export const AdminApplicationReview: React.FC = () => {
       <div className="min-h-screen bg-gray-100 flex items-center justify-center">
         <div className="text-center">
           <RefreshCw className="h-12 w-12 animate-spin mx-auto mb-4 text-indigo-600" />
-          <p className="text-gray-600">Chargement des candidatures...</p>
+          <p className="text-gray-600">
+            {t('adminApplicationReview.loadingApplications')}
+          </p>
         </div>
       </div>
     );
@@ -242,19 +277,23 @@ export const AdminApplicationReview: React.FC = () => {
       <div className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white p-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold">🔧 DARE Admin - Candidatures</h1>
+            <h1 className="text-3xl font-bold">
+              {t('adminApplicationReview.adminApplicationsTitle')}
+            </h1>
             <p className="text-indigo-200 mt-1">
-              {pendingApplications.length} candidature(s) en attente d'examen
+              {t('adminApplicationReview.pendingApplications', {
+                count: pendingApplications.length,
+              })}
             </p>
           </div>
-          
+
           <Button
             onClick={loadPendingApplications}
             variant="outline"
             className="bg-white/10 border-white/20 text-white hover:bg-white/20"
           >
             <RefreshCw className="h-4 w-4 mr-2" />
-            Actualiser
+            {t('adminApplicationReview.refresh')}
           </Button>
         </div>
       </div>
@@ -264,11 +303,10 @@ export const AdminApplicationReview: React.FC = () => {
           <Card className="p-12 text-center">
             <AlertCircle className="h-16 w-16 mx-auto mb-4 text-gray-300" />
             <h2 className="text-2xl font-bold text-gray-700 mb-2">
-              Aucune candidature en attente
+              {t('adminApplicationReview.noPending.title')}
             </h2>
             <p className="text-gray-500">
-              Toutes les candidatures ont été traitées. 
-              Les nouvelles candidatures apparaîtront ici automatiquement.
+              {t('adminApplicationReview.noPending.description')}
             </p>
             <Button
               onClick={loadPendingApplications}
@@ -276,7 +314,7 @@ export const AdminApplicationReview: React.FC = () => {
               className="mt-4"
             >
               <RefreshCw className="h-4 w-4 mr-2" />
-              Vérifier les nouvelles candidatures
+              {t('adminApplicationReview.refreshCheck')}
             </Button>
           </Card>
         </div>
@@ -292,19 +330,21 @@ export const AdminApplicationReview: React.FC = () => {
                   onApprove={approveApplication}
                   onReject={handleRejectClick}
                 />
-                
+
                 {/* Formulaire de rejet */}
                 {showRejectionForm === application.id && (
                   <Card className="mt-2 p-4 border-red-200 bg-red-50">
                     <div className="space-y-3">
                       <h4 className="font-medium text-red-800 flex items-center gap-2">
                         <AlertCircle className="h-4 w-4" />
-                        Motif du rejet
+                        {t('adminApplicationReview.rejectionReason.title')}
                       </h4>
                       <Textarea
-                        placeholder="Expliquez pourquoi cette candidature est rejetée..."
+                        placeholder={t(
+                          'adminApplicationReview.rejectionReason.placeholder'
+                        )}
                         value={rejectionReason}
-                        onChange={(e) => setRejectionReason(e.target.value)}
+                        onChange={e => setRejectionReason(e.target.value)}
                         className="min-h-20 border-red-200 focus:border-red-400"
                       />
                       <div className="flex gap-2 justify-end">
@@ -324,7 +364,7 @@ export const AdminApplicationReview: React.FC = () => {
                           onClick={() => rejectApplication(application)}
                           disabled={isProcessing || !rejectionReason.trim()}
                         >
-                          Confirmer le rejet
+                          {t('adminApplicationReview.actions.confirmReject')}
                         </Button>
                       </div>
                     </div>
@@ -333,7 +373,7 @@ export const AdminApplicationReview: React.FC = () => {
               </div>
             ))}
           </div>
-          
+
           {/* Détails candidature sélectionnée */}
           <div className="lg:col-span-1">
             {selectedApplication ? (
@@ -341,9 +381,13 @@ export const AdminApplicationReview: React.FC = () => {
             ) : (
               <Card className="p-8 text-center">
                 <AlertCircle className="h-12 w-12 mx-auto mb-3 text-gray-300" />
-                <h3 className="font-medium text-gray-700 mb-1">Aucune sélection</h3>
+                <h3 className="font-medium text-gray-700 mb-1">
+                  {t('adminApplicationReview.applications.noSelectionTitle')}
+                </h3>
                 <p className="text-sm text-gray-500">
-                  Cliquez sur "Examiner" pour voir les détails d'une candidature
+                  {t(
+                    'adminApplicationReview.applications.noSelectionDescription'
+                  )}
                 </p>
               </Card>
             )}

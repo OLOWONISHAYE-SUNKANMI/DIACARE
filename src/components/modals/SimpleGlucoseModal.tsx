@@ -1,10 +1,11 @@
-import { useState } from "react";
-import { X } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useToast } from "@/hooks/use-toast";
-import { useGlucose } from "@/contexts/GlucoseContext";
+import { useState } from 'react';
+import { X } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { useToast } from '@/hooks/use-toast';
+import { useGlucose } from '@/contexts/GlucoseContext';
+import { useTranslation } from 'react-i18next';
 
 interface SimpleGlucoseModalProps {
   isOpen: boolean;
@@ -12,8 +13,9 @@ interface SimpleGlucoseModalProps {
 }
 
 const SimpleGlucoseModal = ({ isOpen, onClose }: SimpleGlucoseModalProps) => {
-  const [glucose, setGlucose] = useState("");
-  const [notes, setNotes] = useState("");
+  const { t } = useTranslation();
+  const [glucose, setGlucose] = useState('');
+  const [notes, setNotes] = useState('');
   const { toast } = useToast();
   const { addReading } = useGlucose();
 
@@ -21,12 +23,12 @@ const SimpleGlucoseModal = ({ isOpen, onClose }: SimpleGlucoseModalProps) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!glucose || isNaN(Number(glucose))) {
       toast({
-        title: "Erreur",
-        description: "Veuillez entrer une valeur de glycémie valide",
-        variant: "destructive",
+        title: t('simpleGlucoseModal.toast.errorTitle'),
+        description: t('simpleGlucoseModal.toast.invalidGlucose'),
+        variant: 'destructive',
       });
       return;
     }
@@ -34,37 +36,34 @@ const SimpleGlucoseModal = ({ isOpen, onClose }: SimpleGlucoseModalProps) => {
     addReading({
       value: Number(glucose),
       timestamp: new Date().toISOString(),
-      context: "manual",
-      notes: notes || undefined
+      context: 'manual',
+      notes: notes || undefined,
     });
 
     toast({
-      title: "Mesure ajoutée",
-      description: "Votre glycémie a été enregistrée avec succès",
+      title: t('simpleGlucoseModal.toast.glucoseAddedTitle'),
+      description: t('toast.glucoseAdded'),
     });
 
-    setGlucose("");
-    setNotes("");
+    setGlucose('');
+    setNotes('');
     onClose();
   };
 
   return (
     <div className="h-min-screen  fixed inset-0 z-50">
       {/* Overlay */}
-      <div 
-        className="absolute inset-0 bg-black/50"
-        onClick={onClose}
-      />
-      
+      <div className="absolute inset-0 bg-black/50" onClick={onClose} />
+
       {/* Modal - Simple top positioning */}
-      <div 
+      <div
         className="absolute top-20 left-1/2 transform -translate-x-1/2 bg-white rounded-xl p-6 shadow-2xl w-full max-w-md"
         style={{ top: '120px' }}
       >
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl font-semibold text-gray-900">
-            📊 Nouvelle Mesure Glycémique
+            {t('simpleGlucoseModal.glucose.header')}
           </h2>
           <button
             onClick={onClose}
@@ -77,12 +76,14 @@ const SimpleGlucoseModal = ({ isOpen, onClose }: SimpleGlucoseModalProps) => {
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <Label htmlFor="glucose">Glycémie (mg/dL)</Label>
+            <Label htmlFor="glucose">
+              {t('simpleGlucoseModal.glucose.label')}
+            </Label>
             <Input
               id="glucose"
               type="number"
               value={glucose}
-              onChange={(e) => setGlucose(e.target.value)}
+              onChange={e => setGlucose(e.target.value)}
               placeholder="Ex: 120"
               className="mt-1"
               autoFocus
@@ -90,12 +91,12 @@ const SimpleGlucoseModal = ({ isOpen, onClose }: SimpleGlucoseModalProps) => {
           </div>
 
           <div>
-            <Label htmlFor="notes">Notes (optionnel)</Label>
+            <Label htmlFor="notes">{t('glucose.notesPlaceholder')}</Label>
             <Input
               id="notes"
               value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-              placeholder="Commentaires..."
+              onChange={e => setNotes(e.target.value)}
+              placeholder={t('simpleGlucoseModal.glucose.notesPlaceholder')}
               className="mt-1"
             />
           </div>
@@ -107,10 +108,10 @@ const SimpleGlucoseModal = ({ isOpen, onClose }: SimpleGlucoseModalProps) => {
               onClick={onClose}
               className="flex-1"
             >
-              Annuler
+              {t('simpleGlucoseModal.buttons.cancel')}
             </Button>
             <Button type="submit" className="flex-1">
-              Enregistrer
+              {t('simpleGlucoseModal.buttons.save')}
             </Button>
           </div>
         </form>
