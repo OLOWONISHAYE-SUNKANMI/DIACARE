@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Send } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface ChatMessage {
   id: string;
@@ -30,7 +31,12 @@ interface ChatInterfaceProps {
   patientData: PatientData;
 }
 
-const ChatInterface = ({ messages, onSendMessage, patientData }: ChatInterfaceProps) => {
+const ChatInterface = ({
+  messages,
+  onSendMessage,
+  patientData,
+}: ChatInterfaceProps) => {
+  const { t } = useTranslation();
   const [newMessage, setNewMessage] = useState('');
 
   const handleSendMessage = () => {
@@ -57,31 +63,45 @@ const ChatInterface = ({ messages, onSendMessage, patientData }: ChatInterfacePr
               <span className="text-2xl">💬</span>
             </div>
             <h3 className="text-lg font-semibold mb-2">
-              Consultation avec {patientData.firstName}
+              {t('chatInterface.Consultation.title', {
+                name: patientData.firstName,
+              })}
             </h3>
             <p className="text-muted-foreground mb-4">
-              Commencez la conversation avec votre patient
+              {t('chatInterface.Consultation.startConversation')}
             </p>
             <div className="bg-card p-4 rounded-lg border">
-              <p className="text-sm text-muted-foreground mb-2">Suggestions de démarrage:</p>
+              <p className="text-sm text-muted-foreground mb-2">
+                {t('chatInterface.Consultation.suggestions')}
+              </p>
               <div className="space-y-1 text-sm">
-                <button 
-                  onClick={() => onSendMessage("Bonjour, comment vous sentez-vous aujourd'hui ?")}
+                <button
+                  onClick={() =>
+                    onSendMessage(t('chatInterface.Consultation.messages.feel'))
+                  }
                   className="block w-full text-left hover:bg-muted p-2 rounded"
                 >
-                  "Bonjour, comment vous sentez-vous aujourd'hui ?"
+                  {t('chatInterface.Consultation.messages.feel')}
                 </button>
-                <button 
-                  onClick={() => onSendMessage("Avez-vous des préoccupations particulières ?")}
+                <button
+                  onClick={() =>
+                    onSendMessage(
+                      t('chatInterface.Consultation.messages.concerns')
+                    )
+                  }
                   className="block w-full text-left hover:bg-muted p-2 rounded"
                 >
-                  "Avez-vous des préoccupations particulières ?"
+                  {t('chatInterface.Consultation.messages.concerns')}
                 </button>
-                <button 
-                  onClick={() => onSendMessage("Comment se passent vos glycémies récemment ?")}
+                <button
+                  onClick={() =>
+                    onSendMessage(
+                      t('chatInterface.Consultation.messages.glycemia')
+                    )
+                  }
                   className="block w-full text-left hover:bg-muted p-2 rounded"
                 >
-                  "Comment se passent vos glycémies récemment ?"
+                  {t('chatInterface.Consultation.messages.glycemia')}
                 </button>
               </div>
             </div>
@@ -92,7 +112,7 @@ const ChatInterface = ({ messages, onSendMessage, patientData }: ChatInterfacePr
       {/* Zone des messages */}
       {messages.length > 0 && (
         <div className="flex-1 overflow-y-auto space-y-4 mb-4">
-          {messages.map((message) => (
+          {messages.map(message => (
             <div
               key={message.id}
               className={`flex ${message.sender === 'doctor' ? 'justify-end' : 'justify-start'}`}
@@ -117,11 +137,12 @@ const ChatInterface = ({ messages, onSendMessage, patientData }: ChatInterfacePr
         <div className="flex gap-2">
           <Textarea
             value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
+            onChange={e => setNewMessage(e.target.value)}
             onKeyPress={handleKeyPress}
-            placeholder="Tapez votre message..."
+            placeholder={t('chatInterface.Chat.inputPlaceholder')}
             className="flex-1 min-h-[60px]"
           />
+
           <div className="flex flex-col gap-2">
             <Button
               onClick={handleSendMessage}

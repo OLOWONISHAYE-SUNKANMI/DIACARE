@@ -1,13 +1,19 @@
-import { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Slider } from "@/components/ui/slider";
-import { Separator } from "@/components/ui/separator";
-import { Card, CardContent } from "@/components/ui/card";
-import { Camera, Search, Plus, Utensils, Clock, Scan } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useState } from 'react';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Slider } from '@/components/ui/slider';
+import { Separator } from '@/components/ui/separator';
+import { Card, CardContent } from '@/components/ui/card';
+import { Camera, Search, Plus, Utensils, Clock, Scan } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+import { useTranslation } from 'react-i18next';
 
 interface MealModalProps {
   isOpen: boolean;
@@ -15,34 +21,37 @@ interface MealModalProps {
 }
 
 const MealModal: React.FC<MealModalProps> = ({ isOpen, onClose }) => {
+  const { t } = useTranslation();
   const { toast } = useToast();
   const [activeOption, setActiveOption] = useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedFood, setSelectedFood] = useState<string>("");
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedFood, setSelectedFood] = useState<string>('');
   const [portion, setPortion] = useState([100]);
-  const [mealTime, setMealTime] = useState("lunch");
+  const [mealTime, setMealTime] = useState('lunch');
 
   const estimatedCarbs = Math.round((portion[0] / 100) * 15); // Estimation de base
 
   const handleScanBarcode = () => {
-    setActiveOption("barcode");
+    setActiveOption('barcode');
     // Simulation du scanner
     setTimeout(() => {
-      setSelectedFood("Biscuits Lu Petit Écolier");
+      setSelectedFood('Biscuits Lu Petit Écolier');
       setPortion([50]);
       toast({
-        title: "✅ Produit scanné",
-        description: "Biscuits Lu Petit Écolier détectés",
+        title: t('scanMealModal.toast.productScanned'),
+        description: t('scanMealModal.toast.productDetected', {
+          productName: 'Biscuits Lu Petit Écolier',
+        }),
       });
     }, 2000);
   };
 
   const handleSearchFood = () => {
-    setActiveOption("search");
+    setActiveOption('search');
   };
 
   const handleAddCustom = () => {
-    setActiveOption("custom");
+    setActiveOption('custom');
   };
 
   const handleSave = () => {
@@ -52,42 +61,49 @@ const MealModal: React.FC<MealModalProps> = ({ isOpen, onClose }) => {
       portion: portion[0],
       carbs: estimatedCarbs,
       time: mealTime,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     };
 
-    console.log("Saving meal:", mealData);
-    
+    console.log('Saving meal:', mealData);
+
     toast({
-      title: "🍽️ Repas enregistré",
-      description: `${mealData.food} (${mealData.carbs}g glucides) ajouté au carnet`,
+      title: t('scanMealModal.toast.mealSaved'),
+      description: t('scanMealModal.toast.mealSavedDescription', {
+        food: mealData.food,
+        carbs: mealData.carbs,
+      }),
     });
-    
+
     onClose();
     resetForm();
   };
 
   const resetForm = () => {
     setActiveOption(null);
-    setSearchQuery("");
-    setSelectedFood("");
+    setSearchQuery('');
+    setSelectedFood('');
     setPortion([100]);
-    setMealTime("lunch");
+    setMealTime('lunch');
   };
 
   const popularFoods = [
-    { name: "Riz blanc cuit", carbs: 28, icon: "🍚" },
-    { name: "Pain de mie", carbs: 49, icon: "🍞" },
-    { name: "Pâtes cuites", carbs: 25, icon: "🍝" },
-    { name: "Pomme", carbs: 14, icon: "🍎" },
-    { name: "Banane", carbs: 23, icon: "🍌" },
-    { name: "Yaourt nature", carbs: 5, icon: "🥛" }
+    { name: t('scanMealModal.foods.rice'), carbs: 28, icon: '🍚' },
+    { name: t('scanMealModal.foods.bread'), carbs: 49, icon: '🍞' },
+    { name: t('scanMealModal.foods.pasta'), carbs: 25, icon: '🍝' },
+    { name: t('scanMealModal.foods.apple'), carbs: 14, icon: '🍎' },
+    { name: t('scanMealModal.foods.banana'), carbs: 23, icon: '🍌' },
+    { name: t('scanMealModal.foods.plainYogurt'), carbs: 5, icon: '🥛' },
   ];
 
   const mealTimes = [
-    { id: "breakfast", label: "Petit-déjeuner", icon: "🌅" },
-    { id: "lunch", label: "Déjeuner", icon: "☀️" },
-    { id: "snack", label: "Collation", icon: "🥨" },
-    { id: "dinner", label: "Dîner", icon: "🌙" }
+    {
+      id: 'breakfast',
+      label: t('scanMealModal.mealTimes.breakfast'),
+      icon: '🌅',
+    },
+    { id: 'lunch', label: t('scanMealModal.mealTimes.lunch'), icon: '☀️' },
+    { id: 'snack', label: t('scanMealModal.mealTimes.snack'), icon: '🥨' },
+    { id: 'dinner', label: t('scanMealModal.mealTimes.dinner'), icon: '🌙' },
   ];
 
   if (activeOption === null) {
@@ -97,55 +113,84 @@ const MealModal: React.FC<MealModalProps> = ({ isOpen, onClose }) => {
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2 text-xl">
               <Utensils className="w-6 h-6 text-medical-green" />
-              🍽️ Repas de la Journée
+              {t('scanMealModal.dailyMealDialog.title')}
             </DialogTitle>
-            <p className="text-muted-foreground">Suivez vos glucides facilement</p>
+            <p className="text-muted-foreground">
+              {t('scanMealModal.dailyMealDialog.description')}
+            </p>
           </DialogHeader>
-          
+
           <div className="space-y-4 pt-4">
             {/* Scanner Code-Barres */}
-            <Card className="bg-gradient-to-r from-blue-500 to-blue-600 text-white border-0 cursor-pointer transform transition-transform active:scale-95" onClick={handleScanBarcode}>
+            <Card
+              className="bg-gradient-to-r from-blue-500 to-blue-600 text-white border-0 cursor-pointer transform transition-transform active:scale-95"
+              onClick={handleScanBarcode}
+            >
               <CardContent className="p-6">
                 <div className="flex items-center gap-4">
                   <div className="w-16 h-16 bg-white bg-opacity-20 rounded-xl flex items-center justify-center">
                     <Scan className="w-8 h-8 text-white" />
                   </div>
                   <div className="text-left flex-1">
-                    <h3 className="text-lg font-bold">📱 Scanner Code-Barres</h3>
-                    <p className="text-blue-100 text-sm">Produits industriels et emballés</p>
-                    <p className="text-xs text-blue-200 mt-1">• Infos nutritionnelles exactes</p>
+                    <h3 className="text-lg font-bold">
+                      📱 Scanner Code-Barres
+                    </h3>
+                    <p className="text-blue-100 text-sm">
+                      {t('scanMealModal.foodInfo.industrialProducts')}
+                    </p>
+                    <p className="text-xs text-blue-200 mt-1">
+                      {t('scanMealModal.foodInfo.exactNutrition')}
+                    </p>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
             {/* Rechercher un Aliment */}
-            <Card className="bg-gradient-to-r from-medical-green to-emerald-600 text-white border-0 cursor-pointer transform transition-transform active:scale-95" onClick={handleSearchFood}>
+            <Card
+              className="bg-gradient-to-r from-medical-green to-emerald-600 text-white border-0 cursor-pointer transform transition-transform active:scale-95"
+              onClick={handleSearchFood}
+            >
               <CardContent className="p-6">
                 <div className="flex items-center gap-4">
                   <div className="w-16 h-16 bg-white bg-opacity-20 rounded-xl flex items-center justify-center">
                     <Search className="w-8 h-8 text-white" />
                   </div>
                   <div className="text-left flex-1">
-                    <h3 className="text-lg font-bold">🔍 Rechercher un Aliment</h3>
-                    <p className="text-green-100 text-sm">Base de données complète</p>
-                    <p className="text-xs text-green-200 mt-1">• Aliments frais et cuisinés</p>
+                    <h3 className="text-lg font-bold">
+                      {t('scanMealModal.searchFood.title')}
+                    </h3>
+                    <p className="text-green-100 text-sm">
+                      {t('scanMealModal.searchFood.subtitle')}
+                    </p>
+                    <p className="text-xs text-green-200 mt-1">
+                      {t('scanMealModal.searchFood.note')}
+                    </p>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
             {/* Ajouter Manuellement */}
-            <Card className="bg-gradient-to-r from-orange-500 to-orange-600 text-white border-0 cursor-pointer transform transition-transform active:scale-95" onClick={handleAddCustom}>
+            <Card
+              className="bg-gradient-to-r from-orange-500 to-orange-600 text-white border-0 cursor-pointer transform transition-transform active:scale-95"
+              onClick={handleAddCustom}
+            >
               <CardContent className="p-6">
                 <div className="flex items-center gap-4">
                   <div className="w-16 h-16 bg-white bg-opacity-20 rounded-xl flex items-center justify-center">
                     <Plus className="w-8 h-8 text-white" />
                   </div>
                   <div className="text-left flex-1">
-                    <h3 className="text-lg font-bold">✏️ Ajouter Manuellement</h3>
-                    <p className="text-orange-100 text-sm">Créez votre propre entrée</p>
-                    <p className="text-xs text-orange-200 mt-1">• Recettes personnalisées</p>
+                    <h3 className="text-lg font-bold">
+                      {t('scanMealModal.manualAdd.title')}
+                    </h3>
+                    <p className="text-orange-100 text-sm">
+                      {t('scanMealModal.manualAdd.subtitle')}
+                    </p>
+                    <p className="text-xs text-orange-200 mt-1">
+                      {t('scanMealModal.manualAdd.note')}
+                    </p>
                   </div>
                 </div>
               </CardContent>
@@ -161,25 +206,34 @@ const MealModal: React.FC<MealModalProps> = ({ isOpen, onClose }) => {
       <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Button variant="ghost" size="sm" onClick={() => setActiveOption(null)}>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setActiveOption(null)}
+            >
               ←
             </Button>
             <Utensils className="w-5 h-5 text-medical-green" />
-            {activeOption === "barcode" && "Scanner Code-Barres"}
-            {activeOption === "search" && "Rechercher un Aliment"} 
-            {activeOption === "custom" && "Ajouter Manuellement"}
+            {activeOption === 'barcode' &&
+              t('scanMealModal.activeOptions.barcode')}
+            {activeOption === 'search' &&
+              t('scanMealModal.activeOptions.search')}
+            {activeOption === 'custom' &&
+              t('scanMealModal.activeOptions.custom')}
           </DialogTitle>
         </DialogHeader>
 
         <div className="space-y-6">
           {/* Moment du repas */}
           <div className="space-y-3">
-            <Label className="text-sm font-medium">⏰ Moment du repas</Label>
+            <Label className="text-sm font-medium">
+              {t('scanMealModal.meal.mealTimeLabel')}
+            </Label>
             <div className="grid grid-cols-2 gap-2">
-              {mealTimes.map((time) => (
+              {mealTimes.map(time => (
                 <Button
                   key={time.id}
-                  variant={mealTime === time.id ? "default" : "outline"}
+                  variant={mealTime === time.id ? 'default' : 'outline'}
                   size="sm"
                   onClick={() => setMealTime(time.id)}
                   className="h-12 text-xs"
@@ -196,7 +250,7 @@ const MealModal: React.FC<MealModalProps> = ({ isOpen, onClose }) => {
           <Separator />
 
           {/* Contenu spécifique selon l'option */}
-          {activeOption === "barcode" && (
+          {activeOption === 'barcode' && (
             <div className="space-y-4">
               {selectedFood ? (
                 <Card className="bg-green-50 border-green-200">
@@ -206,8 +260,12 @@ const MealModal: React.FC<MealModalProps> = ({ isOpen, onClose }) => {
                         <span className="text-2xl">🍪</span>
                       </div>
                       <div className="flex-1">
-                        <h4 className="font-medium text-green-800">{selectedFood}</h4>
-                        <p className="text-sm text-green-600">Produit scanné avec succès</p>
+                        <h4 className="font-medium text-green-800">
+                          {selectedFood}
+                        </h4>
+                        <p className="text-sm text-green-600">
+                          {t('scanMealModal.toast.productScanned')}
+                        </p>
                       </div>
                     </div>
                   </CardContent>
@@ -216,28 +274,34 @@ const MealModal: React.FC<MealModalProps> = ({ isOpen, onClose }) => {
                 <Card className="bg-blue-50 border-blue-200">
                   <CardContent className="p-6 text-center">
                     <Camera className="w-16 h-16 mx-auto text-blue-500 mb-4" />
-                    <p className="text-blue-700 font-medium">Scanner en cours...</p>
-                    <p className="text-sm text-blue-600 mt-2">Positionnez le code-barres dans le cadre</p>
+                    <p className="text-blue-700 font-medium">
+                      {t('scanMealModal.scanner.scanning')}
+                    </p>
+                    <p className="text-sm text-blue-600 mt-2">
+                      {t('scanMealModal.scanner.positionBarcode')}
+                    </p>
                   </CardContent>
                 </Card>
               )}
             </div>
           )}
 
-          {activeOption === "search" && (
+          {activeOption === 'search' && (
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label>🔍 Rechercher un aliment</Label>
+                <Label>{t('scanMealModal.search.label')}</Label>
                 <Input
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Ex: pomme, riz, pain..."
+                  onChange={e => setSearchQuery(e.target.value)}
+                  placeholder={t('scanMealModal.search.placeholder')}
                   className="w-full"
                 />
               </div>
-              
+
               <div className="space-y-3">
-                <Label className="text-sm font-medium">💡 Aliments populaires</Label>
+                <Label className="text-sm font-medium">
+                  {t('scanMealModal.popularFoods.label')}
+                </Label>
                 <div className="grid grid-cols-2 gap-2">
                   {popularFoods.map((food, index) => (
                     <Button
@@ -253,7 +317,9 @@ const MealModal: React.FC<MealModalProps> = ({ isOpen, onClose }) => {
                       <div className="text-left">
                         <div className="text-lg mb-1">{food.icon}</div>
                         <div className="font-medium">{food.name}</div>
-                        <div className="text-muted-foreground">{food.carbs}g/100g</div>
+                        <div className="text-muted-foreground">
+                          {food.carbs}g/100g
+                        </div>
                       </div>
                     </Button>
                   ))}
@@ -262,14 +328,14 @@ const MealModal: React.FC<MealModalProps> = ({ isOpen, onClose }) => {
             </div>
           )}
 
-          {activeOption === "custom" && (
+          {activeOption === 'custom' && (
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label>✏️ Nom de l'aliment</Label>
+                <Label>{t('scanMealModal.manualFood.nameLabel')}</Label>
                 <Input
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Ex: Gâteau de maman, salade de fruits..."
+                  onChange={e => setSearchQuery(e.target.value)}
+                  placeholder={t('scanMealModal.manualFood.namePlaceholder')}
                   className="w-full"
                 />
               </div>
@@ -281,7 +347,9 @@ const MealModal: React.FC<MealModalProps> = ({ isOpen, onClose }) => {
             <>
               <Separator />
               <div className="space-y-3">
-                <Label className="text-sm font-medium">⚖️ Portion consommée</Label>
+                <Label className="text-sm font-medium">
+                  {t('scanMealModal.meal.consumedPortion')}
+                </Label>
                 <div className="space-y-3">
                   <Slider
                     value={portion}
@@ -293,7 +361,9 @@ const MealModal: React.FC<MealModalProps> = ({ isOpen, onClose }) => {
                   />
                   <div className="flex justify-between text-sm text-muted-foreground">
                     <span>10g</span>
-                    <span className="font-semibold text-foreground">{portion[0]}g</span>
+                    <span className="font-semibold text-foreground">
+                      {portion[0]}g
+                    </span>
                     <span>500g</span>
                   </div>
                 </div>
@@ -305,7 +375,9 @@ const MealModal: React.FC<MealModalProps> = ({ isOpen, onClose }) => {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <span className="text-2xl">📊</span>
-                      <span className="font-medium">Glucides estimés</span>
+                      <span className="font-medium">
+                        {t('scanMealModal.nutrition.estimatedCarbs')}
+                      </span>
                     </div>
                     <div className="text-2xl font-bold text-medical-green">
                       {estimatedCarbs}g
@@ -320,15 +392,15 @@ const MealModal: React.FC<MealModalProps> = ({ isOpen, onClose }) => {
         {/* Actions */}
         <div className="flex gap-3 pt-4">
           <Button variant="outline" onClick={onClose} className="flex-1">
-            Annuler
+            {t('scanMealModal.buttons.cancel')}
           </Button>
-          <Button 
-            onClick={handleSave} 
+          <Button
+            onClick={handleSave}
             disabled={!selectedFood && !searchQuery}
             className="flex-1 bg-medical-green hover:bg-medical-green/90"
           >
             <Plus className="w-4 h-4 mr-2" />
-            Ajouter au carnet
+            {t('scanMealModal.buttons.addToJournal')}
           </Button>
         </div>
       </DialogContent>

@@ -2,716 +2,791 @@ export const en = {
   // App general
   appName: 'Klukoo',
   appDescription: '',
-  appSlogan: 'The first diabetes management and monitoring platform in Africa',
+  appSlogan: 'La première plateforme de gestion et suivi du diabète en Afrique',
 
   // Navigation
   nav: {
-    home: 'Home',
-    charts: 'Data',
+    home: 'Accueil',
+    charts: 'Données',
     doses: 'Doses',
-    teleconsultation: 'Telehealth',
+    teleconsultation: 'Télé',
     chat: 'Chat',
     assistant: 'Assistant',
-    journal: 'Journal',
-    blog: 'News',
-    family: 'Family',
-    profile: 'Profile',
-    reminders: 'Reminders',
+    journal: 'Carnet',
+    blog: 'Journal',
+    family: 'Famille',
+    profile: 'Profil',
+    reminders: 'Rappels',
   },
 
   // Journal Screen
   journal: {
-    title: 'Journal',
-    subtitle: 'Detailed tracking of your glucose levels and injections',
-    glucose: 'Glucose',
-    insulin: 'Insulin',
-    newEntry: 'New entry',
-    insulinReminder: 'Insulin Reminder',
+    title: 'Carnet',
+    subtitle: 'Suivi détaillé de vos glycémies et injections',
+    glucose: 'Glycémie',
+    insulin: 'Insuline',
+    newEntry: 'Nouvelle entrée',
+    insulinReminder: 'Rappel Insuline',
     filters: {
-      today: 'Today',
-      week: '7 days',
-      month: '30 days',
+      today: "Aujourd'hui",
+      week: '7 jours',
+      month: '30 jours',
     },
     context: {
-      beforeMeal: 'Before meal',
-      afterMeal: 'After meal',
-      fasting: 'Fasting',
-      bedtime: 'Bedtime',
+      beforeMeal: 'Avant repas',
+      afterMeal: 'Après repas',
+      fasting: 'À jeun',
+      bedtime: 'Coucher',
     },
     status: {
-      target: 'In target',
-      slightlyHigh: 'Slightly high',
-      high: 'High',
-      low: 'Low',
+      target: 'Dans la cible',
+      slightlyHigh: 'Légèrement élevé',
+      high: 'Élevé',
+      low: 'Bas',
     },
     weeklyStats: {
-      title: 'Weekly summary',
-      inTarget: 'In target',
-      onTimeInjections: 'On-time injections',
-      avgGlucose: 'Average glucose',
+      title: 'Résumé hebdomadaire',
+      inTarget: 'Dans la cible',
+      onTimeInjections: 'Injections à temps',
+      avgGlucose: 'Moyenne glycémique',
     },
     advice: {
-      title: '💡 Personalized Klukoo advice',
+      title: '💡 Conseil DiabCare personnalisé',
       example:
-        'Excellent adherence this week! Your late afternoon glucose levels are slightly elevated. Consider adjusting your 3 PM snack or advancing your Humalog injection by 10 minutes.',
+        "Excellente adherence cette semaine ! Vos glycémies en fin d'après-midi sont légèrement élevées. Considérez ajuster votre collation de 15h ou anticiper votre injection de Humalog de 10 minutes.",
     },
-    injected: 'Injected at',
-    missed: 'Missed injection',
+    injected: 'Injecté à',
+    missed: 'Injection manquée',
   },
 
   // Charts Screen
   charts: {
-    title: 'Charts',
-    subtitle: 'Analysis of your glucose data',
-    glucoseAnalysis: 'Glucose Analysis',
-    timeInRange: 'Time in Range',
-    weeklyTrends: 'Weekly Trends',
-    last7Days: 'Last 7 days',
+    title: 'Graphiques',
+    subtitle: 'Analyse de vos données glycémiques',
+    glucoseAnalysis: 'Analyse Glycémique',
+    timeInRange: 'Temps dans la Cible',
+    weeklyTrends: 'Tendances Hebdomadaires',
+    last7Days: '7 derniers jours',
     zones: {
-      veryHigh: 'High',
-      high: 'Above',
-      target: 'Target',
-      low: 'Low',
+      veryHigh: 'Élevé',
+      high: 'Limite',
+      target: 'Cible',
+      low: 'Bas',
     },
     stats: {
-      average: 'Average',
-      variability: 'Variability',
-      estimatedHbA1c: 'Estimated HbA1c',
-      peakMax: 'Peak Max',
+      average: 'Moyenne',
+      variability: 'Variabilité',
+      estimatedHbA1c: 'HbA1c estimé',
+      peakMax: 'Pic Max',
     },
-    objective: 'Goal: >70% in target',
-    percentageByDay: 'Percentage of time in target per day',
+    objective: 'Objectif : >70% dans la cible',
+    percentageByDay: 'Pourcentage de temps dans la cible par jour',
   },
 
   // Doses Screen
   doses: {
     title: 'Doses',
-    subtitle: 'Manage your insulin doses',
-    lantus: 'Lantus (Basal)',
-    humalog: 'Humalog (Rapid)',
-    active: 'Active',
-    pending: 'Pending',
-    usualDose: 'Usual dose',
-    scheduledTime: 'Scheduled time',
-    lastInjection: 'Last injection',
-    markAsInjected: 'Mark as injected',
-    currentGlucose: 'Current glucose (mg/dL)',
-    mealCarbs: 'Meal carbs',
-    calculatedDose: 'Calculated Dose',
+    subtitle: "Gérez vos doses d'insuline",
+    lantus: 'Lantus (Basale)',
+    humalog: 'Humalog (Rapide)',
+    active: 'Actif',
+    pending: 'En attente',
+    usualDose: 'Dose habituelle',
+    scheduledTime: 'Heure programmée',
+    lastInjection: 'Dernière injection',
+    markAsInjected: 'Marquer comme injecté',
+    currentGlucose: 'Glycémie actuelle (mg/dL)',
+    mealCarbs: 'Glucides du repas',
+    calculatedDose: 'Dose Calculée',
     correction: 'Correction',
-    meal: 'Meal',
+    meal: 'Repas',
     total: 'Total',
-    scheduleInjection: 'Schedule injection',
-    missedInjection: 'Missed Injection',
-    ignore: 'Ignore',
-    injectNow: 'Inject now',
-    history7Days: '7-day history',
-    adherence: 'adherence',
-    injectionMarked: 'Injection marked',
-    injectionSuccess: 'marked as injected successfully',
-    injectionsPer: 'Injections completed / scheduled per day',
+    scheduleInjection: 'Programmer injection',
+    missedInjection: 'Injection Manquée',
+    ignore: 'Ignorer',
+    injectNow: 'Injecter maintenant',
+    history7Days: 'Historique 7 jours',
+    adherence: 'observance',
+    injectionMarked: 'Injection marquée',
+    injectionSuccess: 'marqué comme injecté avec succès',
+    injectionsPer: 'Injections réalisées / programmées par jour',
   },
 
   // Reminders Screen
   reminders: {
-    title: 'My Reminders',
-    subtitle: 'Manage your reminders for insulin, medications, tests and more',
-    newReminder: 'New Reminder',
-    upcomingReminders: 'Upcoming reminders (2h)',
-    today: 'Today',
-    allReminders: 'All reminders',
-    noReminders: 'No reminders configured',
+    title: 'Mes Rappels',
+    subtitle: 'Gérez vos rappels pour insuline, médicaments, tests et plus',
+    newReminder: 'Nouveau Rappel',
+    upcomingReminders: 'Rappels à venir (2h)',
+    today: "Aujourd'hui",
+    allReminders: 'Tous les rappels',
+    noReminders: 'Aucun rappel configuré',
     noRemindersDesc:
-      'Create your first reminder to never forget your treatments',
-    createReminder: 'Create reminder',
+      'Créez votre premier rappel pour ne jamais oublier vos traitements',
+    createReminder: 'Créer un rappel',
     dose: 'Dose',
-    soon: 'Soon',
-    done: 'Done',
-    deleteConfirm: 'Are you sure you want to delete this reminder?',
+    soon: 'Bientôt',
+    done: 'Fait',
+    deleteConfirm: 'Êtes-vous sûr de vouloir supprimer ce rappel ?',
     days: {
-      everyday: 'Every day',
-      weekdays: 'Mon-Fri',
-      monday: 'Mon',
-      tuesday: 'Tue',
-      wednesday: 'Wed',
-      thursday: 'Thu',
-      friday: 'Fri',
-      saturday: 'Sat',
-      sunday: 'Sun',
+      everyday: 'Tous les jours',
+      weekdays: 'Lun-Ven',
+      monday: 'Lun',
+      tuesday: 'Mar',
+      wednesday: 'Mer',
+      thursday: 'Jeu',
+      friday: 'Ven',
+      saturday: 'Sam',
+      sunday: 'Dim',
     },
   },
 
   // Blog/News Screen - COMPLETE
   blog: {
-    title: 'Klukoo News',
-    subtitle: 'News and advice on diabetes',
-    readMore: 'Read',
-    readFull: 'Read full article',
-    author: 'Author',
+    title: 'DiabCare News',
+    subtitle: 'Actualités et conseils sur le diabète',
+    readMore: 'Lire',
+    readFull: "Lire l'article complet",
+    author: 'Auteur',
     source: 'Source',
-    publishedOn: 'Published on',
-    saveArticle: 'Save article',
-    search: 'Search...',
-    all: 'All',
+    publishedOn: 'Publié le',
+    saveArticle: "Sauvegarder l'article",
+    search: 'Rechercher...',
+    all: 'Tous',
     categories: {
-      all: 'All',
-      research: 'Research',
+      all: 'Tous',
+      research: 'Recherches',
       nutrition: 'Nutrition',
       mental: 'Mental',
       innovation: 'Innovation',
-      testimonials: 'Testimonials',
-      technology: 'Technology',
-      lifestyle: 'Lifestyle',
-      treatment: 'Treatment',
+      testimonials: 'Témoignages',
+      technology: 'Technologie',
+      lifestyle: 'Mode de vie',
+      treatment: 'Traitement',
     },
     readingTime: 'min',
-    trending: 'Trending',
-    internationalNews: 'International diabetes news',
-    searchNews: 'Search news...',
-    by: 'By',
-    saveArticleBtn: 'Save',
-    fullSource: 'Full source',
-    reliableSources: 'Reliable sources',
+    trending: 'Tendance',
+    internationalNews: 'Actualités internationales sur le diabète',
+    searchNews: 'Rechercher des actualités...',
+    by: 'Par',
+    saveArticleBtn: 'Sauvegarder',
+    fullSource: 'Source complète',
+    reliableSources: 'Sources fiables',
     verifiedNews:
-      'All our news is verified and comes from internationally recognized medical sources',
+      'Toutes nos actualités sont vérifiées et proviennent de sources médicales reconnues internationalement',
   },
 
   // Activities
   activities: {
-    walking: 'Walking',
-    running: 'Running/Jogging',
-    cycling: 'Cycling',
-    dancing: 'Dancing',
-    weightlifting: 'Weight Training',
-    swimming: 'Swimming',
-    soccer: 'Soccer',
+    walking: 'Marche',
+    running: 'Course/Jogging',
+    cycling: 'Vélo',
+    dancing: 'Danse',
+    weightlifting: 'Musculation',
+    swimming: 'Natation',
+    soccer: 'Football',
     basketball: 'Basketball',
-    selectActivity: 'Select an activity',
+    selectActivity: 'Sélectionnez une activité',
     intensity: {
-      light: 'Light',
-      moderate: 'Moderate',
+      light: 'Légère',
+      moderate: 'Modérée',
       intense: 'Intense',
     },
-    duration: 'Duration (minutes)',
-    caloriesBurned: 'Calories burned',
-    addActivity: 'Add activity',
-    activityRecorded: 'Activity recorded',
+    duration: 'Durée (minutes)',
+    caloriesBurned: 'Calories brûlées',
+    addActivity: 'Ajouter activité',
+    activityRecorded: 'Activité enregistrée',
   },
 
   // Glucose contexts
   glucoseContext: {
-    fasting: 'Fasting',
-    beforeMeal: 'Before meal',
-    afterMeal: 'After meal',
-    bedtime: 'Bedtime',
-    random: 'Random',
-    exercise: 'After exercise',
+    fasting: 'À jeun',
+    beforeMeal: 'Avant repas',
+    afterMeal: 'Après repas',
+    bedtime: 'Avant coucher',
+    random: 'Aléatoire',
+    exercise: 'Après exercice',
   },
 
   // Modals and forms
   modals: {
-    selectValue: 'Select a value',
-    enterValue: 'Please enter a glucose value',
-    time: 'Time',
-    now: 'Now',
-    custom: 'Custom',
-    context: 'Context',
-    notes: 'Notes (optional)',
-    duration: 'Duration',
+    selectValue: 'Sélectionnez une valeur',
+    enterValue: 'Veuillez saisir une valeur de glycémie',
+    time: 'Heure',
+    now: 'Maintenant',
+    custom: 'Personnalisé',
+    context: 'Contexte',
+    notes: 'Notes (optionnel)',
+    duration: 'Durée',
     minutes: 'minutes',
+    scanProduct: 'Scanner un Produit',
+    productScanSimulation: 'Simulation de scan de produits',
+    takePhoto: 'Prendre une Photo',
+    aiMealAnalysis: 'Analyse IA du repas',
+    manualEntry: 'Saisie Manuelle',
+    enterInformation: 'Entrez les informations',
+    followCarbs: 'Suivez vos glucides facilement',
   },
 
   // Authentication
   auth: {
-    signIn: 'Sign In',
-    signUp: 'Sign Up',
-    signOut: 'Sign Out',
+    signIn: 'Se connecter',
+    signUp: "S'inscrire",
+    signOut: 'Se déconnecter',
     email: 'Email',
-    password: 'Password',
-    confirmPassword: 'Confirm Password',
-    forgotPassword: 'Forgot Password?',
-    noAccount: 'No account?',
-    hasAccount: 'Already have an account?',
-    loading: 'Loading...',
-    signInTitle: 'Sign In',
-    signUpTitle: 'Sign Up',
-    description: 'Access your Klukoo account',
-    appSlogan: 'African Diabetes & Excellence Resources',
+    password: 'Mot de passe',
+    confirmPassword: 'Confirmer le mot de passe',
+    forgotPassword: 'Mot de passe oublié ?',
+    noAccount: 'Pas de compte ?',
+    hasAccount: 'Déjà un compte ?',
+    loading: 'Chargement...',
+    signInTitle: 'Connexion',
+    signUpTitle: 'Inscription',
+    description: 'Accédez à votre compte DiabCare',
+    appSlogan: "Diabète Africain & Ressources d'Excellence",
     patient: 'Patient',
-    professional: 'Professional',
-    family: 'Family',
-    firstName: 'First Name',
-    lastName: 'Last Name',
-    professionalCode: 'Professional Code',
-    patientCode: 'Patient Code',
-    familyAccess: 'Access family space',
-    professionalAccess: 'Access professional space',
-    codeProvidedByPatient: 'Code provided by patient',
-    professionalNotRegistered: 'Not registered yet?',
-    requestProfessionalAccess: 'Request professional access',
-    needHelp: 'Need help?',
-    familyAccessGuide: 'Family access guide',
-    termsAcceptance: 'By signing in, you agree to our',
-    termsOfUse: 'Terms of Use',
-    privacyPolicy: 'Privacy Policy',
-    and: 'and our',
+    professional: 'Professionnel',
+    family: 'Famille',
+    firstName: 'Prénom',
+    lastName: 'Nom',
+    professionalCode: 'Code Professionnel',
+    patientCode: 'Code Patient',
+    familyAccess: "Accéder à l'espace famille",
+    professionalAccess: "Accéder à l'espace professionnel",
+    codeProvidedByPatient: 'Code fourni par le patient',
+    professionalNotRegistered: 'Pas encore inscrit ?',
+    requestProfessionalAccess: 'Demander un accès professionnel',
+    needHelp: "Besoin d'aide ?",
+    familyAccessGuide: "Guide d'accès famille",
+    termsAcceptance: 'En vous connectant, vous acceptez nos',
+    termsOfUse: "Conditions d'utilisation",
+    privacyPolicy: 'Politique de confidentialité',
+    and: 'et notre',
     support: 'Support',
-    passwordMinLength: 'Minimum 6 characters',
-    confirmPasswordPlaceholder: 'Confirm your password',
-    emailPlaceholder: 'your@email.com',
-    professionalCodePlaceholder: 'Professional access code',
-    patientCodePlaceholder: 'Patient access code',
-    connecting: 'Connecting...',
-    registering: 'Registering...',
-    signInButton: 'Sign In',
-    signUpButton: 'Sign Up',
+    passwordMinLength: 'Minimum 6 caractères',
+    confirmPasswordPlaceholder: 'Confirmez votre mot de passe',
+    emailPlaceholder: 'votre@email.com',
+    professionalCodePlaceholder: "Code d'accès professionnel",
+    patientCodePlaceholder: "Code d'accès du patient",
+    connecting: 'Connexion...',
+    registering: 'Inscription...',
+    signInButton: 'Connexion',
+    signUpButton: 'Inscription',
     // Error messages
-    invalidCredentials: 'Invalid email or password',
-    emailNotConfirmed: 'Please confirm your email before signing in',
-    userAlreadyExists: 'An account already exists with this email address',
-    passwordMismatch: 'Passwords do not match',
-    passwordTooShort: 'Password must be at least 6 characters long',
-    invalidPatientCode: 'Please enter a valid patient code',
-    invalidOrExpiredCode: 'Invalid or expired patient code',
-    connectionError: 'An error occurred during connection',
-    registrationError: 'An error occurred during registration',
+    invalidCredentials: 'Email ou mot de passe incorrect',
+    emailNotConfirmed: 'Veuillez confirmer votre email avant de vous connecter',
+    userAlreadyExists: 'Un compte existe déjà avec cette adresse email',
+    passwordMismatch: 'Les mots de passe ne correspondent pas',
+    passwordTooShort: 'Le mot de passe doit contenir au moins 6 caractères',
+    invalidPatientCode: 'Veuillez entrer un code patient valide',
+    invalidOrExpiredCode: 'Code patient invalide ou expiré',
+    connectionError: 'Une erreur est survenue lors de la connexion',
+    registrationError: "Une erreur est survenue lors de l'inscription",
     // Success messages
-    loginSuccess: 'Login successful!',
-    welcomePatient: 'Welcome to your patient space.',
-    registrationSuccess: 'Registration successful!',
-    choosePlan: 'Choose your Klukoo plan',
-    confirmEmail: 'Check your email to confirm your account.',
-    familyAccessGranted: 'Family access granted!',
-    welcomeFamily: 'Welcome to the Klukoo family space.',
-    professionalLoginSuccess: 'Professional login successful!',
-    welcomeProfessional: 'Welcome to your professional space.',
+    loginSuccess: 'Connexion réussie !',
+    welcomePatient: 'Bienvenue dans votre espace patient.',
+    registrationSuccess: 'Inscription réussie !',
+    choosePlan: 'Choisissez votre forfait Klukoo',
+    confirmEmail: 'Vérifiez votre email pour confirmer votre compte.',
+    familyAccessGranted: 'Accès famille accordé !',
+    welcomeFamily: "Bienvenue dans l'espace famille Klukoo.",
+    professionalLoginSuccess: 'Connexion professionnelle réussie !',
+    welcomeProfessional: 'Bienvenue dans votre espace professionnel.',
   },
 
   // Home screen
   home: {
-    welcome: 'Welcome',
-    latestGlucose: 'Latest glucose',
-    addGlucose: 'Add glucose',
-    quickActions: 'Quick actions',
-    todayStats: "Today's stats",
-    medicationReminder: 'Medication reminder',
-    upcomingAppointment: 'Upcoming appointment',
+    welcome: 'Bienvenue',
+    latestGlucose: 'Dernière glycémie',
+    addGlucose: 'Ajouter glycémie',
+    quickActions: 'Actions rapides',
+    todayStats: 'Statistiques du jour',
+    medicationReminder: 'Rappel médicament',
+    upcomingAppointment: 'Prochain rendez-vous',
   },
 
   // Glucose
   glucose: {
-    level: 'Glucose level',
+    level: 'Niveau de glycémie',
     normal: 'Normal',
-    low: 'Low',
-    high: 'High',
-    addReading: 'Add reading',
-    beforeMeal: 'Before meal',
-    afterMeal: 'After meal',
-    bedtime: 'Bedtime',
-    morning: 'Morning',
-    comment: 'Comment',
+    low: 'Bas',
+    high: 'Élevé',
+    addReading: 'Ajouter une mesure',
+    beforeMeal: 'Avant repas',
+    afterMeal: 'Après repas',
+    bedtime: 'Coucher',
+    morning: 'Matin',
+    comment: 'Commentaire',
   },
 
   // Medications
   medication: {
-    title: 'Medications',
-    addMedication: 'Add medication',
+    title: 'Médicaments',
+    addMedication: 'Ajouter médicament',
     dosage: 'Dosage',
-    frequency: 'Frequency',
-    time: 'Time',
-    taken: 'Taken',
-    missed: 'Missed',
-    insulin: 'Insulin',
-    metformin: 'Metformin',
+    frequency: 'Fréquence',
+    time: 'Heure',
+    taken: 'Pris',
+    missed: 'Manqué',
+    insulin: 'Insuline',
+    metformin: 'Metformine',
   },
 
   // Professional
   professional: {
-    dashboard: 'Professional dashboard',
+    dashboard: 'Tableau de bord professionnel',
     patients: 'Patients',
     consultations: 'Consultations',
-    earnings: 'Earnings',
-    schedule: 'Schedule',
-    startConsultation: 'Start consultation',
-    endConsultation: 'End consultation',
-    consultationNotes: 'Consultation notes',
-    fee: 'Fee',
-    payment: 'Payment',
-    pending: 'Pending',
-    completed: 'Completed',
-    duration: 'Duration',
-    patientCode: 'Patient code',
+    earnings: 'Revenus',
+    schedule: 'Planning',
+    startConsultation: 'Démarrer consultation',
+    endConsultation: 'Terminer consultation',
+    consultationNotes: 'Notes de consultation',
+    fee: 'Honoraires',
+    payment: 'Paiement',
+    pending: 'En attente',
+    completed: 'Terminé',
+    duration: 'Durée',
+    patientCode: 'Code patient',
+    patientInformation: 'Informations Patient',
+    stackTrace: 'Stack trace',
   },
 
   // Chat and Community
   chat: {
-    title: 'Community chat',
-    typeMessage: 'Type your message...',
-    send: 'Send',
-    glucoseShare: 'Glucose Share',
-    mealShare: 'Diabetes-friendly meal',
-    progress: 'Achievement',
-    estimatedCarbs: 'Estimated carbs',
+    title: 'Discussion communautaire',
+    typeMessage: 'Tapez votre message...',
+    send: 'Envoyer',
+    glucoseShare: 'Partage Glycémie',
+    mealShare: 'Repas diabète-friendly',
+    progress: 'Célébration',
+    estimatedCarbs: 'Glucides estimés',
   },
 
   // Common
   common: {
-    save: 'Save',
-    cancel: 'Cancel',
-    delete: 'Delete',
-    edit: 'Edit',
-    add: 'Add',
-    close: 'Close',
-    confirm: 'Confirm',
-    back: 'Back',
-    next: 'Next',
-    previous: 'Previous',
-    loading: 'Loading...',
-    error: 'Error',
-    success: 'Success',
-    warning: 'Warning',
+    save: 'Enregistrer',
+    cancel: 'Annuler',
+    delete: 'Supprimer',
+    edit: 'Modifier',
+    add: 'Ajouter',
+    close: 'Fermer',
+    confirm: 'Confirmer',
+    back: 'Retour',
+    next: 'Suivant',
+    previous: 'Précédent',
+    loading: 'Chargement...',
+    error: 'Erreur',
+    success: 'Succès',
+    warning: 'Attention',
     info: 'Information',
-    today: 'Today',
-    yesterday: 'Yesterday',
-    thisWeek: 'This week',
-    thisMonth: 'This month',
+    today: "Aujourd'hui",
+    yesterday: 'Hier',
+    thisWeek: 'Cette semaine',
+    thisMonth: 'Ce mois',
     mg_dl: 'mg/dL',
     mmol_l: 'mmol/L',
-    send: 'Send',
-    sending: 'Sending...',
+    send: 'Envoyer',
+    sending: 'Envoi en cours...',
+    enable: 'Activer',
+    disable: 'Désactiver',
   },
 
   // Notifications
   notifications: {
-    medicationTime: 'Time to take your medication',
-    glucoseReminder: "Don't forget to check your glucose",
-    appointmentReminder: 'Appointment in 1 hour',
-    dataShared: 'Data shared successfully',
-    accessGranted: 'Access granted to healthcare professional',
-    accessDenied: 'Access denied to healthcare professional',
+    medicationTime: 'Il est temps de prendre votre médicament',
+    glucoseReminder: "N'oubliez pas de mesurer votre glycémie",
+    appointmentReminder: 'Rendez-vous dans 1 heure',
+    dataShared: 'Données partagées avec succès',
+    accessGranted: 'Accès accordé au professionnel de santé',
+    accessDenied: 'Accès refusé au professionnel de santé',
   },
 
   // Home Screen
   homeScreen: {
-    mission: 'Klukoo Mission',
-
-    darePackage: 'Klukoo Package',
-    completePlan: 'Klukoo Complete',
+    mission: 'Mission DiabCare',
+    darePackage: 'Forfait DiabCare',
+    completePlan: 'DiabCare Complet',
     premium: 'PREMIUM',
-    monthlyPrice: 'CFA F/month',
-    healthPriceless: 'Your health is priceless',
-    unlimitedLogbook: 'Unlimited glucose logbook',
-    smartReminders: 'Smart insulin reminders',
-    clarityCharts: 'Clarity-style charts',
-    advancedCalculator: 'Advanced dose calculator',
-    familySupport: 'Family support',
-    aiAssistant: 'Klukoo AI Assistant',
-    startTracking: 'Start my Klukoo tracking',
-    freeTrial: '✨ 7-day free trial',
-    cancelAnytime: 'Cancel anytime • Support included',
-    lastReading: 'Today 2:30 PM',
+    monthlyPrice: 'F CFA/mois',
+    healthPriceless: "Votre santé n'a pas de prix",
+    unlimitedLogbook: 'Carnet glycémie illimité',
+    smartReminders: "Rappels d'insuline intelligents",
+    clarityCharts: 'Graphiques style Clarity',
+    advancedCalculator: 'Calculateur doses avancé',
+    familySupport: 'Support familial',
+    aiAssistant: 'Assistant IA DiabCare',
+    startTracking: 'Commencer mon suivi DiabCare',
+    freeTrial: '✨ Essai gratuit 7 jours',
+    cancelAnytime: 'Annulable à tout moment • Support inclus',
+    lastReading: "Aujourd'hui 14:30",
     diabetes: 'Diabetes',
-    management: 'Management',
+    management: 'Gestion',
     awareness: 'Awareness',
-    education: 'Education',
+    education: 'Éducation',
     routine: 'Routine',
-    daily: 'Daily',
+    daily: 'Quotidien',
     empowerment: 'Empowerment',
-    control: 'Control',
+    control: 'Contrôle',
   },
+
   // Profile Screen
   profileScreen: {
-    years: 'years old',
-    yearsWithDare: 'Years with Klukoo',
-    glucoseMeasures: 'Glucose measurements',
-    adherence: 'Adherence',
-
-    userType: 'User type',
-    professionalLicense: 'Professional license',
-    specialty: 'Specialty',
-
-    notSet: 'Not set',
-    // verified: '✓ Verified Profile',
-    notVerified: '✗ Unverified Profile',
-
-    // Section titles
-    personalInfo: 'Personal Information',
-    medicalTeam: 'Medical Team',
-    currentTreatment: 'Current Treatment',
-    emergencyContact: 'Emergency Contact',
-    settings: 'Settings',
-
-    // Profile fields (static labels only!)
-    fullName: 'Full name',
-    dateOfBirth: 'Date of birth',
-    age: 'Age',
-    phone: 'Phone',
-    city: 'City',
+    years: 'ans',
+    yearsWithDare: 'Années avec DiabCare',
+    glucoseMeasures: 'Mesures glycémie',
+    adherence: 'Observance',
+    personalInfo: 'Informations Personnelles',
+    fullName: 'Nom complet',
+    dateOfBirth: 'Date de naissance',
+    age: 'Âge',
+    phone: 'Téléphone',
+    city: 'Ville',
     profession: 'Profession',
-
-    // Medical team
-    doctor: 'Primary care physician • Diabetologist',
-    followUpCenter: 'Follow-up facility',
-    consultant: 'Consulting endocrinologist',
-
-    // Treatment
-    insulins: 'Insulins',
-    keepCool: 'Stored cool (clay pot)',
-    oralMedications: 'Oral medications',
-    price: 'Price',
-    glucoseTarget: 'Glucose target',
-    adaptedClimate: 'Adapted to tropical climate',
-
-    // Emergency contact
-    spouse: 'Spouse',
-    call: 'Call',
+    medicalTeam: 'Équipe Médicale',
+    doctor: 'Médecin traitant • Diabétologue',
+    followUpCenter: 'Établissement de suivi',
+    consultant: 'Endocrinologue consultante',
+    currentTreatment: 'Traitement Actuel',
+    insulins: 'Insulines',
+    keepCool: 'Conservées au frais (canari en terre cuite)',
+    oralMedications: 'Médicaments oraux',
+    price: 'Prix',
+    glucoseTarget: 'Objectif glycémique',
+    adaptedClimate: 'Adapté au climat tropical',
+    emergencyContact: "Contact d'Urgence",
+    spouse: 'Épouse',
+    call: 'Appeler',
     sms: 'SMS',
-
-    // Settings
+    settings: 'Paramètres',
     notifications: 'Notifications',
-    dataSharing: 'Data sharing',
-    darkMode: 'Dark mode',
-    editProfile: 'Edit profile',
-    exportData: 'Export data',
-    privacy: 'Privacy',
-    signOut: 'Sign out',
-    verified: '✓ Verified Profile',
-    unverified: 'Unverified Profile',
+    dataSharing: 'Partage de données',
+    darkMode: 'Mode sombre',
+    editProfile: 'Modifier le profil',
+    exportData: 'Exporter les données',
+    privacy: 'Confidentialité',
+    signOut: 'Se déconnecter',
+    verified: '✓ Profil Vérifié',
   },
+
   // Chat Screen
   chatScreen: {
-    title: 'Klukoo Chat',
-    membersConnected: 'members connected',
-    successesThisWeek: '💚 142 successes this week',
-    inTargetZone: '🎯 89% in target zone',
-    newMembers: '👥 12 new members',
-    kindness: '💚 Kindness',
-    mutualHelp: '🤝 Mutual help',
-    sharedMotivation: '🎯 Shared motivation',
-    typingMessage: 'Write your supportive message...',
-    typing: 'typing...',
-    messageSent: 'Message sent',
-    messageShared: 'Your message was shared with the Klukoo community',
+    title: 'DiabCare Chat',
+    membersConnected: 'membres connectés',
+    successesThisWeek: '💚 142 succès cette semaine',
+    inTargetZone: '🎯 89% dans la zone cible',
+    newMembers: '👥 12 nouveaux membres',
+    kindness: '💚 Bienveillance',
+    mutualHelp: '🤝 Entraide',
+    sharedMotivation: '🎯 Motivation commune',
+    typingMessage: 'Écrivez votre message de soutien...',
+    typing: "en train d'écrire...",
+    messageSent: 'Message envoyé',
+    messageShared: 'Votre message a été partagé avec la communauté DiabCare',
   },
 
-  // Legal
-  legal: {
-    termsTitle: 'Terms of Use',
-    termsDescription: 'Please read our terms of use carefully',
-    privacyTitle: 'Privacy Policy',
-    privacyDescription: 'Learn how we protect your personal data',
-    termsContent: `
-      <h3>1. Acceptance of Terms</h3>
-      <p>By using Klukoo (Diabetes Awareness, Routine & Empowerment), you accept these terms of use.</p>
-      
-      <h3>2. Service Description</h3>
-      <p>Klukoo is the first diabetes management and monitoring platform in Africa, offering:</p>
-      <ul>
-        <li>Personalized glucose monitoring</li>
-        <li>Medication management and reminders</li>
-        <li>Teleconsultations with healthcare professionals</li>
-        <li>Support community</li>
-        <li>Analysis and prediction tools</li>
-      </ul>
-      
-      <h3>3. User Account</h3>
-      <p>You are responsible for maintaining the confidentiality of your account and password.</p>
-    `,
+  // Professional Access
+  professionalAccess: {
+    title: "Demande d'Accès Professionnel",
+    firstName: 'Prénom',
+    lastName: 'Nom',
+    email: 'Email',
+    phone: 'Téléphone',
+    profession: 'Profession',
+    selectProfession: 'Sélectionnez votre profession',
+    doctor: 'Médecin',
+    nurse: 'Infirmier/ère',
+    diabetologist: 'Diabétologue',
+    nutritionist: 'Nutritionniste',
+    pharmacist: 'Pharmacien/ne',
+    other: 'Autre',
+    licenseNumber: 'Numéro de licence',
+    institution: 'Établissement',
+    motivation: 'Motivation',
+    motivationPlaceholder:
+      'Expliquez pourquoi vous souhaitez accéder à DiabCare...',
+    requestSent: 'Demande envoyée',
+    requestSentDescription:
+      "Votre demande d'accès professionnel a été envoyée avec succès",
+    requestError: "Erreur lors de l'envoi de la demande",
   },
 
   // Onboarding
   onboarding: {
-    step: 'Step',
-    of: 'of',
-    getStarted: 'Get Started',
+    step: 'Étape',
+    of: 'sur',
+    getStarted: 'Commencer',
     languageSelection: {
-      title: 'Choose your language',
-      description: 'Select your preferred language to use Klukoo',
+      title: 'Choisissez votre langue',
+      description: 'Sélectionnez votre langue préférée pour utiliser DiabCare',
     },
     welcome: {
-      title: 'Welcome to Klukoo',
-      subtitle: 'The first African diabetes management platform',
-      description: "We're excited to accompany you on your health journey",
+      title: 'Bienvenue dans DiabCare',
+      subtitle: 'La première plateforme africaine de gestion du diabète',
+      description:
+        'Nous sommes ravis de vous accompagner dans votre parcours de santé',
     },
     profile: {
-      title: 'Set up your profile',
-      subtitle: 'Help us personalize your Klukoo experience',
+      title: 'Configurez votre profil',
+      subtitle: 'Aidez-nous à personnaliser votre expérience DiabCare',
       description:
-        'This information will help us provide you with tailored care',
-      namePlaceholder: 'Enter your first name',
-      userType: 'I am a...',
+        'Ces informations nous permettront de vous offrir un suivi adapté',
+      namePlaceholder: 'Entrez votre prénom',
+      userType: 'Je suis un(e)...',
     },
     privacy: {
-      title: 'Privacy and preferences',
-      subtitle: 'Control your data and notifications',
-      description: 'Configure your privacy preferences',
-      notifications: 'Push notifications',
-      notificationsDesc: 'Receive reminders for medications and measurements',
-      dataSharing: 'Anonymous data sharing',
-      dataSharingDesc: 'Contribute to diabetes research (optional)',
-      reminders: 'Smart reminders',
-      remindersDesc: 'Adaptive reminders based on your habits',
+      title: 'Confidentialité et préférences',
+      subtitle: 'Contrôlez vos données et notifications',
+      description: 'Configurez vos préférences de confidentialité',
+      notifications: 'Notifications push',
+      notificationsDesc: 'Recevez des rappels pour vos médicaments et mesures',
+      dataSharing: 'Partage de données anonymes',
+      dataSharingDesc: 'Contribuez à la recherche sur le diabète (optionnel)',
+      reminders: 'Rappels intelligents',
+      remindersDesc: 'Rappels adaptatifs basés sur vos habitudes',
     },
     features: {
-      title: 'Discover Klukoo',
-      subtitle: 'All the features to manage your diabetes',
-      description: "Here's what Klukoo can do for you",
-      glucose: 'Glucose monitoring',
-      reminders: 'Smart reminders',
-      consultation: 'Teleconsultations',
-      community: 'Support community',
-      tracking: 'Complete tracking',
-      trackingDesc: 'Glucose, medications, activities and more',
-      ai: 'AI Assistant',
-      aiDesc: 'Personalized advice based on your data',
-      telehealth: 'Telemedicine',
-      telehealthDesc: 'Consultations with certified professionals',
-      support: 'Community',
-      supportDesc: 'Connect with other people with diabetes',
+      title: 'Découvrez DiabCare',
+      subtitle: 'Toutes les fonctionnalités pour gérer votre diabète',
+      description: 'Voici ce que DiabCare peut faire pour vous',
+      glucose: 'Suivi glycémique',
+      reminders: 'Rappels intelligents',
+      consultation: 'Téléconsultations',
+      community: 'Communauté de soutien',
+      tracking: 'Suivi complet',
+      trackingDesc: 'Glycémie, médicaments, activités et plus',
+      ai: 'Assistant IA',
+      aiDesc: 'Conseils personnalisés basés sur vos données',
+      telehealth: 'Télémédecine',
+      telehealthDesc: 'Consultations avec des professionnels certifiés',
+      support: 'Communauté',
+      supportDesc: "Échangez avec d'autres personnes diabétiques",
     },
     completion: {
-      title: 'Setup complete!',
-      description: 'Your Klukoo account is ready to use',
+      title: 'Configuration terminée !',
+      description: "Votre compte DiabCare est prêt à l'emploi",
     },
   },
 
-  // Common additions
-  enable: 'Enable',
-  disable: 'Disable',
+  // Legal
+  legal: {
+    termsTitle: "Conditions d'Utilisation",
+    termsDescription:
+      "Veuillez lire attentivement nos conditions d'utilisation",
+    privacyTitle: 'Politique de Confidentialité',
+    privacyDescription:
+      'Découvrez comment nous protégeons vos données personnelles',
+    termsContent: `
+      <h3>1. Acceptation des Conditions</h3>
+      <p>En utilisant DiabCare (Diabète Africain & Ressources d'Excellence), vous acceptez les présentes conditions d'utilisation.</p>
+      
+      <h3>2. Description du Service</h3>
+      <p>DiabCare est la première plateforme de gestion et suivi du diabète en Afrique, offrant :</p>
+      <ul>
+        <li>Suivi personnalisé de la glycémie</li>
+        <li>Gestion des médicaments et rappels</li>
+        <li>Téléconsultations avec des professionnels de santé</li>
+        <li>Communauté de soutien</li>
+        <li>Outils d'analyse et de prédiction</li>
+      </ul>
+      
+      <h3>3. Compte Utilisateur</h3>
+      <p>Vous êtes responsable de maintenir la confidentialité de votre compte et mot de passe.</p>
+      
+      <h3>4. Utilisation Acceptable</h3>
+      <p>Vous vous engagez à :</p>
+      <ul>
+        <li>Fournir des informations exactes</li>
+        <li>Respecter les autres utilisateurs</li>
+        <li>Ne pas partager d'informations médicales d'autrui</li>
+        <li>Utiliser la plateforme à des fins légales uniquement</li>
+      </ul>
+      
+      <h3>5. Données de Santé</h3>
+      <p>Vos données de santé sont strictement confidentielles et ne sont partagées qu'avec votre consentement explicite.</p>
+      
+      <h3>6. Téléconsultations</h3>
+      <p>Les consultations médicales sont fournies par des professionnels certifiés. Elles ne remplacent pas les soins d'urgence.</p>
+      
+      <h3>7. Limitation de Responsabilité</h3>
+      <p>DiabCare fournit des outils d'aide à la gestion du diabète mais ne remplace pas un avis médical professionnel.</p>
+      
+      <h3>8. Résiliation</h3>
+      <p>Vous pouvez supprimer votre compte à tout moment. Nous nous réservons le droit de suspendre des comptes en cas de violation.</p>
+      
+      <h3>9. Modifications</h3>
+      <p>Nous nous réservons le droit de modifier ces conditions avec préavis.</p>
+      
+      <h3>10. Contact</h3>
+      <p>Pour toute question : support@dare-africa.com</p>
+    `,
+    privacyContent: `
+      <h3>1. Collecte des Données</h3>
+      <p>Nous collectons les données que vous nous fournissez :</p>
+      <ul>
+        <li>Informations d'inscription (nom, email, téléphone)</li>
+        <li>Données de santé (glycémie, médicaments, symptômes)</li>
+        <li>Données d'utilisation de la plateforme</li>
+      </ul>
+      
+      <h3>2. Utilisation des Données</h3>
+      <p>Vos données sont utilisées pour :</p>
+      <ul>
+        <li>Personnaliser votre expérience</li>
+        <li>Fournir des analyses et recommandations</li>
+        <li>Faciliter les téléconsultations</li>
+        <li>Améliorer nos services</li>
+      </ul>
+      
+      <h3>3. Protection des Données</h3>
+      <p>Nous utilisons des technologies de chiffrement avancées et respectons les standards RGPD et ISO 27001.</p>
+      
+      <h3>4. Partage des Données</h3>
+      <p>Vos données ne sont JAMAIS vendues. Elles peuvent être partagées uniquement :</p>
+      <ul>
+        <li>Avec votre consentement explicite</li>
+        <li>Avec les professionnels de santé que vous autorisez</li>
+        <li>En cas d'obligation légale</li>
+      </ul>
+      
+      <h3>5. Données Anonymisées</h3>
+      <p>Nous pouvons utiliser des données anonymisées pour la recherche médicale et l'amélioration des soins du diabète en Afrique.</p>
+      
+      <h3>6. Vos Droits</h3>
+      <p>Vous avez le droit de :</p>
+      <ul>
+        <li>Accéder à vos données</li>
+        <li>Corriger des informations incorrectes</li>
+        <li>Supprimer votre compte et vos données</li>
+        <li>Exporter vos données</li>
+        <li>Limiter l'utilisation de vos données</li>
+      </ul>
+      
+      <h3>7. Conservation des Données</h3>
+      <p>Vos données sont conservées tant que votre compte est actif, puis supprimées dans les 30 jours suivant la fermeture.</p>
+      
+      <h3>8. Cookies</h3>
+      <p>Nous utilisons des cookies essentiels pour le fonctionnement de la plateforme et des cookies d'analyse avec votre consentement.</p>
+      
+      <h3>9. Transferts Internationaux</h3>
+      <p>Vos données sont hébergées en Afrique. Tout transfert international respecte les accords de protection des données.</p>
+      
+      <h3>10. Contact DPO</h3>
+      <p>Pour toute question sur vos données : dpo@dare-africa.com</p>
+      
+      <p><strong>Dernière mise à jour :</strong> Décembre 2024</p>
+    `,
+  },
 
   // Admin sections
   admin: {
-    notifications: '🔔 Admin Notifications',
-    noNotifications: 'No notifications',
-    newActivities: 'New activities will appear here',
-    clearAll: 'Clear all',
-    applications: 'Professional applications management',
-    totalApplications: 'Total applications',
-    pending: 'Pending',
-    allStatuses: 'All statuses',
-    approve: 'Approve',
-    reject: 'Reject',
-    viewDetails: 'View details',
-    applicationSubmitted: 'Application submitted',
+    notifications: '🔔 Notifications Admin',
+    noNotifications: 'Aucune notification',
+    newActivities: 'Les nouvelles activités apparaîtront ici',
+    clearAll: 'Tout effacer',
+    applications: 'Gestion des candidatures professionnelles',
+    totalApplications: 'Total candidatures',
+    pending: 'En attente',
+    allStatuses: 'Tous les statuts',
+    approve: 'Approuver',
+    reject: 'Rejeter',
+    viewDetails: 'Voir les détails',
+    applicationSubmitted: 'Candidature déposée',
     documents: 'Documents',
     actions: 'Actions',
-    license: 'License',
-    city: 'City',
+    license: 'Licence',
+    city: 'Ville',
     institution: 'Institution',
-    noDocuments: 'No documents',
-    notSpecified: 'Not specified',
+    noDocuments: 'Aucun document',
+    notSpecified: 'Non spécifiée',
   },
 
   // Form labels
   forms: {
     email: 'Email',
-    phone: 'Phone',
-    time: 'Time',
-    now: 'Now',
-    context: 'Measurement context',
-    measurementTime: 'Measurement time',
-    title: 'Reminder title',
-    reminderType: 'Reminder type',
-    mealName: 'Meal name',
-    mealTime: 'Meal time',
-    breakfast: 'Breakfast',
-    lunch: 'Lunch',
-    dinner: 'Dinner',
-    snack: 'Snack',
+    phone: 'Téléphone',
+    time: 'Heure',
+    now: 'Maintenant',
+    context: 'Contexte de mesure',
+    measurementTime: 'Heure de mesure',
+    title: 'Titre du rappel',
+    reminderType: 'Type de rappel',
+    mealName: 'Nom du repas',
+    mealTime: 'Moment du repas',
+    breakfast: 'Petit-déjeuner',
+    lunch: 'Déjeuner',
+    dinner: 'Dîner',
+    snack: 'Collation',
     calories: 'Calories',
-    profilePhoto: 'Profile photo',
+    profilePhoto: 'Photo de profil',
   },
 
   // Activities
   activityTypes: {
-    walking: 'Walking',
-    running: 'Running',
-    cycling: 'Cycling',
-    swimming: 'Swimming',
-    weightlifting: 'Weight lifting',
-    other: 'Other',
-    light: 'Light',
-    moderate: 'Moderate',
+    walking: 'Marche',
+    running: 'Course',
+    cycling: 'Vélo',
+    swimming: 'Natation',
+    weightlifting: 'Musculation',
+    other: 'Autre',
+    light: 'Légère',
+    moderate: 'Modérée',
     intense: 'Intense',
     estimation: 'Estimation',
   },
 
   // Medications
   medicationTypes: {
-    rapidInsulin: 'Rapid insulin',
-    slowInsulin: 'Slow insulin',
-    metformin: 'Metformin',
+    rapidInsulin: 'Insuline rapide',
+    slowInsulin: 'Insuline lente',
+    metformin: 'Metformine',
   },
 
   // Error messages
   errors: {
-    error: 'Error',
-    cannotLoadPlans: 'Cannot load plans',
-    codeNotFound: 'Code not found',
-    genericError: 'An error occurred',
-  },
-
-  // Modals additions
-  modalExtras: {
-    scanProduct: 'Scan Product',
-    productScanSimulation: 'Product scan simulation',
-    takePhoto: 'Take Photo',
-    aiMealAnalysis: 'AI meal analysis',
-    manualEntry: 'Manual Entry',
-    enterInformation: 'Enter information',
-    followCarbs: 'Track your carbs easily',
-  },
-
-  // Blog additions
-  blogExtras: {
-    reliableSources: 'Reliable sources',
-    sources: 'Nature Medicine • The Lancet • WHO • ADA',
-  },
-
-  // Professional additions
-  professionalExtras: {
-    patientInformation: 'Patient Information',
-    stackTrace: 'Stack trace',
+    error: 'Erreur',
+    cannotLoadPlans: 'Impossible de charger les forfaits',
+    codeNotFound: 'Code manquant',
+    genericError: "Une erreur s'est produite",
   },
 
   nativeHeader: {
-    title: 'Diabetes Assistant',
-    greetings: 'Greetings',
-    question: 'How is your diabetes today?',
+    title: 'Assistant Diabète',
+    greetings: 'Bonjuor',
+    question: 'Comment va votre diabète aujourdhui ?',
   },
 
   bloodSugar: {
-    title: 'Current Blood Sugar',
-    state: 'Normal',
-    measurement: 'Last measurement',
-    noReading: 'No reading yet',
+    title: 'Glycémie Actuelle',
+    state: 'Dans la normale',
+    measurement: 'Dernière mesure',
   },
 
   Actions: {
-    actions: 'Rapid Actions',
+    actions: 'Actions Rapides',
     actionsPopover: {
       bloodSugar: {
-        increment: 'Add Blood Sugar',
+        increment: 'Ajouter Glycémie',
       },
-      title: 'New Glucose Reading',
-      input1: 'Blood Sugar',
-      notes: 'optional',
-      comments: 'Comments',
+      title: 'Nouvelle mesure glycémique',
+      input1: 'Glycémie',
+      notes: 'optionnel',
+      comments: 'Commentaires...',
     },
-    button: 'Save',
+    button: 'Enregister',
   },
 
   Journal: {
-    title: 'Meal Journal',
+    title: 'Journal des Repas',
     media: {
-      scanner: 'Scan barcode',
-      photo: 'Photo + AI',
+      scanner: 'Scanner code-barres',
+      photo: 'Photo + IA',
     },
-    manualEntry: 'or manual entry',
-    title1: 'Food Name',
-    title2: 'Carbohydrates',
-    optional: 'optional',
-    button: 'Add Food',
+    manualEntry: 'ou saisie manuelle',
+    title1: 'Nom de laliment',
+    title2: 'Glucides',
+    optional: 'optionnel',
+    button: 'Ajouter',
   },
 
   Medication: {
@@ -721,41 +796,41 @@ export const en = {
     select: {
       title: 'Select a Medication',
       option: {
-        one: 'Ultra-Rapid Insulin',
+        one: 'Insuline ultra-rapide',
         two: 'Humalog (Lispro)',
         three: 'NovoRapid (Aspart)',
         four: 'Apidra (Glulisine)',
-        five: 'Fiasp (Ultra-Rapid Aspart)',
-        six: 'Rapid Insulin',
+        five: 'Fiasp (Aspart ultra-rapide)',
+        six: 'Insuline rapide',
         seven: 'Actrapid',
         eight: 'Humulin R',
         nine: 'Insuman Rapid',
-        ten: 'Intermediate Insulin',
+        ten: 'Insuline intermédiaire',
         eleven: 'Insulatard (NPH)',
         twelve: 'Humulin N (NPH)',
         thirteen: 'Insuman Basal (NPH)',
-        fourteen: 'Long-Acting Insulin',
+        fourteen: 'Insuline lente',
         fifteen: 'Lantus (Glargine)',
         sixteen: 'Levemir (Detemir)',
         seventeen: 'Toujeo (Glargine U300)',
         eighteen: 'Tresiba (Degludec)',
         nineteen: 'Abasaglar (Glargine)',
-        twenty: 'Mixed Insulin',
+        twenty: 'Insuline mixte',
         twentyone: 'NovoMix 30 (Aspart + NPH)',
         twentytwo: 'Humalog Mix 25/50 (Lispro + NPH)',
-        twentythree: 'Humulin 70/30 (Rapid + NPH)',
-        twentyfour: 'Insuman Comb (Rapid + NPH)',
-        twentyfive: 'Metformin',
-        twentysix: 'Glucophage (Metformin)',
-        twentyseven: 'Stagid (Metformin)',
+        twentythree: 'Humulin 70/30 (Rapide + NPH)',
+        twentyfour: 'Insuman Comb (Rapide + NPH)',
+        twentyfive: 'Metformine',
+        twentysix: 'Glucophage (Metformine)',
+        twentyseven: 'Stagid (Metformine)',
         twentyeight: 'Gliclazide',
         twentynine: 'Diamicron (Gliclazide)',
         thirty: 'Victoza (Liraglutide)',
         thirtyone: 'Ozempic (Semaglutide)',
         thirtytwo: 'Trulicity (Dulaglutide)',
-        thirtythree: 'Januvia (Sitagliptin)',
-        thirtyfour: 'Forxiga (Dapagliflozin)',
-        thirtyfive: 'Other',
+        thirtythree: 'Januvia (Sitagliptine)',
+        thirtyfour: 'Forxiga (Dapagliflozine)',
+        thirtyfive: 'Autre',
       },
     },
     dose: 'Dose',
@@ -764,413 +839,418 @@ export const en = {
   },
 
   Activity: {
-    title: 'Activity',
-    subtitle: 'Physical Activity',
-    type: 'Type of Activity',
-    select: 'Select an activity',
+    title: 'Activité',
+    subtitle: ' Activité Physique',
+    type: 'Type d activité',
+    select: 'Sélectionner une activité',
     Popover: {
-      one: 'Walking',
-      two: 'Running',
-      three: 'Cycling',
-      four: 'Swimming',
-      five: 'Weight Training',
-      six: 'Other',
+      one: 'Marche',
+      two: 'Course',
+      three: 'Vélo',
+      four: 'Natation',
+      five: 'Musculation',
+      six: 'Autre',
     },
-    duration: 'Duration',
-    button: 'Register',
+    duration: 'Durée',
+    button: 'Enregister',
   },
 
   Alerts: {
-    title: 'AI Predictive Alerts',
-    urgent: 'Urgent',
-    monitor: 'To Monitor',
-    good: 'All Good',
-    message: 'No predictive alerts detected at the moment.',
+    title: 'Alertes Prédictives IA',
+    urgent: 'Urgentes',
+    monitor: 'À surveiller',
+    good: 'Tout va bien !',
+    message: 'Aucune alerte prédictive détectée pour le moment.',
   },
 
   analyze: {
-    title: 'Continuous AI Analysis',
+    title: 'Analyse IA Continue',
     message:
-      'The system continuously analyzes your data to detect risk patterns.',
+      'Le système analyse vos données en continu pour détecter les patterns à risque',
   },
 
   mission: {
-    title: 'Klukoo Mission',
+    title: 'La mission de DiabCare',
     message:
-      'Our mission is to help you better understand and manage your diabetes with tools adapted to your reality.',
+      'Notre mission est de vous aider à mieux comprendre et gérer votre diabète avec des outils adaptés à votre réalité.',
   },
 
   analysis: {
-    title: 'Glucose Analysis',
-    days: 'Last 7 days',
-
+    title: 'Analyse Glycémique',
+    days: '7 derniers jours',
     time: {
-      midnight: 'Midnight',
-      noon: 'Noon',
+      midnight: 'Minuit',
+      noon: 'Midi',
     },
     context: {
-      fasting: 'Fasting',
-      postMeal: 'Post-meal',
-      morning: 'Morning',
-      breakfast: 'Breakfast',
-      activity: 'Activity',
-      lunch: 'Lunch',
-      snack: 'Snack',
-      dinner: 'Dinner',
-      evening: 'Evening',
+      fasting: 'Jeûne',
+      postMeal: 'Post-repas',
+      morning: 'Matin',
+      breakfast: 'Petit-déj',
+      activity: 'Activité',
+      lunch: 'Déjeuner',
+      snack: 'Collation',
+      dinner: 'Dîner',
+      evening: 'Soirée',
     },
-
     state: {
-      one: 'High',
-      two: 'Borderline',
-      three: 'Target',
-      four: 'Low',
+      one: 'Élevé',
+      two: 'Limite',
+      three: 'Cible',
+      four: 'Bas',
     },
-    contextChart: 'Context',
+    contextChart: 'Contexte',
   },
 
   target: {
-    title: 'Time in Target',
-    goal: 'Goal',
-    target: 'In Target',
+    title: 'Temps dans la Cible',
+    goal: 'Objectif',
+    target: 'dans la cible',
   },
 
   mode: {
-    average: 'Average',
-    variability: 'Variability',
-    estimated: 'Estimated',
+    average: 'Moyenne',
+    variability: 'Variabilité',
+    estimated: 'Estimé',
   },
 
   trend: {
-    title: 'Weekly Trend',
-    message: 'Percentage of Time in Target per Day',
+    title: 'Tendances Hebdomadaires',
+    message: 'Pourcentage de temps dans la cible par jour',
   },
 
   reminder: {
-    writeup: 'Insulin Reminder – 7:00 PM Lantus 20IU',
+    writeup: 'Rappel Insuline - 19h00 Lantus 20UI',
   },
 
   lantus: {
-    dose: 'Usual Dose',
-    time: 'Scheduled Time',
-    injection: 'Last Injection: Today 07:45',
-    button: 'Mark as Injected',
+    dose: 'Dose habituelle',
+    time: 'Heure programmée',
+    injection: 'Dernière injection : Aujourd hui 07:45',
+    button: 'Marquer comme injecté',
   },
 
   humalog: {
-    title: 'Humalog (Fast-Acting)',
-    glucose: 'Current Blood Glucose',
-    pending: 'Pending',
-    carbs: 'Meal Carbs',
-    dose: 'Calculated Dose',
-    meal: 'Meal',
-    button: 'Schedule an injection',
+    title: 'Humalog (Rapide)',
+    glucose: 'Glycémie actuelle',
+    pending: 'En attente',
+    carbs: 'Glucides du repas',
+    dose: 'Dose Calculée',
+    meal: 'Repas',
+    button: 'Planifier une injection',
   },
 
   injection: {
-    title: 'Missed Injection',
-    time: 'Yesterday 7:00 PM – Humalog 6 IU',
-    administer: 'Not Administered',
-    button1: 'Ignore',
-    button2: 'Inject Now',
+    title: 'Injection Manquée',
+    time: 'Hier 19:00 - Humalog 6 UI',
+    administer: 'Non administré',
+    button1: 'Ignorer',
+    button2: 'Injecter maintenant',
   },
 
   history: {
-    title: '7-Day History',
-    message: 'Injections Done / Scheduled per Day',
+    title: 'Historique 7 jours',
+    message: 'Injections réalisées / programmées par jour',
   },
 
   consultation: {
-    title: 'Consultation Request',
-    subtitle: 'Consult a healthcare professional specialized in diabetes',
+    title: 'Demande de Consultation',
+    subtitle: 'Consultez un professionnel de santé spécialisé en diabète',
     request: {
-      title: 'New Consultation Request',
-      subtitle: 'Select a professional and describe your need',
+      title: 'Nouvelle demande de consultation',
+      subtitle: 'Sélectionnez un professionnel et décrivez votre besoin',
       input1: {
-        title: 'Healthcare Professional',
-        writeup: 'Choose a professional',
+        title: 'Professionnel de santé *',
+        writeup: 'Choisissez un professionnel',
       },
       input2: {
-        title: 'Reason for Consultation *',
+        title: 'Motif de consultation *',
         writeup: {
-          title: 'Select a reason',
+          title: 'Sélectionnez un motif',
           options: {
-            one: 'Routine Check',
-            two: 'Urgent Consultation',
-            three: 'Blood Glucose Management',
-            four: 'Treatment Adjustment',
-            five: 'Nutritional Advice',
-            six: 'Psychological Support',
-            seven: 'Diabetes Complications',
-            eight: 'Post-Consultation Follow-up',
+            one: 'Contrôle de routine',
+            two: 'Consultation urgente',
+            three: 'Gestion glycémie',
+            four: 'Ajustement traitement',
+            five: 'Conseil nutritionnel',
+            six: 'Soutien psychologique',
+            seven: 'Complications diabète',
+            eight: 'Suivi post-consultation',
           },
         },
       },
       input3: {
-        title: 'Message for the professional (optional)',
-        writeup: 'Describe your situation, symptoms, or questions…',
+        title: 'Message pour le professionnel (optionnel)',
+        writeup: 'Décrivez votre situation, vos symptômes ou questions...',
       },
     },
-    button: 'Send Request',
+    button: 'Envoyer la demande',
   },
 
   consultationRequest: {
-    title: 'My Consultation Requests',
-    subtitle: 'History of your requests and their status',
+    title: 'Mes demandes de consultation',
+    subtitle: 'Historique de vos demandes et leur statut',
     request: {
-      noRequest: 'No consultation requests',
-      procedure: 'Your requests will appear here once submitted',
+      noRequest: 'Aucune demande de consultation',
+      procedure: 'Vos demandes apparaîtront ici une fois envoyées',
     },
   },
 
   reminderScreen: {
-    title: 'My Reminders',
-    subtitle: 'Manage your reminders for insulin, medication, tests, and more',
+    title: 'Mes Rappels',
+    subtitle: 'Gérez vos rappels pour insuline, médicaments, tests et plus',
     newReminder: {
-      title: 'All Reminders',
-      reminderSet: 'No Reminder Set',
-      writeup: 'Create your first reminder so you never forget your treatments',
+      title: ' Tous les rappels',
+      reminderSet: 'Aucun rappel configuré',
+      writeup:
+        'Créez votre premier rappel pour ne jamais oublier vos traitements',
     },
-    button1: 'Create a Reminder',
-    button2: 'New Reminder',
+    button1: 'Créer un rappel',
+    button2: 'Nouveau Rappel',
   },
 
   chatTestimonial: {
     firstMessage:
-      'Hello everyone! I managed to keep my blood glucose in the target range all week 🎉',
+      'Bonjour à tous ! Jai réussi à maintenir ma glycémie dans la zone cible toute la semaine 🎉',
     secondMessage:
-      'Congratulations Marie! This is exactly the kind of progress we love to see. Keep it up!',
+      'Félicitations Marie ! Cest exactement le type de progrès que nous aimons voir. Continuez ainsi !',
     thirdMessage:
-      'I have a question about rapid-acting insulin before meals. Can anyone share their experience?',
+      'Jai une question sur linsuline rapide avant les repas. Quelquun peut-il partager son expérience ?',
   },
 
   journalEntries: {
     id1: {
-      date: 'Friday',
-      glucoseStatus: 'slightly high',
-      context: 'after thiéboudienne.',
+      date: 'Vendredi',
+      glucoseStatus: 'Légèrement élevé',
+      context: 'Après thiéboudienne',
     },
     id2: {
-      date: 'Friday',
-      glucoseStatus: 'within target range',
-      context: 'on an empty stomach',
+      date: 'Vendredi',
+      glucoseStatus: 'Dans la cible',
+      context: 'À jeun',
     },
     id3: {
-      date: 'Thursday',
-      glucoseStatus: 'high',
-      context: 'before dinner.',
+      date: 'Jeudi',
+      glucoseStatus: 'Élevé',
+      context: 'Avant dîner',
     },
     id4: {
-      date: 'Thursday',
-      glucoseStatus: 'within target range',
-      context: 'after launch',
+      date: 'Jeudi',
+      glucoseStatus: 'Dans la cible',
+      context: 'Post-déjeuner',
     },
     id5: {
-      date: 'Wednesday',
-      glucoseStatus: 'within target range.',
-      context: 'after hibiscus juice without sugar.',
+      date: 'Mercredi',
+      glucoseStatus: 'Dans la cible',
+      context: 'Après bissap sans sucre',
     },
   },
 
   blogScreen: {
     article: {
       id7: {
-        category: 'Instructions',
-        title: 'Nutrition guide for diabetics',
+        category: 'instructions',
+        title: 'Guide nutritionnel pour les diabétiques',
         excerpt:
-          'Complete guide for a balanced diet adapted to diabetes. Discover recommended foods, portions, and nutritional strategies...',
-        authorTitle: 'Nutritionist.',
+          'Guide complet pour une alimentation équilibrée adaptée au diabète. Découvrez les aliments recommandés, les portions et les stratégies nutritionnelles...',
+        authorTitle: 'Nutritionniste.',
       },
       id8: {
-        category: 'Instructions',
-        title: 'Complete guide on type 1 and type 2 diabetes.',
+        category: 'instructions',
+        title: 'Guide complet sur le diabète de type 1 et de type 2.',
         excerpt:
-          'Everything you need to know about diabetes: definitions, symptoms, treatments, complications, and daily management...',
-        authorTitle: 'Endocrinologist.',
+          'Tout ce que vous devez savoir sur le diabète : définitions, symptômes, traitements, complications et gestion au quotidien...',
+        authorTitle: 'Endocrinologue.',
       },
       id1: {
-        category: 'Research',
+        category: 'Recherche',
         title:
-          'Breakthrough: 83% of type 1 diabetics freed from insulin with Zimislecel',
+          'Percée : 83 % des diabétiques de type 1 libérés de l’insuline grâce au Zimislecel',
         excerpt:
-          'A revolutionary stem cell therapy allows 83% of patients to no longer need insulin injections after one year…',
+          'Une thérapie révolutionnaire par cellules souches permet à 83 % des patients de ne plus avoir besoin d’injections d’insuline après un an…',
       },
       id2: {
         category: 'Innovation',
         title:
-          'Revolutionary smart gel: healing diabetic wounds in just a few days.',
+          'Gel “intelligent” révolutionnaire : guérison des plaies diabétiques en quelques jours.',
         excerpt:
-          'A new gel restores blood circulation and dramatically accelerates the healing of chronic diabetic wounds...',
+          'Un nouveau gel restaure la circulation sanguine et accélère dramatiquement la cicatrisation des plaies diabétiques chroniques...',
       },
       id3: {
-        category: 'Research',
+        category: 'Recherche',
         title:
-          'First transplantation of genetically modified islets without immunosuppression',
+          'Première transplantation d’îlots génétiquement modifiés sans immunosuppression',
         excerpt:
-          'For the first time, genetically edited pancreatic islet cells were successfully transplanted without anti-rejection drugs…',
+          'Pour la première fois, des cellules d’îlots pancréatiques génétiquement éditées ont été transplantées avec succès sans médicaments anti-rejet…',
       },
       id4: {
         category: 'Innovation',
-        title: 'Smart insulin: first successful clinical trials',
+        title: 'Insuline intelligente : premiers essais cliniques réussis',
         excerpt:
-          'An insulin that automatically adapts to blood glucose levels shows promising results in tests...',
+          'Une insuline qui s’adapte automatiquement au taux de glucose sanguin montre des résultats prometteurs lors des tests...',
       },
       id5: {
-        category: 'Testimonials',
+        category: 'Témoignages',
         title:
-          'Marathon with diabetes: the achievement of James Thompson at 65 years old.',
+          'Marathon avec le diabète : l’exploit de James Thompson à 65 ans.',
         excerpt:
-          'Diabetic for 30 years, James Thompson finishes the Boston Marathon and inspires thousands of people...',
+          'Diabétique depuis 30 ans, James Thompson termine le marathon de Boston et inspire des milliers de personnes...',
       },
       id6: {
         category: 'Innovation',
         title:
-          'Predictive AI 2025: prevention of hypoglycemia with 97% accuracy',
+          'IA prédictive 2025 : prévention des hypoglycémies avec 97 % de précision',
         excerpt:
-          'The new generation of medical AI achieves 97% accuracy in predicting crises, with alerts up to 45 minutes in advance…',
+          'La nouvelle génération d’IA médicale atteint une précision de 97 % dans la prédiction des crises, avec alerte 45 minutes à l’avance…',
       },
     },
     sources: {
-      title: 'Reliable Sources',
+      title: 'Sources fiables',
       subtitle:
-        'All our news is verified and comes from internationally recognized medical sources.',
+        'Toutes nos actualités sont vérifiées et proviennent de sources médicales reconnues internationalement',
     },
-    button: 'Read',
+    button: 'Lire',
   },
 
   familyScreen: {
     heading: {
-      title: 'Family',
-      subtitle: 'Your circle of care',
+      title: 'Famille',
+      subtitle: 'Votre cercle de soins',
     },
     familySharingCode: {
-      title: 'Family Sharing Code',
+      title: 'Code de partage familial',
       subtitle:
-        'Share this code with your relatives so they can accompany you.',
-      button: 'Copy the code',
+        'Partagez ce code avec vos proches afin qu’ils puissent vous accompagner.',
+      button: 'Copier le code',
     },
     numOfPatients: {
-      first: 'Alerts',
-      second: 'Connected days',
+      first: 'Alertes',
+      second: 'Jours connectés',
     },
     familyMembers: {
-      title: 'Family Members',
+      title: 'Membres de la famille',
       patientOne: {
-        role: 'Wife',
-        permission: 'Full Access',
-        lastSeen: 'Online',
+        role: 'Épouse',
+        permission: 'Accès complet',
+        lastSeen: 'En ligne',
       },
       patientTwo: {
-        role: 'Primary Care Doctor',
-        permission: 'Emergency + Data',
-        lastSeen: '2 hours ago',
+        role: 'Médecin traitant',
+        permission: 'Urgences + Données',
+        lastSeen: 'Il y a 2 heures',
       },
       patientThree: {
-        role: 'Son',
-        permission: 'Read-only',
-        lastSeen: '1 hour ago',
+        role: 'Fils',
+        permission: 'Lecture seule',
+        lastSeen: 'Il y a 1 heure',
       },
     },
     recentActivity: {
       firstOne: {
-        title: 'Recent Activity',
-        action: 'Fatou has viewed your latest blood glucose readings.',
-        time: '10 minutes ago',
+        title: 'Activité récente',
+        action: 'Fatou a consulté vos dernières glycémies.',
+        time: 'Il y a 10 minutes',
       },
       secondOne: {
-        action: 'Dr. Kane added a medical note.',
-        time: '2 hours ago',
+        action: 'Dr Kane a ajouté une note médicale.',
+        time: 'Il y a 2 heures',
       },
       thirdOne: {
-        action: 'Ibrahim received a missed injection alert.',
-        time: 'Yesterday at 7:30 PM',
+        action: 'Ibrahim a reçu une alerte pour injection manquée.',
+        time: 'Hier à 19h30',
       },
       fourthOne: {
-        action: 'Fatou confirmed your Humalog injection.',
-        time: 'Yesterday at 3:00 PM',
+        action: 'Fatou a confirmé votre injection de Humalog.',
+        time: 'Hier à 15h00',
       },
     },
-    button1: 'Invite a Care Partner',
-    button2: 'Manage Permissions',
-    emergencyContact: 'Emergency Contact',
+    button1: 'Inviter un partenaire de soins',
+    button2: 'Gérer les permissions',
+    emergencyContact: 'Contact d’urgence',
+  },
+
+  toastMessage: {
+    title: 'Nouvelle entrée',
+    description: 'Fonctionnalité disponible prochainement',
   },
 
   //professional login card
   professionalLoginCard: {
-    title: 'Healthcare Professional',
-    subtitle: 'Access to professional tools',
-    button: 'Access Professional Space',
-    testAccess: 'Professional Test Access',
-    loginButton: 'Login',
-  },
-
-  toastMessage: {
-    title: 'New Entry',
-    description: 'Feature coming soon',
+    title: 'Professionnel de santé',
+    subtitle: 'Accès aux outils professionnels',
+    button: "Accéder à l'espace professionnel",
+    testAccess: 'Accès test professionnel',
+    loginButton: 'Connexion',
   },
 
   //professionalDashboard
   professionalDashboard: {
-    title: 'Professional',
-    study: 'Endocrinology',
-    mode: 'Demo Mode',
-    logout: 'Logout',
+    loading: 'Chargement...',
+    toast: {
+      logout: {
+        title: 'Déconnexion',
+        description: 'Vous avez été déconnecté du mode demo',
+      },
+    },
+    title: 'Professionnel',
+    study: 'Endocrinologie',
+    mode: 'Mode Démo',
+    logout: 'Déconnexion',
     stats: {
-      title1: 'Followed Patients',
-      title2: 'Consultations This Month',
-      title3: 'Generated Reports',
-      title4: 'Average Time / Consultation',
-      compared: 'compared to last month',
+      title1: 'Patients suivis',
+      title2: 'Consultations ce mois',
+      title3: 'Rapports générés',
+      title4: 'Temps moyen / consultation',
+      compared: 'vs mois dernier',
     },
 
     tableHeaderSections: {
-      revenue: 'Revenue',
-      settings: 'Settings',
+      revenue: 'Revenus',
+      settings: 'Paramètres',
     },
 
     overview: {
-      heading: 'Overview',
+      heading: 'Aperçu',
       recentPatients: {
-        title: 'Recent patients',
+        title: 'Patients récents',
         firstPatient: {
-          lastvisit: '2 hours ago',
+          lastvisit: 'Il y a 2 heures',
           status: 'stable',
         },
         secondPatient: {
-          lastvisit: 'Yesterday',
-          status: 'improvement',
+          lastvisit: 'Hier',
+          status: 'amélioration',
         },
         ThirdPatient: {
-          lastvisit: '3 days ago',
-          status: 'improvement',
+          lastvisit: 'Il y a 3 jours',
+          status: 'amélioration',
         },
-        button: 'See all patients',
+        button: 'Voir tous les patients',
       },
 
-      //
       quickActions: {
-        title: 'Quick Actions',
+        title: 'Actions rapides',
         scheduleAppointment: {
-          title: 'Schedule an appointment',
-          subtitle: 'Schedule an appointment',
+          title: 'Planifier un rendez-vous',
+          subtitle: 'Planifier un rendez-vous',
           patient: {
-            placeholder: 'Select a patient',
+            placeholder: 'Sélectionner un patient',
           },
           date: {
-            placeholder: 'Choose a date',
+            placeholder: 'Choisir une date',
           },
           time: {
-            title: 'Time',
-            placeholder: 'Select the time',
+            title: 'Heure',
+            placeholder: "Sélectionner l'heure",
           },
           consultationType: {
-            title: 'Type of consultation',
+            title: 'Type de consultation',
             placeholder: {
-              title: 'Select the type',
-              routine: 'Routine follow-up',
-              urgent: 'Urgent consultation',
-              teleconsultation: 'Teleconsultation',
-              first: 'First consultation',
+              title: 'Sélectionner le type',
+              routine: 'Suivi de routine',
+              urgent: 'Consultation urgente',
+              teleconsultation: 'Téléconsultation',
+              first: 'Première consultation',
             },
           },
           notes: {
@@ -1178,800 +1258,3353 @@ export const en = {
             placeholder: 'Consultation observations...',
           },
           button1: 'Cancel',
-          button2: 'Schedule',
+          button2: 'Programmer',
         },
 
         //
         reportGenerator: {
-          title: 'Generate a report',
-          subtitle: 'Generate a report',
+          title: 'Générer un rapport',
+          subtitle: 'Générer un rapport',
           reportType: {
-            title: 'Type of report',
+            title: 'Type de rapport',
             placeholder: {
-              title: 'Select a type',
-              monthly: 'Monthly report',
-              patient: 'Patient report',
-              financial: 'Financial report',
-              activity: 'Activity report',
+              title: 'Sélectionner un type',
+              monthly: 'Rapport mensuel',
+              patient: 'Rapport patient',
+              financial: 'Rapport financier',
+              activity: "Rapport d'activité",
             },
           },
           timeframe: {
-            title: 'Timeframe',
+            title: 'Période',
             placeholder: {
-              title: 'Select the period',
-              lastWeek: 'Last week',
-              lastMonth: 'Last month',
-              lastQuarter: 'Last quarter',
-              custom: 'Custom period',
+              title: 'Sélectionner la période',
+              lastWeek: 'Semaine dernière',
+              lastMonth: 'Mois dernier',
+              lastQuarter: 'Trimestre dernier',
+              custom: 'Période personnalisée',
             },
           },
           format: {
-            placeholder: 'Select the format',
+            placeholder: 'Sélectionner le format',
           },
-          button1: 'Close',
-          button2: 'Generate',
+          button1: 'Fermer',
+          button2: 'Générer',
         },
 
         //
         addPatient: {
-          title: 'Add a patient',
-          subtitle: 'Add a new patient',
+          title: 'Ajouter un patient',
+          subtitle: 'Ajouter un nouveau patient',
           name: {
-            firstName: 'Frist Name',
-            lastName: 'Last Name',
+            firstName: 'Prénom',
+            lastName: 'Nom de famille',
           },
-          number: 'Phone',
+          number: 'Téléphone',
 
           diabetesTypes: {
-            title: 'Type of Diabetes',
+            title: 'Type de diabète',
             placeholder: {
-              title: 'Select the type',
+              title: 'Sélectionner le type',
               type1: 'Type 1',
               type2: 'Type 2',
-              gestational: 'Gestational',
+              gestational: 'Gestationnel',
             },
           },
           medicalNotes: {
-            title: 'Medical Notes',
-            placeholder: 'Medical history, allergies, etc.',
+            title: 'Notes médicales',
+            placeholder: 'Antécédents médicaux, allergies, etc.',
           },
-          button1: 'Close',
-          button2: 'Add',
+          button1: 'Fermer',
+          button2: 'Ajouter',
         },
 
         //accountSetting
         accountSetting: {
-          title: 'Account Settings',
+          title: 'Paramètres du compte',
           currentStatus: {
-            title: 'Availability',
-            placeholder: 'Current Status',
+            title: 'Disponibilité',
+            placeholder: 'Statut actuel',
             options: {
-              available: 'Available',
-              busy: 'Busy',
-              offline: 'Offline',
+              available: 'Disponible',
+              busy: 'Occupé',
+              offline: 'Hors ligne',
             },
           },
 
           notifications: {
-            placeholder: 'Notification Preferences',
+            placeholder: 'Préférences de notification',
             options: {
-              all: 'All Notifications',
-              important: 'Important Only',
-              none: 'No Notifications',
+              all: 'Toutes les notifications',
+              important: 'Uniquement les importantes',
+              none: 'Aucune notification',
             },
           },
 
-          consultationFee: ' Tarif consultation ',
-          button1: 'Close',
-          button2: 'Save',
+          consultationFee: 'Tarif de consultation',
+          button1: 'Fermer',
+          button2: 'Enregistrer',
         },
       },
     },
 
     //patient
     patients: {
-      calendar: 'Calender',
-      title: 'List of patients',
+      calendar: 'Calendrier',
+      title: 'Liste des patients',
       tableHeading: {
         first: 'Patient',
-        second: 'Diabetes Type',
-        third: 'Last consultation',
-        fourth: 'Last blood glucose',
-        fifth: 'Status',
+        second: 'Type de diabète',
+        third: 'Dernière consultation',
+        fourth: 'Dernière glycémie',
+        fifth: 'Statut',
       },
       lastBloodGlucose: {
-        first: 'stable',
-        second: 'improvement',
-        third: 'warning',
-        fourth: 'stable',
+        first: 'Stable',
+        second: 'amélioration',
+        third: 'attention',
+        fourth: 'Stable',
       },
       recentNotes: {
-        title: 'Recent notes',
+        title: 'Notes récentes',
         people: {
           first:
-            'Glucose well controlled. Continue the current treatment. Next consultation in 1 week.',
+            'Glycémie bien contrôlée. Continuer le traitement actuel. Prochaine consultation dans 1 semaine.',
           second:
-            'Significant improvement in HbA1c. Reduction of the insulin dose recommended.',
+            "Amélioration significative de l'HbA1c. Réduction de la dose d'insuline recommandée.",
           third:
-            'Frequent blood glucose spikes. Review diet and adjust treatment.',
+            'Pics fréquents de glycémie. Revoir l’alimentation et ajuster le traitement.',
           fourth: '',
         },
       },
       dropdownOptions: {
-        first: 'View record',
-        second: 'Send a message',
-        third: 'Teleconsultation',
-        fourth: 'Call',
-        fifth: 'Edit profile',
+        first: 'Voir le dossier',
+        second: 'Envoyer un message',
+        third: 'Téléconsultation',
+        fourth: 'Appeler',
+        fifth: 'Modifier le profil',
       },
 
       //
       planning: {
-        title: 'Consultation Schedule',
+        title: 'Planning des consultations',
         tableHeading: {
-          time: 'Time',
-          duration: 'Duration',
-          status: 'Status',
+          time: 'Heure',
+          duration: 'Durée',
+          status: 'Statut',
         },
         type: {
-          followUp: 'Routine follow-up',
-          urgent: 'Urgent consultation',
-          teleconsultation: 'Teleconsultation',
-          first: 'First consultation',
+          followUp: 'Suivi routine',
+          urgent: 'Consultation urgente',
+          teleconsultation: 'Téléconsultation',
+          first: 'Première consultation',
         },
         status: {
-          scheduled: 'Scheduled',
-          completed: 'Completed',
-          cancelled: 'Cancelled',
+          scheduled: 'Planifié',
+          completed: 'Terminé',
+          cancelled: 'Annulé',
         },
         actions: {
-          start: 'Start Consultation',
-          view: 'View Details',
-          edit: 'Edit',
-          cancel: 'Cancel',
+          start: 'Commencer la consultation',
+          view: 'Voir les détails',
+          edit: 'Modifier',
+          cancel: 'Annuler',
         },
       },
 
-      //calendar
+      //calender
       calendarScreen: {
-        title: 'Calender',
-        consulationOf: 'Consultations on',
-        scheduled: 'No consultations scheduled for today',
+        title: 'Calendrier',
+        consulationOf: 'Consultations du',
+        scheduled: "Aucune consultation prévue pour aujourd'hui",
       },
     },
 
-    //consultations
+    //consulations
     consultations: {
-      title: 'My consultations',
+      title: 'Mes consultations',
       placeholder: {
-        title: 'Filter by status',
+        title: 'Filtrer par statut',
         options: {
-          all: 'All',
-          pending: 'Pending',
-          active: 'Active',
-          completed: 'Completed',
+          all: 'Toutes',
+          pending: 'En attente',
+          active: 'Actives',
+          completed: 'Terminées',
         },
       },
-      loading: 'Loading consultations',
+      loading: 'Chargement des consultations...',
     },
 
-    //revenue
     revenue: {
-      title: 'Revenue',
-      thisMonth: 'This Month',
-      revenueThisMonth: 'Net revenue this month',
+      title: 'Revenu',
+      thisMonth: 'Ce mois-ci',
+      revenueThisMonth: 'Revenu net ce mois-ci',
       tableHeader: {
-        grossAmount: 'Gross Amount',
-        status: 'Status',
+        grossAmount: 'Montant Brut',
+        status: 'Statut',
       },
       consultationType: {
-        one: 'Endocrinology Consultation',
-        two: 'Diabetes Follow-up',
-        three: 'Endocrinology Consultation',
-        four: 'Teleconsultation',
-        five: 'Endocrinology Consultation',
-        six: 'Hormonal Follow-up',
+        one: 'Consultation endocrinologie',
+        two: 'Suivi diabète',
+        three: 'Consultation endocrinologie',
+        four: 'Téléconsultation',
+        five: 'Consultation endocrinologie',
+        six: 'Suivi hormonal',
       },
       status: {
-        paid: 'Paid',
-        processing: 'Processing',
-        pending: 'Pending',
+        paid: 'Payé',
+        processing: 'En traitement',
+        pending: 'En attente',
       },
       consultationRevenue: {
-        title: 'Revenue per consultation',
+        title: 'Revenu par consultation',
         writeup:
-          'Revenue is calculated automatically according to the rates per profession defined in the system. Each completed consultation adds the corresponding amount to your revenue.',
+          'Le revenu est calculé automatiquement selon les tarifs par profession définis dans le système. Chaque consultation terminée ajoute le montant correspondant à votre revenu.',
       },
     },
 
     //accountSettings
     accountSettings: {
-      title: 'Account settings',
-      writeup: 'Account settings under development...',
+      title: 'Paramètres du compte',
+      writeup: 'Paramètres du compte en cours de développement...',
     },
   },
 
   //fixes
   getGlucoseStatus: {
-    status_low: 'Low blood sugar',
-    status_normal: 'Within normal range',
-    status_high: 'High blood sugar',
+    status_low: 'Glycémie basse',
+    status_normal: 'Dans la normale',
+    status_high: 'Glycémie élevée',
   },
 
   foodNamePlaceholder: {
-    placeholder_foodName: 'Ex: Apple, Rice, Salad...',
+    placeholder_foodName: 'Ex: Pomme, Riz, Salade...',
   },
 
   mealType: {
-    label_mealType: 'Meal type',
-    option_breakfast: 'Breakfast',
-    option_lunch: 'Lunch',
-    option_dinner: 'Dinner',
+    label_mealType: 'Type de repas',
+    option_breakfast: 'Petit-déjeuner',
+    option_lunch: 'Déjeuner',
+    option_dinner: 'Dîner',
     option_snack: 'Snack',
   },
 
   foodDetailsPlaceholder: {
-    placeholder_foodDetails: 'Ex: With chicken, light sauce...',
+    placeholder_foodDetails: 'Ex: Avec du poulet, sauce légère...',
   },
 
   blogScreenFixes: {
-    title_diabetesNews: 'International news on diabetes',
-    placeholder_searchNews: 'Search news...',
+    title_diabetesNews: 'Actualités internationales sur le diabète',
+    placeholder_searchNews: 'Rechercher des actualités...',
   },
 
   profileScreenFixes: {
-    status_unverifiedProfile: 'Unverified Profile',
-    label_weight: 'Weight',
-    label_professionalLicense: 'Professional license',
-    label_specialty: 'Specialty',
-    action_editProfile: 'Edit Profile',
-    label_firstName: 'First Name',
-    label_lastName: 'Last Name',
-    label_phone: 'Phone',
-  },
-
-  professionalAccess: {
-    title: 'Professional Access Request',
-    firstName: 'First Name',
-    lastName: 'Last Name',
-    email: 'Email',
-    phone: 'Phone',
-    profession: 'Profession',
-    selectProfession: 'Select your profession',
-    doctor: 'Doctor',
-    nurse: 'Nurse',
-    diabetologist: 'Diabetologist',
-    nutritionist: 'Nutritionist',
-    pharmacist: 'Pharmacist',
-    other: 'Other',
-    licenseNumber: 'License Number',
-    institution: 'Institution',
-    motivation: 'Motivation',
-    motivationPlaceholder: 'Explain why you want to access DiabCare...',
-    requestSent: 'Request Sent',
-    requestSentDescription:
-      'Your professional access request has been successfully sent',
-    requestError: 'Error sending the request',
+    status_unverifiedProfile: 'Profil non vérifié',
+    label_weight: 'Poids',
+    label_professionalLicense: 'Licence professionnelle',
+    label_specialty: 'Spécialité',
+    action_editProfile: 'Modifier le profil',
+    label_firstName: 'Prénom',
+    label_lastName: 'Nom',
+    label_phone: 'Téléphone',
   },
 
   professionalNotification: {
-    title_consultationRequests: 'Consultation Requests',
-    message_noRequests: 'No Requests',
-    time_justNow: 'A few minutes ago',
-    time_oneHour: '1 hour ago',
-    time_hours: '{{count}} hours ago',
-    time_day: '{{count}} day ago',
-    time_days: '{{count}} days ago',
-    toast_accessGranted_title: 'Access Granted',
+    title_consultationRequests: 'Demandes de consultation',
+    message_noRequests: 'Aucune demande',
+    time_justNow: 'Il y a quelques minutes',
+    time_oneHour: 'Il y a 1 heure',
+    time_hours: 'Il y a {{count}} heures',
+    time_day: 'Il y a {{count}} jour',
+    time_days: 'Il y a {{count}} jours',
+    toast_accessGranted_title: 'Accès accordé',
     toast_accessGranted_description:
-      '✅ Access granted to the healthcare professional for 24h',
-    toast_accessDenied_title: 'Access Denied',
-    toast_accessDenied_description:
-      '❌ Access denied to the healthcare professional',
-    toast_error_title: 'Error',
-    toast_error_description: 'Error while responding to the request',
-    section_glucose: 'Glucose',
-    section_medications: 'Medications',
-    section_meals: 'Meals',
-    section_activities: 'Activities',
-    section_notes: 'Personal Notes',
-    section_reports: 'Medical Reports',
-    title_dataAccessRequest: '🔐 Request Access to Your Data',
-    label_professionalCode: 'Professional Code:',
-    label_maxConsultations: 'Max Consultations:',
-    label_requested: 'Requested:',
-    title_requestedData: '📋 Requested Data:',
-    button_deny: '❌ Deny',
-    button_approve: '✅ Approve (24h)',
+      '✅ Accès accordé au professionnel de santé pour 24h',
+    toast_accessDenied_title: 'Accès refusé',
+    toast_accessDenied_description: '❌ Accès refusé au professionnel de santé',
+    toast_error_title: 'Erreur',
+    toast_error_description: 'Erreur lors de la réponse à la demande',
+    section_glucose: 'Glycémies',
+    section_medications: 'Médicaments',
+    section_meals: 'Repas',
+    section_activities: 'Activités',
+    section_notes: 'Notes personnelles',
+    section_reports: 'Rapports médicaux',
+    title_dataAccessRequest: "🔐 Demande d'Accès à vos Données",
+    label_professionalCode: 'Code professionnel:',
+    label_maxConsultations: 'Consultations max:',
+    label_requested: 'Demandé:',
+    title_requestedData: '📋 Données demandées:',
+    button_deny: '❌ Refuser',
+    button_approve: '✅ Autoriser (24h)',
   },
 
   applicationCard: {
-    professional_endocrinologist: 'Endocrinologist',
-    professional_diabetologist: 'Diabetologist',
-    professional_nutritionist: 'Nutritionist',
-    professional_generalPractitioner: 'General Practitioner',
-    professional_nurse: 'Specialized Nurse',
-    professional_pharmacist: 'Pharmacist',
-    professional_psychologist: 'Psychologist',
-    professional_podiatrist: 'Podiatrist',
-    badge_pending: 'Pending',
-    notSpecified: 'Not specified',
-    application_submitted: 'Application submitted',
-    button_approve: 'Approve',
-    button_reject: 'Reject',
-    personalInfo_title: 'Personal Information',
-    personalInfo_email: 'Email:',
-    personalInfo_phone: 'Phone:',
-    personalInfo_location: 'Location:',
-    professionalQualifications_title: 'Professional Qualifications',
-    professionalQualifications_licenseNumber: 'License Number:',
-    professionalQualifications_institution: 'Institution:',
-    documents_title: 'Supporting Documents',
+    professional_endocrinologist: 'Endocrinologue',
+    professional_diabetologist: 'Diabétologue',
+    professional_nutritionist: 'Nutritionniste',
+    professional_generalPractitioner: 'Médecin généraliste',
+    professional_nurse: 'Infirmier(e) spécialisé(e)',
+    professional_pharmacist: 'Pharmacien',
+    professional_psychologist: 'Psychologue',
+    professional_podiatrist: 'Podologue',
+    badge_pending: 'En attente',
+    notSpecified: 'Non spécifiée',
+    application_submitted: 'Candidature déposée',
+    button_approve: 'Approuver',
+    button_reject: 'Rejeter',
+    personalInfo_title: 'Informations personnelles',
+    personalInfo_email: 'Email :',
+    personalInfo_phone: 'Téléphone :',
+    personalInfo_location: 'Localisation :',
+    professionalQualifications_title: 'Qualifications professionnelles',
+    professionalQualifications_licenseNumber: 'N° Licence :',
+    professionalQualifications_institution: 'Institution :',
+    documents_title: 'Documents justificatifs',
     documents_label: 'Document',
-    button_view: 'View',
-    noDocument: 'No document',
-    application_submitted_on: 'Application submitted on',
+    button_view: 'Voir',
+    noDocument: 'Aucun document',
+    application_submitted_on: 'Candidature déposée le',
   },
 
   documentUploader: {
-    file_too_large: '{{fileName}}: File too large (max 10MB)',
-    file_unsupported_type: '{{fileName}}: Unsupported file type',
-    max_files_allowed: 'Maximum {{maxFiles}} files allowed',
-    file_already_added: '{{fileName}}: File already added',
-    documents_title: 'Supporting Documents',
-    documents_count: '{{current}}/{{max}} files',
-    dropzone_dragFiles: 'Drag your documents here',
-    dropzone_orClick: 'or',
-    dropzone_clickToSelect: 'click to select',
-    dropzone_fileInfo: '{{types}} - Max {{maxFiles}} files - 10MB per file',
-    documents_added: 'Added Documents:',
-    requiredDocuments_title: '📋 Required Documents:',
-    requiredDocuments_item1: '• Medical diploma or professional certification',
-    requiredDocuments_item2: '• Valid practicing license',
+    file_too_large: '{{fileName}}: Fichier trop volumineux (max 10MB)',
+    file_unsupported_type: '{{fileName}}: Type de fichier non supporté',
+    max_files_allowed: 'Maximum {{maxFiles}} fichiers autorisés',
+    file_already_added: '{{fileName}}: Fichier déjà ajouté',
+    documents_title: 'Documents justificatifs',
+    documents_count: '{{current}}/{{max}} fichiers',
+    dropzone_dragFiles: 'Glissez vos documents ici',
+    dropzone_orClick: 'ou',
+    dropzone_clickToSelect: 'cliquez pour sélectionner',
+    dropzone_fileInfo:
+      '{{types}} - Max {{maxFiles}} fichiers - 10MB par fichier',
+    documents_added: 'Documents ajoutés :',
+    requiredDocuments_title: '📋 Documents requis :',
+    requiredDocuments_item1:
+      '• Diplôme de médecine ou certification professionnelle',
+    requiredDocuments_item2: "• Licence d'exercice en cours de validité",
     requiredDocuments_item3:
-      '• Certificate of registration with the medical board',
-    requiredDocuments_item4: '• Detailed professional CV',
-    requiredDocuments_item5: '• Identification (optional but recommended)',
+      "• Certificat d'inscription à l'ordre des médecins",
+    requiredDocuments_item4: '• CV professionnel détaillé',
+    requiredDocuments_item5: "• Pièce d'identité (optionnel mais recommandé)",
   },
 
   errorBoundary: {
-    error_occurred: 'Oops! An error occurred',
+    error_occurred: "Oups! Une erreur s'est produite",
     unexpected_error_message:
-      'An unexpected error occurred in the DARE application. Our technical team has been notified automatically.',
-    button_restart: 'Restart',
-    button_home: 'Home',
-    footer_text: '💪 DARE - Dare to conquer diabetes together',
+      "Une erreur inattendue s'est produite dans l'application DARE. Notre équipe technique a été informée automatiquement.",
+    button_restart: 'Redémarrer',
+    button_home: 'Accueil',
+    footer_text: '💪 DARE - Osez vaincre le diabète ensemble',
   },
 
   onboardingFlow: {
-    language_selected_title: 'Language selected',
-    language_selected_description: 'English selected successfully',
-    choose_language_title: 'Choose your language',
-    choose_language_description: 'Select your preferred language to continue',
+    language_selected_title: 'Langue sélectionnée',
+    language_selected_description: 'Français sélectionné avec succès',
+    choose_language_title: 'Choisissez votre langue',
+    choose_language_description:
+      'Sélectionnez votre langue préférée pour continuer',
   },
 
   planSelection: {
-    loading_plans: 'Loading plans...',
-    plans_error_title: 'Error',
-    plans_error_description: 'Unable to load plans',
-    choose_plan_title: 'Choose your DiaCare plan',
-    choose_plan_description: 'Select the plan that best fits your needs',
-    badge_recommended_family: 'Recommended for family',
-    per_month: 'per month',
-    selected: 'Selected',
-    choose_this_plan: 'Choose this plan',
-    payment_secure: '💳 Secure payment via Flutterwave',
-    payment_method_card: '• Bank cards (Visa, Mastercard, etc.)',
+    loading_plans: 'Chargement des forfaits...',
+    plans_error_title: 'Erreur',
+    plans_error_description: 'Impossible de charger les forfaits',
+    choose_plan_title: 'Choisissez votre forfait DiaCare',
+    choose_plan_description:
+      'Sélectionnez le forfait qui correspond le mieux à vos besoins',
+    badge_recommended_family: 'Recommandé pour la famille',
+    per_month: 'par mois',
+    selected: 'Sélectionné',
+    choose_this_plan: 'Choisir ce forfait',
+    payment_secure: '💳 Paiement sécurisé par Flutterwave',
+    payment_method_card: '• Cartes bancaires (Visa, Mastercard, etc.)',
     payment_method_mobile: '• Mobile Money (Orange Money, MTN, Wave, etc.)',
-    payment_method_bank: '• Local bank transfers',
+    payment_method_bank: '• Virements bancaires locaux',
     payment_method_patient_code:
-      '• Patient code generated automatically after payment',
+      '• Code patient généré automatiquement après paiement',
   },
 
   professionalCodeManager: {
-    code_generated_title: 'Code generated successfully',
+    code_generated_title: 'Code généré avec succès',
     code_generated_description:
-      'Your professional identification code is ready',
-    code_error_title: 'Error',
-    code_error_description: 'Unable to generate the professional code',
-    code_copied_title: 'Code copied',
-    code_copied_description: 'The code has been copied to the clipboard',
-    missing_code_title: 'Code missing',
-    missing_code_description: 'Please enter a patient access code',
-    meal_fasting: 'Fasting',
-    meal_after_meal: 'After meal',
-    meal_before_dinner: 'Before dinner',
-    access_granted_title: 'Access granted',
-    access_granted_description: 'Patient data retrieved successfully',
-    access_denied_title: 'Access denied',
-    access_denied_description: 'Invalid access code or patient not found',
-    professional_id_code: 'Professional identification code',
+      "Votre code d'identification professionnel est prêt",
+    code_error_title: 'Erreur',
+    code_error_description: 'Impossible de générer le code professionnel',
+    code_copied_title: 'Code copié',
+    code_copied_description: 'Le code a été copié dans le presse-papiers',
+    missing_code_title: 'Code manquant',
+    missing_code_description: "Veuillez saisir un code d'accès patient",
+    meal_fasting: 'À jeun',
+    meal_after_meal: 'Après repas',
+    meal_before_dinner: 'Avant dîner',
+    access_granted_title: 'Accès autorisé',
+    access_granted_description: 'Données patient récupérées avec succès',
+    access_denied_title: 'Accès refusé',
+    access_denied_description: "Code d'accès invalide ou patient introuvable",
+    professional_id_code: "Code d'identification professionnel",
     professional_code_description:
-      'Generate your unique code to access DARE patient data',
-    generate_professional_code: 'Generate my professional code',
-    generated_on: 'Generated on',
-    badge_active: 'Active',
+      'Générez votre code unique pour accéder aux données patients DARE',
+    generate_professional_code: 'Générer mon code professionnel',
+    generated_on: 'Généré le',
+    badge_active: 'Actif',
     professional_code_warning:
-      'Important: This code is personal and confidential. Never share it. It allows you to access sensitive patient data.',
-    patient_data_access_title: 'Patient data access',
+      "Important : Ce code est personnel et confidentiel. Ne le partagez jamais. Il vous permet d'accéder aux données sensibles des patients.",
+    patient_data_access_title: 'Accès données patient',
     patient_data_access_description:
-      "Use your professional code to access a patient's data",
-    patient_code_label: 'Patient access code',
-    patient_code_placeholder: 'Enter the patient code...',
-    all_access_tracked: 'All accesses are tracked and secure',
-    secure_patient_data_title: 'Patient Data - Secure Access',
+      "Utilisez votre code professionnel pour accéder aux données d'un patient",
+    patient_code_label: "Code d'accès patient",
+    patient_code_placeholder: 'Saisissez le code patient...',
+    all_access_tracked: 'Tous les accès sont tracés et sécurisés',
+    secure_patient_data_title: 'Données Patient - Accès Sécurisé',
     secure_patient_data_description:
-      'Sensitive medical information - Strictly professional use',
-    patient_information: 'Patient Information',
-    last_name: 'Last Name',
-    first_name: 'First Name',
-    diabetes_type: 'Diabetes Type',
-    recent_glucose_readings: 'Recent Glucose Readings',
+      'Informations médicales sensibles - Usage strictement professionnel',
+    patient_information: 'Informations Patient',
+    last_name: 'Nom',
+    first_name: 'Prénom',
+    diabetes_type: 'Type de diabète',
+    recent_glucose_readings: 'Relevés glycémiques récents',
     confidentiality_notice:
-      'Confidentiality: This data is strictly confidential and protected by medical secrecy. Any unauthorized use is subject to penalties.',
+      'Confidentialité : Ces données sont strictement confidentielles et protégées par le secret médical. Toute utilisation non autorisée est passible de sanctions.',
   },
 
   blogScreenRead: {
-    nutrition_guide_content_one: `# Nutrition Guide for People with Diabetes
+    nutrition_guide_content_one: `# Guide d'alimentation pour personnes diabétiques
 
 ## Introduction
-A balanced diet is the cornerstone of diabetes management. This guide provides the basics for adopting healthy eating habits that will help you control your blood sugar while maintaining an optimal quality of life.
+Une alimentation équilibrée est la pierre angulaire de la gestion du diabète. Ce guide vous fournit les bases pour adopter de bonnes habitudes alimentaires qui vous aideront à contrôler votre glycémie tout en maintenant une qualité de vie optimale.
 
-## Basic Principles
+## Principes de base
 
-### 1. Macronutrient Distribution
-- **Carbohydrates**: 45-65% of total energy intake
-- **Proteins**: 15-20% of total energy intake  
-- **Fats**: 20-35% of total energy intake
+### 1. Répartition des macronutriments
+- **Glucides** : 45-65% de l'apport énergétique total
+- **Protéines** : 15-20% de l'apport énergétique total  
+- **Lipides** : 20-35% de l'apport énergétique total
 
-### 2. Glycemic Index
-Prioritize foods with a low or moderate glycemic index:
-- **Low GI (< 55)**: Green vegetables, legumes, quinoa, oats
-- **Moderate GI (55-70)**: Whole grain bread, brown rice, sweet potato
-- **High GI (> 70)**: Limit - white bread, potatoes, sugar
+### 2. Index glycémique
+Privilégiez les aliments à index glycémique bas ou modéré :
+- **IG bas (< 55)** : Légumes verts, légumineuses, quinoa, avoine
+- **IG modéré (55-70)** : Pain complet, riz brun, patate douce
+- **IG élevé (> 70)** : À limiter - pain blanc, pomme de terre, sucre
 
-## Recommended Foods
+## Aliments recommandés
 
-### Vegetables (as much as you want)
-- Broccoli, spinach, zucchini, eggplant
-- Tomatoes, bell peppers, cucumbers
-- Cauliflower, green beans, asparagus
+### Légumes (à volonté)
+- Brocolis, épinards, courgettes, aubergines
+- Tomates, poivrons, concombres
+- Chou-fleur, haricots verts, asperges
 
-### Quality Proteins
-- Fatty fish: salmon, mackerel, sardines
-- Skinless poultry: chicken, turkey
-- Legumes: lentils, chickpeas, beans
-- Eggs (in moderation)
-- Tofu and soy-based products
+### Protéines de qualité
+- Poissons gras : saumon, maquereau, sardines
+- Volaille sans peau : poulet, dinde
+- Légumineuses : lentilles, pois chiches, haricots
+- Œufs (avec modération)
+- Tofu et produits à base de soja
 
-### Complex Carbohydrates
-- Quinoa, oats, barley
-- Whole grain bread, whole grain pasta
-- Brown rice, legumes
-- Sweet potato (in moderation)
+### Glucides complexes
+- Quinoa, avoine, orge
+- Pain complet, pâtes complètes
+- Riz brun, légumineuses
+- Patate douce (avec modération)
 
-### Healthy Fats
-- Olive oil, avocado
-- Nuts, almonds, seeds
-- Fatty fish
+### Bonnes graisses
+- Huile d'olive, avocat
+- Noix, amandes, graines
+- Poissons gras
 
-## Foods to Limit
+## Aliments à limiter
 
-### Simple Sugars
-- Sweets, pastries, sodas
-- Very sweet fruits in excess
-- Honey, maple syrup (occasionally)
+### Sucres simples
+- Sucreries, pâtisseries, sodas
+- Fruits très sucrés en excès
+- Miel, sirop d'érable (occasionnellement)
 
-### Saturated Fats
-- Fatty meats, processed meats
-- Fatty cheeses, excess butter
-- Fried foods, fast food
+### Graisses saturées
+- Viandes grasses, charcuterie
+- Fromages gras, beurre en excès
+- Aliments frits, fast-food
 
-## Practical Strategies
+## Stratégies pratiques
 
-### Meal Planning
-1. **Plate Method**:
-   - 1/2 plate: non-starchy vegetables
-   - 1/4 plate: lean proteins
-   - 1/4 plate: complex carbohydrates
+### Planification des repas
+1. **Méthode de l'assiette** :
+   - 1/2 assiette : légumes non féculents
+   - 1/4 assiette : protéines maigres
+   - 1/4 assiette : glucides complexes
 
-2. **Regular Schedule**: 3 meals + 1-2 snacks if needed
+2. **Horaires réguliers** : 3 repas + 1-2 collations si nécessaire
 
-3. **Portion Control**:
-   - Use smaller plates
-   - Weigh your food initially to learn portion sizes
-   - Listen to your satiety signals
+3. **Contrôle des portions** :
+   - Utilisez des assiettes plus petites
+   - Pesez vos aliments au début pour apprendre
+   - Écoutez vos signaux de satiété
 
-### Managing Cravings
-- Drink water before meals
-- Include fiber in every meal
-- Prepare healthy snacks in advance
-- Eat slowly and mindfully
+### Gestion des envies
+- Buvez de l'eau avant les repas
+- Incluez des fibres à chaque repas
+- Préparez des collations saines à l'avance
+- Mangez lentement et en pleine conscience
 
-## Diabetes Type-Specific Advice
+## Conseils spécifiques par type de diabète
 
 ### Type 1
-- Count carbohydrates to adjust insulin
-- Watch for hypoglycemia during exercise
-- Appropriate sugar intake in case of hypoglycemia
+- Comptage des glucides pour ajuster l'insuline
+- Attention aux hypoglycémies pendant l'exercice
+- Resucrage adapté en cas d'hypoglycémie
 
 ### Type 2
-- Weight loss if necessary (5-10%)
-- Regular physical activity after meals
-- Monitor blood pressure
+- Perte de poids si nécessaire (5-10%)
+- Activité physique régulière après les repas
+- Surveillance de la tension artérielle
 
-## Hydration
-- 1.5 to 2 liters of water per day
-- Avoid sugary drinks
-- Tea and coffee without sugar are allowed
-- Alcohol in moderation and never on an empty stomach
+## Hydratation
+- 1,5 à 2 litres d'eau par jour
+- Évitez les boissons sucrées
+- Thé et café sans sucre autorisés
+- Attention à l'alcool (avec modération et jamais à jeun)
 
-## Supplements and Vitamins
-Consult your doctor before taking:
-- Vitamin D (often deficient)
-- Magnesium
-- Omega-3
-- Chromium (scientific controversy)
+## Compléments et vitamines
+Consultez votre médecin avant de prendre :
+- Vitamine D (souvent carencée)
+- Magnésium
+- Oméga-3
+- Chrome (controverse scientifique)
 
 ## Conclusion
-A diabetes-friendly diet is not restrictive but balanced. It allows you to enjoy the pleasures of the table while maintaining stable blood sugar. Do not hesitate to consult a specialized nutritionist for a personalized plan.`,
-    nutrition_guide_content_two: `# Complete Guide on Type 1 and Type 2 Diabetes
+Une alimentation adaptée au diabète n'est pas restrictive mais équilibrée. Elle permet de profiter des plaisirs de la table tout en maintenant une glycémie stable. N'hésitez pas à consulter un nutritionniste spécialisé pour un plan personnalisé.`,
 
-## What is Diabetes?
+    nutrition_guide_content_two: `# Guide complet sur le diabète de type 1 et type 2
 
-Diabetes is a chronic disease characterized by hyperglycemia (high blood sugar) due to a defect in insulin secretion or action. There are several types of diabetes, but the most common are Type 1 and Type 2.
+## Qu'est-ce que le diabète ?
 
-## Type 1 Diabetes
+Le diabète est une maladie chronique caractérisée par une hyperglycémie (taux de sucre élevé dans le sang) due à un défaut de sécrétion ou d'action de l'insuline. Il existe plusieurs types de diabète, mais les plus fréquents sont les types 1 et 2.
 
-### Definition
-Type 1 diabetes is an autoimmune disease where the immune system destroys the beta cells of the pancreas that produce insulin. It accounts for 5-10% of diabetes cases.
+## Diabète de type 1
 
-### Characteristics
-- **Onset**: Usually before 30 years old, often in childhood
-- **Progression**: Rapid, over a few weeks or months
-- **Heredity**: Low genetic component (3-5% family risk)
-- **Weight**: Often normal weight or underweight
+### Définition
+Le diabète de type 1 est une maladie auto-immune où le système immunitaire détruit les cellules bêta du pancréas qui produisent l'insuline. Il représente 5-10% des cas de diabète.
 
-### Symptoms
-The classic "4 Ps":
-- **Polyuria**: frequent and excessive urination
-- **Polydipsia**: intense thirst
-- **Polyphagia**: excessive hunger
-- **Rapid weight loss**: unexplained
+### Caractéristiques
+- **Début** : Généralement avant 30 ans, souvent dans l'enfance
+- **Évolution** : Rapide, en quelques semaines ou mois
+- **Hérédité** : Faible composante génétique (3-5% de risque familial)
+- **Poids** : Souvent poids normal ou maigreur
 
-Other symptoms:
-- Extreme fatigue
-- Blurred vision
-- Recurrent infections
-- Fruity breath (ketosis)
+### Symptômes
+Les "4P" classiques :
+- **Polyurie** : urines abondantes et fréquentes
+- **Polydipsie** : soif intense
+- **Polyphagie** : faim excessive
+- **Perte de poids** rapide et inexpliquée
 
-### Diagnosis
-- **Fasting blood glucose** ≥ 126 mg/dL (7 mmol/L) twice
-- **Random blood glucose** ≥ 200 mg/dL (11.1 mmol/L) with symptoms
-- **HbA1c** ≥ 6.5% (48 mmol/mol)
-- **Glucose tolerance test**: blood glucose ≥ 200 mg/dL at 2h
+Autres symptômes :
+- Fatigue extrême
+- Vision floue
+- Infections récurrentes
+- Haleine fruitée (cétose)
 
-### Treatment
-**Insulin therapy required**:
-- Basal insulin (long-acting): covers baseline needs
-- Prandial insulin (rapid-acting): covers meals
-- Possible methods: pens, insulin pump
+### Diagnostic
+- **Glycémie à jeun** ≥ 1,26 g/L (7 mmol/L) à deux reprises
+- **Glycémie aléatoire** ≥ 2 g/L (11,1 mmol/L) avec symptômes
+- **HbA1c** ≥ 6,5% (48 mmol/mol)
+- **Test de tolérance au glucose** : glycémie ≥ 2 g/L à 2h
 
-**Monitoring**:
-- Blood glucose 4-6 times/day minimum
-- HbA1c every 3 months (goal < 7%)
-- Monitoring for complications
+### Traitement
+**Insulinothérapie obligatoire** :
+- Insuline basale (lente) : couvre les besoins de base
+- Insuline prandiale (rapide) : couvre les repas
+- Schémas possibles : stylos, pompe à insuline
 
-## Type 2 Diabetes
+**Surveillance** :
+- Glycémie 4-6 fois/jour minimum
+- HbA1c tous les 3 mois (objectif < 7%)
+- Surveillance des complications
 
-### Definition
-Type 2 diabetes results from insulin resistance and/or a deficit in insulin secretion. It accounts for 90-95% of diabetes cases.
+## Diabète de type 2
 
-### Characteristics
-- **Onset**: Usually after 40 years old (increasingly younger)
-- **Progression**: Gradual, often asymptomatic at first
-- **Heredity**: Strong genetic component (30-40% family risk)
-- **Weight**: Often overweight or obese (80% of cases)
+### Définition
+Le diabète de type 2 résulte d'une résistance à l'insuline et/ou d'un déficit de sécrétion insulinique. Il représente 90-95% des cas de diabète.
 
-### Risk Factors
-- Age > 45
-- Overweight/obesity (BMI > 25)
-- Family history of diabetes
-- Sedentary lifestyle
-- High blood pressure
-- Dyslipidemia
-- History of gestational diabetes
-- Polycystic ovary syndrome (PCOS)
-- Ethnic origin (African, Hispanic, Asian)
+### Caractéristiques
+- **Début** : Généralement après 40 ans (de plus en plus jeune)
+- **Évolution** : Progressive, souvent asymptomatique au début
+- **Hérédité** : Forte composante génétique (30-40% de risque familial)
+- **Poids** : Souvent surpoids ou obésité (80% des cas)
 
-### Symptoms
-Often asymptomatic at first, then:
+### Facteurs de risque
+- Âge > 45 ans
+- Surpoids/obésité (IMC > 25)
+- Antécédents familiaux de diabète
+- Sédentarité
+- Hypertension artérielle
+- Dyslipidémie
+- Antécédent de diabète gestationnel
+- Syndrome des ovaires polykystiques (SOPK)
+- Origine ethnique (africaine, hispanique, asiatique)
+
+### Symptômes
+Souvent asymptomatique au début, puis :
 - Fatigue
-- Moderate thirst
-- Frequent urination
-- Recurrent infections (yeast infections, UTIs)
-- Slow wound healing
-- Blurred vision
+- Soif modérée
+- Urines fréquentes
+- Infections récurrentes (mycoses, cystites)
+- Cicatrisation lente
+- Vision floue
 
-### Diagnosis
-Same criteria as Type 1, but slower progression.
+### Diagnostic
+Mêmes critères que le type 1, mais évolution plus lente.
 
-### Treatments
+### Traitements
 
-**1. Lifestyle Measures (first line)**
-- Weight loss (5-10% of initial weight)
-- Balanced diet
-- Regular physical activity (150 min/week)
-- Smoking cessation
+**1. Mesures hygiéno-diététiques (première ligne)**
+- Perte de poids (5-10% du poids initial)
+- Alimentation équilibrée
+- Activité physique régulière (150 min/semaine)
+- Arrêt du tabac
 
-**2. Oral Medications**
-- **Metformin**: first-line, reduces hepatic glucose production
-- **Sulfonylureas**: stimulate insulin secretion
-- **Glinides**: rapid insulin stimulation
-- **Alpha-glucosidase inhibitors**: slow carbohydrate absorption
-- **Thiazolidinediones**: improve insulin sensitivity
-- **DPP-4 inhibitors**: increase insulin, decrease glucagon
-- **GLP-1 agonists**: injectable, affect satiety
+**2. Médicaments oraux**
+- **Metformine** : première intention, diminue la production hépatique de glucose
+- **Sulfamides hypoglycémiants** : stimulent la sécrétion d'insuline
+- **Glinides** : stimulation rapide de l'insuline
+- **Inhibiteurs des alpha-glucosidases** : ralentissent l'absorption des glucides
+- **Glitazones** : améliorent la sensibilité à l'insuline
+- **Inhibiteurs DPP-4** : augmentent l'insuline et diminuent le glucagon
+- **Agonistes du GLP-1** : injectables, effet sur la satiété
 
-**3. Insulin (if other treatments fail)**
+**3. Insuline (si échec des autres traitements)**
 
-## Common Complications
+## Complications communes
 
-### Acute Complications
-**Hypoglycemia** (< 70 mg/dL):
-- Symptoms: tremors, sweating, palpitations, confusion
-- Treatment: 15g fast-acting carbs (3 sugar cubes)
+### Complications aiguës
+**Hypoglycémie** (< 0,70 g/L) :
+- Symptômes : tremblements, sueurs, palpitations, confusion
+- Traitement : 15g de glucides rapides (3 morceaux de sucre)
 
-**Severe Hyperglycemia**:
-- Type 1: diabetic ketoacidosis (emergency)
-- Type 2: hyperosmolar coma (emergency)
+**Hyperglycémie sévère** :
+- Type 1 : acidocétose diabétique (urgence)
+- Type 2 : coma hyperosmolaire (urgence)
 
-### Chronic Complications
-**Microvascular**:
-- **Retinopathy**: damage to retinal vessels
-- **Nephropathy**: kidney damage
-- **Neuropathy**: nerve damage (feet, hands)
+### Complications chroniques
+**Microvasculaires** :
+- **Rétinopathie** : atteinte des vaisseaux de la rétine
+- **Néphropathie** : atteinte des reins
+- **Neuropathie** : atteinte des nerfs (pieds, mains)
 
-**Macrovascular**:
-- Myocardial infarction (risk x2-4)
-- Stroke
-- Peripheral artery disease
+**Macrovasculaires** :
+- Infarctus du myocarde (risque x2-4)
+- Accident vasculaire cérébral
+- Artérite des membres inférieurs
 
-**Other**:
-- Diabetic foot
-- Recurrent infections
-- Erectile dysfunction
+**Autres** :
+- Pied diabétique
+- Infections récurrentes
+- Troubles de l'érection
 
-## Complication Prevention
+## Prévention des complications
 
-### Glycemic Control
-- **HbA1c target**: < 7% (customizable by age/comorbidities)
-- **Regular self-monitoring**
-- **Therapeutic adjustment** based on results
+### Contrôle glycémique
+- **Objectif HbA1c** : < 7% (personnalisable selon l'âge et les comorbidités)
+- **Autosurveillance** régulière
+- **Adaptation thérapeutique** selon les résultats
 
-### Cardiovascular Risk Control
-- **Blood pressure**: < 140/90 mmHg (< 130/80 if possible)
-- **Cholesterol**: LDL < 100 mg/dL (< 70 mg/dL if high risk)
-- **Smoking cessation** mandatory
+### Contrôle des facteurs de risque cardiovasculaire
+- **Tension artérielle** : < 140/90 mmHg (< 130/80 si possible)
+- **Cholestérol** : LDL < 1g/L (< 0,7g/L si haut risque)
+- **Arrêt du tabac** impératif
 
-### Regular Monitoring
-- **Ophthalmologic**: annual eye exam
-- **Nephrologic**: annual creatinine and microalbuminuria
-- **Podiatric**: regular foot exams
-- **Cardiologic**: ECG, Doppler if needed
+### Surveillance régulière
+- **Ophtalmologique** : fond d'œil annuel
+- **Néphrologique** : créatinine et microalbuminurie annuelles
+- **Podologique** : examen des pieds régulier
+- **Cardiologique** : ECG, échodoppler si nécessaire
 
-## Living with Diabetes
+## Vivre avec le diabète
 
-### Daily Life
-- **Diet**: balanced, regular, adapted
-- **Physical activity**: 30 min/day minimum
-- **Stress management**: relaxation techniques
-- **Sleep**: 7-8 hours/night, quality important
+### Au quotidien
+- **Alimentation** : équilibrée, régulière, adaptée
+- **Activité physique** : 30 min/jour minimum
+- **Gestion du stress** : techniques de relaxation
+- **Sommeil** : 7-8h/nuit, qualité importante
 
-### Special Situations
-- **Travel**: bring medications, prescriptions
-- **Illness**: enhanced monitoring, treatment adjustment
-- **Pregnancy**: specialized follow-up, strict glycemic targets
-- **Sports**: insulin/diet adjustment according to effort
+### Situations particulières
+- **Voyage** : prévoir médicaments, ordonnances
+- **Maladie** : surveillance renforcée, adaptation traitement
+- **Grossesse** : suivi spécialisé, objectifs glycémiques stricts
+- **Sport** : adaptation insuline/alimentation selon l'effort
 
-### Therapeutic Education
-- Group or individual education programs
-- Learning self-management
-- Psychological support if needed
-- Patient associations
+### Éducation thérapeutique
+- Programmes d'éducation en groupe ou individuels
+- Apprentissage de l'autogestion
+- Soutien psychologique si nécessaire
+- Associations de patients
 
-## Innovations and Perspectives
+## Innovations et perspectives
 
 ### Technologies
-- **Continuous glucose sensors**: needle-free monitoring
-- **Smart insulin pumps**
-- **Artificial pancreas**: in development
-- **Mobile apps**: management support
+- **Capteurs de glucose continu** : surveillance sans piqûres
+- **Pompes à insuline** intelligentes
+- **Pancréas artificiel** : en développement
+- **Applications mobiles** : aide à la gestion
 
-### Research
-- **Cell therapies**: islet transplantation, stem cells
-- **Immunotherapies**: Type 1 prevention
-- **Innovative medications**: new therapeutic classes
+### Recherche
+- **Thérapies cellulaires** : transplantation d'îlots, cellules souches
+- **Immunothérapies** : prévention du type 1
+- **Médicaments innovants** : nouvelles classes thérapeutiques
 
 ## Conclusion
 
-Diabetes is a complex but manageable disease. Early and appropriate management, combined with a healthy lifestyle, prevents complications and maintains optimal quality of life. Patient education and healthcare team support are essential for long-term successful management.
+Le diabète est une maladie complexe mais gérable. Une prise en charge précoce et adaptée, associée à une bonne hygiène de vie, permet de prévenir les complications et de maintenir une qualité de vie optimale. L'éducation du patient et le soutien de l'équipe soignante sont essentiels pour une gestion réussie à long terme.`,
+    nutrition_guide_content_three: `Une percée médicale majeure vient d'être annoncée : le traitement Zimislecel, une thérapie par cellules souches, a permis à 83% des patients atteints de diabète de type 1 sévère d'arrêter complètement leurs injections d'insuline après une seule perfusion.
 
-Never hesitate to ask questions to your medical team and actively participate in your care.`,
-    nutrition_guide_content_three: `A major medical breakthrough has just been announced: the Zimislecel treatment, a stem cell therapy, has enabled 83% of patients with severe Type 1 diabetes to completely stop their insulin injections after a single infusion.
+L'étude, publiée ce mois-ci, a suivi 12 volontaires pendant un an. Dix d'entre eux n'ont plus eu besoin d'insuline, tandis que les deux autres ont pu réduire drastiquement leurs doses. Aucun épisode d'hypoglycémie sévère n'a été rapporté.
 
-The study, published this month, followed 12 volunteers for one year. Ten of them no longer needed insulin, while the other two were able to drastically reduce their doses. No episodes of severe hypoglycemia were reported.
+"C'est révolutionnaire", explique le Dr. Jennifer Martinez, investigatrice principale. "Nous assistons potentiellement à la fin de l'ère des injections quotidiennes d'insuline pour ces patients."
 
-"This is revolutionary," says Dr. Jennifer Martinez, principal investigator. "We may be witnessing the end of the daily insulin injection era for these patients."
+Le traitement utilise des cellules souches manipulées pour devenir des cellules d'îlots pancréatiques, responsables de la production d'insuline. Cette approche représente l'aboutissement de décennies de recherche sur la médecine régénérative.
 
-The treatment uses stem cells engineered to become pancreatic islet cells, responsible for insulin production. This approach represents the culmination of decades of research in regenerative medicine.
+La FDA examine actuellement ce traitement pour une approbation accélérée, ce qui pourrait révolutionner la prise en charge du diabète de type 1 dès 2026.`,
+    nutrition_guide_content_four: `Une innovation majeure dans le traitement des plaies diabétiques vient d'être dévoilée : un gel "intelligent" qui combine des vésicules cicatrisantes microscopiques avec un hydrogel spécialisé, restaurant la circulation sanguine et accélérant la guérison de façon spectaculaire.
 
-The FDA is currently reviewing this treatment for accelerated approval, which could revolutionize Type 1 diabetes management as early as 2026.`,
-    nutrition_guide_content_four: `A major innovation in the treatment of diabetic wounds has just been unveiled: a "smart" gel that combines microscopic healing vesicles with a specialized hydrogel, restoring blood flow and dramatically accelerating healing.
+Cette thérapie révolutionnaire, développée par une équipe internationale, utilise des messagers de guérison encapsulés dans des nanovésicules qui se libèrent progressivement au contact de la plaie. Le gel stimule la formation de nouveaux vaisseaux sanguins tout en protégeant la zone blessée.
 
-This revolutionary therapy, developed by an international team, uses healing messengers encapsulated in nanovesicles that are gradually released upon contact with the wound. The gel stimulates the formation of new blood vessels while protecting the injured area.
+Les résultats des tests cliniques sont impressionnants :
+- Guérison 5 fois plus rapide que les traitements conventionnels
+- Restauration complète de la circulation sanguine en 72h
+- Réduction de 85% du risque d'amputation
+- Aucun effet secondaire majeur reporté
 
-The results from clinical tests are impressive:
-- Healing 5 times faster than conventional treatments
-- Complete restoration of blood flow within 72 hours
-- 85% reduction in the risk of amputation
-- No major side effects reported
+"Cette technologie va sauver des milliers de membres chaque année", déclare le Dr. Sarah Chen, dermatologue spécialisée. "Nous passons de semaines de traitement à quelques jours seulement."
 
-"This technology will save thousands of limbs each year," says Dr. Sarah Chen, a specialist dermatologist. "We are moving from weeks of treatment to just a few days."
+Le gel sera disponible dans les hôpitaux européens dès septembre 2025, après validation réglementaire.`,
+    nutrition_guide_content_five: `Une équipe internationale de chercheurs a développé une "insuline intelligente" capable de s'adapter automatiquement aux variations de glucose sanguin. Cette innovation pourrait révolutionner le traitement du diabète en éliminant les risques d'hypoglycémie.
 
-The gel will be available in European hospitals starting September 2025, following regulatory approval.`,
-    nutrition_guide_content_five: `An international team of researchers has developed "smart insulin" capable of automatically adapting to blood glucose fluctuations. This innovation could revolutionize diabetes treatment by eliminating the risk of hypoglycemia.
+Le principe repose sur des nanoparticules qui libèrent l'insuline uniquement en présence de glucose élevé. Les premiers essais cliniques sur 45 patients diabétiques de type 1 montrent des résultats exceptionnels :
 
-The principle relies on nanoparticles that release insulin only in the presence of high glucose levels. Early clinical trials on 45 type 1 diabetic patients show outstanding results:
+- Réduction de 75% des épisodes d'hypoglycémie - Temps dans la cible glycémique augmenté à 95% - Simplification drastique du traitement (une injection par semaine)
 
-- 75% reduction in hypoglycemic episodes  
-- Time in target glucose range increased to 95%  
-- Drastic simplification of treatment (one injection per week)
+"C'est le Saint Graal du traitement diabétique", explique le Dr. Li Wei, responsable de l'étude. "Cette insuline 'pense' à la place du patient."
 
-"This is the Holy Grail of diabetes treatment," says Dr. Li Wei, lead investigator. "This insulin 'thinks' for the patient."
+La commercialisation pourrait débuter dès 2026 après validation des essais de phase III.`,
+    nutrition_guide_content_six: `Une équipe internationale de chercheurs a développé une "insuline intelligente" capable de s'adapter automatiquement aux variations de glucose sanguin. Cette innovation pourrait révolutionner le traitement du diabète en éliminant les risques d'hypoglycémie.
 
-Commercialization could begin as early as 2026 after phase III trial approval.`,
-    nutrition_guide_content_six: `An international team of researchers has developed “smart insulin” capable of automatically adapting to blood glucose fluctuations. This innovation could revolutionize diabetes treatment by eliminating the risks of hypoglycemia.
+Le principe repose sur des nanoparticules qui libèrent l'insuline uniquement en présence de glucose élevé. Les premiers essais cliniques sur 45 patients diabétiques de type 1 montrent des résultats exceptionnels :
 
-The principle relies on nanoparticles that release insulin only in the presence of high glucose. Early clinical trials on 45 type 1 diabetic patients show exceptional results:
+- Réduction de 75% des épisodes d'hypoglycémie - Temps dans la cible glycémique augmenté à 95% - Simplification drastique du traitement (une injection par semaine)
 
-- 75% reduction in hypoglycemic episodes
-- Time in target glucose range increased to 95%
-- Drastic simplification of treatment (one injection per week)
+"C'est le Saint Graal du traitement diabétique", explique le Dr. Li Wei, responsable de l'étude. "Cette insuline 'pense' à la place du patient."
 
-“This is the Holy Grail of diabetes treatment,” says Dr. Li Wei, lead investigator. “This insulin 'thinks' for the patient.”
+La commercialisation pourrait débuter dès 2026 après validation des essais de phase III.`,
+    nutrition_guide_content_seven: `À 65 ans et diabétique depuis 30 ans, James Thompson a réalisé l'exploit de terminer le prestigieux marathon de Boston en 3h42min. Son parcours inspire désormais des milliers de personnes à travers le monde.
 
-Commercialization could begin as early as 2026 following phase III trial approval.`,
-    nutrition_guide_content_seven: `At 65 years old and diabetic for 30 years, James Thompson accomplished the feat of finishing the prestigious Boston Marathon in 3 hours and 42 minutes. His journey now inspires thousands of people around the world.
+"Quand on m'a diagnostiqué le diabète à 35 ans, je pensais que ma vie sportive était finie", confie James. "J'avais tort. Le diabète n'est pas une limite, c'est un défi à relever."
 
-“When I was diagnosed with diabetes at 35, I thought my athletic life was over,” James confides. “I was wrong. Diabetes is not a limitation; it’s a challenge to overcome.”
+Sa routine d'entraînement inclut : - Surveillance glycémique toutes les 30 minutes pendant l'effort - Stratégie nutritionnelle adaptée avec son endocrinologue - Entraînement progressif sur 18 mois - Équipe de soutien médical pendant la course
 
-His training routine includes:
-- Glucose monitoring every 30 minutes during exercise
-- Nutrition strategy tailored with his endocrinologist
-- Progressive training over 18 months
-- Medical support team during the race
+"James prouve que le diabète bien géré n'empêche aucun rêve", déclare son médecin. Son histoire fait désormais l'objet d'un documentaire et d'un livre à paraître.
 
-“James proves that well-managed diabetes doesn’t stop any dream,” says his doctor. His story is now the subject of a documentary and an upcoming book.
+Il prépare maintenant l'Ironman de Hawaï pour ses 66 ans.`,
+    nutrition_guide_content_eight: `L'intelligence artificielle médicale franchit un nouveau cap en 2025 : la dernière version de l'algorithme prédictif développé conjointement par Google Health et l'Université de Stanford atteint une précision de 97% dans la prévention des hypoglycémies, avec des alertes jusqu'à 45 minutes à l'avance.
 
-He is now preparing for the Ironman in Hawaii for his 66th birthday.`,
-    nutrition_guide_content_eight: `Medical artificial intelligence reaches a new milestone in 2025: the latest version of the predictive algorithm developed jointly by Google Health and Stanford University achieves 97% accuracy in preventing hypoglycemia, with alerts up to 45 minutes in advance.
+Cette IA de nouvelle génération analyse désormais plus de 150 biomarqueurs en temps réel : - Micro-variations glycémiques via capteurs ultra-sensibles - Analyse vocale et reconnaissance d'émotions - Patterns de sommeil et stress physiologique - Données météorologiques et activité géolocalisée - Historique alimentaire via reconnaissance d'images
 
-This next-generation AI now analyzes over 150 biomarkers in real time:
-- Micro glucose variations via ultra-sensitive sensors
-- Voice analysis and emotion recognition
-- Sleep patterns and physiological stress
-- Weather data and geolocated activity
-- Dietary history via image recognition
+Déployée sur 15,000 patients dans 12 pays, l'IA montre des résultats exceptionnels : - 97% de précision prédictive (vs 94% en 2024) - Réduction de 82% des hypoglycémies sévères - Prédictions jusqu'à 45 minutes à l'avance - Intégration native avec tous les capteurs glucose
 
-Deployed on 15,000 patients across 12 countries, the AI shows exceptional results:
-- 97% predictive accuracy (vs 94% in 2024)
-- 82% reduction in severe hypoglycemia
-- Predictions up to 45 minutes in advance
-- Native integration with all glucose sensors
+"Nous entrons dans l'ère de la prévention totale", déclare le Dr. Lisa Wang, directrice de Google Health Diabetes. "L'hypoglycémie sévère devient un événement évitable."
 
-“We are entering the era of total prevention,” says Dr. Lisa Wang, Director of Google Health Diabetes. “Severe hypoglycemia becomes a preventable event.”
+L'application DARE AI sera la première à intégrer cette technologie dès septembre 2025, avec certification CE et FDA approuvée.`,
+    save: 'Sauvegarder',
+    fullSource: 'Source complète',
+    all: 'Tous',
+    newsSearchPlaceholder: 'Rechercher des actualités...',
+  },
 
-The DARE AI app will be the first to integrate this technology starting September 2025, with CE certification and FDA approval.`,
+  adminDashboardScreen: {
+    applicationApprovedTitle: 'Candidature approuvée !',
+    applicationApprovedDescription:
+      '{{firstName}} {{lastName}} a été approuvé(e)',
+    errorTitle: 'Erreur',
+    applicationApproveError: "Impossible d'approuver la candidature",
+    applicationLoadError: 'Impossible de charger les candidatures',
+    reasonRequiredTitle: 'Motif requis',
+    reasonRequiredDescription: 'Veuillez indiquer le motif du rejet',
+    applicationRejectedTitle: 'Candidature rejetée',
+    applicationRejectedDescription:
+      '{{firstName}} {{lastName}} a été rejeté(e)',
+    applicationRejectError: 'Impossible de rejeter la candidature',
+    statusPending: 'En attente',
+    statusApproved: 'Approuvé',
+    statusRejected: 'Rejeté',
+    adminTitle: '🏥 Administration DARE',
+    adminSubtitle: 'Gestion des candidatures professionnelles',
+    totalApplications: 'Total candidatures',
+    searchPlaceholder: 'Rechercher par nom, email, ou spécialité...',
+    allStatuses: 'Tous les statuts',
+    filterByStatus: 'Filtrer par statut',
+    noApplicationsFound: 'Aucune candidature trouvée',
+    tabDetails: 'Détails',
+    phoneLabel: 'Téléphone',
+    licenseLabel: 'Licence',
+    cityLabel: 'Ville',
+    institutionLabel: 'Institution',
+    notSpecified: 'Non spécifiée',
+    documentLabel: 'Document {{number}}',
+    viewButton: 'Voir',
+    noDocuments: 'Aucun document',
+    rejectionReasonPlaceholder: 'Motif du rejet (requis)',
+    applicationAlreadyProcessed: 'Candidature déjà traitée',
+    processedOn: 'Traitée le {{date}}',
+    selectApplication: 'Sélectionnez une candidature',
+    selectApplicationHint: 'pour voir les détails',
+  },
+
+  adminApplicationReview: {
+    applicationApprovedTitle: 'Candidature approuvée !',
+    applicationApprovedDescription:
+      '{{firstName}} {{lastName}} a été approuvé(e)',
+    errorTitle: 'Erreur',
+    applicationApproveError: "Impossible d'approuver la candidature",
+    reasonRequiredTitle: 'Motif requis',
+    reasonRequiredDescription: 'Veuillez indiquer le motif du rejet',
+    applicationRejectedTitle: 'Candidature rejetée',
+    applicationRejectedDescription:
+      '{{firstName}} {{lastName}} a été rejeté(e)',
+    applicationRejectError: 'Impossible de rejeter la candidature',
+    loadingApplications: 'Chargement des candidatures...',
+    adminApplicationsTitle: '🔧 DARE Admin - Candidatures',
+    pendingApplications: "{{count}} candidature(s) en attente d'examen",
+    refresh: 'Actualiser',
+    noPending: {
+      title: 'Aucune candidature en attente',
+      description:
+        'Toutes les candidatures ont été traitées. Les nouvelles candidatures apparaîtront ici automatiquement.',
+    },
+    refreshCheck: 'Vérifier les nouvelles candidatures',
+    rejectionReason: {
+      title: 'Motif du rejet',
+      placeholder: 'Expliquez pourquoi cette candidature est rejetée...',
+    },
+    actions: {
+      confirmReject: 'Confirmer le rejet',
+    },
+    applications: {
+      noSelectionTitle: 'Aucune sélection',
+      noSelectionDescription:
+        'Cliquez sur "Examiner" pour voir les détails d\'une candidature',
+    },
+  },
+
+  adminDashboard: {
+    dashboard: {
+      loadErrorTitle: 'Erreur de chargement',
+      loadErrorDescription:
+        'Impossible de charger les métriques du tableau de bord.',
+      loadingAdmin: 'Chargement du tableau de bord administrateur...',
+    },
+    title: '🔧 DARE Administration',
+    subtitle: 'Gestion des professionnels de santé',
+    metrics: {
+      paymentsThisMonth: 'Paiements ce mois',
+      activeProfessionals: 'Professionnels actifs',
+      monthlyConsultations: 'Consultations ce mois',
+      pendingApplications: 'Candidatures en attente',
+    },
+  },
+
+  chatScreenFixes: {
+    typingIndicator: "{{users}} en train d'écrire...",
+  },
+
+  consultationRequestFixes: {
+    errors: {
+      loadProfessionals: 'Erreur chargement professionnels :',
+      loadRequests: 'Erreur chargement demandes :',
+      professionalNotFound: 'Professionnel non trouvé',
+      sendRequestConsole: 'Erreur envoi demande :',
+      sendRequestToastTitle: 'Erreur',
+      sendRequestToastDescription: "Impossible d'envoyer la demande",
+    },
+    fieldsRequiredTitle: 'Champs requis',
+    fieldsRequiredDescription:
+      'Veuillez sélectionner un professionnel et un motif de consultation.',
+    requestSentTitle: 'Demande envoyée !',
+    requestSentDescription:
+      'Le professionnel recevra une notification et vous répondra bientôt.',
+    status: {
+      pending: 'En attente',
+      accepted: 'Acceptée',
+      rejected: 'Refusée',
+      completed: 'Terminée',
+    },
+    professionals: {
+      endocrinologist: 'Endocrinologue',
+      general_practitioner: 'Médecin généraliste',
+      psychologist: 'Psychologue',
+      nurse: 'Infirmier(ère)',
+      nutritionist: 'Nutritionniste',
+    },
+    consultationFee: 'Tarif consultation',
+    monthlyPackagePercentage: '({percentage}% du forfait mensuel)',
+    consultation: {
+      button: 'Envoyer',
+      sending: 'Envoi en cours...',
+      request: {
+        title: 'Mes demandes de consultation',
+        subtitle: 'Suivez toutes vos demandes de consultation ici',
+        reason: 'Motif:',
+        requestedOn: 'Demandé le:',
+        professionalResponse: 'Réponse du professionnel:',
+        join: 'Rejoindre',
+      },
+    },
+  },
+
+  doctorDashboard: {
+    consultationReasonDefault: 'Consultation de suivi diabète',
+    consultationAcceptedTitle: 'Consultation acceptée',
+    consultationAcceptedDescription:
+      'La consultation a été confirmée. Le patient en sera informé.',
+    errors: {
+      acceptConsultationTitle: 'Erreur',
+      acceptConsultationDescription: "Impossible d'accepter la consultation.",
+      declineConsultationTitle: 'Erreur',
+      declineConsultationDescription: 'Impossible de décliner la consultation.',
+    },
+    consultationDeclinedTitle: 'Consultation déclinée',
+    consultationDeclinedDescription:
+      'La consultation a été annulée. Le patient en sera informé.',
+    statusToggle: {
+      onlineTitle: 'Vous êtes maintenant en ligne',
+      onlineDescription: 'Vous pouvez recevoir de nouvelles consultations',
+      offlineTitle: 'Vous êtes maintenant hors ligne',
+      offlineDescription: 'Vous ne recevrez plus de nouvelles demandes',
+    },
+    dashboard: {
+      loading: 'Chargement du tableau de bord...',
+    },
+    doctor: {
+      title: 'Dr. Mamadou Kane',
+      subtitle: 'Endocrinologue • DARE Pro',
+    },
+    earningsToday: "Gains aujourd'hui",
+    statusButton: {
+      online: '🟢 En ligne',
+      offline: '🔴 Hors ligne',
+    },
+    settingsButton: 'Paramètres',
+    stats: {
+      pendingPatients: 'Patients en attente',
+      monthlyRevenue: 'Revenus ce mois',
+      todayConsultations: "Consultations aujourd'hui",
+      averageConsultationTime: 'Temps moyen/consultation',
+    },
+    pendingConsultations: 'Consultations en Attente',
+    pendingBadge: '{{count}} en attente',
+    noPendingConsultations: 'Aucune consultation en attente',
+    newRequestsInfo: 'Les nouvelles demandes apparaîtront ici',
+  },
+
+  healthProfessionalScreen: {
+    acceptanceRequiredTitle: 'Acceptation requise',
+    acceptanceRequiredDescription:
+      "Vous devez accepter les conditions d'utilisation et la charte déontologique",
+    registration: {
+      submittedTitle: 'Inscription soumise',
+      submittedDescription:
+        "Votre demande d'inscription sera examinée sous 24h",
+      accessDeniedTitle: 'Accès refusé',
+      accessDeniedDescription:
+        "L'acceptation de la charte déontologique DARE est obligatoire",
+    },
+    teleconsultation: {
+      startedTitle: 'Téléconsultation initiée',
+      startedDescription: 'Connexion avec le patient en cours...',
+    },
+    consultationTypes: {
+      diabetesFollowUp: 'Suivi diabète',
+      urgentConsultation: 'Consultation urgente',
+      bloodSugarCheck: 'Contrôle glycémie',
+    },
+    consultationStatuses: {
+      pending: 'En attente',
+      inProgress: 'En cours',
+      scheduled: 'Programmée',
+    },
+    professionalPortal: {
+      title: 'Portal Professionnel DARE',
+      description:
+        'Rejoignez notre réseau de professionnels de santé et offrez des téléconsultations spécialisées en diabète',
+    },
+    formLabels: {
+      firstName: 'Prénom *',
+      lastName: 'Nom *',
+      specialty: 'Spécialité *',
+      specialtyPlaceholder: 'Sélectionnez votre spécialité',
+
+      specialties: {
+        endocrinologist: 'Endocrinologue',
+        generalPractitioner: 'Médecin généraliste',
+        diabetologist: 'Diabétologue',
+        nutritionist: 'Nutritionniste',
+        diabetesNurse: 'Infirmier spécialisé diabète',
+      },
+      license: 'Numéro CNI *',
+      licensePlaceholder: 'Ex: A1234567890',
+      hospital: 'Établissement',
+      hospitalPlaceholder: 'Hôpital ou clinique',
+      email: 'Email professionnel *',
+      phone: 'Téléphone *',
+      terms: "J'accepte les conditions d'utilisation",
+      charter: "J'accepte la charte de déontologie DARE (obligatoire)",
+      submitApplication: 'Soumettre ma candidature',
+    },
+    professionalBenefits: {
+      title: 'Avantages professionnels :',
+      list: {
+        one: '• Rémunération de 500 FCFA par téléconsultation',
+        two: '• Paiement mensuel automatique',
+        three: '• Plateforme sécurisée et certifiée',
+        four: '• Accès aux données glycémiques temps réel',
+        five: '• Support technique 24/7',
+      },
+    },
+    professionalInfo: {
+      verified: 'Vérifié',
+      endocrinologist: 'Endocrinologue',
+    },
+    tabs: {
+      dashboard: 'Tableau de bord',
+      consultations: 'Consultations',
+      earnings: 'Rémunérations',
+      patients: 'Patients',
+      access_codes: "Codes d'accès",
+    },
+    labels: {
+      patients_tracked: 'Patients suivis',
+      today_consultations: "Consultations aujourd'hui",
+      today_earnings: "Revenus aujourd'hui",
+      average_rating: 'Note moyenne',
+      upcoming_consultations: 'Prochaines consultations',
+    },
+    consultation: {
+      status: {
+        en_cours: 'En cours',
+        terminée: 'Terminée',
+        annulée: 'Annulée',
+      },
+    },
+    dashboard: {
+      consultations_management: {
+        title: 'Gestion des consultations',
+        description:
+          'Planifiez et gérez vos téléconsultations avec les patients DARE',
+        available_slots: 'Créneaux disponibles',
+        manage_slots: 'Gérer mes créneaux',
+      },
+      free_slots: {
+        title: 'Créneaux libres',
+        subtitle: 'Cette semaine',
+      },
+      scheduled_consultations: {
+        title: 'Consultations programmées',
+        subtitle: 'Cette semaine',
+      },
+      earnings: {
+        detailed_title: 'Revenus détaillés',
+        today: "Aujourd'hui",
+        week: 'Cette semaine',
+        month: 'Ce mois',
+        pending: 'En attente de paiement',
+      },
+      auto_payments: {
+        title: 'Paiements automatiques',
+        description:
+          'Vos rémunérations sont versées automatiquement chaque mois',
+        last_transfer: 'Dernier virement',
+        next_transfer: 'Prochain virement',
+        january: 'Janvier',
+      },
+      patients: {
+        title: 'Mes patients',
+        description: 'Suivi des patients diabétiques qui vous sont assignés',
+        type: 'Diabète Type',
+        lastGlucose: 'Dernière glycémie',
+        record: 'Dossier',
+        contact: 'Contacter',
+      },
+    },
+    dialog: {
+      codeOfConduct: {
+        title: 'Charte Déontologique DARE',
+        description:
+          'Veuillez lire attentivement et accepter notre charte déontologique pour rejoindre DARE',
+      },
+    },
+    codeOfConductFull: `
+Article 1 - Engagement professionnel
+Le professionnel de santé s'engage à respecter les principes déontologiques de sa profession et à maintenir ses compétences à jour dans le domaine du diabète.
+
+Article 2 - Qualité des soins
+Tous les soins dispensés via DARE doivent respecter les standards de qualité les plus élevés. Le professionnel s'engage à fournir des consultations complètes et adaptées aux besoins spécifiques de chaque patient diabétique.
+
+Article 3 - Confidentialité et protection des données
+Le professionnel s'engage à respecter strictement la confidentialité des données patients et à ne jamais divulguer d'informations médicales sans autorisation expresse. Toutes les données sont protégées selon les normes RGPD.
+
+Article 4 - Disponibilité et ponctualité
+Le professionnel s'engage à respecter ses créneaux de consultation et à être ponctuel. En cas d'empêchement, il doit prévenir au minimum 2 heures à l'avance.
+
+Article 5 - Responsabilité médicale
+Le professionnel reste pleinement responsable de ses actes médicaux et diagnostics. DARE fournit uniquement la plateforme technologique, la responsabilité médicale incombe entièrement au professionnel de santé.
+
+Article 6 - Formation continue
+Le professionnel s'engage à participer aux formations DARE proposées et à maintenir ses connaissances à jour concernant les nouvelles pratiques en diabétologie.
+
+Article 7 - Sanctions
+Le non-respect de cette charte peut entraîner une suspension temporaire ou définitive de l'accès à la plateforme DARE, sans préavis ni compensation.
+`,
+  },
+  charterFooter: {
+    note: 'En acceptant cette charte, vous confirmez avoir lu, compris et vous engagez à respecter tous les articles ci-dessus.',
+    buttons: {
+      decline: 'Refuser',
+      accept: 'Accepter et continuer',
+    },
+  },
+
+  healthProfessionalSignupScreen: {
+    professionals: {
+      endocrinologist: {
+        name: 'Endocrinologue',
+        rate: '630 F CFA/consultation (35%)',
+        description: 'Spécialiste diabète et hormones',
+      },
+      general_practitioner: {
+        name: 'Médecin Généraliste',
+        rate: '520 F CFA/consultation (29%)',
+        description: 'Médecine générale avec focus diabète',
+      },
+      psychologist: {
+        name: 'Psychologue',
+        rate: '430 F CFA/séance (24%)',
+        description: 'Soutien psychologique diabète',
+      },
+      nurse: {
+        name: 'Infirmier(ère)',
+        rate: '120 F CFA/suivi (7%)',
+        description: 'Suivi et éducation thérapeutique',
+      },
+      nutritionist: {
+        name: 'Nutritionniste',
+        rate: '100 F CFA/consultation (5%)',
+        description: 'Conseils alimentaires personnalisés',
+      },
+    },
+    toastMissingFields: {
+      title: 'Champs requis manquants',
+      description: 'Veuillez remplir tous les champs obligatoires.',
+    },
+    toastApplicationSubmitted: {
+      title: 'Candidature soumise !',
+      description:
+        'Votre candidature a été envoyée pour examen. Vous recevrez une réponse dans les 24-48h.',
+    },
+    toastSubmissionError: {
+      title: 'Erreur',
+      description: 'Une erreur est survenue lors de la soumission.',
+      variant: 'destructive',
+    },
+    professionalPortal: {
+      title: '🏥 DARE Pro - Professionnels de Santé',
+      subtitle:
+        'Rejoignez le réseau DARE et monétisez vos consultations de télémédecine',
+      benefits: {
+        freeRegistration: 'Inscription gratuite',
+        validatedWithin48h: 'Validation sous 48h',
+        securePayment: 'Paiement sécurisé',
+      },
+    },
+    registrationSteps: {
+      step1: {
+        title: '1. Sélectionnez votre spécialité',
+        description:
+          'Choisissez la spécialité qui correspond à votre expertise',
+      },
+      step2: {
+        title: '2. Informations professionnelles - {{name}}',
+        description:
+          'Fournissez vos informations professionnelles pour la vérification',
+        firstName: 'Prénom *',
+        firstNamePlaceholder: 'Votre prénom',
+        lastName: 'Nom *',
+        lastNamePlaceholder: 'Votre nom',
+        email: 'Email professionnel *',
+        emailPlaceholder: 'professionnel@hopital.com',
+        phone: 'Téléphone',
+        phonePlaceholder: '+221 XX XXX XX XX',
+        licenseNumber: 'Numéro de licence/ordre *',
+        licenseNumberPlaceholder: "Numéro d'inscription à l'ordre",
+        institution: 'Institution/Hôpital',
+        institutionPlaceholder: 'Nom de votre institution',
+        city: 'Ville',
+        cityPlaceholder: 'Dakar, Thiès, etc.',
+        country: 'Pays',
+        countryPlaceholder: 'Sélectionnez votre pays',
+        countries: {
+          senegal: 'Sénégal',
+          mali: 'Mali',
+          burkina: 'Burkina Faso',
+          cote_ivoire: "Côte d'Ivoire",
+          guinea: 'Guinée',
+          mauritania: 'Mauritanie',
+        },
+        experience: "Années d'expérience",
+        experiencePlaceholder: 'Sélectionnez votre expérience',
+        experienceOptions: {
+          '0-2': '0-2 ans',
+          '3-5': '3-5 ans',
+          '6-10': '6-10 ans',
+          '11-15': '11-15 ans',
+          '15+': 'Plus de 15 ans',
+        },
+        biography: 'Biographie professionnelle',
+        biographyPlaceholder:
+          'Décrivez votre parcours et votre expertise dans le domaine du diabète...',
+      },
+      step3: {
+        title: 'Documents justificatifs',
+        description:
+          'Uploadez vos documents pour la vérification (diplômes, licences, CV)',
+        selectedDocuments: 'Documents sélectionnés',
+      },
+    },
+    dareProCompensation: {
+      title: 'Nouveau système de rémunération (1800 F/patient/mois) :',
+      endocrinologue: 'Endocrinologue: 630 F (35%)',
+      medecinGeneraliste: 'Médecin généraliste: 520 F (29%)',
+      psychologue: 'Psychologue: 430 F (24%)',
+      infirmier: 'Infirmier(ère): 120 F (7%)',
+      nutritionniste: 'Nutritionniste: 100 F (5%)',
+      paiementsAutomatiques: 'Paiements automatiques mensuels',
+    },
+    applicationForm: {
+      submitButton: {
+        default: 'Soumettre ma candidature',
+        loading: 'Soumission en cours...',
+      },
+      disclaimer:
+        "En soumettant cette candidature, vous acceptez nos conditions d'utilisation et notre politique de confidentialité.",
+    },
+  },
+
+  patientAccessScreen: {
+    status: {
+      pending: 'En attente',
+      approved: 'Approuvé',
+      denied: 'Refusé',
+      expired: 'Expiré',
+      default: '{{status}}',
+    },
+    loading: {
+      accessRequests: "Chargement des demandes d'accès...",
+    },
+    access: {
+      title: 'Accès Professionnels',
+      subtitle: "Gérez les demandes d'accès à vos données médicales",
+      refresh: 'Actualiser',
+      history: '📋 Historique des accès',
+      emptyHistory: "Aucun historique d'accès pour le moment",
+      requestedOn: 'Demandé le:',
+      respondedOn: 'Répondu le:',
+      authorizedData: 'Données autorisées:',
+      noRequestTitle: "Aucune demande d'accès",
+      noRequestDescription:
+        "Les professionnels de santé pourront demander l'accès à vos données médicales. Vous recevrez une notification pour chaque demande.",
+    },
+    requests: {
+      pending: '⏳ Demandes en attente ({{count}})',
+    },
+  },
+
+  paymentScreen: {
+    subscription: {
+      defaultDescription: 'Abonnement mensuel DiaCare Premium',
+      period: 'Période',
+      oneMonth: '1 mois',
+    },
+    toasts: {
+      missingInfo: {
+        title: 'Missing Information',
+        description: 'Please fill in all required fields',
+      },
+    },
+    payment: {
+      simulationLog: 'Simulation paiement AfribaPay:',
+      simulationError: "Simulation d'échec de paiement",
+      toastErrorTitle: 'Paiement échoué (Test)',
+      toastErrorDescription: "Simulation d'échec de paiement. Réessayez.",
+      secure: 'Paiement sécurisé',
+      perMonth: 'par mois',
+      infoTitle: 'Informations de paiement',
+      secureInfo: 'Paiement sécurisé via AfribaPay',
+      fullNameLabel: 'Nom complet *',
+      fullNamePlaceholder: 'Votre nom complet',
+      secureByAfribaPay: 'Paiement sécurisé par AfribaPay',
+      processing: 'Traitement...',
+      pay: 'Payer {{amount}}',
+    },
+    paymentSuccess: {
+      title: 'Paiement confirmé !',
+      welcome:
+        'Bienvenue dans DARE Premium. Votre abonnement est maintenant actif.',
+      activated: 'DARE Premium activé',
+      access: 'Accès complet à toutes les fonctionnalités',
+    },
+    form: {
+      emailLabel: 'Adresse email *',
+      phoneLabel: 'Numéro de téléphone *',
+    },
+    paymentMethods: {
+      title: 'Méthodes de paiement acceptées',
+      orangeMoney: '📱 Orange Money',
+      mtnMoney: '📱 MTN Money',
+      wave: '📱 Wave',
+      djamo: '📱 Djamo',
+      mpesa: '📱 M-Pesa',
+      airtel: '📱 Airtel Money',
+      visa: '💳 Visa & Mastercard',
+      bank: '🏦 Virements bancaires et USSD',
+    },
+    subscriptionInfo: {
+      securePayment: 'Paiement sécurisé • Annulable à tout moment',
+      support: 'Support technique inclus',
+    },
+  },
+
+  paymentSuccess: {
+    toast: {
+      paymentConfirmed: {
+        title: 'Paiement confirmé !',
+        description:
+          'Votre abonnement DiaCare est maintenant actif (Mode Test).',
+      },
+      copyCode: {
+        title: 'Code copié !',
+        description:
+          'Le code patient {{code}} a été copié dans le presse-papiers.',
+      },
+    },
+    errors: {
+      missingSessionId: 'Session ID manquant',
+    },
+    payment: {
+      successTitle: 'Paiement confirmé !',
+      successDescription: 'Votre abonnement DiaCare est maintenant actif.',
+      verifyError: 'Échec de la vérification du paiement',
+      verifyErrorToast: 'Impossible de vérifier le paiement',
+      verifying: 'Vérification du paiement en cours...',
+      errorTitle: 'Erreur de paiement',
+      backToAuth: "Retour à l'authentification",
+      errorMessage: '{{error}}',
+      successMessage:
+        'Félicitations ! Votre abonnement DiaCare est maintenant actif.',
+    },
+    patient: {
+      codeTitle: 'Votre code patient DiaCare',
+      codeUsage:
+        'Utilisez ce code pour accéder à vos fonctionnalités et le partager avec votre famille',
+    },
+    subscription: {
+      status: "Statut de l'abonnement",
+      active: 'Actif',
+    },
+    account: {
+      email: 'Email du compte',
+    },
+    billing: {
+      next: 'Prochaine facturation',
+    },
+    benefits: {
+      title: '🎉 Vos avantages DiaCare',
+      list: {
+        fullAccess: 'Accès complet à toutes les fonctionnalités DiaCare',
+        consultations: '10 téléconsultations par mois',
+        chatNews: 'DiaCare Chat et DiaCare News',
+        alerts: 'Alertes personnalisées et suivi glycémie',
+      },
+    },
+    confirmationEmail: {
+      title: 'Email de confirmation envoyé',
+      message:
+        'Un email avec votre code patient et toutes les informations importantes a été envoyé à {{email}}',
+    },
+    buttons: {
+      completeProfile: 'Compléter mon profil',
+      accessApp: 'Accéder à DiaCare',
+    },
+  },
+
+  predictiveAlertsScreen: {
+    aiSystem: {
+      title: "Système d'IA Prédictive",
+      subtitle:
+        'Intelligence Artificielle • Machine Learning • Alertes Temps Réel',
+    },
+    aiFeatures: {
+      multiFactorAnalysis: {
+        title: 'Analyse Multi-facteurs',
+        description: 'Glycémie, Repas, Insuline, Âge, Activités',
+      },
+      predictiveAI: {
+        title: 'IA Prédictive',
+        description: 'Détection précoce des risques',
+      },
+      familyAlerts: {
+        title: 'Alertes Famille',
+        description: 'Notifications simultanées',
+      },
+    },
+  },
+
+  professionalMainDashboard: {
+    errorLoadingHistory: 'Erreur chargement historique',
+    codeRequired: '⚠️ Code requis',
+    patientCodeRequired: 'Veuillez saisir un code patient',
+    accessAuthorized: '✅ Accès autorisé',
+    accessGranted: 'Données de {{firstName}} {{lastName}} accessibles',
+    accessDenied: '❌ Accès refusé',
+    accessDeniedDescription:
+      '{{error}} ou code patient invalide ou accès non autorisé',
+    patientAccessError: 'Erreur accès patient:',
+    noPatientSelectedTitle: '❌ Erreur',
+    noPatientSelectedDescription: 'Aucun patient sélectionné',
+    consultationStartedTitle: '🩺 Consultation démarrée',
+    consultationStartedDescription:
+      'Consultation avec {{firstName}} {{lastName}}',
+    consultationStartErrorTitle: '❌ Erreur',
+    consultationStartErrorDescription: 'Impossible de démarrer la consultation',
+    consultationStartError: 'Erreur démarrage consultation : {{error}}',
+    verifiedStatus: '🟢 Vérifié',
+    validity: 'Validité : {{date}}',
+    patientDataAccess: '🔍 Accès aux Données Patient',
+    patientCode: 'Code Patient DARE',
+    access: 'Accéder',
+    scan_qr_code: 'Scanner QR Code Patient',
+    last_glucose: 'Dernière glycémie',
+    remaining_consultations: 'Consultations restantes',
+    start_consultation: 'Démarrer Consultation',
+    close_access: 'Fermer Accès',
+    consultation_notes: 'Notes de consultation',
+    consultation_notes_placeholder: 'Saisissez vos observations...',
+    status: {
+      completed: '✅ Terminée',
+      started: '🔄 En cours',
+      pending: '⏳ En attente',
+    },
+    recentAccess: {
+      title: '📋 Accès Récents',
+      refresh: '🔄 Actualiser',
+      duration: 'Durée : {{minutes}} min',
+      none: 'Aucun accès récent',
+      info: 'Vos consultations apparaîtront ici',
+    },
+  },
+
+  professionalRegistrationScreen: {
+    profession: {
+      endocrinologist: 'Endocrinologue',
+      general_practitioner: 'Médecin généraliste',
+      diabetologist: 'Diabétologue',
+      nutritionist: 'Nutritionniste',
+      nurse: 'Infirmier(e) spécialisé(e)',
+      pharmacist: 'Pharmacien',
+      psychologist: 'Psychologue',
+      podiatrist: 'Podologue',
+    },
+    toast: {
+      required_field_title: 'Champ requis',
+      required_field_description: 'Veuillez remplir le champ: {{field}}',
+      required_documents_title: 'Documents requis',
+      required_documents_description:
+        'Veuillez ajouter au moins un document justificatif',
+      application_submitted_title: 'Candidature soumise !',
+      application_submitted_description:
+        'Votre candidature a été envoyée avec succès',
+      error: 'Erreur soumission:',
+    },
+    application: {
+      submitted_success: '🎉 Candidature soumise avec succès !',
+      reference: 'Numéro de référence :',
+      nextSteps: {
+        title: '⏰ Prochaines étapes :',
+        review: {
+          title: 'Examen de votre dossier',
+          description: 'Notre équipe vérifiera vos qualifications (48-72h)',
+        },
+        documents: {
+          title: 'Vérification des documents',
+          description: 'Contrôle de vos certifications',
+        },
+        emailNotification: {
+          title: 'Notification par email',
+          description: 'Vous recevrez notre décision',
+        },
+        accountActivation: {
+          title: 'Activation du compte',
+          description: "Si approuvé, vous recevrez vos codes d'accès",
+        },
+      },
+      submitting: '📤 Envoi en cours...',
+      submit: '🚀 Soumettre ma candidature',
+    },
+    registration: {
+      confirmationEmail: 'Un email de confirmation a été envoyé à {{email}}',
+    },
+    buttons: {
+      backToHome: "Retour à l'accueil",
+      login: 'Se connecter',
+    },
+    apply: {
+      title: 'Candidature DARE Pro',
+      subtitle: 'Rejoignez la plateforme de consultation diabétologique',
+    },
+    personalInfo: {
+      title: 'Informations personnelles',
+      firstNameLabel: 'Prénom *',
+      firstNamePlaceholder: 'Votre prénom',
+      lastNameLabel: 'Nom *',
+      lastNamePlaceholder: 'Votre nom',
+      emailLabel: 'Email professionnel *',
+      phoneLabel: 'Téléphone *',
+    },
+    professionalInfo: {
+      header: 'Informations professionnelles',
+      typeLabel: 'Type de professionnel *',
+      typePlaceholder: 'Sélectionnez votre spécialité',
+      licenseLabel: 'Numéro de licence *',
+      licensePlaceholder: "Numéro d'inscription à l'ordre",
+      institutionLabel: 'Institution / Hôpital',
+      institutionPlaceholder: 'Nom de votre établissement',
+    },
+    professionalTypes: {
+      endocrinologist: 'Endocrinologue',
+      general_practitioner: 'Médecin généraliste',
+      diabetologist: 'Diabétologue',
+      nutritionist: 'Nutritionniste',
+      nurse: 'Infirmier(e) spécialisé(e)',
+      pharmacist: 'Pharmacien',
+      psychologist: 'Psychologue',
+      podiatrist: 'Podologue',
+    },
+    location: {
+      header: 'Localisation',
+      countryLabel: 'Pays *',
+      countryPlaceholder: 'Sélectionnez votre pays',
+      cityLabel: 'Ville *',
+      cityPlaceholder: "Votre ville d'exercice",
+    },
+    documents: {
+      title: 'Documents justificatifs',
+    },
+    terms: {
+      title: "Conditions d'utilisation",
+      agreement:
+        "En soumettant cette candidature, vous acceptez les conditions d'utilisation de la plateforme DARE et vous engagez à respecter la charte professionnelle et déontologique.",
+      privacy:
+        'Vos données personnelles seront traitées conformément à notre politique de confidentialité.',
+    },
+  },
+
+  professionalRequestDashboard: {
+    requests: {
+      accepted: 'Demande acceptée',
+      rejected: 'Demande refusée',
+      rescheduled: 'Nouvelle date proposée',
+      new_slot: 'Nouveau créneau: {{date}} à {{time}}',
+    },
+  },
+
+  remindersScreen: {
+    status: {
+      upcoming: 'Bientôt',
+    },
+    reminder: {
+      delete_confirmation: 'Êtes-vous sûr de vouloir supprimer ce rappel ?',
+      upcoming: 'Rappels à venir ({time})',
+      today: "Aujourd'hui ({count})",
+    },
+  },
+
+  teleconsultationBooking: {
+    toast: {
+      missing_info: {
+        title: 'Informations manquantes',
+        description:
+          'Veuillez sélectionner un professionnel, une date et une heure.',
+      },
+      consultation_booked: {
+        title: 'Consultation réservée !',
+        description:
+          'Votre consultation avec {{firstName}} {{lastName}} est confirmée pour le {{date}} à {{time}}.',
+      },
+      booking_error: {
+        title: 'Erreur de réservation',
+        description: 'Une erreur est survenue lors de la réservation.',
+      },
+    },
+    professions: {
+      endocrinologist: 'Endocrinologue',
+      psychologist: 'Psychologue',
+      nutritionist: 'Nutritionniste',
+      nurse: 'Infirmier(ère)',
+      diabetologist: 'Diabétologue',
+      general_practitioner: 'Médecin Généraliste',
+    },
+    teleconsultation_title: 'Téléconsultation',
+    teleconsultation_description:
+      'Réservez une consultation avec un professionnel de santé spécialisé en diabète',
+    search_filters: 'Filtres de recherche',
+    search_label: 'Rechercher',
+    specialty_label: 'Spécialité',
+    all_specialties: 'Toutes les spécialités',
+    endocrinologist: 'Endocrinologue',
+    diabetologist: 'Diabétologue',
+    nutritionist: 'Nutritionniste',
+    psychologist: 'Psychologue',
+    nurse: 'Infirmier(ère)',
+    general_practitioner: 'Médecin Généraliste',
+    city_label: 'Ville',
+    city_placeholder: 'Dakar, Thiès...',
+    available_professionals: 'Professionnels disponibles',
+    next_slot: 'Prochain créneau :',
+    book_consultation: 'Réserver une consultation',
+    select_professional: 'Sélectionnez un professionnel pour réserver',
+    consultation_date_label: 'Date de consultation',
+    available_time_slots: 'Créneaux horaires disponibles',
+    summary: 'Récapitulatif',
+    professional_label: 'Professionnel',
+    date_label: 'Date',
+    time_label: 'Heure',
+    rate_label: 'Tarif',
+    booking_loading: 'Réservation...',
+    book_and_pay: 'Réserver et payer',
+  },
+
+  teleconsultationInterface: {
+    patient_message_thanks: "Merci docteur, je me sens mieux aujourd'hui.",
+    consultation_completed_title: 'Consultation terminée',
+    consultation_completed_description: '{amount} F CFA ajoutés à vos revenus',
+    consultation_extended_title: 'Consultation prolongée',
+    consultation_extended_description:
+      '15 minutes supplémentaires ajoutées (+250 F CFA)',
+    audio_enabled: 'Audio activé',
+    audio_disabled: 'Audio désactivé',
+    video_enabled: 'Vidéo activée',
+    video_disabled: 'Vidéo désactivée',
+    prescription_title: 'Prescription',
+    prescription_description:
+      'Module de prescription en cours de développement',
+    consultation_with: 'Consultation avec',
+    started_since: 'Démarrée il y a',
+    audio_button: 'Audio',
+    video_button: 'Vidéo',
+    prescribe_button: 'Prescrire',
+    consultation_notes_title: 'Notes de consultation',
+    consultation_notes_placeholder:
+      'Notez vos observations, diagnostics, recommandations...',
+    end_consultation_button: 'Terminer Consultation ({amount} F CFA ajouté)',
+    extend_consultation_button: 'Prolonger (+250 F)',
+  },
+
+  activityModal: {
+    activity_walking: 'Marche',
+    activity_running: 'Course/Jogging',
+    activity_cycling: 'Vélo',
+    activity_dancing: 'Danse',
+    activity_weightlifting: 'Musculation',
+    activity_swimming: 'Natation',
+    intensity_light: 'Légère',
+    intensity_moderate: 'Modérée',
+    intensity_intense: 'Intense',
+    activity_type_error_title: 'Erreur',
+    activity_type_error_description: "Veuillez sélectionner un type d'activité",
+    activity_saved_title: 'Activité enregistrée',
+    activity_saved_description:
+      '{activityName} ({duration}min, {intensity}) ajoutée au carnet',
+    save_activity: 'Enregistrer Activité Physique',
+    activity_type_label: "Type d'activité",
+    activity_type_placeholder: 'Sélectionnez une activité',
+    duration_label: 'Durée: {duration} minutes',
+    duration_min: '15 min',
+    duration_max: '120 min',
+    intensity_label: 'Intensité: {intensity}',
+    estimation_title: 'Estimation',
+    estimation_duration: 'Durée:',
+    estimation_intensity: 'Intensité:',
+    estimation_calories: 'Calories brûlées estimées:',
+    cancel_button: 'Annuler',
+    save_button: 'Enregistrer',
+  },
+
+  addGlucoseModal: {
+    blood_sugar_error_title: 'Erreur',
+    blood_sugar_error_description: 'Veuillez saisir une valeur de glycémie',
+    context_fasting: 'À jeun',
+    context_before_meal: 'Avant repas',
+    context_after_meal_1h: 'Après repas (1h)',
+    context_after_meal_2h: 'Après repas (2h)',
+    context_bedtime: 'Avant coucher',
+    context_night: 'Nocturne',
+    new_blood_sugar_measure: 'Nouvelle Mesure Glycémique',
+    glucose_label: 'Valeur glycémie (mg/dL)',
+    glucose_placeholder: 'Ex: 120',
+    measurement_time_label: 'Heure de mesure',
+    time_now: 'Maintenant',
+    time_custom: 'Heure personnalisée',
+    measurement_context_label: 'Contexte de mesure',
+    notes_label: 'Notes (optionnel)',
+    notes_placeholder: 'Ajoutez vos observations...',
+    cancel_button: 'Annuler',
+    save_button: 'Enregistrer',
+  },
+
+  barcodeScanModal: {
+    camera_prompt_header: 'Scanner le code-barres',
+    camera_prompt_photo: 'Prendre une photo',
+    camera_prompt_gallery: 'Choisir depuis la galerie',
+    food_name_apple: 'Pomme Golden - 1 unité moyenne',
+    barcode_scanned_title: 'Code-barres scanné',
+    barcode_scanned_description: 'Produit: {productName}',
+    barcode_scan_error_title: 'Erreur',
+    barcode_scan_error_description: 'Impossible de scanner le code-barres',
+    scan_error_log: 'Erreur lors du scan:',
+    scanner_modal_title: '📱 Scanner Code-barres',
+    scanner_button_scanning: 'Scan en cours...',
+    scanner_button_start: 'Démarrer le scan',
+    scanner_detected_label: 'Code-barres détecté:',
+    food_found_title: 'Produit trouvé:',
+    food_name_label: 'Nom:',
+    food_carbs_label: 'Glucides:',
+    add_to_journal_button: 'Ajouter au journal',
+    manual_code_label: 'Ou saisir le code manuellement:',
+    manual_code_placeholder: 'Ex: 1234567890123',
+  },
+
+  completeMealModal: {
+    painDeMieComplet: 'Pain de mie complet',
+    yaourtNature: 'Yaourt nature',
+    toast: {
+      barcodeScanned: 'Code-barres scanné ✓',
+      productAdded: '{{product}} ajouté avec succès',
+      scanErrorTitle: 'Erreur',
+      scanErrorDescription: 'Impossible de scanner le code-barres',
+      productFoundTitle: 'Produit trouvé',
+      productFoundDescription: '{{product}} ajouté',
+      productNotFoundTitle: 'Produit non trouvé',
+      productNotFoundDescription: 'Code-barres non reconnu',
+      apiErrorTitle: 'Erreur',
+      apiErrorDescription: 'Impossible de récupérer les informations',
+      photoErrorTitle: 'Erreur',
+      photoErrorDescription: 'Impossible de capturer la photo',
+      imageAnalyzed: {
+        title: 'Image analysée par IA ✓',
+        description: '{{meal}} détecté',
+      },
+      formError: {
+        title: 'Erreur',
+        description: 'Veuillez remplir tous les champs requis',
+      },
+      mealSaved: {
+        title: 'Repas enregistré',
+        description: '{{meal}} - {{carbs}}g glucides',
+      },
+    },
+    product: {
+      unknown: 'Produit inconnu',
+    },
+    mealTypes: {
+      saladeCesar: 'Salade César',
+      patesBolognaise: 'Pâtes Bolognaise',
+      sandwichJambon: 'Sandwich Jambon',
+      rizLegumes: 'Riz aux légumes',
+      pizzaMargherita: 'Pizza Margherita',
+    },
+    headings: {
+      mealJournal: '🍽️ Journal des Repas',
+      scanBarcode: 'Scanner Code-Barres',
+      takePhoto: 'Prendre une Photo',
+      manualEntry: 'Saisie Manuelle',
+    },
+    texts: {
+      addMealQuestion: 'Comment souhaitez-vous ajouter votre repas ?',
+      scanSimulation: 'Simulation de scan de produits',
+      mealAiAnalysis: 'Analyse IA du repas',
+      enterInformation: 'Entrez les informations',
+    },
+    images: {
+      meal: 'Repas',
+    },
+    form: {
+      mealName: {
+        label: 'Nom du repas',
+        placeholder: 'Ex: Salade César',
+      },
+      mealTime: {
+        label: 'Moment du repas',
+        placeholder: 'Sélectionner',
+        options: {
+          breakfast: 'Petit-déjeuner',
+          lunch: 'Déjeuner',
+          snack: 'Collation',
+          dinner: 'Dîner',
+        },
+      },
+    },
+    nutrition: {
+      title: 'Valeurs nutritionnelles (pour {{portion}}g)',
+      fields: {
+        carbs: 'Glucides (g)',
+        calories: 'Calories',
+      },
+      carbsEvaluation: {
+        title: 'Évaluation Glucides:',
+        impact: 'Impact modéré sur la glycémie',
+      },
+    },
+    buttons: {
+      back: 'Retour',
+      save: 'Enregistrer',
+    },
+    loading: {
+      scannerInit: {
+        main: 'Initialisation du scanner...',
+        sub: 'Recherche dans la base de données',
+      },
+      aiAnalysis: {
+        main: 'Analyse IA en cours...',
+        sub: 'Identification des aliments',
+      },
+      processing: {
+        main: 'Traitement...',
+        sub: 'Veuillez patienter',
+      },
+    },
+  },
+
+  createReminderModal: {
+    reminders: {
+      types: {
+        insulin: {
+          label: 'Insuline',
+          description: "Injection d'insuline",
+        },
+        medication: {
+          label: 'Médicament',
+          description: 'Prise de médicament',
+        },
+        glucose_test: {
+          label: 'Test glycémie',
+          description: 'Mesure de glycémie',
+        },
+        meal: {
+          label: 'Repas',
+          description: 'Rappel de repas',
+        },
+        activity: {
+          label: 'Activité',
+          description: 'Exercice physique',
+        },
+      },
+    },
+    days: {
+      '1': { label: 'Lundi', short: 'Lun' },
+      '2': { label: 'Mardi', short: 'Mar' },
+      '3': { label: 'Mercredi', short: 'Mer' },
+      '4': { label: 'Jeudi', short: 'Jeu' },
+      '5': { label: 'Vendredi', short: 'Ven' },
+      '6': { label: 'Samedi', short: 'Sam' },
+      '7': { label: 'Dimanche', short: 'Dim' },
+    },
+    placeholders: {
+      selectType: 'Select a type',
+      reminderTitle: 'Ex: Humalog avant déjeuner',
+    },
+    form: {
+      description: {
+        label: 'Description (optionnelle)',
+        placeholder: 'Informations supplémentaires...',
+      },
+      time: 'Heure',
+      unit: 'Unité',
+      units: {
+        ui: 'UI',
+        ml: 'mL',
+        mg: 'mg',
+        g: 'g',
+        tablet: 'comprimé(s)',
+        capsule: 'gélule(s)',
+      },
+      repeatDays: 'Jours de répétition',
+      repeatOptions: {
+        all: 'Tous les jours',
+        weekdays: 'Lun-Ven',
+        weekends: 'Week-end',
+      },
+    },
+    buttons: {
+      cancel: 'Annuler',
+      create: 'Créer',
+      edit: 'Modifier',
+    },
+  },
+
+  injectionInsulinModal: {
+    toast: {
+      error: 'Erreur',
+      fillRequired: 'Veuillez remplir tous les champs obligatoires',
+      injectionSaved: 'Injection enregistrée',
+      injectionDescription: '{{insulinType}} {{dose}}UI injecté',
+    },
+    insulin: {
+      newInjection: "Nouvelle Injection d'Insuline",
+      types: {
+        lantus: 'Lantus (insuline lente)',
+        humalog: 'Humalog (rapide)',
+        novolog: 'NovoLog (rapide)',
+        levemir: 'Levemir (lente)',
+        tresiba: 'Tresiba (ultra-lente)',
+        other: 'Autre',
+      },
+      sites: {
+        abdomen: 'Abdomen',
+        thigh: 'Cuisse',
+        arm: 'Bras',
+        buttock: 'Fesse',
+      },
+      typeLabel: "Type d'insuline *",
+      typePlaceholder: "Sélectionner le type d'insuline",
+      injectionTimeLabel: "Heure d'injection",
+      timeOptions: {
+        now: 'Maintenant',
+        custom: 'Heure personnalisée',
+      },
+    },
+    form: {
+      notes: {
+        label: 'Notes (optional)',
+        placeholder: 'Observations, site rotation, etc...',
+      },
+    },
+    buttons: {
+      cancel: 'Annuler',
+      save: 'Enregistrer',
+    },
+  },
+
+  medicationModal: {
+    medication: {
+      injectionDone: 'Injection effectuée',
+      injectionSiteLabel: "Zone d'injection",
+      timeLabel: "Heure d'administration",
+      typeLabel: 'Type de médicament',
+      typePlaceholder: 'Sélectionnez un médicament',
+      logTitle: 'Enregistrer Prise Médicament',
+      options: {
+        lantus: 'Lantus (Insuline lente)',
+        humalog: 'Humalog (Insuline rapide)',
+        novorapid: 'NovoRapid (Insuline rapide)',
+        metformine: 'Metformine',
+        other: 'Autre médicament',
+      },
+      units: {
+        ui: 'UI',
+        mg: 'mg',
+      },
+      sites: {
+        arm: 'Bras',
+        thigh: 'Cuisse',
+        abdomen: 'Ventre',
+      },
+    },
+    toast: {
+      error: 'Erreur',
+      fillRequiredFields: 'Veuillez remplir tous les champs obligatoires',
+      selectInjectionSite: "Veuillez sélectionner la zone d'injection",
+      medicationSaved: 'Médicament enregistré',
+      medicationSavedDescription:
+        '{{medicationName}} ({{dose}}{{unit}}) ajouté au carnet',
+    },
+    buttons: {
+      cancel: 'Annuler',
+      confirm: 'Confirmer',
+    },
+  },
+
+  photoAnalysisModal: {
+    camera: {
+      mealPhotoHeader: 'Photo du repas',
+      takePhoto: 'Prendre une photo',
+      chooseFromGallery: 'Choisir depuis la galerie',
+    },
+    toast: {
+      photoCaptured: 'Photo capturée',
+      photoCapturedDescription: 'Vous pouvez maintenant analyser cette image',
+      error: 'Erreur',
+      photoCaptureFailed: 'Impossible de prendre la photo',
+      analysisComplete: 'Analyse terminée',
+      analysisCompleteDescription: "L'IA a analysé votre repas avec succès",
+      analysisFailed: "Impossible d'analyser l'image",
+    },
+    console: {
+      photoCaptureError: 'Erreur lors de la prise de photo:',
+      console: {
+        analysisError: "Erreur lors de l'analyse:",
+      },
+    },
+    ai: {
+      analyzeFoodPrompt:
+        'Analyse cette image de nourriture et estime:\n1. Le nom du plat/aliment principal\n2. La quantité approximative de glucides en grammes\n3. Une brève description de ce que tu vois\n\nRéponds au format JSON: {"name": "nom du plat", "carbs": nombre, "analysis": "description"}',
+      mockResult: {
+        name: 'Assiette de pâtes à la sauce tomate',
+        carbs: 45,
+        analysis:
+          "Je vois une assiette de pâtes avec de la sauce tomate. La portion semble être d'environ 100g de pâtes cuites, ce qui représente approximativement 45g de glucides.",
+      },
+    },
+    modal: {
+      header: '📸 Analyse Photo + IA',
+      instructions:
+        "Prenez une photo de votre repas pour que l'IA estime automatiquement les glucides.",
+      takePhoto: 'Prendre une photo',
+      chooseFromGallery: 'Choisir depuis la galerie',
+      change: 'Changer',
+      analyzeAI: "🤖 Analyser avec l'IA",
+      analyzing: 'Analyse en cours...',
+      analysisResult: "Résultat de l'analyse IA:",
+      dishIdentified: 'Plat identifié:',
+      estimatedCarbs: 'Glucides estimés:',
+      analysis: 'Analyse:',
+      addToJournal: 'Ajouter au journal',
+    },
+  },
+
+  photoUploadModal: {
+    profilePhoto: {
+      title: 'Photo de profil',
+      description: 'Ajoutez ou modifiez votre photo de profil',
+      choosePhoto: 'Choisir une photo',
+      removePhoto: 'Supprimer la photo',
+    },
+    buttons: {
+      cancel: 'Annuler',
+      save: 'Enregistrer',
+    },
+  },
+
+  scanMealModal: {
+    toast: {
+      productScanned: '✅ Produit scanné',
+      productDetected: '{{productName}} détecté',
+      mealSaved: '🍽️ Repas enregistré',
+      mealSavedDescription: '{{food}} ({{carbs}}g glucides) ajouté au carnet',
+      productScanned1: 'Produit scanné avec succès',
+    },
+    food: {
+      petitEcolierBiscuits: 'Biscuits Lu Petit Écolier',
+    },
+    foods: {
+      rice: 'Riz blanc cuit',
+      bread: 'Pain de mie',
+      pasta: 'Pâtes cuites',
+      apple: 'Pomme',
+      banana: 'Banane',
+      plainYogurt: 'Yaourt nature',
+    },
+    mealTimes: {
+      breakfast: 'Petit-déjeuner',
+      lunch: 'Déjeuner',
+      snack: 'Collation',
+      dinner: 'Dîner',
+    },
+    dailyMealDialog: {
+      title: '🍽️ Repas de la Journée',
+      description: 'Suivez vos glucides facilement',
+    },
+    foodInfo: {
+      industrialProducts: 'Produits industriels et emballés',
+      exactNutrition: '• Infos nutritionnelles exactes',
+    },
+    searchFood: {
+      title: '🔍 Rechercher un Aliment',
+      subtitle: 'Base de données complète',
+      note: '• Aliments frais et cuisinés',
+    },
+    manualAdd: {
+      title: '✏️ Ajouter Manuellement',
+      subtitle: 'Créez votre propre entrée',
+      note: '• Recettes personnalisées',
+    },
+    activeOptions: {
+      barcode: 'Scanner Code-Barres',
+      search: 'Rechercher un Aliment',
+      custom: 'Ajouter Manuellement',
+    },
+    meal: {
+      mealTimeLabel: '⏰ Moment du repas',
+      consumedPortion: '⚖️ Portion consommée',
+    },
+    scanner: {
+      scanning: 'Scanner en cours...',
+      positionBarcode: 'Positionnez le code-barres dans le cadre',
+    },
+    search: {
+      label: '🔍 Rechercher un aliment',
+      placeholder: 'Ex: pomme, riz, pain...',
+    },
+    popularFoods: {
+      label: '💡 Aliments populaires',
+    },
+    manualFood: {
+      nameLabel: "✏️ Nom de l'aliment",
+      namePlaceholder: 'Ex: Gâteau de maman, salade de fruits...',
+    },
+    nutrition: {
+      estimatedCarbs: 'Glucides estimés',
+    },
+    buttons: {
+      cancel: 'Annuler',
+      addToJournal: 'Ajouter au carnet',
+    },
+  },
+
+  simpleActivityModal: {
+    toast: {
+      error: 'Erreur',
+      fillAllFields: 'Veuillez remplir tous les champs',
+      activitySaved: '{{activity}} pendant {{duration}} minutes',
+    },
+    activity: {
+      header: '🏃 Activité Physique',
+      typeLabel: "Type d'activité",
+      typePlaceholder: 'Sélectionner une activité',
+      options: {
+        walking: 'Marche',
+        running: 'Course',
+        cycling: 'Vélo',
+        swimming: 'Natation',
+        strength: 'Musculation',
+        other: 'Autre',
+      },
+      durationLabel: 'Durée (minutes)',
+    },
+    buttons: {
+      cancel: 'Annuler',
+      save: 'Enregistrer',
+    },
+  },
+
+  simpleGlucoseModal: {
+    toast: {
+      errorTitle: 'Erreur',
+      invalidGlucose: 'Veuillez entrer une valeur de glycémie valide',
+      glucoseAdded: 'Votre glycémie a été enregistrée avec succès',
+      glucoseAddedTitle: 'Mesure ajoutée',
+    },
+    glucose: {
+      header: '📊 Nouvelle Mesure Glycémique',
+      label: 'Glycémie (mg/dL)',
+      notesPlaceholder: 'Commentaires...',
+    },
+    buttons: {
+      cancel: 'Annuler',
+      save: 'Enregistrer',
+    },
+  },
+
+  simpleMealModal: {
+    toast: {
+      foodNameRequired: "Veuillez entrer un nom d'aliment",
+      mealAdded: '{{foodName}} a été ajouté à votre journal',
+      mealAddedTitle: 'Repas ajouté',
+    },
+    mealJournal: {
+      header: '🍽️ Journal des Repas',
+    },
+    food: {
+      label: "Nom de l'aliment",
+      placeholder: 'Ex: Pomme, Riz, Salade...',
+    },
+    nutrition: {
+      carbsLabel: 'Glucides (g) - optionnel',
+      carbsPlaceholder: 'Ex: 25',
+      cancel: 'Annuler',
+      add: 'Ajouter',
+    },
+  },
+
+  simpleMedicationModal: {
+    toast: {
+      errorTitle: 'Erreur',
+      errorFillFields: 'Veuillez remplir tous les champs',
+      medicationSavedTitle: 'Médicament enregistré',
+      medicationSavedDesc: '{{medication}} - {{dose}} unités pris avec succès',
+    },
+    medication: {
+      recordHeader: '💊 Enregistrer Prise Médicament',
+      typeLabel: 'Type de médicament',
+      placeholder: 'Sélectionner un médicament',
+      options: {
+        fastInsulin: 'Insuline rapide',
+        slowInsulin: 'Insuline lente',
+        metformin: 'Metformine',
+        other: 'Autre',
+      },
+    },
+    dose: {
+      label: 'Dose (unités)',
+      placeholder: 'Ex: 5',
+    },
+    buttons: {
+      cancel: 'Annuler',
+      confirm: 'Confirmer',
+    },
+  },
+
+  weightModal: {
+    weightModal: {
+      invalidWeight: {
+        title: 'Error',
+        description: 'Please enter a valid weight (between 1 and 300 kg)',
+      },
+      success: {
+        title: 'Weight Updated',
+        description: 'Your weight has been recorded: {{weight}} kg',
+      },
+      title: 'Body Weight',
+      description: 'Record your current weight for optimal tracking',
+      inputLabel: 'Weight (kg)',
+      placeholder: 'Ex: 75.5',
+      tip: '💡 Tip: Always weigh yourself at the same time, preferably in the morning before eating, for consistent measurements.',
+      cancel: 'Cancel',
+      save: 'Save',
+    },
+  },
+
+  actionsRapides: {
+    toast: {
+      error: {
+        title: 'Error',
+        description: 'Please enter a valid blood glucose value',
+      },
+    },
+    errorAddGlucose: 'Error adding glucose:',
+    toastErrorTitle: 'Error',
+    toastErrorDescription: 'Unable to save your measurement',
+    toastFoodNameError: 'Please enter a food name',
+    toastMealAddedTitle: 'Meal added',
+    toastMealAddedDescription: '{{foodName}} has been added to your log',
+    toastMealAddError: 'Unable to add the meal',
+    toastFillAllFields: 'Please fill in all fields',
+    toastMedicationSavedTitle: 'Medication saved',
+    toastMedicationSavedDescription:
+      '{{medication}} - {{dose}} units taken successfully',
+    toastMedicationAddError: 'Unable to add the medication',
+    toastActivitySavedTitle: 'Activity saved',
+    toastActivitySavedDescription: '{{activity}} for {{duration}} minutes',
+    toastActivityAddError: 'Unable to add the activity',
+    Actions: {
+      button: 'Save',
+    },
+    loadingSave: 'Saving...',
+    Journal: {
+      button: 'Add meal',
+    },
+    loadingAdd: 'Adding...',
+    Medication: {
+      subtitle: 'Add medication',
+      title2: 'Medication',
+      select: {
+        title: 'Select a medication',
+        option: {
+          one: 'Ultra-rapid insulin',
+          two: 'Humalog',
+          three: 'NovoRapid',
+          four: 'Apidra',
+          five: 'Fiasp',
+          six: 'Rapid insulin',
+          seven: 'Actrapid',
+          eight: 'Humulin R',
+          nine: 'Insuman Rapid',
+          ten: 'Intermediate insulin',
+          eleven: 'Insulatard',
+          twelve: 'Humulin N',
+          thirteen: 'Insuman Basal',
+          fourteen: 'Long-acting insulin',
+          fifteen: 'Lantus',
+          sixteen: 'Levemir',
+          seventeen: 'Toujeo',
+          eighteen: 'Tresiba',
+          nineteen: 'Abasaglar',
+          twenty: 'Mixed insulin',
+          twentyone: 'NovoMix',
+          twentytwo: 'Humalog Mix',
+          twentythree: 'Humulin Mix',
+          twentyfour: 'Insuman Comb',
+          twentyfive: 'Metformin',
+          twentysix: 'Glucophage',
+          twentyseven: 'Stagid',
+          twentyeight: 'Gliclazide',
+          twentynine: 'Diamicron',
+          thirty: 'Victoza',
+          thirtyone: 'Ozempic',
+          thirtytwo: 'Trulicity',
+          thirtythree: 'Januvia',
+          thirtyfour: 'Forxiga',
+          thirtyfive: 'Other',
+        },
+      },
+      dose: 'Dose',
+      unit: 'units',
+      button: 'Save medication',
+    },
+    Food: {
+      barcode: {
+        title: 'Product added',
+        description: '{{food}} - {{carbs}}g of carbs',
+      },
+      photo: {
+        title: 'Analysis complete',
+        description: '{{food}} - {{carbs}}g of estimated carbs',
+      },
+    },
+  },
+
+  adminTabs: {
+    Applications: {
+      status: {
+        pending: 'Pending',
+        approved: 'Approved',
+        rejected: 'Rejected',
+      },
+      fields: {
+        first_name: 'First name',
+        last_name: 'Last name',
+        email: 'Email',
+        professional_type: 'Professional type',
+        institution: 'Institution',
+        license_number: 'License number',
+        country: 'Country',
+        city: 'City',
+        created_at: 'Application date',
+        documents: 'Documents',
+      },
+      institutions: {
+        hopital_principal: 'Principal Hospital of Dakar',
+        clinique_pasteur: 'Pasteur Clinic',
+      },
+      pendingTitle: 'Pending Applications',
+      pendingCount: 'pending',
+      none: 'No applications',
+      noneDescription: 'New professional applications will appear here',
+    },
+    toast: {
+      approved: {
+        title: 'Application approved',
+        description:
+          'The professional has been approved and can now use DARE Pro.',
+      },
+      rejected: {
+        title: 'Application rejected',
+        description: 'The application has been rejected.',
+      },
+    },
+    status: {
+      pending: 'Pending',
+      approved: 'Approved',
+      rejected: 'Rejected',
+    },
+    Dashboard: {
+      tabs: {
+        applications: 'Applications',
+        consultations: 'Consultations',
+        payments: 'Payments',
+        analytics: 'Analytics',
+      },
+    },
+    Consultations: {
+      recent: 'Recent Consultations',
+    },
+    Payments: {
+      title: 'Payment Management',
+      module: 'Payment Module',
+      description: 'Manage payments to professionals and commissions',
+    },
+    Analytics: {
+      title: 'Analytics',
+      module: 'Analytics Dashboard',
+      description: 'Detailed statistics and performance reports',
+    },
+  },
+
+  applicationCardFixes: {
+    Document: {
+      title: 'Document',
+      description: 'Viewing {{name}} - Feature in development',
+      default: 'document',
+    },
+    Status: {
+      approved: 'Approved',
+      rejected: 'Rejected',
+      pending: 'Pending',
+    },
+    Application: {
+      specialty: 'Specialty',
+      location: 'Location',
+      institution: 'Institution',
+      notSpecified: 'Not specified',
+      license: 'License No.',
+      email: 'Email',
+      date: 'Application Date',
+    },
+    Actions: {
+      reject: 'Reject',
+      approve: 'Approve',
+    },
+    Documents: {
+      title: 'Submitted Documents:',
+      default: 'Document {{index}}',
+      none: 'No document uploaded',
+    },
+  },
+
+  autoMessageCard: {
+    Badge: {
+      sent: 'Sent',
+    },
+    Reactions: {
+      label: 'Reactions',
+    },
+    Metadata: {
+      source: 'Source',
+      manual: 'Manual',
+      automatic: 'Automatic',
+      type: 'Type',
+    },
+    Actions: {
+      resend: 'Resend',
+    },
+  },
+
+  badgeDisplay: {
+    Badges: {
+      earnedOn: 'Earned on',
+    },
+  },
+
+  chatInterface: {
+    Consultation: {
+      title: 'Consultation with {{name}}',
+      startConversation: 'Start the conversation with your patient',
+      suggestions: 'Starter suggestions:',
+      messages: {
+        feel: 'Hello, how are you feeling today?',
+        concerns: 'Do you have any particular concerns?',
+        glycemia: 'How have your blood sugar levels been recently?',
+      },
+    },
+    Chat: {
+      inputPlaceholder: 'Type your message...',
+    },
+  },
+
+  communityChallengeCard: {
+    Status: {
+      completed: 'Completed',
+      active: 'In progress',
+      upcoming: 'Upcoming',
+    },
+    Challenge: {
+      participants: '{{count}} participant',
+      participants_plural: '{{count}} participants',
+      goal: 'Goal: {{value}} {{unit}}',
+      endsIn: 'Ends {{time}}',
+      yourProgress: 'Your Progress',
+      completed: 'Completed',
+      finished: 'Challenge completed!',
+      reward: 'Reward',
+      join: 'Join the challenge',
+      finishedMessage:
+        'This challenge is completed. Stay tuned for upcoming challenges!',
+    },
+  },
+
+  communityInsightDashboard: {
+    Community: {
+      insights: 'Community Insights',
+      anonymizedData: 'Anonymized community data - Updated on {{date}}',
+      avgTimeInTarget: 'Average Time in Target',
+      globalCommunity: 'Global Community',
+      mostActiveRegion: 'Most Active Region',
+      moreCommunityEngagement: 'Higher community engagement',
+      popularMealTimes: 'Popular Meal Times',
+      commonChallenges: 'Common Challenges',
+      anonymizedDataNotice:
+        'Data is anonymized and aggregated to protect user privacy',
+    },
+    Actions: {
+      retry: 'Retry',
+    },
+  },
+
+  consultationBilling: {
+    History: {
+      loadError: 'Error loading history:',
+    },
+    Payment: {
+      requiredTitle: '💳 Payment Required',
+      processingDescription: '{{amount}} - Payment processing...',
+      errorTitle: '❌ Payment Error',
+      errorDescription: 'Unable to process payment of {{amount}}',
+    },
+    Consultation: {
+      startedTitle: '✅ Consultation Started',
+      paymentConfirmed:
+        'Payment of {{amount}} confirmed - Session {{sessionId}}',
+      completedTitle: '✅ Consultation Completed',
+      completedDescription: 'Payment processed automatically',
+      errorTitle: '❌ Error',
+      errorDescription: 'Unable to complete the consultation',
+      inProgress: 'Consultation in Progress',
+      session: 'Session',
+      started: 'Started',
+      amount: 'Amount',
+      paymentStatus: 'Payment Status',
+      notesPlaceholder: 'Consultation notes...',
+      processing: '⏳ Processing...',
+      endButton: '🔚 End Consultation',
+      newTitle: 'New Consultation - {{amount}}',
+      fee: 'Fee',
+      feePerSession: '{{amount}} per consultation',
+      payment: 'Payment',
+      paymentMethod: 'Automatic before consultation',
+      dareCommission: 'DARE Commission',
+      commissionRate: '10% (50 FCFA)',
+      patientCodePlaceholder: 'Patient code (ex: PAT001)',
+      processingPayment: '⏳ Processing payment...',
+      startButton: '💳 Start Consultation ({{amount}})',
+      historyTitle: 'Consultation History',
+      noHistory: 'No consultations yet',
+      patient: 'Patient',
+      date: 'Date',
+      status: 'Status',
+      notes: 'Notes',
+    },
+    PaymentStatus: {
+      paid: 'Paid',
+      pending: 'Pending',
+      failed: 'Failed',
+    },
+  },
+
+  ConsultationCard: {
+    years: 'years',
+    diabetesType: 'Diabetes Type',
+    requestedAgo: 'Requested {{time}} ago',
+    consultation: 'Consultation',
+    viewData: 'View Data',
+    accept: 'Accept',
+    reason: 'Reason',
+  },
+
+  consultationChat: {
+    Chat: {
+      errorTitle: 'Connection Error',
+      errorDescription: 'Unable to connect to the chat',
+      initError: 'Chat initialization error:',
+      title: 'Consultation Chat',
+      input: {
+        placeholder: 'Type your message...',
+      },
+    },
+    messages: {
+      initialPatientMessage:
+        'Hello doctor, I have a question about my blood sugar',
+    },
+    toast: {
+      sentTitle: 'Message sent',
+      sentDescription: 'Your message has been successfully sent',
+    },
+    Consultation: {
+      start: {
+        successTitle: 'Consultation Started',
+        successDescription: 'The consultation is now active',
+        errorLog: 'Error starting consultation:',
+        errorTitle: 'Error',
+        errorDescription: 'Unable to start the consultation',
+      },
+      complete: {
+        successTitle: 'Consultation Completed',
+        successDescription: 'The consultation has been marked as completed',
+      },
+      errorTitle: 'Error',
+      errorDescription: 'Unable to complete the consultation',
+      button: {
+        start: 'Start Consultation',
+        end: 'End',
+      },
+      status: {
+        finished: 'This consultation is finished',
+      },
+    },
+    Connection: {
+      status: {
+        connected: 'Connected',
+        disconnected: 'Disconnected',
+      },
+    },
+  },
+
+  countrySelector: {
+    Settings: {
+      countryCurrency: {
+        title: 'Select Country & Currency',
+        detecting: 'Detecting your country...',
+        detected: 'Detected country',
+        use: 'Use',
+        selectCountry: 'Choose your country:',
+        selectPlaceholder: 'Select a country...',
+      },
+    },
+  },
+
+  dataSharingSettings: {
+    Settings: {
+      sharePrefs: {
+        successTitle: 'Preferences Updated',
+        successDescription: 'Your sharing settings have been saved.',
+        errorTitle: 'Error',
+        errorDescription: 'Unable to update your preferences.',
+      },
+      privacy: {
+        title: 'Privacy Settings',
+        anonymousData: {
+          title: 'Anonymous Data Sharing',
+          description:
+            'Help improve the community by sharing your data anonymously',
+        },
+        shareStats: {
+          title: 'Share my statistics',
+          description: 'Average glucose and time in range',
+        },
+        shareRegion: {
+          title: 'Share my region',
+          description: 'Geographical region for local statistics',
+        },
+        shareAge: {
+          title: 'Share my age group',
+          description: 'Age group for demographic comparisons',
+        },
+        shareDiabetesType: {
+          title: 'Share my diabetes type',
+          description: 'Diabetes type for specialized insights',
+        },
+        guarantee: {
+          title: 'Privacy Guaranteed',
+          description:
+            'All shared data is anonymized and cannot be linked to your identity. It is used solely to improve the community experience.',
+        },
+      },
+    },
+  },
+
+  gamificationDashboard: {
+    Profile: {
+      reputation: {
+        points: 'Reputation Points',
+      },
+      badges: {
+        earned: 'Badges earned',
+        progression: 'Badge Progress',
+        description: 'Unlock new badges by participating in the community',
+        earned1: 'Badges earned ({{count}})',
+        available: 'Badges to unlock ({{count}})',
+        locked: 'To unlock',
+        viewAll: 'View all badges (+{{remaining}})',
+      },
+      messages: {
+        sent: 'Messages sent',
+      },
+      points: {
+        title: 'Earn points',
+        description:
+          'Participate in these activities to increase your reputation',
+        message: {
+          title: 'Helpful messages',
+          description: '+{{points}} points each',
+          button: 'Write a message',
+        },
+        mentoring: {
+          title: 'Mentoring',
+          description: '+{{points}} points per person',
+          button: 'Become a mentor',
+        },
+        challenges: {
+          title: 'Challenges',
+          description: '+{{points}} points per participation',
+          button: 'Join a challenge',
+        },
+        dataSharing: {
+          title: 'Data Sharing',
+          description: '+{{points}} points per share',
+          button: 'Share Data',
+        },
+      },
+    },
+  },
+
+  glucoseShareMessage: {
+    Profile: {
+      points: {
+        glucoseSharing: {
+          title: 'Glucose Sharing',
+        },
+      },
+    },
+  },
+
+  groupCard: {
+    Profile: {
+      points: {
+        glucoseSharing: {
+          joinButton: 'Join',
+        },
+      },
+    },
+  },
+
+  lazyImage: {
+    common: {
+      imageUnavailable: 'Image not available',
+    },
+  },
+
+  liveSessions: {
+    sessions: {
+      qaWithDoctor: 'Q&A with {{doctor}}',
+      diabetesCookingWorkshop: 'Diabetes Cooking Workshop',
+      meditationStressManagement: 'Meditation & Stress Management',
+      todayAt: 'Today at {{time}}',
+      tomorrowAt: 'Tomorrow at {{time}}',
+      onDayAt: '{{day}} at {{time}}',
+      duration: '{{duration}}',
+    },
+  },
+
+  mealPhotoMessage: {
+    meal: {
+      diabetesFriendly: 'Diabetes-friendly meal',
+      sharedMeal: 'Shared meal',
+      estimatedCarbs: 'Estimated carbs',
+    },
+  },
+
+  messageBubble: {
+    meal: {
+      carbs: 'carbs',
+    },
+    metrics: {
+      Glucose: 'Glucose',
+      Insulin: 'Insulin',
+      period: 'Period',
+    },
+  },
+
+  nativeHeaderFixes: {
+    notifications: {
+      inDevelopment: 'Notifications - Feature in development',
+    },
+    settings: {
+      inDevelopment: 'Settings - Feature in development',
+    },
+  },
+
+  networkStatus: {
+    network: {
+      online: 'Connection restored',
+      offline: 'No internet connection - Offline mode enabled',
+    },
+  },
+
+  networkStatusIndicator: {
+    networkStatus: {
+      verySlow: 'Very slow network',
+      slow: 'Slow network',
+      moderate: 'Moderate network',
+      fast: 'Good network',
+      unknown: 'Unknown network',
+    },
+    badges: {
+      saveData: 'Save data',
+      optimizedMode: 'Optimized mode enabled',
+    },
+  },
+
+  patientAccessHistory: {
+    professionalType: {
+      endocrinologist: 'Endocrinologist',
+      generalPractitioner: 'General Practitioner',
+      nutritionist: 'Nutritionist',
+      unknown: 'Unknown',
+    },
+    actions: {
+      view: 'Viewed',
+      consultation: 'Consultation',
+      viewData: 'View Data',
+      download: 'Download',
+      exportData: 'Export Data',
+      access: 'Access',
+    },
+    data: {
+      glucose: 'Glucose',
+      medications: 'Medications',
+      overview: 'Overview',
+      meals: 'Meals',
+      activities: 'Activities',
+    },
+    errors: {
+      loadingHistory: 'Error loading history',
+      retry: 'Retry',
+      downloadFullReport: '📄 Download Full Report',
+    },
+    time: {
+      agoMinutes: '{{count}} min ago',
+      agoHours: '{{count}}h ago',
+      yesterday: 'Yesterday',
+      agoDays: '{{count}} days ago',
+    },
+    report: {
+      generatingTitle: '📄 Generating Report',
+      generatingDesc: 'Preparing the access report...',
+      successTitle: '✅ Report Generated',
+      successDesc: 'The access report has been downloaded successfully',
+      errorTitle: '❌ Error',
+      errorDesc: 'Unable to generate the report',
+    },
+    history: {
+      loadingError: 'Loading Error',
+      accessTitle: '🔍 Access History to My Data',
+      accessSubtitle: 'All access to your data is tracked and secured',
+      noRecentAccess: 'No recent access to your data',
+      suspect: '⚠️ Suspect',
+      code: 'Code',
+      sectionsAccessed: 'Sections Accessed',
+    },
+  },
+
+  patientAccessInterface: {
+    injection: {
+      doseUnits: '{{count}} units',
+    },
+    meal: {
+      totalCarbs: '{{count}}g carbohydrates',
+    },
+  },
+
+  patientDataPanel: {
+    patient: {
+      infoTitle: 'Patient Information',
+      age: 'Age',
+      years: 'years',
+      type: 'Type',
+      diabetesType: 'Diabetes Type {{type}}',
+      diagnosis: 'Diagnosis',
+      targetBelow: 'target <',
+      recentGlucose: 'Recent Glucose Readings',
+      treatment: 'Current Treatment',
+      alerts: 'Alerts',
+    },
+    actions: {
+      viewFullGraphs: 'View Full Graphs',
+      consultationHistory: 'Consultation History',
+      adjustInsulinDoses: 'Adjust Insulin Doses',
+    },
+  },
+
+  patientDataTabs: {
+    tabs: {
+      overview: '📊 Overview',
+      glucose: '🩸 Glucose',
+      medications: '💊 Medications',
+      meals: '🍽️ Nutrition',
+      activities: '🏃 Activities',
+      history: '📋 History',
+    },
+    access: {
+      sectionNotAccessibleTitle: 'Section Not Accessible',
+      sectionNotAccessibleDesc:
+        'You do not have permission to access the data for {{section}}.',
+    },
+    medications: {
+      metformin: 'Metformin',
+      lantus: 'Lantus',
+      humalog: 'Humalog',
+      current: 'Current Medications',
+    },
+    alerts: {
+      hba1cAboveTarget: 'HbA1c > target',
+      threeHypoglycemiasWeek: '3 hypoglycemic events this week',
+      followUpAppointment: 'Follow-up appointment scheduled',
+      title: 'Active Alerts',
+      count: 'alerts',
+    },
+    glycemicControl: {
+      title: 'Glycemic Control',
+      currentHbA1c: 'Current HbA1c',
+      target: 'Target',
+      timeInRange: 'Time in Range',
+    },
+    treatment: {
+      title: 'Treatment',
+      activeMedications: 'active medications',
+    },
+    latestMeasures: {
+      title: 'Latest Measurements',
+      current: 'Current',
+      sevenDayAvg: '7-day Average',
+      variability: 'Variability',
+    },
+    activity: {
+      title: 'Activity',
+      today: 'Today',
+      thisWeek: 'This Week',
+      target: 'Target',
+      progress: '{{percent}}% of goal',
+    },
+    nutrition: {
+      title: 'Nutrition',
+      carbsToday: 'Carbs Today',
+      mealsLogged: 'Meals Logged',
+      avgGI: 'Average GI',
+      giModerate: 'Moderate',
+      todayMeals: 'Meals & Nutrition - Today',
+      carbs: 'g carbs',
+      dailySummary: 'Daily Summary',
+      totalCarbs: 'Total Carbs',
+      totalCalories: 'Total Calories',
+      avgGlycemicIndex: 'Average Glycemic Index',
+      gi: {
+        low: 'Low',
+        moderate: 'Moderate',
+        high: 'High',
+      },
+    },
+    charts: {
+      sevenDayGlucose: '7-Day Glucose Levels',
+      patientGlucoseGraph: 'Patient Glucose Chart',
+      last7DaysData: 'Data from the last 7 days',
+    },
+    glucose: {
+      context: {
+        fasting: 'Fasting',
+        postMeal: 'Post-meal',
+        snack: 'Snack',
+        afterDinner: 'After Dinner',
+      },
+      trend: {
+        stable: 'Stable',
+        up: 'Rising',
+        down: 'Falling',
+      },
+    },
+    glycemia: {
+      todayData: 'Glycemic Data - Today',
+      last: 'Last',
+      level: {
+        high: 'High',
+        low: 'Low',
+        normal: 'Normal',
+      },
+    },
+    medication: {
+      frequency: {
+        twiceDaily: '2x/day',
+        onceDaily: '1x/day',
+        beforeMeal: 'Before meal',
+      },
+      time: {
+        morningEvening: 'Morning/Evening',
+        evening: 'Evening',
+        variable: 'Variable',
+      },
+    },
+    meals: {
+      breakfast: 'Breakfast',
+      lunch: 'Lunch',
+      dinner: 'Dinner',
+    },
+    activities: {
+      walk: 'Walk',
+      cycling: 'Cycling',
+      intensity: {
+        low: 'Low',
+        moderate: 'Moderate',
+        high: 'High',
+      },
+      todayActivities: 'Physical Activities - Today',
+      minutes: 'minutes',
+      summary: 'Summary',
+      totalTime: 'Total Time',
+      caloriesBurned: 'Calories Burned',
+      weeklyGoal: 'Weekly Goal',
+    },
+    consultations: {
+      historyTitle: 'Consultation History',
+      consultation: 'Consultation',
+      teleconsultation: 'Teleconsultation',
+      notes: {
+        adjustInsulin: 'Insulin adjustment',
+        glycemiaFollowUp: 'Glycemia follow-up',
+        quarterlyCheck: 'Quarterly check-up',
+      },
+    },
+  },
+
+  patientManagement: {
+    patientCodeModal: {
+      title: 'Patient Code Required',
+      description: 'Please enter the patient code to access secure information',
+      enterCodeFor:
+        'Enter patient code to access information for {{patientName}}',
+      placeholder: 'Patient code (e.g., ABC123)',
+      cancel: 'Cancel',
+      access: 'Access',
+    },
+    patientFile: {
+      title: 'Patient File - {{patientName}}',
+      description: 'Full consultation of the medical record',
+      name: 'Patient Name',
+      diabetesType: 'Diabetes Type',
+      lastGlucose: 'Last Glucose',
+      status: 'Status',
+      medicalNotes: 'Medical Notes',
+      lastConsultation: 'Last Consultation',
+      nextAppointment: 'Next Appointment',
+      close: 'Close',
+    },
+    messageModal: {
+      title: 'Send a message to {{patientName}}',
+      description: 'Secure patient-professional messaging',
+      subject: 'Subject',
+      subjectPlaceholder: 'Message subject',
+      content: 'Message',
+      contentPlaceholder: 'Type your message here...',
+      cancel: 'Cancel',
+      send: 'Send',
+    },
+    teleconsultation: {
+      title: 'Teleconsultation with {{patientName}}',
+      description: 'Secure video consultation interface',
+      interfaceTitle: 'Video Interface',
+      interfaceSubtitle: 'The video consultation would appear here',
+      patientLabel: 'Patient',
+      durationLabel: 'Planned duration',
+      durationValue: '{{minutes}} minutes',
+      notesLabel: 'Consultation notes',
+      notesPlaceholder: 'Write important consultation points...',
+      close: 'Close',
+      audioOnly: 'Audio only',
+      startVideo: 'Start Video',
+    },
+    call: {
+      title: 'Call {{patientName}}',
+      description: 'Phone call interface',
+      ready: 'Ready to dial',
+      notesLabel: 'Call notes',
+      notesPlaceholder: 'Write the purpose of the call...',
+      cancel: 'Cancel',
+      dial: 'Dial',
+    },
+    editProfile: {
+      title: 'Edit Profile - {{patientName}}',
+      description: 'Edit patient information',
+      name: 'Patient Name',
+      diabetesType: 'Diabetes Type',
+      status: 'Status',
+      statusOptions: {
+        stable: 'Stable',
+        attention: 'Attention',
+        improving: 'Improving',
+      },
+      lastGlucose: 'Last Glucose',
+      notes: 'Medical Notes',
+      nextAppointment: 'Next Appointment',
+      cancel: 'Cancel',
+      save: 'Save Changes',
+    },
+  },
+
+  paymentRow: {
+    payment: {
+      successTitle: 'Payment Processed',
+      successDescription:
+        'Payment of {{amount}} F CFA processed for {{doctor}}',
+      errorTitle: 'Error',
+      errorDescription: 'Unable to process the payment',
+      pay: 'Pay',
+      receipt: 'Receipt',
+    },
+    status: {
+      paid: 'Paid',
+      processing: 'Processing',
+      pending: 'Pending',
+    },
+  },
+
+  predictiveAlerts: {
+    aiAnalysis: {
+      inProgress: 'AI Analysis in progress...',
+      patternDetection: 'Detecting glycemic patterns',
+    },
+    notifications: {
+      markAllRead: 'Mark all as read',
+    },
+    alerts: {
+      prediction: 'Prediction',
+      inApproxMinutes: 'in ~{{minutes}} min',
+    },
+    recommendations: {
+      actions: 'Recommended Actions',
+    },
+    predictive: {
+      confidence: 'Confidence',
+      label: 'AI Prediction',
+    },
+  },
+
+  professionalConsultationDashboard: {
+    professionalDashboard: {
+      consultations: {
+        title: 'Consultations',
+        status: {
+          scheduled: 'Scheduled',
+          confirmed: 'Confirmed',
+          in_progress: 'In Progress',
+          completed: 'Completed',
+          cancelled: 'Cancelled',
+          no_show: 'No Show',
+        },
+      },
+    },
+    consultation: {
+      back_to_list: 'Back to consultations',
+      number: 'Consultation #{{id}}',
+      none_found: 'No consultations found',
+      none_found_description: 'Consultations will appear here once created',
+      duration: 'Duration',
+      minutes: 'minutes',
+      start: 'Start',
+      resume: 'Resume',
+    },
+  },
+
+  professionalCredentials: {
+    qrcode: {
+      error_title: 'QR Code Error',
+      error_description: 'Unable to generate the QR Code',
+    },
+    certificate: {
+      title: 'DARE - Professional Certificate',
+      institution: 'Institution',
+      license: 'License',
+      approved_at: 'Approval Date',
+      validity: 'Validity',
+      validity_period: '1 year from the date of issue',
+      platform: 'Platform',
+      not_specified: 'Not specified',
+      approval_statement:
+        "This certificate confirms the professional's approval on the DARE platform.",
+      verification_contact: 'For verification, contact support@dare-health.com',
+      download_success_title: '✅ Certificate Downloaded',
+      download_success_description:
+        'The professional certificate has been successfully downloaded',
+      download_error_title: '❌ Download Error',
+      download_error_description: 'Unable to generate the certificate',
+    },
+    email: {
+      sent_title: '✅ Email sent',
+      sent_description: 'Credentials have been sent to {{email}}',
+      error_title: '❌ Sending error',
+      error_description: 'Unable to send the email',
+      console_error: 'Email sending error:',
+    },
+    approval: {
+      congratulations: 'Congratulations Dr. {{name}}!',
+      message:
+        'Your application has been approved. Here are your DARE Pro credentials.',
+    },
+    identification: {
+      title: '🔑 Your Identification Code',
+    },
+    professional: {
+      type: 'Type',
+      country: 'Country',
+      validity: 'Validity',
+      validity_period: '{{years}} year',
+      institution: 'Institution',
+    },
+    actions: {
+      generating: 'Generating...',
+      download_certificate: 'Download Certificate',
+      sending: 'Sending...',
+      send_by_email: 'Send by Email',
+    },
+    instructions: {
+      title: 'Usage Instructions',
+      use_code: 'Use this code to identify yourself on DARE Pro',
+      request_patient_code: 'Request the patient code to access their data',
+      consultation_fee: 'Each consultation is automatically paid 500 F CFA',
+      keep_code_safe: 'Keep this code securely',
+      qr_verification: 'The QR Code allows quick verification of your identity',
+    },
+  },
+
+  professionalDashboardNew: {
+    dashboard: {
+      error_title: 'Error',
+      error_description: 'Unable to load dashboard data',
+      totalPatients: 'Patients monitored',
+      today: 'Today',
+      monthlyEarnings: 'Monthly Earnings',
+      averageRating: 'Average Rating',
+      recentRequests: 'Recent Requests',
+      consultationRequests: 'Consultation Requests',
+      manageConsultationRequests: "Manage patients' consultation requests",
+      patient: 'Patient',
+      patientMessage: 'Patient message',
+      viewData: 'View data',
+      complete: 'Complete',
+      noRequests: 'No consultation requests',
+    },
+    requests: {
+      accepted_title: 'Request Accepted',
+      accepted_description: 'The patient has been notified of your acceptance',
+      error_title: 'Error',
+      error_description: 'Unable to accept the request',
+      request_rejected_title: 'Request Rejected',
+      request_rejected_description:
+        'The patient has been notified of your rejection',
+      refusal_error_title: 'Error',
+      refusal_error_description: 'Unable to reject the request: {{message}}',
+      accept: {
+        title: 'Accept Consultation Request',
+        description: 'You can add a message for the patient',
+        messageLabel: 'Message (optional)',
+        messagePlaceholder: 'I am available for your consultation...',
+      },
+      reject: {
+        title: 'Reject Consultation Request',
+        description: 'Please provide a reason for rejection',
+        messageLabel: 'Rejection Reason *',
+        messagePlaceholder: 'Unfortunately, I am not available because...',
+      },
+    },
+    consultation: {
+      notes_saved_title: 'Notes saved',
+      notes_saved_description:
+        'Consultation notes have been added to the patient record',
+      notes_error_title: 'Error',
+      notes_error_description: 'Unable to save notes: {{message}}',
+      notes: {
+        title: 'Consultation Notes',
+        description:
+          "Add your notes which will be saved in the patient's record",
+        notesLabel: 'Consultation Notes *',
+        notesPlaceholder:
+          'Observations, diagnosis, discussions with the patient...',
+        recommendationsLabel: 'Recommendations',
+        recommendationsPlaceholder:
+          'Advice, treatment modifications, follow-up...',
+        nextAppointmentLabel: 'Next Appointment',
+      },
+    },
+    status: {
+      pending: 'Pending',
+      accepted: 'Accepted',
+      rejected: 'Rejected',
+      completed: 'Completed',
+      verified: 'Verified',
+    },
+    reason: {
+      routine_checkup: 'Routine Checkup',
+      urgent_consultation: 'Urgent Consultation',
+      glucose_management: 'Glucose Management',
+      medication_adjustment: 'Medication Adjustment',
+      diet_counseling: 'Diet Counseling',
+      psychological_support: 'Psychological Support',
+      complications: 'Diabetes Complications',
+      follow_up: 'Follow-up',
+    },
+    professional_account: {
+      not_approved: 'Your professional account has not been approved yet.',
+    },
+    notifications: {
+      pendingRequests: 'You have {{count}} pending request',
+      pendingRequests_plural: 'You have {{count}} pending requests',
+    },
+    tabs: {
+      dashboard: 'Dashboard',
+      requests: 'Requests ({{count}})',
+      requests_plural: 'Requests ({{count}})',
+      patients: 'My Patients',
+      earnings: 'Earnings',
+    },
+    patients: {
+      title: 'My Patients',
+      description: 'History of consulted patients',
+      placeholder: 'Patient list under development',
+    },
+    earnings: {
+      title: 'Detailed Earnings',
+      description: 'Track your gains and payments',
+      monthly: 'This Month',
+      pending: 'Pending',
+      yearly: 'Total Year',
+    },
+    common: {
+      cancel: 'Cancel',
+      accept: 'Accept',
+      reject: 'Reject',
+      save: 'Save',
+      close: 'Close',
+    },
+    patientData: {
+      title: 'Patient Data',
+      description: 'Access the patient’s health data (excluding DiaCare Chat)',
+      glycemic: {
+        title: 'Glycemic Data',
+        description:
+          'Full access to blood glucose records, trends, and analysis',
+        button: 'View Data',
+      },
+      medicalProfile: {
+        title: 'Medical Profile',
+        description: 'Medical information, treatments, and history',
+        button: 'View Profile',
+      },
+      nutrition: {
+        title: 'Nutrition',
+        description: 'Food journal and nutritional analysis',
+        button: 'View Nutrition',
+      },
+      activity: {
+        title: 'Physical Activity',
+        description: 'Activity tracking and impact on blood glucose',
+        button: 'View Activity',
+      },
+      restrictedAccess: {
+        title: 'Restricted Access',
+        description:
+          'The DiaCare Chat interface is not accessible to professionals to protect the patient’s personal communication confidentiality.',
+      },
+    },
   },
 };

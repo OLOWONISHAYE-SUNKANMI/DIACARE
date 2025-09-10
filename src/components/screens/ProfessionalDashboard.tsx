@@ -61,17 +61,17 @@ export const ProfessionalDashboard = () => {
     //   title: 'Déconnexion',
     //   description: 'Vous avez été déconnecté du mode demo',
     // });
-    toast.success('Déconnexion', {
-  description: 'Vous avez été déconnecté du mode demo',
-  duration: 4000, // optional
-});
+    toast.success(t('professionalDashboard.toast.logout.title'), {
+      description: t('professionalDashboard.toast.logout.description'),
+      duration: 4000, // optional
+    });
     navigate('/auth');
   };
 
   if (!demoUser) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        Chargement...
+        {t('professionalDashboard.loading')}
       </div>
     );
   }

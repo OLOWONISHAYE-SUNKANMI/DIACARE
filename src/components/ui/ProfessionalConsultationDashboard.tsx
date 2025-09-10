@@ -50,39 +50,52 @@ export const ProfessionalConsultationDashboard: React.FC<
   };
   const { t } = useTranslation();
 
-  const getStatusBadge = (status: string) => {
+  const getStatusBadge = (status: string, t: any) => {
     const statusConfig = {
       scheduled: {
-        label: 'Programmée',
+        label: t(
+          'professionalConsultationDashboard.professionalDashboard.consultations.status.scheduled'
+        ),
         variant: 'outline' as const,
         color: 'text-blue-600',
       },
       confirmed: {
-        label: 'Confirmée',
+        label: t(
+          'professionalConsultationDashboard.professionalDashboard.consultations.status.confirmed'
+        ),
         variant: 'default' as const,
         color: 'text-green-600',
       },
       in_progress: {
-        label: 'En cours',
+        label: t(
+          'professionalConsultationDashboard.professionalDashboard.consultations.status.in_progress'
+        ),
         variant: 'default' as const,
         color: 'text-orange-600',
       },
       completed: {
-        label: 'Terminée',
+        label: t(
+          'professionalConsultationDashboard.professionalDashboard.consultations.status.completed'
+        ),
         variant: 'secondary' as const,
         color: 'text-gray-600',
       },
       cancelled: {
-        label: 'Annulée',
+        label: t(
+          'professionalConsultationDashboard.professionalDashboard.consultations.status.cancelled'
+        ),
         variant: 'destructive' as const,
         color: 'text-red-600',
       },
       no_show: {
-        label: 'Absent',
+        label: t(
+          'professionalConsultationDashboard.professionalDashboard.consultations.status.no_show'
+        ),
         variant: 'destructive' as const,
         color: 'text-red-600',
       },
     };
+
     return (
       statusConfig[status as keyof typeof statusConfig] ||
       statusConfig.scheduled
@@ -107,10 +120,13 @@ export const ProfessionalConsultationDashboard: React.FC<
         <div className="h-full">
           <div className="mb-4 flex items-center justify-between">
             <Button variant="outline" onClick={closeConsultationChat}>
-              ← Retour aux consultations
+              ←{' '}
+              {t('professionalConsultationDashboard.consultation.back_to_list')}
             </Button>
             <Badge variant="outline">
-              Consultation #{consultation.id.slice(-6)}
+              {t('professionalConsultationDashboard.consultation.number', {
+                id: consultation.id.slice(-6),
+              })}
             </Badge>
           </div>
           <ConsultationChat
@@ -190,15 +206,19 @@ export const ProfessionalConsultationDashboard: React.FC<
           <Card>
             <CardContent className="p-8 text-center text-muted-foreground">
               <Calendar className="h-12 w-12 mx-auto mb-4 text-muted-foreground/30" />
-              <p>Aucune consultation trouvée</p>
+              <p>
+                {t('professionalConsultationDashboard.consultation.none_found')}
+              </p>
               <p className="text-sm">
-                Les consultations apparaîtront ici une fois créées
+                {t(
+                  'professionalConsultationDashboard.consultation.none_found_description'
+                )}
               </p>
             </CardContent>
           </Card>
         ) : (
           filteredConsultations.map(consultation => {
-            const status = getStatusBadge(consultation.status);
+            const status = getStatusBadge(consultation.status, '');
             return (
               <Card
                 key={consultation.id}
@@ -234,8 +254,16 @@ export const ProfessionalConsultationDashboard: React.FC<
 
                       {consultation.duration_minutes && (
                         <p className="text-sm text-muted-foreground">
-                          <strong>Durée:</strong>{' '}
-                          {consultation.duration_minutes} minutes
+                          <strong>
+                            {t(
+                              'professionalConsultationDashboard.consultation.duration'
+                            )}
+                            :
+                          </strong>{' '}
+                          {consultation.duration_minutes}{' '}
+                          {t(
+                            'professionalConsultationDashboard.consultation.minutes'
+                          )}
                         </p>
                       )}
                     </div>
@@ -252,8 +280,12 @@ export const ProfessionalConsultationDashboard: React.FC<
                           onClick={() => openConsultationChat(consultation.id)}
                         >
                           {consultation.status === 'in_progress'
-                            ? 'Reprendre'
-                            : 'Démarrer'}
+                            ? t(
+                                'professionalConsultationDashboard.consultation.resume'
+                              )
+                            : t(
+                                'professionalConsultationDashboard.consultation.start'
+                              )}
                           <ArrowRight className="h-3 w-3 ml-1" />
                         </Button>
                       )}

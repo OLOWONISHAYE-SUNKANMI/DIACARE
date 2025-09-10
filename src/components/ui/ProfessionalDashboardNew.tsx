@@ -1,30 +1,44 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { 
-  Bell, 
-  CheckCircle, 
-  Clock, 
-  DollarSign, 
-  FileText, 
-  User, 
-  X, 
+import {
+  Bell,
+  CheckCircle,
+  Clock,
+  DollarSign,
+  FileText,
+  User,
+  X,
   Eye,
   Calendar,
   Activity,
   Users,
   Star,
   Video,
-  Edit3
+  Edit3,
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useTranslation } from 'react-i18next';
 
 interface ConsultationRequest {
   id: string;
@@ -59,33 +73,37 @@ interface ProfessionalStats {
 }
 
 const ProfessionalDashboardNew = () => {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const { toast } = useToast();
-  
+
   const [activeTab, setActiveTab] = useState('dashboard');
   const [requests, setRequests] = useState<ConsultationRequest[]>([]);
-  const [consultationNotes, setConsultationNotes] = useState<ConsultationNote[]>([]);
+  const [consultationNotes, setConsultationNotes] = useState<
+    ConsultationNote[]
+  >([]);
   const [stats, setStats] = useState<ProfessionalStats>({
     totalPatients: 0,
     todayConsultations: 0,
     monthlyEarnings: 0,
     averageRating: 0,
-    pendingRequests: 0
+    pendingRequests: 0,
   });
-  
+
   // Dialog states
-  const [selectedRequest, setSelectedRequest] = useState<ConsultationRequest | null>(null);
+  const [selectedRequest, setSelectedRequest] =
+    useState<ConsultationRequest | null>(null);
   const [showAcceptDialog, setShowAcceptDialog] = useState(false);
   const [showRejectDialog, setShowRejectDialog] = useState(false);
   const [showNotesDialog, setShowNotesDialog] = useState(false);
   const [showPatientDataDialog, setShowPatientDataDialog] = useState(false);
-  
+
   // Form states
   const [responseMessage, setResponseMessage] = useState('');
   const [consultationNotesText, setConsultationNotesText] = useState('');
   const [recommendations, setRecommendations] = useState('');
   const [nextAppointment, setNextAppointment] = useState('');
-  
+
   const [loading, setLoading] = useState(true);
   const [professionalInfo, setProfessionalInfo] = useState<any>(null);
 
@@ -107,7 +125,7 @@ const ProfessionalDashboardNew = () => {
 
       if (profData) {
         setProfessionalInfo(profData);
-        
+
         // Charger les demandes de consultation
         const { data: requestsData } = await supabase
           .from('consultation_requests')
@@ -117,16 +135,15 @@ const ProfessionalDashboardNew = () => {
 
         // Charger les statistiques
         await loadStats(profData.id);
-        
+
         setRequests(requestsData || []);
       }
-      
     } catch (error) {
-      console.error('Erreur chargement dashboard:', error);
+      console.error('Dashboard loading error:', error);
       toast({
-        title: "Erreur",
-        description: "Impossible de charger les données du tableau de bord",
-        variant: "destructive"
+        title: t('dashboard.error_title'),
+        description: t('dashboard.error_description'),
+        variant: 'destructive',
       });
     } finally {
       setLoading(false);
@@ -142,7 +159,8 @@ const ProfessionalDashboardNew = () => {
         .eq('professional_id', professionalId)
         .eq('status', 'accepted');
 
-      const uniquePatients = new Set(patientsData?.map(r => r.patient_id) || []).size;
+      const uniquePatients = new Set(patientsData?.map(r => r.patient_id) || [])
+        .size;
 
       // Compter les consultations du jour
       const today = new Date().toISOString().split('T')[0];
@@ -168,19 +186,20 @@ const ProfessionalDashboardNew = () => {
         .eq('professional_id', professionalId)
         .eq('status', 'completed');
 
-      const monthlyEarnings = earningsData
-        ?.filter(e => new Date(e.created_at).getMonth() === currentMonth)
-        .reduce((sum, e) => sum + (e.consultation_fee || 0), 0) || 0;
+      const monthlyEarnings =
+        earningsData
+          ?.filter(e => new Date(e.created_at).getMonth() === currentMonth)
+          .reduce((sum, e) => sum + (e.consultation_fee || 0), 0) || 0;
 
       setStats({
         totalPatients: uniquePatients,
         todayConsultations: todayData?.length || 0,
         monthlyEarnings,
         averageRating: 4.8, // Mock data
-        pendingRequests: pendingData?.length || 0
+        pendingRequests: pendingData?.length || 0,
       });
     } catch (error) {
-      console.error('Erreur chargement stats:', error);
+      console.error('Stats loading error:', error);
     }
   };
 
@@ -193,28 +212,29 @@ const ProfessionalDashboardNew = () => {
         .update({
           status: 'accepted',
           professional_response: responseMessage,
-          responded_at: new Date().toISOString()
+          responded_at: new Date().toISOString(),
         })
         .eq('id', selectedRequest.id);
 
       if (error) throw error;
 
       toast({
-        title: "Demande acceptée",
-        description: "Le patient a été notifié de votre acceptation",
+        title: t('professionalDashboardNew.requests.accepted_title'),
+        description: t(
+          'professionalDashboardNew.requests.accepted_description'
+        ),
       });
 
       setShowAcceptDialog(false);
       setResponseMessage('');
       setSelectedRequest(null);
       loadDashboardData();
-
     } catch (error: any) {
-      console.error('Erreur acceptation:', error);
+      console.error('Acceptance error:', error);
       toast({
-        title: "Erreur",
-        description: error.message || "Impossible d'accepter la demande",
-        variant: "destructive"
+        title: t('requests.error_title'),
+        description: error.message || t('requests.error_description'),
+        variant: 'destructive',
       });
     }
   };
@@ -228,28 +248,34 @@ const ProfessionalDashboardNew = () => {
         .update({
           status: 'rejected',
           professional_response: responseMessage,
-          responded_at: new Date().toISOString()
+          responded_at: new Date().toISOString(),
         })
         .eq('id', selectedRequest.id);
 
       if (error) throw error;
 
       toast({
-        title: "Demande refusée",
-        description: "Le patient a été notifié de votre refus",
+        title: t('professionalDashboardNew.requests.request_rejected_title'),
+        description: t(
+          'professionalDashboardNew.requests.request_rejected_description'
+        ),
       });
 
       setShowRejectDialog(false);
       setResponseMessage('');
       setSelectedRequest(null);
       loadDashboardData();
-
     } catch (error: any) {
-      console.error('Erreur refus:', error);
+      console.error('Refusal error:', error);
       toast({
-        title: "Erreur",
-        description: error.message || "Impossible de refuser la demande",
-        variant: "destructive"
+        title: t('professionalDashboardNew.requests.refusal_error_title'),
+        description: t(
+          'professionalDashboardNew.requests.refusal_error_description',
+          {
+            message: error.message,
+          }
+        ),
+        variant: 'destructive',
       });
     }
   };
@@ -258,16 +284,14 @@ const ProfessionalDashboardNew = () => {
     if (!selectedRequest || !consultationNotesText) return;
 
     try {
-      const { error } = await supabase
-        .from('consultation_notes')
-        .insert({
-          consultation_id: selectedRequest.id,
-          professional_id: professionalInfo.id,
-          patient_id: selectedRequest.patient_id,
-          notes: consultationNotesText,
-          recommendations,
-          next_appointment_date: nextAppointment || null
-        });
+      const { error } = await supabase.from('consultation_notes').insert({
+        consultation_id: selectedRequest.id,
+        professional_id: professionalInfo.id,
+        patient_id: selectedRequest.patient_id,
+        notes: consultationNotesText,
+        recommendations,
+        next_appointment_date: nextAppointment || null,
+      });
 
       if (error) throw error;
 
@@ -278,8 +302,10 @@ const ProfessionalDashboardNew = () => {
         .eq('id', selectedRequest.id);
 
       toast({
-        title: "Notes sauvegardées",
-        description: "Les notes de consultation ont été ajoutées au dossier patient",
+        title: t('professionalDashboardNew.consultation.notes_saved_title'),
+        description: t(
+          'professionalDashboardNew.consultation.notes_saved_description'
+        ),
       });
 
       setShowNotesDialog(false);
@@ -288,37 +314,62 @@ const ProfessionalDashboardNew = () => {
       setNextAppointment('');
       setSelectedRequest(null);
       loadDashboardData();
-
     } catch (error: any) {
-      console.error('Erreur sauvegarde notes:', error);
+      console.error('"Error saving notes:"', error);
       toast({
-        title: "Erreur",
-        description: error.message || "Impossible de sauvegarder les notes",
-        variant: "destructive"
+        title: t('consultation.notes_error_title'),
+        description: t('consultation.notes_error_description', {
+          message: error.message,
+        }),
+        variant: 'destructive',
       });
     }
   };
 
   const getStatusBadge = (status: string) => {
     const config = {
-      pending: { label: 'En attente', variant: 'outline' as const, color: 'text-orange-600' },
-      accepted: { label: 'Acceptée', variant: 'default' as const, color: 'text-green-600' },
-      rejected: { label: 'Refusée', variant: 'destructive' as const, color: 'text-red-600' },
-      completed: { label: 'Terminée', variant: 'secondary' as const, color: 'text-blue-600' }
+      pending: {
+        label: t('professionalDashboardNew.status.pending'),
+        variant: 'outline' as const,
+        color: 'text-orange-600',
+      },
+      accepted: {
+        label: t('professionalDashboardNew.status.accepted'),
+        variant: 'default' as const,
+        color: 'text-green-600',
+      },
+      rejected: {
+        label: t('professionalDashboardNew.status.rejected'),
+        variant: 'destructive' as const,
+        color: 'text-red-600',
+      },
+      completed: {
+        label: t('professionalDashboardNew.status.completed'),
+        variant: 'secondary' as const,
+        color: 'text-blue-600',
+      },
     };
     return config[status as keyof typeof config] || config.pending;
   };
 
   const getReasonLabel = (reason: string) => {
     const reasons = {
-      'routine_checkup': 'Contrôle de routine',
-      'urgent_consultation': 'Consultation urgente', 
-      'glucose_management': 'Gestion glycémie',
-      'medication_adjustment': 'Ajustement traitement',
-      'diet_counseling': 'Conseil nutritionnel',
-      'psychological_support': 'Soutien psychologique',
-      'complications': 'Complications diabète',
-      'follow_up': 'Suivi post-consultation'
+      routine_checkup: t('professionalDashboardNew.reason.routine_checkup'),
+      urgent_consultation: t(
+        'professionalDashboardNew.reason.urgent_consultation'
+      ),
+      glucose_management: t(
+        'professionalDashboardNew.reason.glucose_management'
+      ),
+      medication_adjustment: t(
+        'professionalDashboardNew.reason.medication_adjustment'
+      ),
+      diet_counseling: t('professionalDashboardNew.reason.diet_counseling'),
+      psychological_support: t(
+        'professionalDashboardNew.reason.psychological_support'
+      ),
+      complications: t('professionalDashboardNew.reason.complications'),
+      follow_up: t('professionalDashboardNew.reason.follow_up'),
     };
     return reasons[reason as keyof typeof reasons] || reason;
   };
@@ -327,7 +378,7 @@ const ProfessionalDashboardNew = () => {
     return (
       <div className="p-6">
         <div className="animate-pulse space-y-4">
-          {[1, 2, 3, 4].map((i) => (
+          {[1, 2, 3, 4].map(i => (
             <div key={i} className="h-32 bg-muted rounded"></div>
           ))}
         </div>
@@ -339,7 +390,7 @@ const ProfessionalDashboardNew = () => {
     return (
       <div className="p-6 text-center">
         <p className="text-muted-foreground">
-          Votre compte professionnel n'a pas encore été approuvé.
+          {t('professionalDashboardNew.professional_account.not_approved')}
         </p>
       </div>
     );
@@ -354,30 +405,41 @@ const ProfessionalDashboardNew = () => {
             Dr. {professionalInfo.first_name} {professionalInfo.last_name}
           </h1>
           <p className="text-muted-foreground">
-            {professionalInfo.professional_type} • Code: {professionalInfo.professional_code}
+            {professionalInfo.professional_type} • Code:{' '}
+            {professionalInfo.professional_code}
           </p>
           <Badge variant="secondary" className="mt-2">
             <CheckCircle className="w-3 h-3 mr-1" />
-            Vérifié
+            {t('professionalDashboardNew.status.verified')}
           </Badge>
         </div>
-        
+
         {stats.pendingRequests > 0 && (
           <Badge variant="destructive">
             <Bell className="w-3 h-3 mr-1" />
-            {stats.pendingRequests} nouvelle{stats.pendingRequests > 1 ? 's' : ''} demande{stats.pendingRequests > 1 ? 's' : ''}
+            {t('professionalDashboardNew.notifications.pendingRequests', {
+              count: stats.pendingRequests,
+            })}
           </Badge>
         )}
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="dashboard">Tableau de bord</TabsTrigger>
-          <TabsTrigger value="requests">
-            Demandes ({stats.pendingRequests})
+          <TabsTrigger value="dashboard">
+            {t('professionalDashboardNew.tabs.dashboard')}
           </TabsTrigger>
-          <TabsTrigger value="patients">Mes patients</TabsTrigger>
-          <TabsTrigger value="earnings">Revenus</TabsTrigger>
+          <TabsTrigger value="requests">
+            {t('professionalDashboardNew.tabs.requests', {
+              count: stats.pendingRequests,
+            })}
+          </TabsTrigger>
+          <TabsTrigger value="patients">
+            {t('professionalDashboardNew.tabs.patients')}
+          </TabsTrigger>
+          <TabsTrigger value="earnings">
+            {t('professionalDashboardNew.tabs.earnings')}
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="dashboard" className="mt-6">
@@ -390,7 +452,9 @@ const ProfessionalDashboardNew = () => {
                     <Users className="w-6 h-6 text-medical-blue" />
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Patients suivis</p>
+                    <p className="text-sm text-muted-foreground">
+                      {t('professionalDashboardNew.dashboard.totalPatients')}
+                    </p>
                     <p className="text-2xl font-bold">{stats.totalPatients}</p>
                   </div>
                 </div>
@@ -404,8 +468,12 @@ const ProfessionalDashboardNew = () => {
                     <Calendar className="w-6 h-6 text-medical-green" />
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Aujourd'hui</p>
-                    <p className="text-2xl font-bold">{stats.todayConsultations}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {t('professionalDashboardNew.dashboard.today')}
+                    </p>
+                    <p className="text-2xl font-bold">
+                      {stats.todayConsultations}
+                    </p>
                   </div>
                 </div>
               </CardContent>
@@ -418,8 +486,12 @@ const ProfessionalDashboardNew = () => {
                     <DollarSign className="w-6 h-6 text-yellow-600" />
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Revenus mois</p>
-                    <p className="text-2xl font-bold">{stats.monthlyEarnings.toLocaleString()} F</p>
+                    <p className="text-sm text-muted-foreground">
+                      {t('professionalDashboardNew.dashboard.monthlyEarnings')}
+                    </p>
+                    <p className="text-2xl font-bold">
+                      {stats.monthlyEarnings.toLocaleString()} F
+                    </p>
                   </div>
                 </div>
               </CardContent>
@@ -432,8 +504,12 @@ const ProfessionalDashboardNew = () => {
                     <Star className="w-6 h-6 text-orange-600" />
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Note moyenne</p>
-                    <p className="text-2xl font-bold">{stats.averageRating}/5</p>
+                    <p className="text-sm text-muted-foreground">
+                      {t('professionalDashboardNew.dashboard.averageRating')}
+                    </p>
+                    <p className="text-2xl font-bold">
+                      {stats.averageRating}/5
+                    </p>
                   </div>
                 </div>
               </CardContent>
@@ -445,14 +521,17 @@ const ProfessionalDashboardNew = () => {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Activity className="w-5 h-5" />
-                Demandes récentes
+                {t('professionalDashboardNew.dashboard.recentRequests')}
               </CardTitle>
             </CardHeader>
             <CardContent>
-              {requests.slice(0, 5).map((request) => {
+              {requests.slice(0, 5).map(request => {
                 const status = getStatusBadge(request.status);
                 return (
-                  <div key={request.id} className="flex items-center justify-between p-4 border rounded-lg mb-4 last:mb-0">
+                  <div
+                    key={request.id}
+                    className="flex items-center justify-between p-4 border rounded-lg mb-4 last:mb-0"
+                  >
                     <div>
                       <p className="font-medium">
                         Patient #{request.patient_id.slice(0, 8)}
@@ -461,14 +540,18 @@ const ProfessionalDashboardNew = () => {
                         {getReasonLabel(request.consultation_reason)}
                       </p>
                       <p className="text-xs text-muted-foreground">
-                        {new Date(request.requested_at).toLocaleDateString('fr-FR')}
+                        {new Date(request.requested_at).toLocaleDateString(
+                          'fr-FR'
+                        )}
                       </p>
                     </div>
                     <div className="flex items-center gap-2">
                       <Badge variant={status.variant} className={status.color}>
                         {status.label}
                       </Badge>
-                      <span className="text-sm font-medium">{request.consultation_fee} F</span>
+                      <span className="text-sm font-medium">
+                        {request.consultation_fee} F
+                      </span>
                     </div>
                   </div>
                 );
@@ -480,15 +563,19 @@ const ProfessionalDashboardNew = () => {
         <TabsContent value="requests" className="mt-6">
           <Card>
             <CardHeader>
-              <CardTitle>Demandes de consultation</CardTitle>
+              <CardTitle>
+                {t('professionalDashboardNew.dashboard.consultationRequests')}
+              </CardTitle>
               <CardDescription>
-                Gérez les demandes de consultation des patients
+                {t(
+                  'professionalDashboardNew.dashboard.manageConsultationRequests'
+                )}
               </CardDescription>
             </CardHeader>
             <CardContent>
               {requests.length > 0 ? (
                 <div className="space-y-4">
-                  {requests.map((request) => {
+                  {requests.map(request => {
                     const status = getStatusBadge(request.status);
                     return (
                       <div key={request.id} className="p-4 border rounded-lg">
@@ -497,22 +584,34 @@ const ProfessionalDashboardNew = () => {
                             <div className="flex items-center gap-2">
                               <User className="w-4 h-4" />
                               <span className="font-medium">
-                                Patient #{request.patient_id.slice(0, 8)}
+                                {t(
+                                  'professionalDashboardNew.dashboard.patient'
+                                )}{' '}
+                                #{request.patient_id.slice(0, 8)}
                               </span>
                               <Badge variant="outline">
                                 {getReasonLabel(request.consultation_reason)}
                               </Badge>
                             </div>
-                            
+
                             {request.patient_message && (
                               <div className="mt-2 p-3 bg-muted/30 rounded text-sm">
-                                <p className="font-medium mb-1">Message du patient:</p>
+                                <p className="font-medium mb-1">
+                                  {t(
+                                    'professionalDashboardNew.dashboard.patientMessage'
+                                  )}
+                                  :
+                                </p>
                                 <p>{request.patient_message}</p>
                               </div>
                             )}
 
                             <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                              <span>{new Date(request.requested_at).toLocaleDateString('fr-FR')}</span>
+                              <span>
+                                {new Date(
+                                  request.requested_at
+                                ).toLocaleDateString('fr-FR')}
+                              </span>
                               <span className="flex items-center gap-1">
                                 <DollarSign className="w-3 h-3" />
                                 {request.consultation_fee} F
@@ -521,10 +620,13 @@ const ProfessionalDashboardNew = () => {
                           </div>
 
                           <div className="flex items-center gap-2">
-                            <Badge variant={status.variant} className={status.color}>
+                            <Badge
+                              variant={status.variant}
+                              className={status.color}
+                            >
                               {status.label}
                             </Badge>
-                            
+
                             {request.status === 'pending' && (
                               <div className="flex gap-2">
                                 <Button
@@ -560,7 +662,9 @@ const ProfessionalDashboardNew = () => {
                                   }}
                                 >
                                   <Eye className="w-4 h-4" />
-                                  Voir données
+                                  {t(
+                                    'professionalDashboardNew.dashboard.viewData'
+                                  )}
                                 </Button>
                                 <Button
                                   size="sm"
@@ -570,7 +674,9 @@ const ProfessionalDashboardNew = () => {
                                   }}
                                 >
                                   <Edit3 className="w-4 h-4" />
-                                  Terminer
+                                  {t(
+                                    'professionalDashboardNew.dashboard.complete'
+                                  )}
                                 </Button>
                               </div>
                             )}
@@ -583,7 +689,9 @@ const ProfessionalDashboardNew = () => {
               ) : (
                 <div className="text-center py-8">
                   <Clock className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                  <p className="text-muted-foreground">Aucune demande de consultation</p>
+                  <p className="text-muted-foreground">
+                    {t('professionalDashboardNew.dashboard.noRequests')}
+                  </p>
                 </div>
               )}
             </CardContent>
@@ -593,15 +701,19 @@ const ProfessionalDashboardNew = () => {
         <TabsContent value="patients" className="mt-6">
           <Card>
             <CardHeader>
-              <CardTitle>Mes patients</CardTitle>
+              <CardTitle>
+                {t('professionalDashboardNew.patients.title')}
+              </CardTitle>
               <CardDescription>
-                Historique des patients consultés
+                {t('professionalDashboardNew.patients.description')}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="text-center py-8">
                 <Users className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                <p className="text-muted-foreground">Liste des patients en développement</p>
+                <p className="text-muted-foreground">
+                  {t('professionalDashboardNew.patients.placeholder')}
+                </p>
               </div>
             </CardContent>
           </Card>
@@ -610,24 +722,36 @@ const ProfessionalDashboardNew = () => {
         <TabsContent value="earnings" className="mt-6">
           <Card>
             <CardHeader>
-              <CardTitle>Revenus détaillés</CardTitle>
+              <CardTitle>
+                {t('professionalDashboardNew.earnings.title')}
+              </CardTitle>
               <CardDescription>
-                Suivi de vos gains et paiements
+                {t('professionalDashboardNew.earnings.description')}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="p-4 border rounded-lg">
-                  <p className="text-sm text-muted-foreground">Ce mois</p>
-                  <p className="text-2xl font-bold">{stats.monthlyEarnings.toLocaleString()} F</p>
+                  <p className="text-sm text-muted-foreground">
+                    {t('professionalDashboardNew.earnings.monthly')}
+                  </p>
+                  <p className="text-2xl font-bold">
+                    {stats.monthlyEarnings.toLocaleString()} F
+                  </p>
                 </div>
                 <div className="p-4 border rounded-lg">
-                  <p className="text-sm text-muted-foreground">En attente</p>
+                  <p className="text-sm text-muted-foreground">
+                    {t('professionalDashboardNew.earnings.pending')}
+                  </p>
                   <p className="text-2xl font-bold text-orange-600">0 F</p>
                 </div>
                 <div className="p-4 border rounded-lg">
-                  <p className="text-sm text-muted-foreground">Total année</p>
-                  <p className="text-2xl font-bold">{(stats.monthlyEarnings * 12).toLocaleString()} F</p>
+                  <p className="text-sm text-muted-foreground">
+                    {t('professionalDashboardNew.earnings.yearly')}
+                  </p>
+                  <p className="text-2xl font-bold">
+                    {(stats.monthlyEarnings * 12).toLocaleString()} F
+                  </p>
                 </div>
               </div>
             </CardContent>
@@ -639,28 +763,37 @@ const ProfessionalDashboardNew = () => {
       <Dialog open={showAcceptDialog} onOpenChange={setShowAcceptDialog}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Accepter la demande de consultation</DialogTitle>
+            <DialogTitle>
+              {t('professionalDashboardNew.requests.accept.title')}
+            </DialogTitle>
             <DialogDescription>
-              Vous pouvez ajouter un message pour le patient
+              {t('professionalDashboardNew.requests.accept.description')}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
             <div>
-              <Label htmlFor="accept-message">Message (optionnel)</Label>
+              <Label htmlFor="accept-message">
+                {t('professionalDashboardNew.requests.accept.messageLabel')}
+              </Label>
               <Textarea
                 id="accept-message"
                 value={responseMessage}
-                onChange={(e) => setResponseMessage(e.target.value)}
-                placeholder="Je suis disponible pour votre consultation..."
+                onChange={e => setResponseMessage(e.target.value)}
+                placeholder={t(
+                  'professionalDashboardNew.requests.accept.messagePlaceholder'
+                )}
               />
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowAcceptDialog(false)}>
-              Annuler
+            <Button
+              variant="outline"
+              onClick={() => setShowAcceptDialog(false)}
+            >
+              {t('professionalDashboardNew.common.cancel')}
             </Button>
             <Button onClick={handleAcceptRequest}>
-              Accepter
+              {t('professionalDashboardNew.common.accept')}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -669,33 +802,42 @@ const ProfessionalDashboardNew = () => {
       <Dialog open={showRejectDialog} onOpenChange={setShowRejectDialog}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Refuser la demande de consultation</DialogTitle>
+            <DialogTitle>
+              {t('professionalDashboardNew.requests.reject.title')}
+            </DialogTitle>
             <DialogDescription>
-              Veuillez indiquer la raison du refus
+              {t('professionalDashboardNew.requests.reject.description')}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
             <div>
-              <Label htmlFor="reject-message">Raison du refus *</Label>
+              <Label htmlFor="reject-message">
+                {t('professionalDashboardNew.requests.reject.messageLabel')}
+              </Label>
               <Textarea
                 id="reject-message"
                 value={responseMessage}
-                onChange={(e) => setResponseMessage(e.target.value)}
-                placeholder="Malheureusement, je ne suis pas disponible car..."
+                onChange={e => setResponseMessage(e.target.value)}
+                placeholder={t(
+                  'professionalDashboardNew.requests.reject.messagePlaceholder'
+                )}
                 required
               />
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowRejectDialog(false)}>
-              Annuler
+            <Button
+              variant="outline"
+              onClick={() => setShowRejectDialog(false)}
+            >
+              {t('professionalDashboardNew.common.cancel')}
             </Button>
-            <Button 
-              variant="destructive" 
+            <Button
+              variant="destructive"
               onClick={handleRejectRequest}
               disabled={!responseMessage}
             >
-              Refuser
+              {t('professionalDashboardNew.common.reject')}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -704,144 +846,188 @@ const ProfessionalDashboardNew = () => {
       <Dialog open={showNotesDialog} onOpenChange={setShowNotesDialog}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
-            <DialogTitle>Notes de consultation</DialogTitle>
+            <DialogTitle>
+              {t('professionalDashboardNew.consultation.notes.title')}
+            </DialogTitle>
             <DialogDescription>
-              Ajoutez vos notes qui seront sauvegardées dans le dossier patient
+              {t('professionalDashboardNew.consultation.notes.description')}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
             <div>
-              <Label htmlFor="consultation-notes">Notes de consultation *</Label>
+              <Label htmlFor="consultation-notes">
+                {t('professionalDashboardNew.consultation.notes.notesLabel')}
+              </Label>
               <Textarea
                 id="consultation-notes"
                 value={consultationNotesText}
-                onChange={(e) => setConsultationNotesText(e.target.value)}
-                placeholder="Observations, diagnostic, discussions avec le patient..."
+                onChange={e => setConsultationNotesText(e.target.value)}
+                placeholder={t(
+                  'professionalDashboardNew.consultation.notes.notesPlaceholder'
+                )}
                 rows={4}
                 required
               />
             </div>
             <div>
-              <Label htmlFor="recommendations">Recommandations</Label>
+              <Label htmlFor="recommendations">
+                {t(
+                  'professionalDashboardNew.consultation.notes.recommendationsLabel'
+                )}
+              </Label>
               <Textarea
                 id="recommendations"
                 value={recommendations}
-                onChange={(e) => setRecommendations(e.target.value)}
-                placeholder="Conseils, modifications de traitement, suivi..."
+                onChange={e => setRecommendations(e.target.value)}
+                placeholder={t(
+                  'professionalDashboardNew.consultation.notes.recommendationsPlaceholder'
+                )}
                 rows={3}
               />
             </div>
             <div>
-              <Label htmlFor="next-appointment">Prochain rendez-vous</Label>
+              <Label htmlFor="next-appointment">
+                {t(
+                  'professionalDashboardNew.consultation.notes.nextAppointmentLabel'
+                )}
+              </Label>
               <input
                 type="datetime-local"
                 id="next-appointment"
                 value={nextAppointment}
-                onChange={(e) => setNextAppointment(e.target.value)}
+                onChange={e => setNextAppointment(e.target.value)}
                 className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
               />
             </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowNotesDialog(false)}>
-              Annuler
+              {t('professionalDashboardNew.common.cancel')}
             </Button>
-            <Button 
-              onClick={handleSaveNotes}
-              disabled={!consultationNotesText}
-            >
+            <Button onClick={handleSaveNotes} disabled={!consultationNotesText}>
               <FileText className="w-4 h-4 mr-2" />
-              Sauvegarder
+              {t('professionalDashboardNew.common.save')}
             </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
-      <Dialog open={showPatientDataDialog} onOpenChange={setShowPatientDataDialog}>
+      <Dialog
+        open={showPatientDataDialog}
+        onOpenChange={setShowPatientDataDialog}
+      >
         <DialogContent className="max-w-4xl">
           <DialogHeader>
-            <DialogTitle>Données patient</DialogTitle>
+            <DialogTitle>
+              {t('professionalDashboardNew.patientData.title')}
+            </DialogTitle>
             <DialogDescription>
-              Accès aux données de santé du patient (sauf DiaCare Chat)
+              {t('professionalDashboardNew.patientData.description')}
             </DialogDescription>
           </DialogHeader>
           <div className="p-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-lg">Données glycémiques</CardTitle>
+                  <CardTitle className="text-lg">
+                    {t('professionalDashboardNew.patientData.glycemic.title')}
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground">
-                    Accès complet aux relevés de glycémie, tendances et analyses
+                    {t(
+                      'professionalDashboardNew.patientData.glycemic.description'
+                    )}
                   </p>
                   <Button className="mt-4 w-full" variant="outline">
                     <Activity className="w-4 h-4 mr-2" />
-                    Voir les données
+                    {t('professionalDashboardNew.patientData.glycemic.button')}
                   </Button>
                 </CardContent>
               </Card>
-              
+
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-lg">Profil médical</CardTitle>
+                  <CardTitle className="text-lg">
+                    {t(
+                      'professionalDashboardNew.patientData.medicalProfile.title'
+                    )}
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground">
-                    Informations médicales, traitements et antécédents
+                    {t(
+                      'professionalDashboardNew.patientData.medicalProfile.description'
+                    )}
                   </p>
                   <Button className="mt-4 w-full" variant="outline">
                     <FileText className="w-4 h-4 mr-2" />
-                    Voir le profil
+                    {t(
+                      'professionalDashboardNew.patientData.medicalProfile.button'
+                    )}
                   </Button>
                 </CardContent>
               </Card>
-              
+
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-lg">Alimentation</CardTitle>
+                  <CardTitle className="text-lg">
+                    {t('professionalDashboardNew.patientData.nutrition.title')}
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground">
-                    Journal alimentaire et analyse nutritionnelle
+                    {t(
+                      'professionalDashboardNew.patientData.nutrition.description'
+                    )}
                   </p>
                   <Button className="mt-4 w-full" variant="outline">
                     <Calendar className="w-4 h-4 mr-2" />
-                    Voir l'alimentation
+                    {t('professionalDashboardNew.patientData.nutrition.button')}
                   </Button>
                 </CardContent>
               </Card>
-              
+
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-lg">Activité physique</CardTitle>
+                  <CardTitle className="text-lg">
+                    {t('professionalDashboardNew.patientData.activity.title')}
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground">
-                    Suivi d'activité et impact sur la glycémie
+                    {t(
+                      'professionalDashboardNew.patientData.activity.description'
+                    )}
                   </p>
                   <Button className="mt-4 w-full" variant="outline">
                     <Users className="w-4 h-4 mr-2" />
-                    Voir l'activité
+                    {t('professionalDashboardNew.patientData.activity.button')}
                   </Button>
                 </CardContent>
               </Card>
             </div>
-            
+
             <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
               <div className="flex items-center gap-2 text-yellow-800">
                 <FileText className="w-5 h-5" />
-                <span className="font-medium">Accès restreint</span>
+                <span className="font-medium">
+                  {t(
+                    'professionalDashboardNew.patientData.restrictedAccess.title'
+                  )}
+                </span>
               </div>
               <p className="text-sm text-yellow-700 mt-1">
-                L'interface DiaCare Chat n'est pas accessible aux professionnels pour préserver 
-                la confidentialité des échanges personnels du patient.
+                {t(
+                  'professionalDashboardNew.patientData.restrictedAccess.description'
+                )}
               </p>
             </div>
           </div>
+
           <DialogFooter>
             <Button onClick={() => setShowPatientDataDialog(false)}>
-              Fermer
+              {t('professionalDashboardNew.common.close')}
             </Button>
           </DialogFooter>
         </DialogContent>

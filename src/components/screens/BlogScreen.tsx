@@ -169,7 +169,7 @@ const BlogScreen = (props: BlogScreenProps) => {
   const filteredArticles = articles.filter(article => {
     const matchesCategory =
       activeCategory === t('blog.categories.all') ||
-      activeCategory === 'Tous' ||
+      activeCategory === t('blogScreenRead.all') ||
       article.category === activeCategory;
     const matchesSearch =
       searchQuery === '' ||
@@ -196,7 +196,7 @@ const BlogScreen = (props: BlogScreenProps) => {
       <div className="flex items-center max-w-md w-full mx-auto rounded-md border bg-white px-3">
         <Search className="text-muted-foreground w-4 h-4 mr-2 shrink-0" />
         <Input
-          placeholder="Rechercher des actualités..."
+          placeholder={t('blogScreenRead.newsSearchPlaceholder')}
           value={searchQuery}
           onChange={e => setSearchQuery(e.target.value)}
           className="border-0 shadow-none focus-visible:ring-0 p-0 text-sm md:text-base"
@@ -378,7 +378,7 @@ const BlogScreen = (props: BlogScreenProps) => {
                   flex="1"
                   leftIcon={<Bookmark className="w-4 h-4" />}
                 >
-                  Sauvegarder
+                  {t('blogScreenRead.save')}
                 </Button>
                 <Button
                   variant="outline"
@@ -386,7 +386,7 @@ const BlogScreen = (props: BlogScreenProps) => {
                   flex="1"
                   leftIcon={<ExternalLink className="w-4 h-4" />}
                 >
-                  Source complète
+                  {t('blogScreenRead.fullSource')}
                 </Button>
               </ModalFooter>
             </>

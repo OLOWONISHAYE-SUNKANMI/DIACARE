@@ -8,6 +8,7 @@ import { ProfessionalCodeGenerator } from '@/utils/ProfessionalCodeGenerator';
 import { PatientDataTabs } from '@/components/ui/PatientDataTabs';
 import { PatientAccessValidator } from '@/utils/PatientAccessValidator';
 import { supabase } from '@/integrations/supabase/client';
+import { useTranslation } from 'react-i18next';
 
 interface Professional {
   id: string;
@@ -50,9 +51,10 @@ interface ProfessionalMainDashboardProps {
   professional: Professional;
 }
 
-export const ProfessionalMainDashboard: React.FC<ProfessionalMainDashboardProps> = ({
-  professional
-}) => {
+export const ProfessionalMainDashboard: React.FC<
+  ProfessionalMainDashboardProps
+> = ({ professional }) => {
+  const { t } = useTranslation();
   const [patientCode, setPatientCode] = useState('');
   const [currentPatient, setCurrentPatient] = useState<Patient | null>(null);
   const [accessHistory, setAccessHistory] = useState<AccessHistoryItem[]>([]);
@@ -68,7 +70,7 @@ export const ProfessionalMainDashboard: React.FC<ProfessionalMainDashboardProps>
     return new Date(dateString).toLocaleDateString('fr-FR', {
       day: 'numeric',
       month: 'short',
-      year: 'numeric'
+      year: 'numeric',
     });
   };
 
@@ -76,7 +78,8 @@ export const ProfessionalMainDashboard: React.FC<ProfessionalMainDashboardProps>
     try {
       const { data, error } = await supabase
         .from('professional_sessions')
-        .select(`
+        .select(
+          `
           id,
           patient_code,
           patient_name,
@@ -85,42 +88,47 @@ export const ProfessionalMainDashboard: React.FC<ProfessionalMainDashboardProps>
           consultation_ended_at,
           consultation_duration_minutes,
           access_granted
-        `)
+        `
+        )
         .eq('professional_id', professional.id)
         .eq('access_granted', true)
         .order('access_requested_at', { ascending: false })
         .limit(10);
 
       if (error) {
-        console.error('Erreur chargement historique:', error);
+        console.error(
+          t('professionalMainDashboard.errorLoadingHistory'),
+          error
+        );
         return;
       }
 
-      const history: AccessHistoryItem[] = data?.map(session => ({
-        id: session.id,
-        patientName: session.patient_name || 'Patient',
-        patientCode: session.patient_code,
-        accessedAt: session.access_requested_at,
-        consultationStatus: session.consultation_ended_at 
-          ? 'completed' 
-          : session.consultation_started_at 
-          ? 'started' 
-          : 'pending',
-        duration: session.consultation_duration_minutes
-      })) || [];
+      const history: AccessHistoryItem[] =
+        data?.map(session => ({
+          id: session.id,
+          patientName: session.patient_name || 'Patient',
+          patientCode: session.patient_code,
+          accessedAt: session.access_requested_at,
+          consultationStatus: session.consultation_ended_at
+            ? 'completed'
+            : session.consultation_started_at
+              ? 'started'
+              : 'pending',
+          duration: session.consultation_duration_minutes,
+        })) || [];
 
       setAccessHistory(history);
     } catch (error) {
-      console.error('Erreur chargement historique:', error);
+      console.error(t('professionalMainDashboard.errorLoadingHistory'), error);
     }
   };
 
   const accessPatientData = async (code: string) => {
     if (!code.trim()) {
       toast({
-        title: "⚠️ Code requis",
-        description: "Veuillez saisir un code patient",
-        variant: "destructive"
+        title: t('professionalMainDashboard.codeRequired'),
+        description: t('professionalMainDashboard.patientCodeRequired'),
+        variant: 'destructive',
       });
       return;
     }
@@ -148,25 +156,30 @@ export const ProfessionalMainDashboard: React.FC<ProfessionalMainDashboardProps>
         dataAccess: {
           allowedSections: ['glucose', 'medications', 'meals', 'activities'],
           consultationsRemaining: 1,
-          expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
-        }
+          expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+        },
       };
 
       setCurrentPatient(patientData);
       setPatientCode('');
-      
+
       toast({
-        title: "✅ Accès autorisé",
-        description: `Données de ${patientData.firstName} ${patientData.lastName} accessibles`,
+        title: t('professionalMainDashboard.accessAuthorized'),
+        description: t('professionalMainDashboard.accessGranted', {
+          firstName: patientData.firstName,
+          lastName: patientData.lastName,
+        }),
       });
 
       loadAccessHistory();
     } catch (error: any) {
-      console.error('Erreur accès patient:', error);
+      console.error(t('professionalMainDashboard.patientAccessError'), error);
       toast({
-        title: "❌ Accès refusé",
-        description: error.message || "Code patient invalide ou accès non autorisé",
-        variant: "destructive"
+        title: t('professionalMainDashboard.accessDenied'),
+        description: t('professionalMainDashboard.accessDeniedDescription', {
+          error: error.message,
+        }),
+        variant: 'destructive',
       });
     } finally {
       setIsAccessing(false);
@@ -176,9 +189,11 @@ export const ProfessionalMainDashboard: React.FC<ProfessionalMainDashboardProps>
   const startConsultation = async (patientId: string) => {
     if (!currentPatient) {
       toast({
-        title: "❌ Erreur",
-        description: "Aucun patient sélectionné",
-        variant: "destructive"
+        title: t('professionalMainDashboard.noPatientSelectedTitle'),
+        description: t(
+          'professionalMainDashboard.noPatientSelectedDescription'
+        ),
+        variant: 'destructive',
       });
       return;
     }
@@ -193,7 +208,7 @@ export const ProfessionalMainDashboard: React.FC<ProfessionalMainDashboardProps>
           patient_code: currentPatient.patientCode,
           patient_name: `${currentPatient.firstName} ${currentPatient.lastName}`,
           consultation_started_at: new Date().toISOString(),
-          access_granted: true
+          access_granted: true,
         })
         .select()
         .single();
@@ -203,24 +218,33 @@ export const ProfessionalMainDashboard: React.FC<ProfessionalMainDashboardProps>
       }
 
       toast({
-        title: "🩺 Consultation démarrée",
-        description: `Consultation avec ${currentPatient.firstName} ${currentPatient.lastName}`,
+        title: t('professionalMainDashboard.consultationStartedTitle'),
+        description: t(
+          'professionalMainDashboard.consultationStartedDescription',
+          {
+            firstName: currentPatient.firstName,
+            lastName: currentPatient.lastName,
+          }
+        ),
       });
 
       // Rediriger vers l'interface de téléconsultation
       // TODO: Implémenter la navigation vers TeleconsultationInterface
-      
+
       loadAccessHistory();
     } catch (error: any) {
-      console.error('Erreur démarrage consultation:', error);
+      console.error(
+        t('professionalMainDashboard.consultationStartError', { error })
+      );
       toast({
-        title: "❌ Erreur",
-        description: "Impossible de démarrer la consultation",
-        variant: "destructive"
+        title: t('professionalMainDashboard.consultationStartErrorTitle'),
+        description: t(
+          'professionalMainDashboard.consultationStartErrorDescription'
+        ),
+        variant: 'destructive',
       });
     }
   };
-
 
   return (
     <div className="min-h-screen bg-muted/30">
@@ -233,19 +257,23 @@ export const ProfessionalMainDashboard: React.FC<ProfessionalMainDashboardProps>
             </div>
             <div>
               <h1 className="text-2xl font-bold">Dr. {professional.name}</h1>
-              <p className="text-primary-foreground/80">{professional.type} • DARE Pro</p>
+              <p className="text-primary-foreground/80">
+                {professional.type} • DARE Pro
+              </p>
               <p className="text-sm text-primary-foreground/80">
                 🔑 Code: {professional.identificationCode}
               </p>
             </div>
           </div>
-          
+
           <div className="text-right">
             <Badge className="bg-green-500 hover:bg-green-500 px-4 py-2 mb-2">
-              🟢 Vérifié
+              {t('professionalMainDashboard.verifiedStatus')}
             </Badge>
             <div className="text-sm text-primary-foreground/80">
-              Validité: {formatDate(professional.codeExpiryDate)}
+              {t('professionalMainDashboard.validity', {
+                date: formatDate(professional.codeExpiryDate),
+              })}
             </div>
           </div>
         </div>
@@ -256,20 +284,20 @@ export const ProfessionalMainDashboard: React.FC<ProfessionalMainDashboardProps>
         <Card className="mb-6">
           <CardHeader>
             <CardTitle className="text-center">
-              🔍 Accès aux Données Patient
+              {t('professionalMainDashboard.patientDataAccess')}
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="max-w-md mx-auto">
               <div className="mb-4">
                 <label className="block text-sm font-medium text-muted-foreground mb-2">
-                  Code Patient DARE
+                  {t('professionalMainDashboard.patientCode')}
                 </label>
                 <div className="flex gap-3">
                   <Input
                     type="text"
                     value={patientCode}
-                    onChange={(e) => setPatientCode(e.target.value.toUpperCase())}
+                    onChange={e => setPatientCode(e.target.value.toUpperCase())}
                     placeholder="Ex: ABC123"
                     className="flex-1 text-center font-mono text-lg"
                     maxLength={12}
@@ -279,18 +307,18 @@ export const ProfessionalMainDashboard: React.FC<ProfessionalMainDashboardProps>
                     disabled={isAccessing || patientCode.length < 3}
                     className="px-6"
                   >
-                    {isAccessing ? '⏳' : '🔓'} Accéder
+                    {isAccessing ? '⏳' : '🔓'} {t('access')}
                   </Button>
                 </div>
               </div>
-              
+
               <div className="text-center">
-                <Button 
+                <Button
                   variant="outline"
                   onClick={() => setShowQRScanner(true)}
                   className="text-sm"
                 >
-                  📱 Scanner QR Code Patient
+                  📱 {t('scan_qr_code')}
                 </Button>
               </div>
             </div>
@@ -299,7 +327,7 @@ export const ProfessionalMainDashboard: React.FC<ProfessionalMainDashboardProps>
 
         {/* Patient actuel si connecté */}
         {currentPatient && (
-          <PatientDataInterface 
+          <PatientDataInterface
             patient={currentPatient}
             professional={professional}
             onStartConsultation={startConsultation}
@@ -308,8 +336,8 @@ export const ProfessionalMainDashboard: React.FC<ProfessionalMainDashboardProps>
         )}
 
         {/* Historique accès récents */}
-        <RecentAccessHistory 
-          history={accessHistory} 
+        <RecentAccessHistory
+          history={accessHistory}
           onRefresh={loadAccessHistory}
         />
       </div>
@@ -329,10 +357,11 @@ const PatientDataInterface: React.FC<PatientDataInterfaceProps> = ({
   patient,
   professional,
   onStartConsultation,
-  onCloseAccess
+  onCloseAccess,
 }) => {
   const [consultationNotes, setConsultationNotes] = useState('');
 
+  const { t } = useTranslation();
   return (
     <Card className="mb-6">
       <CardHeader>
@@ -351,30 +380,43 @@ const PatientDataInterface: React.FC<PatientDataInterfaceProps> = ({
         <div className="bg-muted/50 p-4 rounded-lg">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
             <div>
-              <span className="font-medium">Code Patient:</span> {patient.patientCode}
+              <span className="font-medium">Code Patient:</span>{' '}
+              {patient.patientCode}
             </div>
             <div>
-              <span className="font-medium">Dernière glycémie:</span> 
-              <Badge variant={patient.lastGlucose && patient.lastGlucose > 140 ? "destructive" : "secondary"} className="ml-2">
+              <span className="font-medium">
+                {t('professionalMainDashboard.last_glucose')}:
+              </span>
+              <Badge
+                variant={
+                  patient.lastGlucose && patient.lastGlucose > 140
+                    ? 'destructive'
+                    : 'secondary'
+                }
+                className="ml-2"
+              >
                 {patient.lastGlucose || '--'} mg/dL
               </Badge>
             </div>
             <div>
-              <span className="font-medium">Consultations restantes:</span> {patient.dataAccess.consultationsRemaining}
+              <span className="font-medium">
+                {t('professionalMainDashboard.remaining_consultations')}:
+              </span>{' '}
+              {patient.dataAccess.consultationsRemaining}
             </div>
           </div>
         </div>
 
         {/* Actions principales */}
         <div className="flex gap-3 mb-6">
-          <Button 
+          <Button
             onClick={() => onStartConsultation(patient.id)}
             className="flex-1"
           >
-            🩺 Démarrer Consultation
+            🩺 {t('professionalMainDashboard.start_consultation')}
           </Button>
           <Button variant="outline" onClick={onCloseAccess}>
-            ✕ Fermer Accès
+            ✕ {t('professionalMainDashboard.close_access')}
           </Button>
         </div>
 
@@ -383,11 +425,13 @@ const PatientDataInterface: React.FC<PatientDataInterfaceProps> = ({
 
         {/* Notes de consultation */}
         <div className="mt-6">
-          <label className="block text-sm font-medium mb-2">Notes de consultation</label>
+          <label className="block text-sm font-medium mb-2">
+            {t('consultation_notes')}
+          </label>
           <textarea
             value={consultationNotes}
-            onChange={(e) => setConsultationNotes(e.target.value)}
-            placeholder="Saisissez vos observations..."
+            onChange={e => setConsultationNotes(e.target.value)}
+            placeholder={t('consultation_notes_placeholder')}
             className="w-full p-3 border border-input rounded-md resize-none"
             rows={4}
           />
@@ -405,16 +449,27 @@ interface RecentAccessHistoryProps {
 
 const RecentAccessHistory: React.FC<RecentAccessHistoryProps> = ({
   history,
-  onRefresh
+  onRefresh,
 }) => {
+  const { t } = useTranslation();
   const getStatusBadge = (status: string) => {
     const config = {
-      completed: { variant: 'default' as const, text: '✅ Terminée' },
-      started: { variant: 'secondary' as const, text: '🔄 En cours' },
-      pending: { variant: 'outline' as const, text: '⏳ En attente' }
+      completed: {
+        variant: 'default' as const,
+        text: t('professionalMainDashboard.status.completed'),
+      },
+      started: {
+        variant: 'secondary' as const,
+        text: t('professionalMainDashboard.status.started'),
+      },
+      pending: {
+        variant: 'outline' as const,
+        text: t('professionalMainDashboard.status.pending'),
+      },
     };
-    
-    const statusConfig = config[status as keyof typeof config] || config.pending;
+
+    const statusConfig =
+      config[status as keyof typeof config] || config.pending;
     return <Badge variant={statusConfig.variant}>{statusConfig.text}</Badge>;
   };
 
@@ -422,17 +477,22 @@ const RecentAccessHistory: React.FC<RecentAccessHistoryProps> = ({
     <Card>
       <CardHeader>
         <div className="flex items-center justify-between">
-          <CardTitle>📋 Accès Récents</CardTitle>
+          <CardTitle>
+            {t('professionalMainDashboard.recentAccess.title')}
+          </CardTitle>
           <Button variant="ghost" size="sm" onClick={onRefresh}>
-            🔄 Actualiser
+            {t('professionalMainDashboard.recentAccess.refresh')}
           </Button>
         </div>
       </CardHeader>
       <CardContent>
         {history.length > 0 ? (
           <div className="space-y-3">
-            {history.map((item) => (
-              <div key={item.id} className="border rounded-lg p-3 hover:bg-muted/50 transition-colors">
+            {history.map(item => (
+              <div
+                key={item.id}
+                className="border rounded-lg p-3 hover:bg-muted/50 transition-colors"
+              >
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-3">
@@ -443,8 +503,9 @@ const RecentAccessHistory: React.FC<RecentAccessHistoryProps> = ({
                       {getStatusBadge(item.consultationStatus)}
                     </div>
                     <div className="text-sm text-muted-foreground mt-1">
-                      {new Date(item.accessedAt).toLocaleString('fr-FR')}
-                      {item.duration && ` • Durée: ${item.duration} min`}
+                      {`${new Date(item.accessedAt).toLocaleString('fr-FR')}`}
+                      {item.duration &&
+                        ` • ${t('professionalMainDashboard.recentAccess.duration', { minutes: item.duration })}`}
                     </div>
                   </div>
                 </div>
@@ -454,8 +515,10 @@ const RecentAccessHistory: React.FC<RecentAccessHistoryProps> = ({
         ) : (
           <div className="text-center py-8 text-muted-foreground">
             <span className="text-4xl block mb-2">📋</span>
-            <p>Aucun accès récent</p>
-            <p className="text-sm">Vos consultations apparaîtront ici</p>
+            <p>{t('professionalMainDashboard.recentAccess.none')}</p>
+            <p className="text-sm">
+              {t('professionalMainDashboard.recentAccess.info')}
+            </p>
           </div>
         )}
       </CardContent>
