@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/dialog';
 import { Camera, Upload, X } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useTranslation } from 'react-i18next';
 
 interface PhotoUploadModalProps {
   children: React.ReactNode;
@@ -22,6 +23,7 @@ const PhotoUploadModal = ({
   onPhotoChange,
   currentPhoto,
 }: PhotoUploadModalProps) => {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [preview, setPreview] = useState<string | null>(currentPhoto || null);
 
@@ -53,9 +55,9 @@ const PhotoUploadModal = ({
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Photo de profil</DialogTitle>
+          <DialogTitle>{t('photoUploadModal.profilePhoto.title')}</DialogTitle>
           <DialogDescription>
-            Ajoutez ou modifiez votre photo de profil
+            {t('photoUploadModal.profilePhoto.description')}
           </DialogDescription>
         </DialogHeader>
 
@@ -85,7 +87,7 @@ const PhotoUploadModal = ({
                 <Button asChild className="w-full">
                   <span>
                     <Upload className="w-4 h-4 mr-2" />
-                    Choisir une photo
+                    {t('photoUploadModal.profilePhoto.choosePhoto')}
                   </span>
                 </Button>
               </label>
@@ -98,7 +100,7 @@ const PhotoUploadModal = ({
                 className="w-full"
               >
                 <X className="w-4 h-4 mr-2" />
-                Supprimer la photo
+                {t('photoUploadModal.profilePhoto.removePhoto')}
               </Button>
             )}
           </div>
@@ -109,10 +111,10 @@ const PhotoUploadModal = ({
               onClick={() => setIsOpen(false)}
               className="flex-1"
             >
-              Annuler
+              {t('photoUploadModal.buttons.cancel')}
             </Button>
             <Button onClick={handleSave} className="flex-1">
-              Enregistrer
+              {t('photoUploadModal.buttons.save')}
             </Button>
           </div>
         </div>

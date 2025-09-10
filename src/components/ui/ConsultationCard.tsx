@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 interface ConsultationData {
   id: string;
   patient: {
@@ -21,7 +23,12 @@ const viewPatientData = (patient: ConsultationData['patient']) => {
   // TODO: Implement patient data modal
 };
 
-const ConsultationCard = ({ consultation, onAccept }: ConsultationCardProps) => (
+const { t } = useTranslation();
+
+const ConsultationCard = ({
+  consultation,
+  onAccept,
+}: ConsultationCardProps) => (
   <div className="border border-border rounded-lg p-4 mb-4 hover:shadow-md transition-shadow">
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-4">
@@ -33,39 +40,44 @@ const ConsultationCard = ({ consultation, onAccept }: ConsultationCardProps) => 
             {consultation.patient.firstName} {consultation.patient.lastName}
           </h4>
           <p className="text-sm text-muted-foreground">
-            {consultation.patient.age} ans • Diabète Type {consultation.patient.diabetesType}
+            {consultation.patient.age} {t('ConsultationCard.years')} •{' '}
+            {t('ConsultationCard.diabetesType')}{' '}
+            {consultation.patient.diabetesType}
           </p>
           <p className="text-xs text-muted-foreground">
-            📍 {consultation.patient.location} • ⏰ Demandé il y a {consultation.timeAgo}
+            📍 {consultation.patient.location} • ⏰{' '}
+            {t('ConsultationCard.requestedAgo', { time: consultation.timeAgo })}
           </p>
         </div>
       </div>
-      
+
       <div className="text-right">
         <div className="text-lg font-bold text-primary">500 F CFA</div>
-        <div className="text-xs text-muted-foreground mb-3">Consultation</div>
-        
+        <div className="text-xs text-muted-foreground mb-3">
+          {t('ConsultationCard.consultation')}
+        </div>
+
         <div className="flex gap-2">
-          <button 
+          <button
             onClick={() => viewPatientData(consultation.patient)}
             className="bg-secondary text-secondary-foreground px-3 py-1 rounded text-sm hover:bg-secondary/80"
           >
-            📊 Voir données
+            📊 {t('ConsultationCard.viewData')}
           </button>
-          <button 
+          <button
             onClick={() => onAccept(consultation)}
             className="bg-primary text-primary-foreground px-4 py-2 rounded font-bold text-sm hover:bg-primary/90"
           >
-            Accepter
+            {t('ConsultationCard.accept')}
           </button>
         </div>
       </div>
     </div>
-    
+
     {/* Raison consultation */}
     <div className="mt-3 bg-muted p-3 rounded">
       <p className="text-sm">
-        <strong>Motif:</strong> {consultation.reason}
+        <strong>{t('ConsultationCard.reason')}:</strong> {consultation.reason}
       </p>
     </div>
   </div>

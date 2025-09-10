@@ -1,14 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { 
-  Shield, 
-  User, 
-  Clock, 
-  Activity, 
+import {
+  Shield,
+  User,
+  Clock,
+  Activity,
   Pill,
   Apple,
   TrendingUp,
@@ -17,7 +23,7 @@ import {
   Eye,
   EyeOff,
   QrCode,
-  Video
+  Video,
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
@@ -65,9 +71,9 @@ interface PatientAccessInterfaceProps {
   onDataAccessed?: (patientData: PatientData) => void;
 }
 
-const PatientAccessInterface: React.FC<PatientAccessInterfaceProps> = ({ 
+const PatientAccessInterface: React.FC<PatientAccessInterfaceProps> = ({
   professionalCode,
-  onDataAccessed 
+  onDataAccessed,
 }) => {
   const { t } = useTranslation();
   const { user } = useAuth();
@@ -102,8 +108,10 @@ const PatientAccessInterface: React.FC<PatientAccessInterfaceProps> = ({
         setPatientCode(existingCode.access_code);
       } else {
         // Generate new code
-        const { data: newCode, error } = await supabase.rpc('generate_patient_access_code');
-        
+        const { data: newCode, error } = await supabase.rpc(
+          'generate_patient_access_code'
+        );
+
         if (error) throw error;
 
         const { error: insertError } = await supabase
@@ -111,8 +119,10 @@ const PatientAccessInterface: React.FC<PatientAccessInterfaceProps> = ({
           .insert({
             user_id: user.id,
             access_code: newCode,
-            expires_at: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
-            is_active: true
+            expires_at: new Date(
+              Date.now() + 24 * 60 * 60 * 1000
+            ).toISOString(),
+            is_active: true,
           });
 
         if (insertError) throw insertError;
@@ -124,7 +134,7 @@ const PatientAccessInterface: React.FC<PatientAccessInterfaceProps> = ({
       toast({
         title: t('errors.codeGenerationError'),
         description: t('errors.tryAgainLater'),
-        variant: 'destructive'
+        variant: 'destructive',
       });
     }
   };
@@ -134,7 +144,7 @@ const PatientAccessInterface: React.FC<PatientAccessInterfaceProps> = ({
       toast({
         title: t('errors.noProfessionalCode'),
         description: t('errors.professionalCodeRequired'),
-        variant: 'destructive'
+        variant: 'destructive',
       });
       return;
     }
@@ -144,7 +154,8 @@ const PatientAccessInterface: React.FC<PatientAccessInterfaceProps> = ({
       // Validate patient code and get user data
       const { data: patientCodeData, error: codeError } = await supabase
         .from('patient_access_codes')
-        .select(`
+        .select(
+          `
           user_id,
           profiles:user_id (
             first_name,
@@ -152,7 +163,8 @@ const PatientAccessInterface: React.FC<PatientAccessInterfaceProps> = ({
             phone,
             created_at
           )
-        `)
+        `
+        )
         .eq('access_code', inputCode)
         .eq('is_active', true)
         .single();
@@ -164,27 +176,26 @@ const PatientAccessInterface: React.FC<PatientAccessInterfaceProps> = ({
       // Get patient's medical data (mock data for demo)
       const glucoseRes = { data: [] };
       const [insulinRes, mealsRes, activityRes] = await Promise.all([
-        
         supabase
           .from('insulin_injections')
           .select('*')
           .eq('user_id', patientCodeData.user_id)
           .order('injection_time', { ascending: false })
           .limit(10),
-        
+
         supabase
           .from('meal_entries')
           .select('*')
           .eq('user_id', patientCodeData.user_id)
           .order('meal_time', { ascending: false })
           .limit(10),
-        
+
         supabase
           .from('activity_entries')
           .select('*')
           .eq('user_id', patientCodeData.user_id)
           .order('activity_time', { ascending: false })
-          .limit(10)
+          .limit(10),
       ]);
 
       const compiledPatientData: PatientData = {
@@ -196,7 +207,7 @@ const PatientAccessInterface: React.FC<PatientAccessInterfaceProps> = ({
         glucose_readings: glucoseRes.data || [],
         insulin_injections: insulinRes.data || [],
         meal_entries: mealsRes.data || [],
-        activity_entries: activityRes.data || []
+        activity_entries: activityRes.data || [],
       };
 
       setPatientData(compiledPatientData);
@@ -211,7 +222,7 @@ const PatientAccessInterface: React.FC<PatientAccessInterfaceProps> = ({
           patient_code: inputCode,
           patient_name: `${compiledPatientData.first_name} ${compiledPatientData.last_name}`,
           access_granted: true,
-          consultation_started_at: new Date().toISOString()
+          consultation_started_at: new Date().toISOString(),
         })
         .select()
         .single();
@@ -224,13 +235,12 @@ const PatientAccessInterface: React.FC<PatientAccessInterfaceProps> = ({
         title: t('success.accessGranted'),
         description: t('success.patientDataLoaded'),
       });
-
     } catch (error: any) {
       console.error('Error accessing patient data:', error);
       toast({
         title: t('errors.accessError'),
         description: error.message,
-        variant: 'destructive'
+        variant: 'destructive',
       });
     } finally {
       setLoading(false);
@@ -252,13 +262,13 @@ const PatientAccessInterface: React.FC<PatientAccessInterfaceProps> = ({
 
   const endVideoCall = async () => {
     setShowVideoCall(false);
-    
+
     if (currentSession) {
       // Update session with consultation end time
       await supabase
         .from('professional_sessions')
         .update({
-          consultation_ended_at: new Date().toISOString()
+          consultation_ended_at: new Date().toISOString(),
         })
         .eq('id', currentSession.id);
 
@@ -272,7 +282,7 @@ const PatientAccessInterface: React.FC<PatientAccessInterfaceProps> = ({
       if (rates) {
         await supabase.rpc('calculate_professional_earnings', {
           _teleconsultation_id: currentSession.id,
-          _platform_fee_percentage: 10.0
+          _platform_fee_percentage: 10.0,
         });
       }
     }
@@ -282,7 +292,11 @@ const PatientAccessInterface: React.FC<PatientAccessInterfaceProps> = ({
     return (
       <VideoCallInterface
         isHost={true}
-        patientName={patientData ? `${patientData.first_name} ${patientData.last_name}` : 'Patient'}
+        patientName={
+          patientData
+            ? `${patientData.first_name} ${patientData.last_name}`
+            : 'Patient'
+        }
         onEndCall={endVideoCall}
         onCallStarted={() => {
           toast({
@@ -318,15 +332,19 @@ const PatientAccessInterface: React.FC<PatientAccessInterfaceProps> = ({
                       size="sm"
                       onClick={() => setShowCode(!showCode)}
                     >
-                      {showCode ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      {showCode ? (
+                        <EyeOff className="w-4 h-4" />
+                      ) : (
+                        <Eye className="w-4 h-4" />
+                      )}
                     </Button>
                     <QrCode className="w-5 h-5 text-muted-foreground" />
                   </div>
-                  
+
                   <div className="text-3xl font-bold font-mono tracking-wider text-primary mb-2">
                     {showCode ? patientCode : '••••••'}
                   </div>
-                  
+
                   <Button
                     variant="outline"
                     size="sm"
@@ -350,7 +368,9 @@ const PatientAccessInterface: React.FC<PatientAccessInterfaceProps> = ({
             ) : (
               <div className="text-center">
                 <div className="animate-spin w-8 h-8 border-2 border-primary border-t-transparent rounded-full mx-auto mb-4" />
-                <p className="text-muted-foreground">{t('patientAccess.generatingCode')}</p>
+                <p className="text-muted-foreground">
+                  {t('patientAccess.generatingCode')}
+                </p>
               </div>
             )}
           </CardContent>
@@ -379,12 +399,12 @@ const PatientAccessInterface: React.FC<PatientAccessInterfaceProps> = ({
                 type="text"
                 placeholder={t('placeholders.patientCode')}
                 value={patientCode}
-                onChange={(e) => setPatientCode(e.target.value.toUpperCase())}
+                onChange={e => setPatientCode(e.target.value.toUpperCase())}
                 className="text-center text-lg font-mono tracking-wider"
                 maxLength={6}
               />
             </div>
-            
+
             <Button
               onClick={() => accessPatientData(patientCode)}
               disabled={loading || patientCode.length !== 6}
@@ -418,12 +438,15 @@ const PatientAccessInterface: React.FC<PatientAccessInterfaceProps> = ({
                   {patientData?.first_name} {patientData?.last_name}
                 </CardTitle>
                 <CardDescription>
-                  {t('labels.patientSince')}: {new Date(patientData?.created_at || '').toLocaleDateString('fr-FR')}
+                  {t('labels.patientSince')}:{' '}
+                  {new Date(patientData?.created_at || '').toLocaleDateString(
+                    'fr-FR'
+                  )}
                 </CardDescription>
               </div>
             </div>
 
-            <Button 
+            <Button
               onClick={startVideoCall}
               className="bg-green-600 hover:bg-green-700 text-white"
             >
@@ -446,20 +469,35 @@ const PatientAccessInterface: React.FC<PatientAccessInterfaceProps> = ({
           <CardContent>
             {patientData?.glucose_readings.length ? (
               <div className="space-y-3">
-                {patientData.glucose_readings.slice(0, 5).map((reading) => (
-                  <div key={reading.id} className="flex items-center justify-between p-2 bg-muted/30 rounded">
+                {patientData.glucose_readings.slice(0, 5).map(reading => (
+                  <div
+                    key={reading.id}
+                    className="flex items-center justify-between p-2 bg-muted/30 rounded"
+                  >
                     <div>
-                      <p className="font-semibold">{reading.glucose_value} mg/dL</p>
+                      <p className="font-semibold">
+                        {reading.glucose_value} mg/dL
+                      </p>
                       <p className="text-sm text-muted-foreground">
-                        {new Date(reading.measured_at).toLocaleDateString('fr-FR')}
+                        {new Date(reading.measured_at).toLocaleDateString(
+                          'fr-FR'
+                        )}
                       </p>
                     </div>
-                    <Badge 
-                      variant={reading.glucose_value > 180 ? "destructive" : 
-                              reading.glucose_value < 70 ? "destructive" : "default"}
+                    <Badge
+                      variant={
+                        reading.glucose_value > 180
+                          ? 'destructive'
+                          : reading.glucose_value < 70
+                            ? 'destructive'
+                            : 'default'
+                      }
                     >
-                      {reading.glucose_value > 180 ? t('levels.high') : 
-                       reading.glucose_value < 70 ? t('levels.low') : t('levels.normal')}
+                      {reading.glucose_value > 180
+                        ? t('levels.high')
+                        : reading.glucose_value < 70
+                          ? t('levels.low')
+                          : t('levels.normal')}
                     </Badge>
                   </div>
                 ))}
@@ -483,12 +521,21 @@ const PatientAccessInterface: React.FC<PatientAccessInterfaceProps> = ({
           <CardContent>
             {patientData?.insulin_injections.length ? (
               <div className="space-y-3">
-                {patientData.insulin_injections.slice(0, 5).map((injection) => (
-                  <div key={injection.id} className="flex items-center justify-between p-2 bg-muted/30 rounded">
+                {patientData.insulin_injections.slice(0, 5).map(injection => (
+                  <div
+                    key={injection.id}
+                    className="flex items-center justify-between p-2 bg-muted/30 rounded"
+                  >
                     <div>
                       <p className="font-semibold">{injection.insulin_type}</p>
                       <p className="text-sm text-muted-foreground">
-                        {injection.dose_units} unités - {new Date(injection.injection_time).toLocaleDateString('fr-FR')}
+                        {t('patientAccessInterface.injection.doseUnits', {
+                          count: injection.dose_units,
+                        })}{' '}
+                        -{' '}
+                        {new Date(
+                          injection.injection_time
+                        ).toLocaleDateString()}
                       </p>
                     </div>
                   </div>
@@ -513,12 +560,18 @@ const PatientAccessInterface: React.FC<PatientAccessInterfaceProps> = ({
           <CardContent>
             {patientData?.meal_entries.length ? (
               <div className="space-y-3">
-                {patientData.meal_entries.slice(0, 5).map((meal) => (
-                  <div key={meal.id} className="flex items-center justify-between p-2 bg-muted/30 rounded">
+                {patientData.meal_entries.slice(0, 5).map(meal => (
+                  <div
+                    key={meal.id}
+                    className="flex items-center justify-between p-2 bg-muted/30 rounded"
+                  >
                     <div>
                       <p className="font-semibold">{meal.meal_name}</p>
                       <p className="text-sm text-muted-foreground">
-                        {meal.total_carbs}g glucides - {new Date(meal.meal_time).toLocaleDateString('fr-FR')}
+                        {t('patientAccessInterface.meal.totalCarbs', {
+                          count: meal.total_carbs,
+                        })}{' '}
+                        - {new Date(meal.meal_time).toLocaleDateString()}
                       </p>
                     </div>
                   </div>
@@ -543,12 +596,18 @@ const PatientAccessInterface: React.FC<PatientAccessInterfaceProps> = ({
           <CardContent>
             {patientData?.activity_entries.length ? (
               <div className="space-y-3">
-                {patientData.activity_entries.slice(0, 5).map((activity) => (
-                  <div key={activity.id} className="flex items-center justify-between p-2 bg-muted/30 rounded">
+                {patientData.activity_entries.slice(0, 5).map(activity => (
+                  <div
+                    key={activity.id}
+                    className="flex items-center justify-between p-2 bg-muted/30 rounded"
+                  >
                     <div>
                       <p className="font-semibold">{activity.activity_name}</p>
                       <p className="text-sm text-muted-foreground">
-                        {activity.duration_minutes} min - {new Date(activity.activity_time).toLocaleDateString('fr-FR')}
+                        {activity.duration_minutes} min -{' '}
+                        {new Date(activity.activity_time).toLocaleDateString(
+                          'fr-FR'
+                        )}
                       </p>
                     </div>
                   </div>
