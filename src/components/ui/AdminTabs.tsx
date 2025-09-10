@@ -6,15 +6,16 @@ import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import ApplicationCard from '@/components/ui/ApplicationCard';
-import { 
-  CheckCircle, 
-  XCircle, 
-  Eye, 
-  DollarSign, 
+import {
+  CheckCircle,
+  XCircle,
+  Eye,
+  DollarSign,
   TrendingUp,
   Users,
-  Clock
+  Clock,
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface ProfessionalApplication {
   id: string;
@@ -42,6 +43,7 @@ interface Consultation {
 }
 
 const AdminTabs = () => {
+  const { t } = useTranslation();
   const { toast } = useToast();
   const [applications, setApplications] = useState<ProfessionalApplication[]>([
     {
@@ -49,36 +51,38 @@ const AdminTabs = () => {
       first_name: 'Dr. Mamadou',
       last_name: 'Kane',
       email: 'mamadou.kane@hospital.sn',
-      professional_type: 'Endocrinologue',
-      institution: 'Hôpital Principal de Dakar',
+      professional_type: t(
+        'adminTabs.Applications.professional_types.endocrinologist'
+      ),
+      institution: t('adminTabs.Applications.institutions.hopital_principal'),
       license_number: 'SN-END-2023-001',
       country: 'Sénégal',
       city: 'Dakar',
       status: 'pending',
       created_at: '2024-01-15T10:00:00Z',
       documents: [
-        { name: 'diplome.pdf', url: '#' },
-        { name: 'licence.pdf', url: '#' },
-        { name: 'cv.pdf', url: '#' }
-      ]
+        { name: t('adminTabs.Applications.documents.diploma'), url: '#' },
+        { name: t('adminTabs.Applications.documents.license'), url: '#' },
+        { name: t('adminTabs.Applications.documents.cv'), url: '#' },
+      ],
     },
     {
       id: '2',
       first_name: 'Dr. Fatou',
       last_name: 'Diop',
       email: 'fatou.diop@clinique.sn',
-      professional_type: 'Diabétologue',
-      institution: 'Clinique Pasteur',
+      professional_type: t('Applications.professional_types.diabetologist'),
+      institution: t('adminTabs.Applications.institutions.clinique_pasteur'),
       license_number: 'SN-DIA-2023-002',
       country: 'Sénégal',
       city: 'Thiès',
       status: 'pending',
       created_at: '2024-01-16T14:30:00Z',
       documents: [
-        { name: 'diplome.pdf', url: '#' },
-        { name: 'ordre.pdf', url: '#' }
-      ]
-    }
+        { name: t('adminTabs.Applications.documents.diploma'), url: '#' },
+        { name: t('adminTabs.Applications.documents.order'), url: '#' },
+      ],
+    },
   ]);
 
   const [consultations] = useState<Consultation[]>([
@@ -89,7 +93,7 @@ const AdminTabs = () => {
       amount_charged: 500,
       status: 'completed',
       scheduled_at: '2024-01-17T09:00:00Z',
-      duration_minutes: 30
+      duration_minutes: 30,
     },
     {
       id: '2',
@@ -98,49 +102,58 @@ const AdminTabs = () => {
       amount_charged: 750,
       status: 'completed',
       scheduled_at: '2024-01-17T11:00:00Z',
-      duration_minutes: 45
-    }
+      duration_minutes: 45,
+    },
   ]);
 
   const handleApproveApplication = (applicationId: string) => {
-    setApplications(prev => 
-      prev.map(app => 
-        app.id === applicationId 
-          ? { ...app, status: 'approved' as const }
-          : app
+    setApplications(prev =>
+      prev.map(app =>
+        app.id === applicationId ? { ...app, status: 'approved' as const } : app
       )
     );
-    
+
     toast({
-      title: "Candidature approuvée",
-      description: "Le professionnel a été approuvé et peut maintenant utiliser DARE Pro.",
+      title: t('adminTabs.toast.approved.title'),
+      description: t('adminTabs.toast.approved.description'),
     });
   };
 
   const handleRejectApplication = (applicationId: string) => {
-    setApplications(prev => 
-      prev.map(app => 
-        app.id === applicationId 
-          ? { ...app, status: 'rejected' as const }
-          : app
+    setApplications(prev =>
+      prev.map(app =>
+        app.id === applicationId ? { ...app, status: 'rejected' as const } : app
       )
     );
-    
+
     toast({
-      title: "Candidature rejetée",
-      description: "La candidature a été rejetée.",
-      variant: "destructive"
+      title: t('adminTabs.toast.rejected.title'),
+      description: t('adminTabs.toast.rejected.description'),
+      variant: 'destructive',
     });
   };
 
   const getStatusBadge = (status: string) => {
     const statusConfig = {
-      pending: { label: 'En attente', variant: 'outline' as const, color: 'text-orange-600' },
-      approved: { label: 'Approuvé', variant: 'default' as const, color: 'text-green-600' },
-      rejected: { label: 'Rejeté', variant: 'destructive' as const, color: 'text-red-600' }
+      pending: {
+        label: t('adminTabs.status.pending'),
+        variant: 'outline' as const,
+        color: 'text-orange-600',
+      },
+      approved: {
+        label: t('adminTabs.status.approved'),
+        variant: 'default' as const,
+        color: 'text-green-600',
+      },
+      rejected: {
+        label: t('adminTabs.status.rejected'),
+        variant: 'destructive' as const,
+        color: 'text-red-600',
+      },
     };
-    
-    const config = statusConfig[status as keyof typeof statusConfig] || statusConfig.pending;
+
+    const config =
+      statusConfig[status as keyof typeof statusConfig] || statusConfig.pending;
     return (
       <Badge variant={config.variant} className={config.color}>
         {config.label}
@@ -154,7 +167,7 @@ const AdminTabs = () => {
       month: 'short',
       year: 'numeric',
       hour: '2-digit',
-      minute: '2-digit'
+      minute: '2-digit',
     });
   };
 
@@ -163,40 +176,41 @@ const AdminTabs = () => {
       <TabsList className="grid w-full grid-cols-4">
         <TabsTrigger value="applications" className="flex items-center gap-2">
           <Users className="w-4 h-4" />
-          Candidatures
+          {t('adminTabs.Dashboard.tabs.applications')}
         </TabsTrigger>
         <TabsTrigger value="consultations" className="flex items-center gap-2">
           <TrendingUp className="w-4 h-4" />
-          Consultations
+          {t('adminTabs.Dashboard.tabs.consultations')}
         </TabsTrigger>
         <TabsTrigger value="payments" className="flex items-center gap-2">
           <DollarSign className="w-4 h-4" />
-          Paiements
+          {t('adminTabs.Dashboard.tabs.payments')}
         </TabsTrigger>
         <TabsTrigger value="analytics" className="flex items-center gap-2">
           <TrendingUp className="w-4 h-4" />
-          Analytiques
+          {t('adminTabs.Dashboard.tabs.analytics')}
         </TabsTrigger>
       </TabsList>
-
       {/* Candidatures Tab */}
       <TabsContent value="applications" className="space-y-4">
         <div className="p-6">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-xl font-bold flex items-center gap-2">
               <Users className="w-5 h-5" />
-              📋 Candidatures en Attente
+              📋 {t('adminTabs.Applications.pendingTitle')}
             </h3>
-            {applications.filter(app => app.status === 'pending').length > 0 && (
+            {applications.filter(app => app.status === 'pending').length >
+              0 && (
               <Badge className="bg-orange-100 text-orange-800 border-orange-300">
-                {applications.filter(app => app.status === 'pending').length} en attente
+                {applications.filter(app => app.status === 'pending').length}{' '}
+                {t('adminTabs.Applications.pendingCount')}
               </Badge>
             )}
           </div>
-          
+
           {applications.length > 0 ? (
             <div className="space-y-4">
-              {applications.map((application) => (
+              {applications.map(application => (
                 <ApplicationCard
                   key={application.id}
                   application={application}
@@ -210,9 +224,11 @@ const AdminTabs = () => {
               <CardContent className="p-8">
                 <div className="text-center">
                   <Users className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold mb-2">Aucune candidature</h3>
+                  <h3 className="text-lg font-semibold mb-2">
+                    {t('adminTabs.Applications.none')}
+                  </h3>
                   <p className="text-muted-foreground">
-                    Les nouvelles candidatures de professionnels apparaîtront ici
+                    {t('adminTabs.Applications.noneDescription')}
                   </p>
                 </div>
               </CardContent>
@@ -227,13 +243,13 @@ const AdminTabs = () => {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Clock className="w-5 h-5" />
-              Consultations Récentes
+              {t('adminTabs.Consultations.recent')}
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {consultations.map((consultation) => (
-                <div 
+              {consultations.map(consultation => (
+                <div
                   key={consultation.id}
                   className="border rounded-lg p-4 hover:bg-muted/50 transition-colors"
                 >
@@ -243,13 +259,12 @@ const AdminTabs = () => {
                         <span className="font-medium">
                           Consultation #{consultation.id.slice(0, 8)}
                         </span>
-                        <Badge variant="outline">
-                          {consultation.status}
-                        </Badge>
+                        <Badge variant="outline">{consultation.status}</Badge>
                       </div>
                       <div className="text-sm text-muted-foreground">
                         {formatDate(consultation.scheduled_at)}
-                        {consultation.duration_minutes && ` • ${consultation.duration_minutes} min`}
+                        {consultation.duration_minutes &&
+                          ` • ${consultation.duration_minutes} min`}
                       </div>
                     </div>
                     <div className="text-right">
@@ -257,7 +272,8 @@ const AdminTabs = () => {
                         {consultation.amount_charged} F CFA
                       </div>
                       <div className="text-xs text-muted-foreground">
-                        Commission: {Math.round(consultation.amount_charged * 0.1)} F CFA
+                        Commission:{' '}
+                        {Math.round(consultation.amount_charged * 0.1)} F CFA
                       </div>
                     </div>
                   </div>
@@ -272,14 +288,16 @@ const AdminTabs = () => {
       <TabsContent value="payments" className="space-y-4">
         <Card>
           <CardHeader>
-            <CardTitle>Gestion des Paiements</CardTitle>
+            <CardTitle>{t('Payments.title')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-center py-8">
               <DollarSign className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-              <h3 className="text-lg font-semibold mb-2">Module de Paiement</h3>
+              <h3 className="text-lg font-semibold mb-2">
+                {t('adminTabs.Payments.module')}
+              </h3>
               <p className="text-muted-foreground">
-                Gestion des paiements aux professionnels et commissions
+                {t('adminTabs.Payments.description')}
               </p>
             </div>
           </CardContent>
@@ -290,14 +308,16 @@ const AdminTabs = () => {
       <TabsContent value="analytics" className="space-y-4">
         <Card>
           <CardHeader>
-            <CardTitle>Analytiques</CardTitle>
+            <CardTitle>{t('Analytics.title')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-center py-8">
               <TrendingUp className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-              <h3 className="text-lg font-semibold mb-2">Tableau de Bord Analytique</h3>
+              <h3 className="text-lg font-semibold mb-2">
+                {t('adminTabs.Analytics.module')}
+              </h3>
               <p className="text-muted-foreground">
-                Statistiques détaillées et rapports de performance
+                {t('adminTabs.Analytics.description')}
               </p>
             </div>
           </CardContent>

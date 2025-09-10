@@ -1,30 +1,45 @@
 import React, { useState } from 'react';
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { 
-  Stethoscope, 
-  Video, 
-  Calendar, 
-  DollarSign, 
-  Users, 
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import {
+  Stethoscope,
+  Video,
+  Calendar,
+  DollarSign,
+  Users,
   FileText,
   CheckCircle,
   Clock,
   Star,
   Phone,
-  MessageSquare
+  MessageSquare,
 } from 'lucide-react';
-import { useToast } from "@/hooks/use-toast";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import ProfessionalCodeManager from "@/components/ProfessionalCodeManager";
+import { useToast } from '@/hooks/use-toast';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import ProfessionalCodeManager from '@/components/ProfessionalCodeManager';
+import { useTranslation } from 'react-i18next';
 
 const HealthProfessionalScreen = () => {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [registrationStep, setRegistrationStep] = useState(1);
   const [charterAccepted, setCharterAccepted] = useState<boolean | null>(null);
@@ -33,46 +48,57 @@ const HealthProfessionalScreen = () => {
 
   const handleRegistration = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Vérifier que les deux checkboxes sont cochées
-    const termsChecked = (document.getElementById('terms') as HTMLInputElement)?.checked;
-    const charterChecked = (document.getElementById('charter') as HTMLInputElement)?.checked;
-    
+    const termsChecked = (document.getElementById('terms') as HTMLInputElement)
+      ?.checked;
+    const charterChecked = (
+      document.getElementById('charter') as HTMLInputElement
+    )?.checked;
+
     if (!termsChecked || !charterChecked) {
       toast({
-        title: "Acceptation requise",
-        description: "Vous devez accepter les conditions d'utilisation et la charte déontologique",
-        variant: "destructive"
+        title: t('healthProfessionalScreen.acceptanceRequiredTitle'),
+        description: t(
+          'healthProfessionalScreen.acceptanceRequiredDescription'
+        ),
+        variant: 'destructive',
       });
       return;
     }
-    
+
     setShowCharter(true);
   };
 
   const handleCharterAcceptance = (accepted: boolean) => {
     setCharterAccepted(accepted);
     setShowCharter(false);
-    
+
     if (accepted) {
       toast({
-        title: "Inscription soumise",
-        description: "Votre demande d'inscription sera examinée sous 24h",
+        title: t('healthProfessionalScreen.registration.submittedTitle'),
+        description: t(
+          'healthProfessionalScreen.registration.submittedDescription'
+        ),
       });
       setRegistrationStep(2);
     } else {
       toast({
-        title: "Accès refusé",
-        description: "L'acceptation de la charte déontologique DARE est obligatoire",
-        variant: "destructive"
+        title: t('healthProfessionalScreen.registration.accessDeniedTitle'),
+        description: t(
+          'healthProfessionalScreen.registration.accessDeniedDescription'
+        ),
+        variant: 'destructive',
       });
     }
   };
 
   const handleConsultationStart = () => {
     toast({
-      title: "Téléconsultation initiée",
-      description: "Connexion avec le patient en cours...",
+      title: t('healthProfessionalScreen.teleconsultation.startedTitle'),
+      description: t(
+        'healthProfessionalScreen.teleconsultation.startedDescription'
+      ),
     });
   };
 
@@ -80,35 +106,35 @@ const HealthProfessionalScreen = () => {
   const consultations = [
     {
       id: 1,
-      patient: "Marie D.",
-      time: "14:30",
-      type: "Suivi diabète",
-      status: "En attente",
-      avatar: "/api/placeholder/32/32"
+      patient: 'Marie D.',
+      time: '14:30',
+      type: t('healthProfessionalScreen.consultationTypes.diabetesFollowUp'),
+      status: t('healthProfessionalScreen.consultationStatuses.pending'),
+      avatar: '/api/placeholder/32/32',
     },
     {
       id: 2,
-      patient: "Jean M.",
-      time: "15:00",
-      type: "Consultation urgente",
-      status: "En cours",
-      avatar: "/api/placeholder/32/32"
+      patient: 'Jean M.',
+      time: '15:00',
+      type: t('healthProfessionalScreen.consultationTypes.urgentConsultation'),
+      status: t('healthProfessionalScreen.consultationStatuses.inProgress'),
+      avatar: '/api/placeholder/32/32',
     },
     {
       id: 3,
-      patient: "Sophie L.",
-      time: "15:30",
-      type: "Contrôle glycémie",
-      status: "Programmée",
-      avatar: "/api/placeholder/32/32"
-    }
+      patient: 'Sophie L.',
+      time: '15:30',
+      type: t('healthProfessionalScreen.consultationTypes.bloodSugarCheck'),
+      status: t('healthProfessionalScreen.consultationStatuses.scheduled'),
+      avatar: '/api/placeholder/32/32',
+    },
   ];
 
   const earnings = {
     today: 6000,
     week: 42000,
     month: 168000,
-    pending: 12000
+    pending: 12000,
   };
 
   if (registrationStep === 1) {
@@ -120,54 +146,108 @@ const HealthProfessionalScreen = () => {
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Stethoscope className="w-8 h-8 text-primary" />
               </div>
-              <CardTitle className="text-2xl">Portal Professionnel DARE</CardTitle>
+              <CardTitle className="text-2xl">
+                {t('healthProfessionalScreen.professionalPortal.title')}
+              </CardTitle>
               <CardDescription>
-                Rejoignez notre réseau de professionnels de santé et offrez des téléconsultations spécialisées en diabète
+                {t('healthProfessionalScreen.professionalPortal.description')}
               </CardDescription>
             </CardHeader>
-            
+
             <CardContent>
               <form onSubmit={handleRegistration} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="firstName">Prénom *</Label>
+                    <Label htmlFor="firstName">
+                      {t('healthProfessionalScreen.formLabels.firstName')}
+                    </Label>
                     <Input id="firstName" required />
                   </div>
                   <div>
-                    <Label htmlFor="lastName">Nom *</Label>
+                    <Label htmlFor="lastName">
+                      {t('healthProfessionalScreen.formLabels.lastName')}
+                    </Label>
                     <Input id="lastName" required />
                   </div>
                 </div>
 
                 <div>
-                  <Label htmlFor="specialty">Spécialité *</Label>
-                  <select id="specialty" className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background">
-                    <option value="">Sélectionnez votre spécialité</option>
-                    <option value="endocrinologue">Endocrinologue</option>
-                    <option value="medecin-generaliste">Médecin généraliste</option>
-                    <option value="diabetologue">Diabétologue</option>
-                    <option value="nutritionniste">Nutritionniste</option>
-                    <option value="infirmier-diabetes">Infirmier spécialisé diabète</option>
+                  <Label htmlFor="specialty">
+                    {t('healthProfessionalScreen.formLabels.specialty')}
+                  </Label>
+                  <select
+                    id="specialty"
+                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background"
+                  >
+                    <option value="">
+                      {t(
+                        'healthProfessionalScreen.formLabels.specialtyPlaceholder'
+                      )}
+                    </option>
+                    <option value="endocrinologist">
+                      {t(
+                        'healthProfessionalScreen.formLabels.specialties.endocrinologist'
+                      )}
+                    </option>
+                    <option value="generalPractitioner">
+                      {t(
+                        'healthProfessionalScreen.formLabels.specialties.generalPractitioner'
+                      )}
+                    </option>
+                    <option value="diabetologist">
+                      {t(
+                        'healthProfessionalScreen.formLabels.specialties.diabetologist'
+                      )}
+                    </option>
+                    <option value="nutritionist">
+                      {t(
+                        'healthProfessionalScreen.formLabels.specialties.nutritionist'
+                      )}
+                    </option>
+                    <option value="diabetesNurse">
+                      {t(
+                        'healthProfessionalScreen.formLabels.specialties.diabetesNurse'
+                      )}
+                    </option>
                   </select>
                 </div>
 
                 <div>
-                  <Label htmlFor="license">Numéro CNI *</Label>
-                  <Input id="license" placeholder="Ex: A1234567890" required />
+                  <Label htmlFor="license">
+                    {t('healthProfessionalScreen.formLabels.license')}
+                  </Label>
+                  <Input
+                    id="license"
+                    placeholder={t(
+                      'healthProfessionalScreen.formLabels.licensePlaceholder'
+                    )}
+                    required
+                  />
                 </div>
 
                 <div>
-                  <Label htmlFor="hospital">Établissement</Label>
-                  <Input id="hospital" placeholder="Hôpital ou clinique" />
+                  <Label htmlFor="hospital">
+                    {t('healthProfessionalScreen.formLabels.hospital')}
+                  </Label>
+                  <Input
+                    id="hospital"
+                    placeholder={t(
+                      'healthProfessionalScreen.formLabels.hospitalPlaceholder'
+                    )}
+                  />
                 </div>
 
                 <div>
-                  <Label htmlFor="email">Email professionnel *</Label>
+                  <Label htmlFor="email">
+                    {t('healthProfessionalScreen.formLabels.email')}
+                  </Label>
                   <Input id="email" type="email" required />
                 </div>
 
                 <div>
-                  <Label htmlFor="phone">Téléphone *</Label>
+                  <Label htmlFor="phone">
+                    {t('healthProfessionalScreen.formLabels.phone')}
+                  </Label>
                   <Input id="phone" type="tel" required />
                 </div>
 
@@ -175,32 +255,54 @@ const HealthProfessionalScreen = () => {
                   <div className="flex items-start space-x-2">
                     <input type="checkbox" id="terms" className="mt-1" />
                     <Label htmlFor="terms" className="text-sm">
-                      J'accepte les conditions d'utilisation
+                      {t('healthProfessionalScreen.formLabels.terms')}
                     </Label>
                   </div>
-                  
+
                   <div className="flex items-start space-x-2">
                     <input type="checkbox" id="charter" className="mt-1" />
                     <Label htmlFor="charter" className="text-sm">
-                      J'accepte la charte de déontologie DARE (obligatoire)
+                      {t('healthProfessionalScreen.formLabels.charter')}
                     </Label>
                   </div>
                 </div>
 
                 <Button type="submit" className="w-full" size="lg">
-                  Soumettre ma candidature
+                  {t('healthProfessionalScreen.formLabels.submitApplication')}
                   <FileText className="ml-2 w-4 h-4" />
                 </Button>
               </form>
 
               <div className="mt-8 p-4 bg-accent/10 rounded-lg">
-                <h4 className="font-semibold mb-2">Avantages professionnels :</h4>
+                <h4 className="font-semibold mb-2">
+                  {t('healthProfessionalScreen.professionalBenefits.title')}
+                </h4>
                 <ul className="space-y-1 text-sm text-muted-foreground">
-                  <li>• Rémunération de 500 FCFA par téléconsultation</li>
-                  <li>• Paiement mensuel automatique</li>
-                  <li>• Plateforme sécurisée et certifiée</li>
-                  <li>• Accès aux données glycémiques temps réel</li>
-                  <li>• Support technique 24/7</li>
+                  <li>
+                    {t(
+                      'healthProfessionalScreen.professionalBenefits.list.one'
+                    )}
+                  </li>
+                  <li>
+                    {t(
+                      'healthProfessionalScreen.professionalBenefits.list.two'
+                    )}
+                  </li>
+                  <li>
+                    {t(
+                      'healthProfessionalScreen.professionalBenefits.list.three'
+                    )}
+                  </li>
+                  <li>
+                    {t(
+                      'healthProfessionalScreen.professionalBenefits.list.four'
+                    )}
+                  </li>
+                  <li>
+                    {t(
+                      'healthProfessionalScreen.professionalBenefits.list.five'
+                    )}
+                  </li>
                 </ul>
               </div>
             </CardContent>
@@ -222,12 +324,17 @@ const HealthProfessionalScreen = () => {
               </div>
               <div>
                 <h1 className="text-xl font-semibold">Dr. Martin Dubois</h1>
-                <p className="text-sm text-muted-foreground">Endocrinologue - RPPS: 12345678901</p>
+                <p className="text-sm text-muted-foreground">
+                  {t(
+                    'healthProfessionalScreen.professionalInfo.endocrinologist'
+                  )}{' '}
+                  - RPPS: 12345678901
+                </p>
               </div>
             </div>
             <Badge variant="secondary" className="bg-green-100 text-green-800">
               <CheckCircle className="w-3 h-3 mr-1" />
-              Vérifié
+              {t('healthProfessionalScreen.professionalInfo.verified')}
             </Badge>
           </div>
         </div>
@@ -236,11 +343,21 @@ const HealthProfessionalScreen = () => {
       <div className="container mx-auto px-4 py-6">
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="grid w-full grid-cols-5">
-            <TabsTrigger value="dashboard">Tableau de bord</TabsTrigger>
-            <TabsTrigger value="consultations">Consultations</TabsTrigger>
-            <TabsTrigger value="earnings">Rémunérations</TabsTrigger>
-            <TabsTrigger value="patients">Patients</TabsTrigger>
-            <TabsTrigger value="codes">Codes d'accès</TabsTrigger>
+            <TabsTrigger value="dashboard">
+              {t('healthProfessionalScreen.tabs.dashboard')}
+            </TabsTrigger>
+            <TabsTrigger value="consultations">
+              {t('tabs.consultations')}
+            </TabsTrigger>
+            <TabsTrigger value="earnings">
+              {t('healthProfessionalScreen.tabs.earnings')}
+            </TabsTrigger>
+            <TabsTrigger value="patients">
+              {t('healthProfessionalScreen.tabs.patients')}
+            </TabsTrigger>
+            <TabsTrigger value="codes">
+              {t('healthProfessionalScreen.tabs.access_codes')}
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="dashboard" className="mt-6">
@@ -252,7 +369,9 @@ const HealthProfessionalScreen = () => {
                     <Users className="h-8 w-8 text-primary" />
                     <div className="ml-4">
                       <p className="text-2xl font-bold">24</p>
-                      <p className="text-muted-foreground">Patients suivis</p>
+                      <p className="text-muted-foreground">
+                        {t('healthProfessionalScreen..labels.patients_tracked')}
+                      </p>
                     </div>
                   </div>
                 </CardContent>
@@ -264,7 +383,11 @@ const HealthProfessionalScreen = () => {
                     <Video className="h-8 w-8 text-blue-500" />
                     <div className="ml-4">
                       <p className="text-2xl font-bold">12</p>
-                      <p className="text-muted-foreground">Consultations aujourd'hui</p>
+                      <p className="text-muted-foreground">
+                        {t(
+                          'healthProfessionalScreen.labels.today_consultations'
+                        )}
+                      </p>
                     </div>
                   </div>
                 </CardContent>
@@ -276,7 +399,9 @@ const HealthProfessionalScreen = () => {
                     <DollarSign className="h-8 w-8 text-green-500" />
                     <div className="ml-4">
                       <p className="text-2xl font-bold">6000 FCFA</p>
-                      <p className="text-muted-foreground">Revenus aujourd'hui</p>
+                      <p className="text-muted-foreground">
+                        {t('healthProfessionalScreen.labels.today_earnings')}
+                      </p>
                     </div>
                   </div>
                 </CardContent>
@@ -288,7 +413,9 @@ const HealthProfessionalScreen = () => {
                     <Star className="h-8 w-8 text-yellow-500" />
                     <div className="ml-4">
                       <p className="text-2xl font-bold">4.9</p>
-                      <p className="text-muted-foreground">Note moyenne</p>
+                      <p className="text-muted-foreground">
+                        {t('healthProfessionalScreen.labels.average_rating')}
+                      </p>
                     </div>
                   </div>
                 </CardContent>
@@ -298,26 +425,43 @@ const HealthProfessionalScreen = () => {
             {/* Prochaines consultations */}
             <Card className="mb-6">
               <CardHeader>
-                <CardTitle>Prochaines consultations</CardTitle>
+                <CardTitle>
+                  {t('healthProfessionalScreen.labels.upcoming_consultations')}
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {consultations.map((consultation) => (
-                    <div key={consultation.id} className="flex items-center justify-between p-4 border rounded-lg">
+                  {consultations.map(consultation => (
+                    <div
+                      key={consultation.id}
+                      className="flex items-center justify-between p-4 border rounded-lg"
+                    >
                       <div className="flex items-center space-x-4">
                         <Avatar>
                           <AvatarImage src={consultation.avatar} />
-                          <AvatarFallback>{consultation.patient.charAt(0)}</AvatarFallback>
+                          <AvatarFallback>
+                            {consultation.patient.charAt(0)}
+                          </AvatarFallback>
                         </Avatar>
                         <div>
                           <p className="font-medium">{consultation.patient}</p>
-                          <p className="text-sm text-muted-foreground">{consultation.type}</p>
+                          <p className="text-sm text-muted-foreground">
+                            {consultation.type}
+                          </p>
                         </div>
                       </div>
                       <div className="text-right">
                         <p className="font-medium">{consultation.time}</p>
-                        <Badge variant={consultation.status === 'En cours' ? 'default' : 'secondary'}>
-                          {consultation.status}
+                        <Badge
+                          variant={
+                            consultation.status === 'En cours'
+                              ? 'default'
+                              : 'secondary'
+                          }
+                        >
+                          {t(
+                            `consultation.status.${consultation.status.replace(/\s+/g, '_').toLowerCase()}`
+                          )}
                         </Badge>
                       </div>
                       <div className="flex space-x-2">
@@ -338,46 +482,82 @@ const HealthProfessionalScreen = () => {
           <TabsContent value="consultations" className="mt-6">
             <Card>
               <CardHeader>
-                <CardTitle>Gestion des consultations</CardTitle>
+                <CardTitle>
+                  {t(
+                    'healthProfessionalScreen.dashboard.consultations_management.title'
+                  )}
+                </CardTitle>
                 <CardDescription>
-                  Planifiez et gérez vos téléconsultations avec les patients DARE
+                  {t(
+                    'healthProfessionalScreen.dashboard.consultations_management.description'
+                  )}
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-semibold">Créneaux disponibles</h3>
+                    <h3 className="text-lg font-semibold">
+                      {t(
+                        'healthProfessionalScreen.dashboard.consultations_management.available_slots'
+                      )}
+                    </h3>
                     <Button>
                       <Calendar className="w-4 h-4 mr-2" />
-                      Gérer mes créneaux
+                      {t(
+                        'healthProfessionalScreen.dashboard.dashboard.consultations_management.manage_slots'
+                      )}
                     </Button>
                   </div>
-                  
+
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <Card className="border-dashed">
                       <CardContent className="p-6 text-center">
                         <Clock className="w-8 h-8 mx-auto mb-2 text-muted-foreground" />
-                        <p className="font-medium">Créneaux libres</p>
+                        <p className="font-medium">
+                          {t(
+                            'healthProfessionalScreen.dashboard.free_slots.title'
+                          )}
+                        </p>
                         <p className="text-2xl font-bold">8</p>
-                        <p className="text-sm text-muted-foreground">Cette semaine</p>
+                        <p className="text-sm text-muted-foreground">
+                          {t(
+                            'healthProfessionalScreen.dashboard.free_slots.subtitle'
+                          )}
+                        </p>
                       </CardContent>
                     </Card>
-                    
+
                     <Card className="border-dashed">
                       <CardContent className="p-6 text-center">
                         <Video className="w-8 h-8 mx-auto mb-2 text-blue-500" />
-                        <p className="font-medium">Consultations programmées</p>
+                        <p className="font-medium">
+                          {t(
+                            'healthProfessionalScreen.dashboard.scheduled_consultations.title'
+                          )}
+                        </p>
                         <p className="text-2xl font-bold">15</p>
-                        <p className="text-sm text-muted-foreground">Cette semaine</p>
+                        <p className="text-sm text-muted-foreground">
+                          {t(
+                            'healthProfessionalScreen.dashboard.scheduled_consultations.subtitle'
+                          )}
+                        </p>
                       </CardContent>
                     </Card>
-                    
+
                     <Card className="border-dashed">
                       <CardContent className="p-6 text-center">
                         <CheckCircle className="w-8 h-8 mx-auto mb-2 text-green-500" />
-                        <p className="font-medium">Consultations terminées</p>
+                        <p className="font-medium">
+                          {t(
+                            'healthProfessionalScreen.dashboard.dashboard.completed_consultations.title'
+                          )}
+                        </p>
                         <p className="text-2xl font-bold">127</p>
-                        <p className="text-sm text-muted-foreground">Ce mois</p>
+                        <p className="text-sm text-muted-foreground">
+                          {t(
+                            'healthProfessionalScreen.dashboard.dashboard.completed_consultations.subtitle'
+                          )}
+                        </p>
                       </CardContent>
                     </Card>
                   </div>
@@ -390,36 +570,48 @@ const HealthProfessionalScreen = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Revenus détaillés</CardTitle>
+                  <CardTitle>
+                    {t('dashboard.earnings.detailed_title')}
+                  </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex justify-between items-center">
-                    <span>Aujourd'hui</span>
+                    <span>
+                      {t('healthProfessionalScreen.dashboard.earnings.today')}
+                    </span>
                     <span className="font-semibold">{earnings.today} FCFA</span>
                   </div>
                   <Separator />
                   <div className="flex justify-between items-center">
-                    <span>Cette semaine</span>
+                    <span>
+                      {t('healthProfessionalScreen.dashboard.earnings.week')}
+                    </span>
                     <span className="font-semibold">{earnings.week} FCFA</span>
                   </div>
                   <Separator />
                   <div className="flex justify-between items-center">
-                    <span>Ce mois</span>
+                    <span>
+                      {t('healthProfessionalScreen.dashboard.earnings.month')}
+                    </span>
                     <span className="font-semibold">{earnings.month} FCFA</span>
                   </div>
                   <Separator />
                   <div className="flex justify-between items-center text-orange-600">
-                    <span>En attente de paiement</span>
-                    <span className="font-semibold">{earnings.pending} FCFA</span>
+                    <span>
+                      {t('healthProfessionalScreen.dashboard.earnings.pending')}
+                    </span>
+                    <span className="font-semibold">
+                      {earnings.pending} FCFA
+                    </span>
                   </div>
                 </CardContent>
               </Card>
 
               <Card>
                 <CardHeader>
-                  <CardTitle>Paiements automatiques</CardTitle>
+                  <CardTitle>{t('dashboard.auto_payments.title')}</CardTitle>
                   <CardDescription>
-                    Vos rémunérations sont versées automatiquement chaque mois
+                    {t('dashboard.auto_payments.description')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -427,20 +619,44 @@ const HealthProfessionalScreen = () => {
                     <div className="p-4 bg-green-50 rounded-lg border border-green-200">
                       <div className="flex items-center justify-between">
                         <div>
-                          <p className="font-medium text-green-800">Dernier virement</p>
-                          <p className="text-sm text-green-600">15 janvier 2024</p>
+                          <p className="font-medium text-green-800">
+                            {t(
+                              'healthProfessionalScreen.dashboard.auto_payments.last_transfer'
+                            )}
+                          </p>
+                          <p className="text-sm text-green-600">
+                            15{' '}
+                            {t(
+                              'healthProfessionalScreen.dashboard.auto_payments.january'
+                            )}{' '}
+                            2024
+                          </p>
                         </div>
-                         <p className="text-lg font-bold text-green-800">47,250 FCFA</p>
-                       </div>
-                     </div>
-                     
-                     <div className="p-4 bg-orange-50 rounded-lg border border-orange-200">
-                       <div className="flex items-center justify-between">
-                         <div>
-                           <p className="font-medium text-orange-800">Prochain virement</p>
-                           <p className="text-sm text-orange-600">31 janvier 2024</p>
-                         </div>
-                         <p className="text-lg font-bold text-orange-800">{earnings.pending} FCFA</p>
+                        <p className="text-lg font-bold text-green-800">
+                          47,250 FCFA
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="p-4 bg-orange-50 rounded-lg border border-orange-200">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="font-medium text-orange-800">
+                            {t(
+                              'healthProfessionalScreen.dashboard.auto_payments.next_transfer'
+                            )}
+                          </p>
+                          <p className="text-sm text-orange-600">
+                            31{' '}
+                            {t(
+                              'healthProfessionalScreen.dashboard.auto_payments.january'
+                            )}{' '}
+                            2024
+                          </p>
+                        </div>
+                        <p className="text-lg font-bold text-orange-800">
+                          {earnings.pending} FCFA
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -452,33 +668,45 @@ const HealthProfessionalScreen = () => {
           <TabsContent value="patients" className="mt-6">
             <Card>
               <CardHeader>
-                <CardTitle>Mes patients</CardTitle>
+                <CardTitle>
+                  {t('healthProfessionalScreen.patients.title')}
+                </CardTitle>
                 <CardDescription>
-                  Suivi des patients diabétiques qui vous sont assignés
+                  {t('healthProfessionalScreen.patients.description')}
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   {consultations.map((consultation, index) => (
-                    <div key={index} className="flex items-center justify-between p-4 border rounded-lg">
+                    <div
+                      key={index}
+                      className="flex items-center justify-between p-4 border rounded-lg"
+                    >
                       <div className="flex items-center space-x-4">
                         <Avatar>
                           <AvatarImage src={consultation.avatar} />
-                          <AvatarFallback>{consultation.patient.charAt(0)}</AvatarFallback>
+                          <AvatarFallback>
+                            {consultation.patient.charAt(0)}
+                          </AvatarFallback>
                         </Avatar>
                         <div>
                           <p className="font-medium">{consultation.patient}</p>
-                          <p className="text-sm text-muted-foreground">Diabète Type 2 - Dernière glycémie: 142 mg/dL</p>
+                          <p className="text-sm text-muted-foreground">
+                            {t('healthProfessionalScreen.patients.type')} Type 2
+                            -{' '}
+                            {t('healthProfessionalScreen.patients.lastGlucose')}
+                            : 142 mg/dL
+                          </p>
                         </div>
                       </div>
                       <div className="flex space-x-2">
                         <Button size="sm" variant="outline">
                           <FileText className="w-4 h-4 mr-2" />
-                          Dossier
+                          {t('healthProfessionalScreen.patients.record')}
                         </Button>
                         <Button size="sm">
                           <Phone className="w-4 h-4 mr-2" />
-                          Contacter
+                          {t('healthProfessionalScreen.patients.contact')}
                         </Button>
                       </div>
                     </div>
@@ -499,81 +727,38 @@ const HealthProfessionalScreen = () => {
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-xl font-bold text-center">
-              Charte Déontologique DARE
+              {t('healthProfessionalScreen.dialog.codeOfConduct.title')}
             </DialogTitle>
             <DialogDescription className="text-center">
-              Veuillez lire attentivement et accepter notre charte déontologique pour rejoindre DARE
+              {t('healthProfessionalScreen.dialog.codeOfConduct.description')}
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-6 py-4">
             <div className="bg-primary/5 p-4 rounded-lg">
-              <h3 className="font-semibold text-lg mb-3">Article 1 - Engagement professionnel</h3>
-              <p className="text-sm text-muted-foreground">
-                Le professionnel de santé s'engage à respecter les principes déontologiques de sa profession et à maintenir ses compétences à jour dans le domaine du diabète.
-              </p>
-            </div>
-
-            <div className="bg-accent/5 p-4 rounded-lg">
-              <h3 className="font-semibold text-lg mb-3">Article 2 - Qualité des soins</h3>
-              <p className="text-sm text-muted-foreground">
-                Tous les soins dispensés via DARE doivent respecter les standards de qualité les plus élevés. Le professionnel s'engage à fournir des consultations complètes et adaptées aux besoins spécifiques de chaque patient diabétique.
-              </p>
-            </div>
-
-            <div className="bg-primary/5 p-4 rounded-lg">
-              <h3 className="font-semibold text-lg mb-3">Article 3 - Confidentialité et protection des données</h3>
-              <p className="text-sm text-muted-foreground">
-                Le professionnel s'engage à respecter strictement la confidentialité des données patients et à ne jamais divulguer d'informations médicales sans autorisation expresse. Toutes les données sont protégées selon les normes RGPD.
-              </p>
-            </div>
-
-            <div className="bg-accent/5 p-4 rounded-lg">
-              <h3 className="font-semibold text-lg mb-3">Article 4 - Disponibilité et ponctualité</h3>
-              <p className="text-sm text-muted-foreground">
-                Le professionnel s'engage à respecter ses créneaux de consultation et à être ponctuel. En cas d'empêchement, il doit prévenir au minimum 2 heures à l'avance.
-              </p>
-            </div>
-
-            <div className="bg-primary/5 p-4 rounded-lg">
-              <h3 className="font-semibold text-lg mb-3">Article 5 - Responsabilité médicale</h3>
-              <p className="text-sm text-muted-foreground">
-                Le professionnel reste pleinement responsable de ses actes médicaux et diagnostics. DARE fournit uniquement la plateforme technologique, la responsabilité médicale incombe entièrement au professionnel de santé.
-              </p>
-            </div>
-
-            <div className="bg-accent/5 p-4 rounded-lg">
-              <h3 className="font-semibold text-lg mb-3">Article 6 - Formation continue</h3>
-              <p className="text-sm text-muted-foreground">
-                Le professionnel s'engage à participer aux formations DARE proposées et à maintenir ses connaissances à jour concernant les nouvelles pratiques en diabétologie.
-              </p>
-            </div>
-
-            <div className="bg-red-50 border border-red-200 p-4 rounded-lg">
-              <h3 className="font-semibold text-lg mb-3 text-red-800">Article 7 - Sanctions</h3>
-              <p className="text-sm text-red-700">
-                Le non-respect de cette charte peut entraîner une suspension temporaire ou définitive de l'accès à la plateforme DARE, sans préavis ni compensation.
+              <p className="whitespace-pre-line">
+                {t('healthProfessionalScreen.codeOfConductFull')}
               </p>
             </div>
           </div>
 
           <DialogFooter className="flex-col space-y-2">
             <p className="text-xs text-muted-foreground text-center">
-              En acceptant cette charte, vous confirmez avoir lu, compris et vous engagez à respecter tous les articles ci-dessus.
+              {t('healthProfessionalScreen.charterFooter.note')}
             </p>
             <div className="flex space-x-4 w-full">
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 onClick={() => handleCharterAcceptance(false)}
                 className="flex-1"
               >
-                Refuser
+                {t('healthProfessionalScreen.charterFooter.buttons.decline')}
               </Button>
-              <Button 
+              <Button
                 onClick={() => handleCharterAcceptance(true)}
                 className="flex-1"
               >
-                Accepter et continuer
+                {t('healthProfessionalScreen.charterFooter.buttons.accept')}
               </Button>
             </div>
           </DialogFooter>

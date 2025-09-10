@@ -1,11 +1,20 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Trophy, Users, Calendar, Target } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { fr } from 'date-fns/locale';
-import SupportFeatures, { type CommunityChallenge } from '@/utils/SupportFeatures';
+import SupportFeatures, {
+  type CommunityChallenge,
+} from '@/utils/SupportFeatures';
+import { useTranslation } from 'react-i18next';
 
 interface CommunityChallengeCardProps {
   challenge: CommunityChallenge;
@@ -22,27 +31,31 @@ const CommunityChallengeCard = ({
   onUpdateProgress,
   isParticipant = false,
   userProgress = 0,
-  loading = false
+  loading = false,
 }: CommunityChallengeCardProps) => {
+  const { t } = useTranslation();
   const startDate = new Date(challenge.start_date);
   const endDate = new Date(challenge.end_date);
   const now = new Date();
-  
+
   const isActive = now >= startDate && now <= endDate;
   const isUpcoming = now < startDate;
   const isCompleted = now > endDate;
-  const timeUntilEnd = isActive ? formatDistanceToNow(endDate, { addSuffix: true, locale: fr }) : null;
-  
+  const timeUntilEnd = isActive
+    ? formatDistanceToNow(endDate, { addSuffix: true, locale: fr })
+    : null;
+
   const getStatusColor = () => {
     if (isCompleted) return 'bg-muted text-muted-foreground';
-    if (isActive) return 'bg-medical-green-light text-medical-green border-medical-green';
+    if (isActive)
+      return 'bg-medical-green-light text-medical-green border-medical-green';
     return 'bg-medical-blue-light text-medical-blue border-medical-blue';
   };
 
   const getStatusText = () => {
-    if (isCompleted) return 'Terminé';
-    if (isActive) return 'En cours';
-    return 'À venir';
+    if (isCompleted) return t('communityChallengeCard.Status.completed');
+    if (isActive) return t('communityChallengeCard.Status.active');
+    return t('communityChallengeCard.Status.upcoming');
   };
 
   return (
@@ -58,17 +71,19 @@ const CommunityChallengeCard = ({
                 {challenge.name}
               </CardTitle>
             </div>
-            
+
             <div className="flex items-center gap-2">
               <Badge variant="outline" className={getStatusColor()}>
                 {getStatusText()}
               </Badge>
               <Badge variant="outline">
-                {SupportFeatures.getChallengeTypeLabel(challenge.challenge_type)}
+                {SupportFeatures.getChallengeTypeLabel(
+                  challenge.challenge_type
+                )}
               </Badge>
             </div>
           </div>
-          
+
           {isParticipant && (
             <Badge className="bg-medical-purple-light text-medical-purple">
               Participant
@@ -88,28 +103,40 @@ const CommunityChallengeCard = ({
           <div className="flex items-center gap-2 text-sm">
             <Calendar className="w-4 h-4 text-muted-foreground" />
             <span>
-              {startDate.toLocaleDateString('fr-FR')} - {endDate.toLocaleDateString('fr-FR')}
+              {startDate.toLocaleDateString('fr-Fr')} -{' '}
+              {endDate.toLocaleDateString('fr-FR')}
             </span>
           </div>
-          
+
           <div className="flex items-center gap-2 text-sm">
             <Users className="w-4 h-4 text-muted-foreground" />
-            <span>{challenge.participant_count || 0} participants</span>
+            <span>
+              {t('communityChallengeCard.Challenge.participants', {
+                count: challenge.participant_count || 0,
+              })}
+            </span>
           </div>
-          
+
           {challenge.target_value && (
             <div className="flex items-center gap-2 text-sm">
               <Target className="w-4 h-4 text-muted-foreground" />
               <span>
-                Objectif: {challenge.target_value} {challenge.target_unit}
+                {t('communityChallengeCard.Challenge.goal', {
+                  value: challenge.target_value,
+                  unit: challenge.target_unit,
+                })}
               </span>
             </div>
           )}
-          
+
           {timeUntilEnd && (
             <div className="flex items-center gap-2 text-sm">
               <Trophy className="w-4 h-4 text-muted-foreground" />
-              <span>Se termine {timeUntilEnd}</span>
+              <span>
+                {t('communityChallengeCard.Challenge.endsIn', {
+                  time: timeUntilEnd,
+                })}
+              </span>
             </div>
           )}
         </div>
@@ -118,17 +145,26 @@ const CommunityChallengeCard = ({
         {isParticipant && isActive && (
           <div className="space-y-3 bg-muted rounded-lg p-4">
             <div className="flex items-center justify-between">
-              <span className="text-sm font-medium">Votre progression</span>
-              <span className="text-sm text-muted-foreground">{userProgress}%</span>
+              <span className="text-sm font-medium">
+                {t('communityChallengeCard.Challenge.yourProgress')}
+              </span>
+              <span className="text-sm text-muted-foreground">
+                {userProgress}%
+              </span>
             </div>
             <Progress value={userProgress} className="h-2" />
-            
+
             {userProgress < 100 && (
               <div className="flex gap-2">
                 <Button
                   size="sm"
                   variant="outline"
-                  onClick={() => onUpdateProgress?.(challenge.id, Math.min(userProgress + 10, 100))}
+                  onClick={() =>
+                    onUpdateProgress?.(
+                      challenge.id,
+                      Math.min(userProgress + 10, 100)
+                    )
+                  }
                   disabled={loading}
                 >
                   +10%
@@ -136,7 +172,12 @@ const CommunityChallengeCard = ({
                 <Button
                   size="sm"
                   variant="outline"
-                  onClick={() => onUpdateProgress?.(challenge.id, Math.min(userProgress + 25, 100))}
+                  onClick={() =>
+                    onUpdateProgress?.(
+                      challenge.id,
+                      Math.min(userProgress + 25, 100)
+                    )
+                  }
                   disabled={loading}
                 >
                   +25%
@@ -148,16 +189,16 @@ const CommunityChallengeCard = ({
                   className="gap-1"
                 >
                   <Trophy className="w-3 h-3" />
-                  Terminé
+                  {t('communityChallengeCard.Challenge.completed')}
                 </Button>
               </div>
             )}
-            
+
             {userProgress >= 100 && (
               <div className="bg-medical-green-light border border-medical-green rounded-lg p-3">
                 <div className="flex items-center gap-2 text-medical-green font-medium">
                   <Trophy className="w-4 h-4" />
-                  Défi terminé ! 🎉
+                  {t('communityChallengeCard.Challenge.finished')} 🎉
                 </div>
               </div>
             )}
@@ -169,7 +210,8 @@ const CommunityChallengeCard = ({
           <div className="bg-medical-purple-light border border-medical-purple rounded-lg p-3">
             <div className="flex items-center gap-2 text-medical-purple font-medium mb-1">
               <Trophy className="w-4 h-4" />
-              Récompense: {challenge.reward_badge}
+              {t('communityChallengeCard.Challenge.reward')}:{' '}
+              {challenge.reward_badge}
             </div>
             {challenge.reward_description && (
               <p className="text-sm text-medical-purple">
@@ -182,9 +224,11 @@ const CommunityChallengeCard = ({
         {/* Action Buttons */}
         <div className="flex items-center justify-between pt-2 border-t">
           <div className="text-xs text-muted-foreground">
-            {challenge.participant_count || 0} personnes participent
+            {t('communityChallengeCard.Challenge.participants', {
+              count: challenge.participant_count || 0,
+            })}
           </div>
-          
+
           {!isParticipant && (isActive || isUpcoming) && (
             <Button
               onClick={() => onJoin?.(challenge.id)}
@@ -192,7 +236,7 @@ const CommunityChallengeCard = ({
               className="gap-1"
             >
               <Users className="w-3 h-3" />
-              Rejoindre le défi
+              {t('communityChallengeCard.Challenge.join')}
             </Button>
           )}
         </div>
@@ -200,7 +244,7 @@ const CommunityChallengeCard = ({
         {isCompleted && !isParticipant && (
           <div className="bg-muted rounded-lg p-2">
             <p className="text-xs text-muted-foreground text-center">
-              Ce défi est terminé. Restez à l'écoute pour les prochains défis !
+              {t('communityChallengeCard.Challenge.finishedMessage')}
             </p>
           </div>
         )}

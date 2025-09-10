@@ -81,7 +81,7 @@ const BlogScreen = () => {
     fetchNews();
   }, []);
 
-  const filtered = articles.filter(article => {
+  const filteredArticles = articles.filter(article => {
     const matchesSearch =
       searchQuery.trim() === '' ||
       article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -122,7 +122,7 @@ const BlogScreen = () => {
       <div className="flex items-center max-w-md mx-auto border bg-white px-3 rounded-md">
         <Search className="w-4 h-4 mr-2 text-muted-foreground" />
         <Input
-          placeholder="Search news..."
+          placeholder={t('blogScreenRead.newsSearchPlaceholder')}
           value={searchQuery}
           onChange={e => setSearchQuery(e.target.value)}
           className="border-0 focus:ring-0 text-sm"
@@ -151,7 +151,7 @@ const BlogScreen = () => {
         )}
 
         {!loading &&
-          filtered.map(article => (
+          filteredArticles.map(article => (
             <Card
               key={article.article_id}
               className="border-l-4 border-l-medical-teal hover:shadow-lg transition-all duration-200 hover:-translate-y-1"
@@ -204,7 +204,7 @@ const BlogScreen = () => {
             </Card>
           ))}
 
-        {!loading && filtered.length === 0 && (
+        {!loading && filteredArticles.length === 0 && (
           <p className="text-center text-muted-foreground">
             No articles found.
           </p>
@@ -248,29 +248,22 @@ const BlogScreen = () => {
                   flex="1"
                   leftIcon={<Bookmark className="w-4 h-4" />}
                 >
-                  Save
+                  {t('blogScreenRead.save')}
                 </Button>
 
-                <a
+                <Button
+                  variant="outline"
+                  size="sm"
+                  w="100%"
+                  leftIcon={<ExternalLink className="w-4 h-4" />}
+                  isDisabled={!selectedArticle.link}
+                  as="a"
                   href={selectedArticle.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1"
                 >
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    w="100%"
-                    leftIcon={<ExternalLink className="w-4 h-4" />}
-                    isDisabled={!selectedArticle.link}
-                    as="a"
-                    href={selectedArticle.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Full Source
-                  </Button>
-                </a>
+                  {t('blogScreenRead.fullSource')}
+                </Button>
               </ModalFooter>
             </>
           )}

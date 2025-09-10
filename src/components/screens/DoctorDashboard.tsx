@@ -2,20 +2,21 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { 
-  Bell, 
-  Settings, 
+import {
+  Bell,
+  Settings,
   LogOut,
   Wifi,
   Calendar,
   TrendingUp,
-  Users
+  Users,
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import StatCard from '@/components/ui/StatCard';
 import ConsultationCard from '@/components/ui/ConsultationCard';
+import { useTranslation } from 'react-i18next';
 
 interface ConsultationData {
   id: string;
@@ -41,9 +42,12 @@ interface DashboardStats {
 }
 
 const DoctorDashboard = () => {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const { toast } = useToast();
-  const [pendingConsultations, setPendingConsultations] = useState<ConsultationData[]>([]);
+  const [pendingConsultations, setPendingConsultations] = useState<
+    ConsultationData[]
+  >([]);
   const [stats, setStats] = useState<DashboardStats>({
     pendingCount: 0,
     monthlyRevenue: 0,
@@ -51,7 +55,7 @@ const DoctorDashboard = () => {
     averageDuration: 0,
     todayEarnings: 0,
     rating: 4.9,
-    totalConsultations: 0
+    totalConsultations: 0,
   });
   const [isOnline, setIsOnline] = useState(true);
   const [loading, setLoading] = useState(true);
@@ -70,7 +74,8 @@ const DoctorDashboard = () => {
       // Charger les consultations en attente
       const { data: consultationsData } = await supabase
         .from('teleconsultations')
-        .select(`
+        .select(
+          `
           id,
           patient_id,
           scheduled_at,
@@ -78,33 +83,38 @@ const DoctorDashboard = () => {
           status,
           amount_charged,
           consultation_notes
-        `)
+        `
+        )
         .eq('status', 'scheduled')
         .gte('scheduled_at', new Date().toISOString())
         .order('scheduled_at', { ascending: true });
 
       if (consultationsData) {
         // Enrichir avec des données mock pour la démo
-        const enrichedConsultations: ConsultationData[] = consultationsData.map((consultation, index) => ({
-          id: consultation.id,
-          patient: {
-            firstName: `Patient${index + 1}`,
-            lastName: consultation.patient_id.slice(0, 8),
-            age: 25 + (index * 5),
-            diabetesType: (index % 2) + 1,
-            location: ['Dakar', 'Thiès', 'Saint-Louis'][index % 3]
-          },
-          timeAgo: `${index + 1}h`,
-          reason: consultation.consultation_notes || 'Consultation de suivi diabète'
-        }));
-        
+        const enrichedConsultations: ConsultationData[] = consultationsData.map(
+          (consultation, index) => ({
+            id: consultation.id,
+            patient: {
+              firstName: `Patient${index + 1}`,
+              lastName: consultation.patient_id.slice(0, 8),
+              age: 25 + index * 5,
+              diabetesType: (index % 2) + 1,
+              location: ['Dakar', 'Thiès', 'Saint-Louis'][index % 3],
+            },
+            timeAgo: `${index + 1}h`,
+            reason:
+              consultation.consultation_notes ||
+              t('doctorDashboard.consultationReasonDefault'),
+          })
+        );
+
         setPendingConsultations(enrichedConsultations);
       }
 
       // Charger les statistiques
       const today = new Date();
       const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
-      
+
       const { data: monthlyData } = await supabase
         .from('teleconsultations')
         .select('amount_charged, duration_minutes')
@@ -118,12 +128,16 @@ const DoctorDashboard = () => {
         .gte('scheduled_at', today.toISOString().split('T')[0]);
 
       // Calculer les statistiques
-      const monthlyRevenue = monthlyData?.reduce((sum, c) => sum + (c.amount_charged || 0), 0) || 0;
-      const todayEarnings = todayData?.reduce((sum, c) => sum + (c.amount_charged || 0), 0) || 0;
+      const monthlyRevenue =
+        monthlyData?.reduce((sum, c) => sum + (c.amount_charged || 0), 0) || 0;
+      const todayEarnings =
+        todayData?.reduce((sum, c) => sum + (c.amount_charged || 0), 0) || 0;
       const todayConsultations = todayData?.length || 0;
-      const avgDuration = todayData?.length > 0 
-        ? todayData.reduce((sum, c) => sum + (c.duration_minutes || 0), 0) / todayData.length 
-        : 0;
+      const avgDuration =
+        todayData?.length > 0
+          ? todayData.reduce((sum, c) => sum + (c.duration_minutes || 0), 0) /
+            todayData.length
+          : 0;
 
       setStats({
         pendingCount: pendingConsultations.length,
@@ -132,9 +146,8 @@ const DoctorDashboard = () => {
         averageDuration: Math.round(avgDuration),
         todayEarnings,
         rating: 4.9,
-        totalConsultations: 156 // Mock data
+        totalConsultations: 156, // Mock data
       });
-
     } catch (error) {
       console.error('Error loading dashboard data:', error);
     } finally {
@@ -146,21 +159,21 @@ const DoctorDashboard = () => {
     try {
       const { error } = await supabase
         .from('teleconsultations')
-        .update({ 
+        .update({
           status: 'confirmed',
-          started_at: new Date().toISOString()
+          started_at: new Date().toISOString(),
         })
         .eq('id', consultation.id);
 
       if (error) throw error;
 
       toast({
-        title: "Consultation acceptée",
-        description: "La consultation a été confirmée. Le patient en sera informé.",
+        title: t('doctorDashboard.consultationAcceptedTitle'),
+        description: t('doctorDashboard.consultationAcceptedDescription'),
       });
 
       // Retirer de la liste des consultations en attente
-      setPendingConsultations(prev => 
+      setPendingConsultations(prev =>
         prev.filter(c => c.id !== consultation.id)
       );
 
@@ -169,9 +182,9 @@ const DoctorDashboard = () => {
     } catch (error) {
       console.error('Error accepting consultation:', error);
       toast({
-        title: "Erreur",
-        description: "Impossible d'accepter la consultation.",
-        variant: "destructive"
+        title: t('doctorDashboard.errors.acceptConsultationTitle'),
+        description: t('doctorDashboard.errors.acceptConsultationDescription'),
+        variant: 'destructive',
       });
     }
   };
@@ -180,30 +193,29 @@ const DoctorDashboard = () => {
     try {
       const { error } = await supabase
         .from('teleconsultations')
-        .update({ 
-          status: 'cancelled'
+        .update({
+          status: 'cancelled',
         })
         .eq('id', consultationId);
 
       if (error) throw error;
 
       toast({
-        title: "Consultation déclinée",
-        description: "La consultation a été annulée. Le patient en sera informé.",
+        title: t('doctorDashboard.consultationDeclinedTitle'),
+        description: t('doctorDashboard.consultationDeclinedDescription'),
       });
-
       // Retirer de la liste
-      setPendingConsultations(prev => 
+      setPendingConsultations(prev =>
         prev.filter(c => c.id !== consultationId)
       );
 
       loadDashboardData();
     } catch (error) {
-      console.error('Error declining consultation:', error);
+      console.error('doctorDashboard.Error declining consultation:', error);
       toast({
-        title: "Erreur",
-        description: "Impossible de décliner la consultation.",
-        variant: "destructive"
+        title: t('doctorDashboard.errors.declineConsultationTitle'),
+        description: t('doctorDashboard.errors.declineConsultationDescription'),
+        variant: 'destructive',
       });
     }
   };
@@ -211,8 +223,12 @@ const DoctorDashboard = () => {
   const toggleOnlineStatus = () => {
     setIsOnline(!isOnline);
     toast({
-      title: isOnline ? "Vous êtes maintenant hors ligne" : "Vous êtes maintenant en ligne",
-      description: isOnline ? "Vous ne recevrez plus de nouvelles demandes" : "Vous pouvez recevoir de nouvelles consultations",
+      title: isOnline
+        ? t('doctorDashboard.statusToggle.offlineTitle')
+        : t('doctorDashboard.statusToggle.onlineTitle'),
+      description: isOnline
+        ? t('doctorDashboard.statusToggle.offlineDescription')
+        : t('doctorDashboard.statusToggle.onlineDescription'),
     });
   };
 
@@ -221,7 +237,7 @@ const DoctorDashboard = () => {
       <div className="min-h-screen bg-muted/30 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full mx-auto mb-4"></div>
-          <p>Chargement du tableau de bord...</p>
+          <p>{t('doctorDashboard.dashboard.loading')}</p>
         </div>
       </div>
     );
@@ -237,73 +253,97 @@ const DoctorDashboard = () => {
               <span className="text-2xl">👨‍⚕️</span>
             </div>
             <div>
-              <h1 className="text-2xl font-bold">Dr. Mamadou Kane</h1>
-              <p className="text-blue-100">Endocrinologue • DARE Pro</p>
-              <p className="text-sm text-blue-200">⭐ {stats.rating}/5 • {stats.totalConsultations} consultations</p>
+              <h1 className="text-2xl font-bold">
+                {t('doctorDashboard.doctor.title')}
+              </h1>
+              <p className="text-blue-100">
+                {t('doctorDashboard.doctor.subtitle')}
+              </p>
+              <p className="text-sm text-blue-200">
+                ⭐ {stats.rating}/5 • {stats.totalConsultations} consultations
+              </p>
             </div>
           </div>
-          
+
           <div className="text-right">
-            <div className="text-3xl font-bold">{stats.todayEarnings.toLocaleString()} F</div>
-            <div className="text-blue-200 text-sm">Gains aujourd'hui</div>
+            <div className="text-3xl font-bold">
+              {stats.todayEarnings.toLocaleString()} F
+            </div>
+            <div className="text-blue-200 text-sm">
+              {t('doctorDashboard.earningsToday')}
+            </div>
             <Button
               onClick={toggleOnlineStatus}
               variant="outline"
               size="sm"
               className={`mt-2 text-xs ${
-                isOnline 
-                  ? 'bg-green-500 hover:bg-green-600 text-white border-green-500' 
+                isOnline
+                  ? 'bg-green-500 hover:bg-green-600 text-white border-green-500'
                   : 'bg-gray-500 hover:bg-gray-600 text-white border-gray-500'
               }`}
             >
               <Wifi className="w-3 h-3 mr-1" />
-              {isOnline ? '🟢 En ligne' : '🔴 Hors ligne'}
+              {isOnline
+                ? t('doctorDashboard.statusButton.online')
+                : t('doctorDashboard.statusButton.offline')}
             </Button>
           </div>
         </div>
 
         {/* Actions rapides */}
         <div className="flex gap-3 mt-4">
-          <Button variant="outline" size="sm" className="text-white border-white/30 hover:bg-white/10">
+          <Button
+            variant="outline"
+            size="sm"
+            className="text-white border-white/30 hover:bg-white/10"
+          >
             <Bell className="w-4 h-4 mr-2" />
             Notifications
           </Button>
-          <Button variant="outline" size="sm" className="text-white border-white/30 hover:bg-white/10">
+          <Button
+            variant="outline"
+            size="sm"
+            className="text-white border-white/30 hover:bg-white/10"
+          >
             <Calendar className="w-4 h-4 mr-2" />
             Planning
           </Button>
-          <Button variant="outline" size="sm" className="text-white border-white/30 hover:bg-white/10">
+          <Button
+            variant="outline"
+            size="sm"
+            className="text-white border-white/30 hover:bg-white/10"
+          >
             <Settings className="w-4 h-4 mr-2" />
-            Paramètres
+            {t('doctorDashboard.settingsButton')}
           </Button>
         </div>
       </div>
 
       {/* Stats rapides */}
       <div className="p-6 grid grid-cols-1 md:grid-cols-4 gap-6">
-        <StatCard 
-          icon="👥" 
-          title="Patients en attente" 
-          value={stats.pendingCount.toString()} 
-          color="orange" 
+        <StatCard
+          icon="👥"
+          title={t('doctorDashboard.stats.pendingPatients')}
+          value={stats.pendingCount.toString()}
+          color="orange"
         />
-        <StatCard 
-          icon="💰" 
-          title="Revenus ce mois" 
-          value={`${stats.monthlyRevenue.toLocaleString()} F`} 
-          color="green" 
+        <StatCard
+          icon="💰"
+          title={t('doctorDashboard.stats.monthlyRevenue')}
+          value={`${stats.monthlyRevenue.toLocaleString()} F`}
+          color="green"
         />
-        <StatCard 
-          icon="📅" 
-          title="Consultations aujourd'hui" 
-          value={stats.todayConsultations.toString()} 
-          color="blue" 
+        <StatCard
+          icon="📅"
+          title={t('doctorDashboard.stats.todayConsultations')}
+          value={stats.todayConsultations.toString()}
+          color="blue"
         />
-        <StatCard 
-          icon="⏱️" 
-          title="Temps moyen/consultation" 
-          value={`${stats.averageDuration} min`} 
-          color="purple" 
+        <StatCard
+          icon="⏱️"
+          title={t('doctorDashboard.stats.averageConsultationTime')}
+          value={`${stats.averageDuration} min`}
+          color="purple"
         />
       </div>
 
@@ -314,19 +354,24 @@ const DoctorDashboard = () => {
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-xl font-bold flex items-center gap-2">
                 <Bell className="w-5 h-5 text-primary" />
-                Consultations en Attente
+                {t('doctorDashboard.pendingConsultations')}
               </h3>
               {pendingConsultations.length > 0 && (
-                <Badge variant="outline" className="bg-orange-50 text-orange-700 border-orange-300">
-                  {pendingConsultations.length} en attente
+                <Badge
+                  variant="outline"
+                  className="bg-orange-50 text-orange-700 border-orange-300"
+                >
+                  {t('doctorDashboard.pendingBadge', {
+                    count: pendingConsultations.length,
+                  })}
                 </Badge>
               )}
             </div>
-            
+
             {pendingConsultations.length > 0 ? (
               <div className="space-y-4">
                 {pendingConsultations.map(consultation => (
-                  <ConsultationCard 
+                  <ConsultationCard
                     key={consultation.id}
                     consultation={consultation}
                     onAccept={acceptConsultation}
@@ -336,9 +381,11 @@ const DoctorDashboard = () => {
             ) : (
               <div className="text-center py-8">
                 <Users className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                <p className="text-muted-foreground">Aucune consultation en attente</p>
+                <p className="text-muted-foreground">
+                  {t('doctorDashboard.noPendingConsultations')}
+                </p>
                 <p className="text-sm text-muted-foreground">
-                  Les nouvelles demandes apparaîtront ici
+                  {t('doctorDashboard.newRequestsInfo')}
                 </p>
               </div>
             )}
