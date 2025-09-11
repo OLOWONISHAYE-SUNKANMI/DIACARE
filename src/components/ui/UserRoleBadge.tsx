@@ -1,6 +1,7 @@
 import { Badge } from '@/components/ui/badge';
 import { type AppRole } from '@/utils/RoleManager';
 import { Shield, Star, Award, Crown } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface UserRoleBadgeProps {
   role: AppRole;
@@ -10,35 +11,39 @@ interface UserRoleBadgeProps {
   showText?: boolean;
 }
 
-const UserRoleBadge = ({ 
-  role, 
-  badgeColor, 
-  size = 'md', 
-  showIcon = true, 
-  showText = true 
+const UserRoleBadge = ({
+  role,
+  badgeColor,
+  size = 'md',
+  showIcon = true,
+  showText = true,
 }: UserRoleBadgeProps) => {
+  const { t } = useTranslation();
   const getRoleConfig = (role: AppRole) => {
     const configs = {
       member: {
-        label: 'Membre',
+        label: t('userRoleBadge.roles.member'),
         icon: Shield,
-        className: 'bg-muted text-muted-foreground'
+        className: 'bg-muted text-muted-foreground',
       },
       verified_member: {
-        label: 'Vérifié',
+        label: t('userRoleBadge.roles.verified_member'),
         icon: Star,
-        className: 'bg-medical-green-light text-medical-green border-medical-green'
+        className:
+          'bg-medical-green-light text-medical-green border-medical-green',
       },
       expert: {
-        label: 'Expert',
+        label: t('userRoleBadge.roles.expert'),
         icon: Award,
-        className: 'bg-medical-blue-light text-medical-blue border-medical-blue'
+        className:
+          'bg-medical-blue-light text-medical-blue border-medical-blue',
       },
       moderator: {
-        label: 'Modérateur',
+        label: t('userRoleBadge.roles.moderator'),
         icon: Crown,
-        className: 'bg-medical-purple-light text-medical-purple border-medical-purple'
-      }
+        className:
+          'bg-medical-purple-light text-medical-purple border-medical-purple',
+      },
     };
 
     return configs[role];
@@ -51,7 +56,7 @@ const UserRoleBadge = ({
     const sizes = {
       sm: 'text-xs px-1.5 py-0.5',
       md: 'text-sm px-2 py-1',
-      lg: 'text-base px-3 py-1.5'
+      lg: 'text-base px-3 py-1.5',
     };
     return sizes[size];
   };
@@ -60,7 +65,7 @@ const UserRoleBadge = ({
     const sizes = {
       sm: 'w-3 h-3',
       md: 'w-4 h-4',
-      lg: 'w-5 h-5'
+      lg: 'w-5 h-5',
     };
     return sizes[size];
   };
@@ -70,13 +75,11 @@ const UserRoleBadge = ({
   }
 
   return (
-    <Badge 
+    <Badge
       variant="outline"
       className={`${config.className} ${getSizeClasses()} flex items-center gap-1 font-medium`}
     >
-      {showIcon && (
-        <Icon className={getIconSize()} />
-      )}
+      {showIcon && <Icon className={getIconSize()} />}
       {showText && config.label}
     </Badge>
   );

@@ -3,6 +3,7 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import MetricCard from '@/components/ui/MetricCard';
 import AdminTabs from '@/components/ui/AdminTabs';
+import { useTranslation } from 'react-i18next';
 
 interface DashboardMetrics {
   totalPayments: number;
@@ -12,12 +13,13 @@ interface DashboardMetrics {
 }
 
 const AdminDashboard = () => {
+  const { t } = useTranslation();
   const { toast } = useToast();
   const [metrics, setMetrics] = useState<DashboardMetrics>({
     totalPayments: 0,
     activeProfessionals: 0,
     pendingApplications: 0,
-    monthlyConsultations: 0
+    monthlyConsultations: 0,
   });
   const [loading, setLoading] = useState(true);
 
@@ -67,30 +69,33 @@ const AdminDashboard = () => {
 
       if (earningsError) throw earningsError;
 
-      const totalPayments = earnings?.reduce((sum, earning) => sum + (earning.gross_amount || 0), 0) || 147500;
+      const totalPayments =
+        earnings?.reduce(
+          (sum, earning) => sum + (earning.gross_amount || 0),
+          0
+        ) || 147500;
       const monthlyConsultations = consultations?.length || 0;
 
       setMetrics({
         totalPayments,
         activeProfessionals: professionals?.length || 12,
         pendingApplications: applications?.length || 0,
-        monthlyConsultations
+        monthlyConsultations,
       });
-
     } catch (error) {
       console.error('Error loading dashboard metrics:', error);
       toast({
-        title: "Erreur de chargement",
-        description: "Impossible de charger les métriques du tableau de bord.",
-        variant: "destructive"
+        title: t('adminDashboard.dashboard.loadErrorTitle'),
+        description: t('adminDashboard.dashboard.loadErrorDescription'),
+        variant: 'destructive',
       });
-      
+
       // Fallback to mock data
       setMetrics({
         totalPayments: 147500,
         activeProfessionals: 12,
         pendingApplications: 7,
-        monthlyConsultations: 295
+        monthlyConsultations: 295,
       });
     } finally {
       setLoading(false);
@@ -102,7 +107,7 @@ const AdminDashboard = () => {
       <div className="min-h-screen bg-muted/30 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full mx-auto mb-4"></div>
-          <p>Chargement du tableau de bord administrateur...</p>
+          <p>{t('adminDashboard.dashboard.loadingAdmin')}</p>
         </div>
       </div>
     );
@@ -112,39 +117,41 @@ const AdminDashboard = () => {
     <div className="min-h-screen bg-muted/30">
       {/* Header Admin */}
       <div className="bg-gradient-to-r from-primary to-primary/90 text-primary-foreground p-6">
-        <h1 className="text-3xl font-bold">🔧 DARE Administration</h1>
-        <p className="text-primary-foreground/80">Gestion des professionnels de santé</p>
+        <h1 className="text-3xl font-bold">{t('adminDashboard.title')}</h1>
+        <p className="text-primary-foreground/80">
+          {t('adminDashboard.subtitle')}
+        </p>
       </div>
 
       {/* Métriques globales */}
       <div className="p-6 grid grid-cols-1 md:grid-cols-4 gap-6">
-        <MetricCard 
-          icon="💰" 
-          title="Paiements ce mois" 
+        <MetricCard
+          icon="💰"
+          title={t('adminDashboard.metrics.paymentsThisMonth')}
           value={`${metrics.totalPayments.toLocaleString()} F CFA`}
-          change="+23%" 
-          color="green" 
+          change="+23%"
+          color="green"
         />
-        <MetricCard 
-          icon="👨‍⚕️" 
-          title="Professionnels actifs" 
+        <MetricCard
+          icon="👨‍⚕️"
+          title={t('adminDashboard.metrics.activeProfessionals')}
           value={metrics.activeProfessionals.toString()}
-          change="+2" 
-          color="blue" 
+          change="+2"
+          color="blue"
         />
-        <MetricCard 
-          icon="🩺" 
-          title="Consultations ce mois" 
+        <MetricCard
+          icon="🩺"
+          title={t('adminDashboard.metrics.monthlyConsultations')}
           value={metrics.monthlyConsultations.toString()}
-          change="+18%" 
-          color="purple" 
+          change="+18%"
+          color="purple"
         />
-        <MetricCard 
-          icon="⏳" 
-          title="Candidatures en attente" 
+        <MetricCard
+          icon="⏳"
+          title={t('adminDashboard.metrics.pendingApplications')}
           value={metrics.pendingApplications.toString()}
-          change={metrics.pendingApplications > 5 ? "🔴" : "✅"} 
-          color="orange" 
+          change={metrics.pendingApplications > 5 ? '🔴' : '✅'}
+          color="orange"
         />
       </div>
 

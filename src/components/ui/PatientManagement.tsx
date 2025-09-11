@@ -658,23 +658,25 @@ export const PatientManagement = () => {
       >
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Code patient requis</DialogTitle>
+            <DialogTitle>
+              {t('patientManagement.patientCodeModal.title')}
+            </DialogTitle>
             <DialogDescription>
-              Veuillez saisir le code patient pour accéder aux informations
-              sécurisées
+              {t('patientManagement.patientCodeModal.description')}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
             <div className="space-y-2">
               <Label>
-                Veuillez saisir le code patient pour accéder aux informations de{' '}
-                <span className="font-semibold">
-                  {selectedAction?.patientName}
-                </span>
+                {t('patientManagement.patientCodeModal.enterCodeFor', {
+                  patientName: selectedAction?.patientName,
+                })}
               </Label>
               <Input
                 type="text"
-                placeholder="Code patient (ex: ABC123)"
+                placeholder={t(
+                  'patientManagement.patientCodeModal.placeholder'
+                )}
                 value={patientCode}
                 onChange={e => setPatientCode(e.target.value.toUpperCase())}
                 onKeyPress={e => {
@@ -693,13 +695,13 @@ export const PatientManagement = () => {
                   setSelectedAction(null);
                 }}
               >
-                Annuler
+                {t('patientManagement.patientCodeModal.cancel')}
               </Button>
               <Button
                 onClick={handlePatientCodeSubmit}
                 disabled={!patientCode.trim()}
               >
-                Accéder
+                {t('patientManagement.patientCodeModal.access')}
               </Button>
             </div>
           </div>
@@ -710,9 +712,13 @@ export const PatientManagement = () => {
       <Dialog open={isPatientFileOpen} onOpenChange={setIsPatientFileOpen}>
         <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Dossier Patient - {activePatient?.name}</DialogTitle>
+            <DialogTitle>
+              {t('patientManagement.patientFile.title', {
+                patientName: activePatient?.name,
+              })}
+            </DialogTitle>
             <DialogDescription>
-              Consultation complète du dossier médical
+              {t('patientManagement.patientFile.description')}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-6">
@@ -721,7 +727,7 @@ export const PatientManagement = () => {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <Label className="text-sm font-medium">
-                      Nom du patient
+                      {t('patientManagement.patientFile.name')}
                     </Label>
                     <p className="text-lg font-semibold">
                       {activePatient.name}
@@ -729,30 +735,34 @@ export const PatientManagement = () => {
                   </div>
                   <div>
                     <Label className="text-sm font-medium">
-                      Type de diabète
+                      {t('patientManagement.patientFile.diabetesType')}
                     </Label>
                     <p>{activePatient.diabetesType}</p>
                   </div>
                   <div>
                     <Label className="text-sm font-medium">
-                      Dernière glycémie
+                      {t('patientManagement.patientFile.lastGlucose')}
                     </Label>
                     <p>{activePatient.lastGlucose}</p>
                   </div>
                   <div>
-                    <Label className="text-sm font-medium">Statut</Label>
+                    <Label className="text-sm font-medium">
+                      {t('patientManagement.patientFile.status')}
+                    </Label>
                     <div>{getStatusBadge(activePatient.status)}</div>
                   </div>
                 </div>
                 <div>
-                  <Label className="text-sm font-medium">Notes médicales</Label>
+                  <Label className="text-sm font-medium">
+                    {t('patientManagement.patientFile.medicalNotes')}
+                  </Label>
                   <div className="mt-2 p-3 bg-muted rounded-lg">
                     <p>{activePatient.notes}</p>
                   </div>
                 </div>
                 <div>
                   <Label className="text-sm font-medium">
-                    Dernière consultation
+                    {t('patientManagement.patientFile.lastConsultation')}
                   </Label>
                   <p>
                     {new Date(
@@ -762,7 +772,7 @@ export const PatientManagement = () => {
                   {activePatient.nextAppointment && (
                     <>
                       <Label className="text-sm font-medium mt-2 block">
-                        Prochain rendez-vous
+                        {t('patientManagement.patientFile.nextAppointment')}
                       </Label>
                       <p>
                         {new Date(
@@ -776,7 +786,7 @@ export const PatientManagement = () => {
             )}
             <div className="flex justify-end">
               <Button onClick={() => setIsPatientFileOpen(false)}>
-                Fermer
+                {t('patientManagement.patientFile.close')}
               </Button>
             </div>
           </div>
@@ -788,22 +798,35 @@ export const PatientManagement = () => {
         <DialogContent className="max-w-2xl">
           <DialogHeader>
             <DialogTitle>
-              Envoyer un message à {activePatient?.name}
+              {t('patientManagement.messageModal.title', {
+                patientName: activePatient?.name,
+              })}
             </DialogTitle>
             <DialogDescription>
-              Messagerie sécurisée patient-professionnel
+              {t('patientManagement.messageModal.description')}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
             <div>
-              <Label htmlFor="message-subject">Sujet</Label>
-              <Input id="message-subject" placeholder="Objet du message" />
+              <Label htmlFor="message-subject">
+                {t('patientManagement.messageModal.subject')}
+              </Label>
+              <Input
+                id="message-subject"
+                placeholder={t(
+                  'patientManagement.messageModal.subjectPlaceholder'
+                )}
+              />
             </div>
             <div>
-              <Label htmlFor="message-content">Message</Label>
+              <Label htmlFor="message-content">
+                {t('patientManagement.messageModal.content')}
+              </Label>
               <Textarea
                 id="message-content"
-                placeholder="Tapez votre message ici..."
+                placeholder={t(
+                  'patientManagement.messageModal.contentPlaceholder'
+                )}
                 className="min-h-32"
               />
             </div>
@@ -812,11 +835,11 @@ export const PatientManagement = () => {
                 variant="outline"
                 onClick={() => setIsMessageModalOpen(false)}
               >
-                Annuler
+                {t('patientManagement.messageModal.cancel')}
               </Button>
               <Button>
                 <Send className="mr-2 h-4 w-4" />
-                Envoyer
+                {t('patientManagement.messageModal.send')}
               </Button>
             </div>
           </div>
@@ -831,55 +854,76 @@ export const PatientManagement = () => {
         <DialogContent className="max-w-4xl">
           <DialogHeader>
             <DialogTitle>
-              Téléconsultation avec {activePatient?.name}
+              {t('patientManagement.teleconsultation.title', {
+                patientName: activePatient?.name,
+              })}
             </DialogTitle>
             <DialogDescription>
-              Interface de consultation vidéo sécurisée
+              {t('patientManagement.teleconsultation.description')}
             </DialogDescription>
           </DialogHeader>
+
           <div className="space-y-4">
             <div className="aspect-video bg-muted rounded-lg flex items-center justify-center">
               <div className="text-center">
                 <Video className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
-                <p className="text-lg font-medium">Interface vidéo</p>
+                <p className="text-lg font-medium">
+                  {t('patientManagement.teleconsultation.interfaceTitle')}
+                </p>
                 <p className="text-sm text-muted-foreground">
-                  La consultation vidéo apparaîtrait ici
+                  {t('patientManagement.teleconsultation.interfaceSubtitle')}
                 </p>
               </div>
             </div>
+
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label className="text-sm font-medium">Patient</Label>
+                <Label className="text-sm font-medium">
+                  {t('patientManagement.teleconsultation.patientLabel')}
+                </Label>
                 <p>{activePatient?.name}</p>
               </div>
               <div>
-                <Label className="text-sm font-medium">Durée prévue</Label>
-                <p>30 minutes</p>
+                <Label className="text-sm font-medium">
+                  {t('patientManagement.teleconsultation.durationLabel')}
+                </Label>
+                <p>
+                  {t('patientManagement.teleconsultation.durationValue', {
+                    minutes: 30,
+                  })}
+                </p>
               </div>
             </div>
+
             <div>
-              <Label htmlFor="consultation-notes">Notes de consultation</Label>
+              <Label htmlFor="consultation-notes">
+                {t('patientManagement.teleconsultation.notesLabel')}
+              </Label>
               <Textarea
                 id="consultation-notes"
-                placeholder="Notez les points importants de la consultation..."
+                placeholder={t(
+                  'patientManagement.teleconsultation.notesPlaceholder'
+                )}
                 className="min-h-24"
               />
             </div>
+
             <div className="flex justify-between">
               <Button
                 variant="outline"
                 onClick={() => setIsTeleconsultationOpen(false)}
               >
-                Fermer
+                {t('patientManagement.teleconsultation.close')}
               </Button>
+
               <div className="space-x-2">
                 <Button variant="outline">
                   <Phone className="mr-2 h-4 w-4" />
-                  Audio uniquement
+                  {t('patientManagement.teleconsultation.audioOnly')}
                 </Button>
                 <Button>
                   <Video className="mr-2 h-4 w-4" />
-                  Démarrer la vidéo
+                  {t('patientManagement.teleconsultation.startVideo')}
                 </Button>
               </div>
             </div>
@@ -891,37 +935,49 @@ export const PatientManagement = () => {
       <Dialog open={isCallModalOpen} onOpenChange={setIsCallModalOpen}>
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle>Appeler {activePatient?.name}</DialogTitle>
+            <DialogTitle>
+              {t('patientManagement.call.title', {
+                patientName: activePatient?.name,
+              })}
+            </DialogTitle>
             <DialogDescription>
-              Interface d'appel téléphonique
+              {t('patientManagement.call.description')}
             </DialogDescription>
           </DialogHeader>
+
           <div className="space-y-4 text-center">
             <div className="mx-auto w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center">
               <Phone className="h-8 w-8 text-primary" />
             </div>
+
             <div>
               <p className="font-medium text-lg">{activePatient?.name}</p>
-              <p className="text-muted-foreground">Prêt à composer le numéro</p>
+              <p className="text-muted-foreground">
+                {t('patientManagement.call.ready')}
+              </p>
             </div>
+
             <div>
-              <Label htmlFor="phone-notes">Notes d'appel</Label>
+              <Label htmlFor="phone-notes">
+                {t('patientManagement.call.notesLabel')}
+              </Label>
               <Textarea
                 id="phone-notes"
-                placeholder="Notez l'objet de l'appel..."
+                placeholder={t('patientManagement.call.notesPlaceholder')}
                 className="min-h-20"
               />
             </div>
+
             <div className="flex justify-center space-x-2">
               <Button
                 variant="outline"
                 onClick={() => setIsCallModalOpen(false)}
               >
-                Annuler
+                {t('patientManagement.call.cancel')}
               </Button>
               <Button className="bg-green-600 hover:bg-green-700">
                 <Phone className="mr-2 h-4 w-4" />
-                Composer
+                {t('patientManagement.call.dial')}
               </Button>
             </div>
           </div>
@@ -933,58 +989,85 @@ export const PatientManagement = () => {
         <DialogContent className="max-w-2xl">
           <DialogHeader>
             <DialogTitle>
-              Modifier le profil - {activePatient?.name}
+              {t('patientManagement.editProfile.title', {
+                patientName: activePatient?.name,
+              })}
             </DialogTitle>
             <DialogDescription>
-              Édition des informations du patient
+              {t('patientManagement.editProfile.description')}
             </DialogDescription>
           </DialogHeader>
+
           <div className="space-y-4">
             {activePatient && (
               <>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="edit-name">Nom du patient</Label>
+                    <Label htmlFor="edit-name">
+                      {t('patientManagement.editProfile.name')}
+                    </Label>
                     <Input id="edit-name" defaultValue={activePatient.name} />
                   </div>
                   <div>
-                    <Label htmlFor="edit-diabetes-type">Type de diabète</Label>
+                    <Label htmlFor="edit-diabetes-type">
+                      {t('patientManagement.editProfile.diabetesType')}
+                    </Label>
                     <Input
                       id="edit-diabetes-type"
                       defaultValue={activePatient.diabetesType}
                     />
                   </div>
                 </div>
+
                 <div>
-                  <Label htmlFor="edit-status">Statut</Label>
+                  <Label htmlFor="edit-status">
+                    {t('patientManagement.editProfile.status')}
+                  </Label>
                   <select
                     id="edit-status"
                     className="w-full p-2 border rounded-md"
                     defaultValue={activePatient.status}
                   >
-                    <option value="stable">Stable</option>
-                    <option value="attention">Attention</option>
-                    <option value="amélioration">Amélioration</option>
+                    <option value="stable">
+                      {t('patientManagement.editProfile.statusOptions.stable')}
+                    </option>
+                    <option value="attention">
+                      {t(
+                        'patientManagement.editProfile.statusOptions.attention'
+                      )}
+                    </option>
+                    <option value="amélioration">
+                      {t(
+                        'patientManagement.editProfile.statusOptions.improving'
+                      )}
+                    </option>
                   </select>
                 </div>
+
                 <div>
-                  <Label htmlFor="edit-glucose">Dernière glycémie</Label>
+                  <Label htmlFor="edit-glucose">
+                    {t('patientManagement.editProfile.lastGlucose')}
+                  </Label>
                   <Input
                     id="edit-glucose"
                     defaultValue={activePatient.lastGlucose}
                   />
                 </div>
+
                 <div>
-                  <Label htmlFor="edit-notes">Notes médicales</Label>
+                  <Label htmlFor="edit-notes">
+                    {t('patientManagement.editProfile.notes')}
+                  </Label>
                   <Textarea
                     id="edit-notes"
                     defaultValue={activePatient.notes}
                     className="min-h-32"
                   />
                 </div>
+
                 <div>
                   <Label htmlFor="edit-next-appointment">
-                    Prochain rendez-vous
+                    {t('patientManagement.editProfile.nextAppointment')}
                   </Label>
                   <Input
                     id="edit-next-appointment"
@@ -994,14 +1077,15 @@ export const PatientManagement = () => {
                 </div>
               </>
             )}
+
             <div className="flex justify-end space-x-2">
               <Button
                 variant="outline"
                 onClick={() => setIsEditModalOpen(false)}
               >
-                Annuler
+                {t('patientManagement.editProfile.cancel')}
               </Button>
-              <Button>Enregistrer les modifications</Button>
+              <Button>{t('patientManagement.editProfile.save')}</Button>
             </div>
           </div>
         </DialogContent>

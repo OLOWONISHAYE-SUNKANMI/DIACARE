@@ -5,6 +5,7 @@ import { useToast } from '@/hooks/use-toast';
 import PatientDataPanel from '@/components/ui/PatientDataPanel';
 import ChatInterface from '@/components/ui/ChatInterface';
 import { Phone, Video, FileText, Clock, DollarSign } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface ChatMessage {
   id: string;
@@ -38,7 +39,10 @@ interface TeleconsultationInterfaceProps {
   consultation: ConsultationData;
 }
 
-const TeleconsultationInterface = ({ consultation }: TeleconsultationInterfaceProps) => {
+const TeleconsultationInterface = ({
+  consultation,
+}: TeleconsultationInterfaceProps) => {
+  const { t } = useTranslation();
   const { toast } = useToast();
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
   const [prescription, setPrescription] = useState('');
@@ -69,8 +73,8 @@ const TeleconsultationInterface = ({ consultation }: TeleconsultationInterfacePr
       message,
       timestamp: new Date().toLocaleTimeString('fr-FR', {
         hour: '2-digit',
-        minute: '2-digit'
-      })
+        minute: '2-digit',
+      }),
     };
 
     setChatMessages(prev => [...prev, newMessage]);
@@ -80,11 +84,11 @@ const TeleconsultationInterface = ({ consultation }: TeleconsultationInterfacePr
       const patientResponse: ChatMessage = {
         id: (Date.now() + 1).toString(),
         sender: 'patient',
-        message: "Merci docteur, je me sens mieux aujourd'hui.",
+        message: t('teleconsultationInterface.patient_message_thanks'),
         timestamp: new Date().toLocaleTimeString('fr-FR', {
           hour: '2-digit',
-          minute: '2-digit'
-        })
+          minute: '2-digit',
+        }),
       };
       setChatMessages(prev => [...prev, patientResponse]);
     }, 2000);
@@ -92,10 +96,15 @@ const TeleconsultationInterface = ({ consultation }: TeleconsultationInterfacePr
 
   const endConsultation = () => {
     toast({
-      title: "Consultation terminée",
-      description: `${consultation.amount} F CFA ajoutés à vos revenus`,
+      title: t('teleconsultationInterface.consultation_completed_title'),
+      description: t(
+        'teleconsultationInterface.consultation_completed_description',
+        {
+          amount: consultation.amount,
+        }
+      ),
     });
-    
+
     // TODO: Implement actual consultation ending logic
     console.log('Ending consultation with notes:', consultationNotes);
     console.log('Prescription:', prescription);
@@ -103,29 +112,35 @@ const TeleconsultationInterface = ({ consultation }: TeleconsultationInterfacePr
 
   const extendConsultation = () => {
     toast({
-      title: "Consultation prolongée",
-      description: "15 minutes supplémentaires ajoutées (+250 F CFA)",
+      title: t('teleconsultationInterface.consultation_extended_title'),
+      description: t(
+        'teleconsultationInterface.consultation_extended_description'
+      ),
     });
   };
 
   const toggleAudio = () => {
     setIsAudioActive(!isAudioActive);
     toast({
-      title: isAudioActive ? "Audio désactivé" : "Audio activé",
+      title: isAudioActive
+        ? t('teleconsultationInterface.audio_disabled')
+        : t('teleconsultationInterface.audio_enabled'),
     });
   };
 
   const toggleVideo = () => {
     setIsVideoActive(!isVideoActive);
     toast({
-      title: isVideoActive ? "Vidéo désactivée" : "Vidéo activée",
+      title: isVideoActive
+        ? t('teleconsultationInterface.video_disabled')
+        : t('teleconsultationInterface.video_enabled'),
     });
   };
 
   const openPrescriptionModal = () => {
     toast({
-      title: "Prescription",
-      description: "Module de prescription en cours de développement",
+      title: t('teleconsultationInterface.prescription_title'),
+      description: t('teleconsultationInterface.prescription_description'),
     });
   };
 
@@ -135,7 +150,7 @@ const TeleconsultationInterface = ({ consultation }: TeleconsultationInterfacePr
       <div className="w-1/3 bg-card border-r overflow-y-auto">
         <PatientDataPanel patient={consultation.patient} />
       </div>
-      
+
       {/* Zone consultation principale */}
       <div className="flex-1 flex flex-col">
         {/* Header consultation */}
@@ -143,39 +158,48 @@ const TeleconsultationInterface = ({ consultation }: TeleconsultationInterfacePr
           <div className="flex items-center justify-between">
             <div>
               <h3 className="text-lg font-bold">
-                Consultation avec {consultation.patient.firstName}
+                {t('teleconsultationInterface.consultation_with')}{' '}
+                {consultation.patient.firstName}
               </h3>
               <p className="text-primary-foreground/80 text-sm flex items-center gap-4">
                 <span className="flex items-center gap-1">
                   <Clock className="w-4 h-4" />
-                  Démarrée il y a {consultationDuration}
+                  {t('teleconsultationInterface.started_since')}{' '}
+                  {consultationDuration}
                 </span>
+
                 <span className="flex items-center gap-1">
                   <DollarSign className="w-4 h-4" />
                   {consultation.amount} F CFA
                 </span>
               </p>
             </div>
-            
+
             <div className="flex gap-3">
               <Button
                 onClick={toggleAudio}
-                variant={isAudioActive ? "secondary" : "outline"}
+                variant={isAudioActive ? 'secondary' : 'outline'}
                 size="sm"
-                className={isAudioActive ? "bg-green-500 hover:bg-green-600" : ""}
+                className={
+                  isAudioActive ? 'bg-green-500 hover:bg-green-600' : ''
+                }
               >
                 <Phone className="w-4 h-4 mr-2" />
-                Audio
+                {t('teleconsultationInterface.audio_button')}
               </Button>
+
               <Button
                 onClick={toggleVideo}
-                variant={isVideoActive ? "secondary" : "outline"}
+                variant={isVideoActive ? 'secondary' : 'outline'}
                 size="sm"
-                className={isVideoActive ? "bg-green-500 hover:bg-green-600" : ""}
+                className={
+                  isVideoActive ? 'bg-green-500 hover:bg-green-600' : ''
+                }
               >
                 <Video className="w-4 h-4 mr-2" />
-                Vidéo
+                {t('teleconsultationInterface.video_button')}
               </Button>
+
               <Button
                 onClick={openPrescriptionModal}
                 variant="outline"
@@ -183,51 +207,56 @@ const TeleconsultationInterface = ({ consultation }: TeleconsultationInterfacePr
                 className="bg-orange-500 hover:bg-orange-600 text-white border-orange-500"
               >
                 <FileText className="w-4 h-4 mr-2" />
-                Prescrire
+                {t('teleconsultationInterface.prescribe_button')}
               </Button>
             </div>
           </div>
         </div>
-        
+
         {/* Zone chat */}
         <div className="flex-1 bg-muted/30 p-4 overflow-hidden">
-          <ChatInterface 
+          <ChatInterface
             messages={chatMessages}
             onSendMessage={sendMessage}
             patientData={consultation.patient}
           />
         </div>
-        
+
         {/* Zone notes consultation */}
         <div className="bg-card border-t p-4">
           <h4 className="font-bold mb-2 flex items-center gap-2">
-            📝 Notes de consultation
+            📝 {t('teleconsultationInterface.consultation_notes_title')}
           </h4>
           <Textarea
             value={consultationNotes}
-            onChange={(e) => setConsultationNotes(e.target.value)}
-            placeholder="Notez vos observations, diagnostics, recommandations..."
+            onChange={e => setConsultationNotes(e.target.value)}
+            placeholder={t(
+              'teleconsultationInterface.consultation_notes_placeholder'
+            )}
             className="w-full h-24 resize-none"
           />
         </div>
-        
+
         {/* Actions fin consultation */}
         <div className="bg-muted p-4 flex gap-3">
-          <Button 
+          <Button
             onClick={endConsultation}
             className="flex-1 bg-green-600 hover:bg-green-700 text-white"
             size="lg"
           >
-            ✅ Terminer Consultation ({consultation.amount} F CFA ajouté)
+            ✅{' '}
+            {t('teleconsultationInterface.end_consultation_button', {
+              amount: consultation.amount,
+            })}
           </Button>
-          <Button 
+          <Button
             onClick={extendConsultation}
             variant="outline"
             size="lg"
             className="px-8"
           >
             <Clock className="w-4 h-4 mr-2" />
-            Prolonger (+250 F)
+            {t('teleconsultationInterface.extend_consultation_button')}
           </Button>
         </div>
       </div>
