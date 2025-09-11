@@ -47,13 +47,13 @@ const BlogScreen = () => {
   const [loading, setLoading] = useState(true);
 
   const categories = [
-    'All',
-    'Guides',
-    'Research',
-    'Nutrition',
-    'Mental',
-    'Innovation',
-    'Testimonials',
+    t('blogScreenFixes.categories.all'),
+    t('blogScreenFixes.categories.guides'),
+    t('blogScreenFixes.categories.research'),
+    t('blogScreenFixes.categories.nutrition'),
+    t('blogScreenFixes.categories.mental'),
+    t('blogScreenFixes.categories.innovation'),
+    t('blogScreenFixes.categories.testimonials'),
   ];
 
   const fetchNews = async () => {
@@ -89,18 +89,18 @@ const BlogScreen = () => {
         article.description.toLowerCase().includes(searchQuery.toLowerCase()));
 
     const matchesCategory =
-      activeCategory === 'All' ||
-      (activeCategory === 'Research' &&
+      activeCategory === t('blogScreenFixes.categories.all') ||
+      (activeCategory === t('blogScreenFixes.categories.research') &&
         /research|study|trial|scientists?/i.test(article.title)) ||
-      (activeCategory === 'Nutrition' &&
+      (activeCategory === t('blogScreenFixes.categories.nutrition') &&
         /diet|nutrition|food|meal/i.test(article.title)) ||
-      (activeCategory === 'Mental' &&
+      (activeCategory === t('blogScreenFixes.categories.mental') &&
         /mental|stress|mind|psychology/i.test(article.title)) ||
-      (activeCategory === 'Innovation' &&
+      (activeCategory === t('blogScreenFixes.categories.innovation') &&
         /technology|innovation|app|device|AI/i.test(article.title)) ||
-      (activeCategory === 'Guides' &&
+      (activeCategory === t('blogScreenFixes.categories.guides') &&
         /guide|tips|how to|advice/i.test(article.title)) ||
-      (activeCategory === 'Testimonials' &&
+      (activeCategory === t('blogScreenFixes.categories.testimonials') &&
         /patient|story|experience|testimony/i.test(article.title));
 
     return matchesSearch && matchesCategory;
@@ -147,7 +147,9 @@ const BlogScreen = () => {
       {/* Articles */}
       <div className="space-y-4">
         {loading && (
-          <p className="text-center text-muted-foreground">Loading news...</p>
+          <p className="text-center text-muted-foreground">
+            {t('blogScreenFixes.loading_news')}
+          </p>
         )}
 
         {!loading &&
@@ -206,7 +208,7 @@ const BlogScreen = () => {
 
         {!loading && filteredArticles.length === 0 && (
           <p className="text-center text-muted-foreground">
-            No articles found.
+            {t('blogScreenFixes.no_articles_found')}
           </p>
         )}
       </div>

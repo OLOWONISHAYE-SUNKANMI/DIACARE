@@ -1,26 +1,46 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Separator } from '@/components/ui/separator';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { 
-  CheckCircle, 
-  Download, 
-  DollarSign, 
-  Users, 
-  TrendingUp, 
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import {
+  CheckCircle,
+  Download,
+  DollarSign,
+  Users,
+  TrendingUp,
   FileText,
   Mail,
   Calendar,
   Clock,
   Wallet,
-  PieChart
+  PieChart,
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { useTranslation } from 'react-i18next';
 
 // Interface definitions for TypeScript support
 interface ProfessionalEarning {
@@ -66,11 +86,19 @@ interface MonthlyDistribution {
 }
 
 const RevenueDistribution: React.FC = () => {
-  const [professionalEarnings, setProfessionalEarnings] = useState<ProfessionalEarning[]>([]);
-  const [monthlyDistribution, setMonthlyDistribution] = useState<MonthlyDistribution | null>(null);
-  const [distributionConfig, setDistributionConfig] = useState<RevenueDistributionConfig[]>([]);
+  const { t } = useTranslation();
+  const [professionalEarnings, setProfessionalEarnings] = useState<
+    ProfessionalEarning[]
+  >([]);
+  const [monthlyDistribution, setMonthlyDistribution] =
+    useState<MonthlyDistribution | null>(null);
+  const [distributionConfig, setDistributionConfig] = useState<
+    RevenueDistributionConfig[]
+  >([]);
   const [loading, setLoading] = useState(true);
-  const [selectedMonth, setSelectedMonth] = useState<string>(new Date().toISOString().slice(0, 7)); // YYYY-MM format
+  const [selectedMonth, setSelectedMonth] = useState<string>(
+    new Date().toISOString().slice(0, 7)
+  ); // YYYY-MM format
   const { toast } = useToast();
 
   useEffect(() => {
@@ -90,9 +118,9 @@ const RevenueDistribution: React.FC = () => {
     } catch (error) {
       console.error('Error loading distribution config:', error);
       toast({
-        title: "Erreur",
-        description: "Impossible de charger la configuration de distribution",
-        variant: "destructive",
+        title: t('revenueDistribution.toast.errorTitle'),
+        description: t('revenueDistribution.toast.configLoadError'),
+        variant: 'destructive',
       });
     }
   };
@@ -100,7 +128,7 @@ const RevenueDistribution: React.FC = () => {
   const loadMonthlyDistribution = async () => {
     try {
       setLoading(true);
-      
+
       // First try to get existing distribution
       const { data: existingData, error: existingError } = await supabase
         .from('monthly_revenue_distribution')
@@ -112,12 +140,15 @@ const RevenueDistribution: React.FC = () => {
         setMonthlyDistribution(existingData);
       } else {
         // Calculate new distribution
-        const { data, error } = await supabase.rpc('calculate_monthly_revenue_distribution', {
-          _month_year: selectedMonth
-        });
+        const { data, error } = await supabase.rpc(
+          'calculate_monthly_revenue_distribution',
+          {
+            _month_year: selectedMonth,
+          }
+        );
 
         if (error) throw error;
-        
+
         // Load the calculated distribution
         const { data: calculatedData, error: loadError } = await supabase
           .from('monthly_revenue_distribution')
@@ -131,13 +162,14 @@ const RevenueDistribution: React.FC = () => {
 
       // Load mock professional earnings for display
       loadMockProfessionalEarnings();
-
     } catch (error) {
       console.error('Error loading monthly distribution:', error);
       toast({
-        title: "Erreur", 
-        description: "Impossible de charger la distribution mensuelle",
-        variant: "destructive",
+        title: t('revenueDistribution.toast.errorTitle'),
+        description: t('revenueDistribution.toast.loadError', {
+          item: t('revenueDistribution.toast.monthlyDistribution'),
+        }),
+        variant: 'destructive',
       });
     } finally {
       setLoading(false);
@@ -150,27 +182,27 @@ const RevenueDistribution: React.FC = () => {
       {
         id: '1',
         professionalName: 'Dr. Aminata Diallo',
-        speciality: 'Endocrinologue',
+        speciality: t('revenueDistribution.specialities.endocrinologist'),
         consultationsCount: 15,
         patientsCount: 12,
         grossAmount: 15000,
         platformFee: 1500,
         netAmount: 13500,
         status: 'pending',
-        currency: 'XOF'
+        currency: 'XOF',
       },
       {
         id: '2',
         professionalName: 'Dr. Mamadou Sow',
-        speciality: 'Médecin Généraliste',
+        speciality: t('revenueDistribution.specialities.general_practitioner'),
         consultationsCount: 18,
         patientsCount: 14,
         grossAmount: 18000,
         platformFee: 1800,
         netAmount: 16200,
         status: 'approved',
-        currency: 'XOF'
-      }
+        currency: 'XOF',
+      },
     ];
 
     setProfessionalEarnings(mockEarnings);
@@ -185,7 +217,7 @@ const RevenueDistribution: React.FC = () => {
         .update({
           distribution_status: 'approved',
           approved_at: new Date().toISOString(),
-          approved_by: (await supabase.auth.getUser()).data.user?.id
+          approved_by: (await supabase.auth.getUser()).data.user?.id,
         })
         .eq('month_year', monthlyDistribution.month_year);
 
@@ -193,19 +225,19 @@ const RevenueDistribution: React.FC = () => {
 
       setMonthlyDistribution({
         ...monthlyDistribution,
-        distribution_status: 'approved'
+        distribution_status: 'approved',
       });
-      
+
       toast({
-        title: "Distribution approuvée",
-        description: "La distribution des revenus a été approuvée avec succès",
+        title: t('revenueDistribution.distribution.approved.title'),
+        description: t('revenueDistribution.distribution.approved.description'),
       });
     } catch (error) {
       console.error('Error approving distribution:', error);
       toast({
-        title: "Erreur",
-        description: "Impossible de traiter la distribution",
-        variant: "destructive",
+        title: t('revenueDistribution.error.title'),
+        description: t('revenueDistribution.distribution.error'),
+        variant: 'destructive',
       });
     }
   };
@@ -213,26 +245,61 @@ const RevenueDistribution: React.FC = () => {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'paid':
-        return <Badge className="bg-success/20 text-success"><CheckCircle className="w-3 h-3 mr-1" />Payé</Badge>;
+        return (
+          <Badge className="bg-success/20 text-success">
+            <CheckCircle className="w-3 h-3 mr-1" />
+            {t('revenueDistribution.status.paid')}
+          </Badge>
+        );
       case 'approved':
-        return <Badge className="bg-primary/20 text-primary"><Clock className="w-3 h-3 mr-1" />Approuvé</Badge>;
+        return (
+          <Badge className="bg-primary/20 text-primary">
+            <Clock className="w-3 h-3 mr-1" />
+            {t('revenueDistribution.status.approved')}
+          </Badge>
+        );
       case 'pending':
-        return <Badge variant="outline"><Clock className="w-3 h-3 mr-1" />En attente</Badge>;
+        return (
+          <Badge variant="outline">
+            <Clock className="w-3 h-3 mr-1" />
+            {t('revenueDistribution.status.pending')}
+          </Badge>
+        );
       default:
-        return <Badge variant="outline">{status}</Badge>;
+        return (
+          <Badge variant="outline">
+            {t(`revenueDistribution.status.${status}`, status)}
+          </Badge>
+        );
     }
   };
 
   const getDistributionStatusBadge = (status: string) => {
     switch (status) {
       case 'distributed':
-        return <Badge className="bg-success/20 text-success">Distribué</Badge>;
+        return (
+          <Badge className="bg-success/20 text-success">
+            {t('revenueDistribution.distributionStatus.distributed')}
+          </Badge>
+        );
       case 'approved':
-        return <Badge className="bg-primary/20 text-primary">Approuvé</Badge>;
+        return (
+          <Badge className="bg-primary/20 text-primary">
+            {t('revenueDistribution.distributionStatus.approved')}
+          </Badge>
+        );
       case 'pending':
-        return <Badge variant="outline">En attente</Badge>;
+        return (
+          <Badge variant="outline">
+            {t('revenueDistribution.distributionStatus.pending')}
+          </Badge>
+        );
       default:
-        return <Badge variant="outline">{status}</Badge>;
+        return (
+          <Badge variant="outline">
+            {t(`revenueDistribution.distributionStatus.${status}`, status)}
+          </Badge>
+        );
     }
   };
 
@@ -269,10 +336,14 @@ const RevenueDistribution: React.FC = () => {
     <div className="p-6 space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Distribution des Revenus</h1>
-          <p className="text-muted-foreground">Système automatique basé sur vos forfaits Premium (8€) et Famille (10€)</p>
+          <h1 className="text-2xl font-bold text-foreground">
+            {t('revenueDistribution.title')}
+          </h1>
+          <p className="text-muted-foreground">
+            {t('revenueDistribution.description')}
+          </p>
         </div>
-        
+
         <div className="flex gap-2">
           <Select value={selectedMonth} onValueChange={setSelectedMonth}>
             <SelectTrigger className="w-[160px]">
@@ -283,7 +354,9 @@ const RevenueDistribution: React.FC = () => {
                 const date = new Date();
                 date.setMonth(i);
                 const monthValue = `${date.getFullYear()}-${String(i + 1).padStart(2, '0')}`;
-                const monthName = date.toLocaleDateString('fr-FR', { month: 'long' });
+                const monthName = date.toLocaleDateString('fr-FR', {
+                  month: 'long',
+                });
                 return (
                   <SelectItem key={monthValue} value={monthValue}>
                     {monthName} {date.getFullYear()}
@@ -292,61 +365,104 @@ const RevenueDistribution: React.FC = () => {
               })}
             </SelectContent>
           </Select>
-          
+
           <Button variant="outline" onClick={loadMonthlyDistribution}>
             <TrendingUp className="w-4 h-4 mr-2" />
-            Actualiser
+            {t('revenueDistribution.refresh')}
           </Button>
         </div>
       </div>
 
       {/* Distribution Configuration Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-        {distributionConfig.map((config) => (
+        {distributionConfig.map(config => (
           <Card key={config.plan_name} className="border-2">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <PieChart className="w-5 h-5 text-primary" />
-                Forfait {config.plan_name}
+                {t('revenueDistribution.plan', { planName: config.plan_name })}
               </CardTitle>
               <CardDescription>
-                Répartition automatique pour {formatAmount(config.plan_price_cfa)} par abonnement
+                {t('revenueDistribution.autoDistribution', {
+                  amount: formatAmount(config.plan_price_cfa),
+                })}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>
-                  <div className="text-muted-foreground">Professionnels</div>
-                  <div className="font-medium">{formatAmount(config.professional_amount_cfa)}</div>
+                  <div className="text-muted-foreground">
+                    {t('revenueDistribution.professionals')}
+                  </div>
+                  <div className="font-medium">
+                    {formatAmount(config.professional_amount_cfa)}
+                  </div>
                   <div className="text-xs text-muted-foreground">
-                    {((config.professional_amount_cfa / config.plan_price_cfa) * 100).toFixed(1)}%
+                    {(
+                      (config.professional_amount_cfa / config.plan_price_cfa) *
+                      100
+                    ).toFixed(1)}
+                    %
                   </div>
                 </div>
+
                 <div>
-                  <div className="text-muted-foreground">App & Maintenance</div>
-                  <div className="font-medium">{formatAmount(config.app_fees_cfa)}</div>
+                  <div className="text-muted-foreground">
+                    {t('revenueDistribution.appMaintenance')}
+                  </div>
+                  <div className="font-medium">
+                    {formatAmount(config.app_fees_cfa)}
+                  </div>
                   <div className="text-xs text-muted-foreground">
-                    {((config.app_fees_cfa / config.plan_price_cfa) * 100).toFixed(1)}%
+                    {(
+                      (config.app_fees_cfa / config.plan_price_cfa) *
+                      100
+                    ).toFixed(1)}
+                    %
                   </div>
                 </div>
+
                 <div>
-                  <div className="text-muted-foreground">Plateforme paiement</div>
-                  <div className="font-medium">{formatAmount(config.payment_platform_amount_cfa)}</div>
+                  <div className="text-muted-foreground">
+                    {t('revenueDistribution.paymentPlatform')}
+                  </div>
+                  <div className="font-medium">
+                    {formatAmount(config.payment_platform_amount_cfa)}
+                  </div>
                   <div className="text-xs text-muted-foreground">2.9%</div>
                 </div>
+
                 <div>
-                  <div className="text-muted-foreground">Bénéfices nets</div>
-                  <div className="font-medium text-success">{formatAmount(config.net_profit_cfa)}</div>
+                  <div className="text-muted-foreground">
+                    {t('revenueDistribution.netProfit')}
+                  </div>
+                  <div className="font-medium text-success">
+                    {formatAmount(config.net_profit_cfa)}
+                  </div>
                   <div className="text-xs text-muted-foreground">
-                    {((config.net_profit_cfa / config.plan_price_cfa) * 100).toFixed(1)}%
+                    {(
+                      (config.net_profit_cfa / config.plan_price_cfa) *
+                      100
+                    ).toFixed(1)}
+                    %
                   </div>
                 </div>
+
                 {config.reinvestment_amount_cfa > 0 && (
                   <div className="col-span-2">
-                    <div className="text-muted-foreground">Réinvestissement</div>
-                    <div className="font-medium text-primary">{formatAmount(config.reinvestment_amount_cfa)}</div>
+                    <div className="text-muted-foreground">
+                      {t('revenueDistribution.reinvestment')}
+                    </div>
+                    <div className="font-medium text-primary">
+                      {formatAmount(config.reinvestment_amount_cfa)}
+                    </div>
                     <div className="text-xs text-muted-foreground">
-                      {((config.reinvestment_amount_cfa / config.plan_price_cfa) * 100).toFixed(1)}%
+                      {(
+                        (config.reinvestment_amount_cfa /
+                          config.plan_price_cfa) *
+                        100
+                      ).toFixed(1)}
+                      %
                     </div>
                   </div>
                 )}
@@ -361,52 +477,76 @@ const RevenueDistribution: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Revenus Total</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                {t('revenueDistribution.distributionCards.totalRevenue')}
+              </CardTitle>
               <DollarSign className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{formatAmount(monthlyDistribution.total_revenue_cfa)}</div>
+              <div className="text-2xl font-bold">
+                {formatAmount(monthlyDistribution.total_revenue_cfa)}
+              </div>
               <p className="text-xs text-muted-foreground">
-                {monthlyDistribution.total_subscriptions} abonnements
+                {t('revenueDistribution.distributionCards.subscriptions', {
+                  count: monthlyDistribution.total_subscriptions,
+                })}
               </p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Professionnels</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                {t('revenueDistribution.distributionCards.professionals')}
+              </CardTitle>
               <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{formatAmount(monthlyDistribution.total_professional_payments_cfa)}</div>
+              <div className="text-2xl font-bold">
+                {formatAmount(
+                  monthlyDistribution.total_professional_payments_cfa
+                )}
+              </div>
               <p className="text-xs text-muted-foreground">
-                À redistribuer
+                {t('revenueDistribution.distributionCards.toRedistribute')}
               </p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Bénéfices Nets</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                {t('revenueDistribution.distributionCards.netProfit')}
+              </CardTitle>
               <Wallet className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-success">{formatAmount(monthlyDistribution.total_net_profit_cfa)}</div>
+              <div className="text-2xl font-bold text-success">
+                {formatAmount(monthlyDistribution.total_net_profit_cfa)}
+              </div>
               <p className="text-xs text-muted-foreground">
-                Votre part fixe: 2500 F CFA
+                {t('revenueDistribution.distributionCards.fixedShare', {
+                  amount: 2500,
+                })}
               </p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Réinvestissement</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                {t('revenueDistribution.distributionCards.reinvestment')}
+              </CardTitle>
               <TrendingUp className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-primary">{formatAmount(monthlyDistribution.total_reinvestment_cfa)}</div>
+              <div className="text-2xl font-bold text-primary">
+                {formatAmount(monthlyDistribution.total_reinvestment_cfa)}
+              </div>
               <p className="text-xs text-muted-foreground">
-                Marketing & développement
+                {t(
+                  'revenueDistribution.distributionCards.marketingDevelopment'
+                )}
               </p>
             </CardContent>
           </Card>
@@ -419,58 +559,94 @@ const RevenueDistribution: React.FC = () => {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Calendar className="w-5 h-5" />
-              Distribution de {getMonthName(monthlyDistribution.month_year)}
+              {t('distributionCard.title', {
+                month: getMonthName(monthlyDistribution.month_year),
+              })}
             </CardTitle>
             <CardDescription>
-              Statut actuel de la distribution mensuelle automatique
+              {t('revenueDistribution.distributionCard.description')}
             </CardDescription>
           </CardHeader>
+
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
               <div>
-                <div className="text-muted-foreground">Frais App & Maintenance</div>
-                <div className="font-medium">{formatAmount(monthlyDistribution.total_app_fees_cfa)}</div>
+                <div className="text-muted-foreground">
+                  {t('revenueDistribution.distributionCard.appFees')}
+                </div>
+                <div className="font-medium">
+                  {formatAmount(monthlyDistribution.total_app_fees_cfa)}
+                </div>
               </div>
               <div>
-                <div className="text-muted-foreground">Frais Plateforme Paiement</div>
-                <div className="font-medium">{formatAmount(monthlyDistribution.total_platform_fees_cfa)}</div>
+                <div className="text-muted-foreground">
+                  {t('revenueDistribution.distributionCard.platformFees')}
+                </div>
+                <div className="font-medium">
+                  {formatAmount(monthlyDistribution.total_platform_fees_cfa)}
+                </div>
               </div>
               <div>
-                <div className="text-muted-foreground">Vos Bénéfices Nets</div>
-                <div className="font-medium text-success">{formatAmount(monthlyDistribution.total_net_profit_cfa)}</div>
+                <div className="text-muted-foreground">
+                  {t('revenueDistribution.distributionCard.netProfit')}
+                </div>
+                <div className="font-medium text-success">
+                  {formatAmount(monthlyDistribution.total_net_profit_cfa)}
+                </div>
               </div>
             </div>
-            
+
             <div className="flex items-center justify-between">
               <div className="space-y-1">
-                <p className="text-sm font-medium">Progression</p>
+                <p className="text-sm font-medium">
+                  {t('revenueDistribution.distributionCard.progress')}
+                </p>
                 <p className="text-xs text-muted-foreground">
-                  Distribution {getDistributionStatusBadge(monthlyDistribution.distribution_status)}
+                  {t('revenueDistribution.distributionCard.distributionStatus')}{' '}
+                  {getDistributionStatusBadge(
+                    monthlyDistribution.distribution_status
+                  )}
                 </p>
               </div>
               <div className="text-right">
-                <p className="text-2xl font-bold">{formatAmount(monthlyDistribution.total_professional_payments_cfa)}</p>
-                <p className="text-xs text-muted-foreground">aux professionnels</p>
+                <p className="text-2xl font-bold">
+                  {formatAmount(
+                    monthlyDistribution.total_professional_payments_cfa
+                  )}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  {t('revenueDistribution.distributionCard.toProfessionals')}
+                </p>
               </div>
             </div>
-            
-            <Progress 
+
+            <Progress
               value={
-                monthlyDistribution.distribution_status === 'pending' ? 30 : 
-                monthlyDistribution.distribution_status === 'approved' ? 70 : 100
-              } 
+                monthlyDistribution.distribution_status === 'pending'
+                  ? 30
+                  : monthlyDistribution.distribution_status === 'approved'
+                    ? 70
+                    : 100
+              }
               className="w-full"
             />
-            
+
             <div className="flex justify-between items-center pt-4">
               <div className="flex space-x-2">
-                {getDistributionStatusBadge(monthlyDistribution.distribution_status)}
+                {getDistributionStatusBadge(
+                  monthlyDistribution.distribution_status
+                )}
               </div>
-              
+
               {monthlyDistribution.distribution_status === 'pending' && (
-                <Button onClick={handleProcessDistribution} className="flex items-center gap-2">
+                <Button
+                  onClick={handleProcessDistribution}
+                  className="flex items-center gap-2"
+                >
                   <CheckCircle className="w-4 h-4" />
-                  Approuver la Distribution
+                  {t(
+                    'revenueDistribution.distributionCard.approveDistribution'
+                  )}
                 </Button>
               )}
             </div>
@@ -483,30 +659,50 @@ const RevenueDistribution: React.FC = () => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Users className="w-5 h-5" />
-            Gains par Professionnel
+            {t('revenueDistribution.earningsCard.title')}
           </CardTitle>
           <CardDescription>
-            Détail des paiements aux professionnels de santé
+            {t('revenueDistribution.earningsCard.description')}
           </CardDescription>
         </CardHeader>
+
         <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Professionnel</TableHead>
-                <TableHead>Spécialité</TableHead>
-                <TableHead>Consultations</TableHead>
-                <TableHead>Patients</TableHead>
-                <TableHead>Montant Brut</TableHead>
-                <TableHead>Commission</TableHead>
-                <TableHead>Net à Payer</TableHead>
-                <TableHead>Statut</TableHead>
+                <TableHead>
+                  {t('revenueDistribution.earningsCard.professional')}
+                </TableHead>
+                <TableHead>
+                  {t('revenueDistribution.earningsCard.speciality')}
+                </TableHead>
+                <TableHead>
+                  {t('revenueDistribution.earningsCard.consultations')}
+                </TableHead>
+                <TableHead>
+                  {t('revenueDistribution.earningsCard.patients')}
+                </TableHead>
+                <TableHead>
+                  {t('revenueDistribution.earningsCard.grossAmount')}
+                </TableHead>
+                <TableHead>
+                  {t('revenueDistribution.earningsCard.platformFee')}
+                </TableHead>
+                <TableHead>
+                  {t('revenueDistribution.earningsCard.netAmount')}
+                </TableHead>
+                <TableHead>
+                  {t('revenueDistribution.earningsCard.status')}
+                </TableHead>
               </TableRow>
             </TableHeader>
+
             <TableBody>
-              {professionalEarnings.map((earning) => (
+              {professionalEarnings.map(earning => (
                 <TableRow key={earning.id}>
-                  <TableCell className="font-medium">{earning.professionalName}</TableCell>
+                  <TableCell className="font-medium">
+                    {earning.professionalName}
+                  </TableCell>
                   <TableCell>
                     <Badge variant="outline">{earning.speciality}</Badge>
                   </TableCell>
@@ -518,8 +714,12 @@ const RevenueDistribution: React.FC = () => {
                     </div>
                   </TableCell>
                   <TableCell>{formatAmount(earning.grossAmount)}</TableCell>
-                  <TableCell className="text-destructive">-{formatAmount(earning.platformFee)}</TableCell>
-                  <TableCell className="font-bold text-success">{formatAmount(earning.netAmount)}</TableCell>
+                  <TableCell className="text-destructive">
+                    -{formatAmount(earning.platformFee)}
+                  </TableCell>
+                  <TableCell className="font-bold text-success">
+                    {formatAmount(earning.netAmount)}
+                  </TableCell>
                   <TableCell>{getStatusBadge(earning.status)}</TableCell>
                 </TableRow>
               ))}
@@ -532,22 +732,22 @@ const RevenueDistribution: React.FC = () => {
       <div className="flex gap-4">
         <Button variant="outline" className="flex items-center gap-2">
           <Download className="w-4 h-4" />
-          Exporter PDF
+          {t('revenueDistribution.actions.exportPDF')}
         </Button>
-        
+
         <Button variant="outline" className="flex items-center gap-2">
           <FileText className="w-4 h-4" />
-          Rapport Excel
+          {t('revenueDistribution.actions.reportExcel')}
         </Button>
-        
+
         <Button variant="outline" className="flex items-center gap-2">
           <Mail className="w-4 h-4" />
-          Envoyer par Email
+          {t('revenueDistribution.actions.sendEmail')}
         </Button>
-        
+
         <Button variant="outline" className="flex items-center gap-2">
           <Calendar className="w-4 h-4" />
-          Historique
+          {t('revenueDistribution.actions.history')}
         </Button>
       </div>
     </div>

@@ -27,6 +27,14 @@ export const fr = {
     insulin: 'Insuline',
     newEntry: 'Nouvelle entrée',
     insulinReminder: 'Rappel Insuline',
+    target: 'Dans la cible',
+    slightlyHigh: 'Légèrement élevé',
+    high: 'Élevé',
+    normal: 'Normal',
+    meal: 'Repas',
+    activity: 'Activité',
+    medication: 'Médicament',
+    low: 'Bas',
     filters: {
       today: "Aujourd'hui",
       week: '7 jours',
@@ -57,6 +65,7 @@ export const fr = {
     },
     injected: 'Injecté à',
     missed: 'Injection manquée',
+    noEntries: 'Aucune entrée',
   },
 
   // Charts Screen
@@ -1496,6 +1505,17 @@ export const fr = {
   blogScreenFixes: {
     title_diabetesNews: 'Actualités internationales sur le diabète',
     placeholder_searchNews: 'Rechercher des actualités...',
+    loading_news: 'Chargement des actualités...',
+    no_articles_found: 'Aucun article trouvé.',
+    categories: {
+      all: 'Tout',
+      guides: 'Guides',
+      research: 'Recherche',
+      nutrition: 'Nutrition',
+      mental: 'Santé mentale',
+      innovation: 'Innovation',
+      testimonials: 'Témoignages',
+    },
   },
 
   profileScreenFixes: {
@@ -4617,6 +4637,449 @@ Le non-respect de cette charte peut entraîner une suspension temporaire ou déf
         description:
           "L'interface DiaCare Chat n'est pas accessible aux professionnels pour préserver la confidentialité des échanges personnels du patient.",
       },
+    },
+  },
+
+  professionalNotificationCenter: {
+    consultationReasons: {
+      routine_checkup: 'Contrôle de routine',
+      urgent_consultation: 'Consultation urgente',
+      glucose_management: 'Gestion glycémie',
+      medication_adjustment: 'Ajustement traitement',
+      diet_counseling: 'Conseil nutritionnel',
+      psychological_support: 'Soutien psychologique',
+      complications: 'Complications diabète',
+      follow_up: 'Suivi post-consultation',
+    },
+    consultation: {
+      response: {
+        acceptedTitle: 'Consultation acceptée',
+        rejectedTitle: 'Consultation refusée',
+        acceptedDescription: 'Le patient peut maintenant démarrer le chat',
+        rejectedDescription: 'Le patient a été notifié de votre réponse',
+        errorLog: 'Erreur réponse:',
+        errorTitle: 'Erreur',
+        errorDescription: 'Impossible de traiter la réponse',
+      },
+    },
+    professionalNotification: {
+      title_consultationRequests: 'Demandes de consultation',
+      newRequests_one: '{{count}} nouvelle demande',
+      newRequests_other: '{{count}} nouvelles demandes',
+    },
+    consultationStatus: {
+      pending: 'En attente',
+      accepted: 'Acceptée',
+      rejected: 'Refusée',
+    },
+    consultationActions: {
+      accept: 'Accepter',
+      reschedule: 'Reporter',
+      startChat: 'Démarrer le chat',
+    },
+    consultationDetails: {
+      reason: 'Motif',
+      fee: 'Tarif',
+      message: 'Message',
+    },
+    consultationResponse: {
+      acceptTitle: 'Accepter la consultation',
+      rescheduleTitle: 'Reporter la consultation',
+      proposedDate: 'Date proposée',
+      proposedTime: 'Heure proposée',
+      message: 'Message',
+      optional: '(optionnel)',
+      forPatient: 'pour le patient',
+      confirmationPlaceholder: 'Message de confirmation...',
+      reschedulePlaceholder:
+        'Expliquez pourquoi vous reportez et proposez une nouvelle date...',
+      accept: 'Accepter',
+      reschedule: 'Reporter',
+    },
+    common: {
+      cancel: 'Annuler',
+      processing: 'Traitement...',
+    },
+  },
+
+  progressMessage: {
+    celebration: {
+      title: 'Célébration',
+      achievements: {
+        first_consultation: 'Première consultation',
+        milestone_reached: 'Étape atteinte',
+      },
+      descriptions: {
+        first_consultation:
+          'Vous avez terminé votre première consultation avec succès !',
+        milestone_reached:
+          'Félicitations pour avoir atteint cette étape importante.',
+      },
+    },
+  },
+
+  quickActions: {
+    actions: {
+      scheduleConsultation: {
+        title: 'Consultation programmée',
+        description: 'La consultation a été ajoutée au planning',
+      },
+      generateReport: {
+        title: 'Rapport généré',
+        description: 'Le rapport a été généré avec succès',
+      },
+      addPatient: {
+        title: 'Patient ajouté',
+        description: 'Le nouveau patient a été ajouté à votre liste',
+      },
+    },
+  },
+
+  quickActionsGrid: {
+    quickActions: {
+      glucose: 'Ajouter Glycémie',
+      meal: 'Journal des repas',
+      medication: 'Médicaments',
+      activity: 'Activité',
+      reminders: 'Rappels',
+      title: 'Actions Rapides',
+    },
+  },
+
+  reputationCard: {
+    communityReputation: {
+      title: 'Réputation communautaire',
+      description: 'Votre contribution à la communauté DARE',
+      progressTowards: 'Progression vers {{nextLevel}}',
+      pointsToNext: 'Plus que {{points}} points pour le niveau suivant',
+      levels: {
+        beginner: 'Débutant',
+        active: 'Actif',
+        contributor: 'Contributeur',
+        expert: 'Expert',
+        legend: 'Légende',
+      },
+      stats: {
+        helpfulMessages: 'Messages utiles',
+        positiveReactions: 'Réactions positives',
+        dataShares: 'Partages de données',
+        mentoredUsers: 'Personnes mentorées',
+      },
+    },
+    badges: {
+      title: 'Badges obtenus ({{count}})',
+      engagement: 'Engagement',
+      expertise: 'Expertise',
+      invite: 'Participez à la communauté pour gagner vos premiers badges !',
+    },
+  },
+
+  revenueDistribution: {
+    title: 'Distribution des Revenus',
+    description:
+      'Système automatique basé sur vos forfaits Premium (8€) et Famille (10€)',
+    refresh: 'Actualiser',
+    plan: 'Forfait {{planName}}',
+    autoDistribution: 'Répartition automatique pour {{amount}} par abonnement',
+    professionals: 'Professionnels',
+    appMaintenance: 'App & Maintenance',
+    paymentPlatform: 'Plateforme paiement',
+    netProfit: 'Bénéfices nets',
+    reinvestment: 'Réinvestissement',
+    toast: {
+      errorTitle: 'Erreur',
+      configLoadError: 'Impossible de charger la configuration de distribution',
+      loadError: 'Impossible de charger {{item}}',
+      monthlyDistribution: 'la distribution mensuelle',
+    },
+    specialities: {
+      endocrinologist: 'Endocrinologue',
+      general_practitioner: 'Médecin Généraliste',
+    },
+    status: {
+      pending: 'En attente',
+      approved: 'Approuvé',
+      paid: 'Payé',
+      distributed: 'Distribué',
+    },
+    distribution: {
+      approved: {
+        title: 'Distribution approuvée',
+        description: 'La distribution des revenus a été approuvée avec succès',
+      },
+      error: 'Impossible de traiter la distribution',
+    },
+    error: {
+      title: 'Erreur',
+    },
+    distributionCards: {
+      totalRevenue: 'Revenus Total',
+      subscriptions: '{{count}} abonnements',
+      professionals: 'Professionnels',
+      toRedistribute: 'À redistribuer',
+      netProfit: 'Bénéfices Nets',
+      fixedShare: 'Votre part fixe: {{amount}} F CFA',
+      reinvesment: 'Réinvestissement',
+      marketingDevelopment: 'Marketing & développement',
+      title: 'Distribution de {{month}}',
+      description: 'Statut actuel de la distribution mensuelle automatique',
+      appFees: 'Frais App & Maintenance',
+      platformFees: 'Frais Plateforme Paiement',
+      progress: 'Progression',
+      distributionStatus: 'Distribution',
+      toProfessionals: 'aux professionnels',
+      approveDistribution: 'Approuver la Distribution',
+    },
+    earningsCard: {
+      title: 'Gains par Professionnel',
+      description: 'Détail des paiements aux professionnels de santé',
+      professional: 'Professionnel',
+      speciality: 'Spécialité',
+      consultations: 'Consultations',
+      patients: 'Patients',
+      grossAmount: 'Montant Brut',
+      platformFee: 'Commission',
+      netAmount: 'Net à Payer',
+      status: 'Statut',
+    },
+    actions: {
+      exportPDF: 'Exporter PDF',
+      reportExcel: 'Rapport Excel',
+      sendEmail: 'Envoyer par Email',
+      history: 'Historique',
+    },
+  },
+
+  roleProgressCard: {
+    memberStatus: {
+      title: 'Statut de membre',
+    },
+    userStats: {
+      sentMessages: 'Messages envoyés',
+      receivedReactions: 'Réactions reçues',
+      activeDays: 'Jours actifs',
+      warnings: 'Avertissements',
+      nextLevelProgress: 'Progression vers le niveau suivant',
+    },
+    status: {
+      validated: 'Validé',
+    },
+    roleManagement: {
+      title: 'Gestion des rôles',
+      verifiedMember: 'Membre Vérifié',
+      expert: 'Expert',
+      moderator: 'Modérateur',
+      demote: 'Rétrograder',
+    },
+    userProgress: {
+      maxLevelNotice:
+        'Vous avez atteint le niveau maximum disponible ou votre progression nécessite une validation manuelle.',
+    },
+  },
+
+  simplifiedPredictiveAlerts: {
+    riskLevel: {
+      veryHigh: 'Très Élevé',
+      high: 'Élevé',
+      moderate: 'Modéré',
+      low: 'Faible',
+    },
+    advancedAI: {
+      title: 'Analyse IA Avancée...',
+      subtitle: 'Machine Learning • Prédiction Multi-facteurs',
+      glycemicPatternAnalysis: 'Analyse des patterns glycémiques',
+    },
+    multiFactorAI: {
+      title: 'IA Prédictive Multi-facteurs',
+      features: 'Glycémie • Repas • Insuline • Âge • Activités',
+      analyze: 'Analyser',
+      dismissAll: 'Tout lire',
+      alerts: 'Alertes IA',
+      critical: 'Critiques',
+      high: 'Urgentes',
+      medium: 'À surveiller',
+      age: 'Âge',
+      type: 'Type',
+      ratio: 'Ratio G/I',
+      target: 'Cible',
+    },
+    emergencyCard: {
+      title: 'SOS Famille',
+      subtitle: "Alerte d'urgence immédiate",
+      alertFamily: 'Alerter Famille',
+    },
+    familyCard: {
+      title: 'Famille Notifiée ({{count}})',
+      lastNotification: 'Dernière notification : {{time}}',
+      noNotifications: "Aucune notification pour l'instant",
+    },
+    iaCard: {
+      title: '🤖 Analyse IA Complète',
+      description: 'Aucun risque prévisible détecté pour le moment.',
+      patternsOk: 'Patterns OK',
+      stablePredictions: 'Prédictions Stables',
+      familyNotified: 'Famille Informée',
+    },
+    alert: {
+      riskLevel: 'Niveau de risque:',
+      confidence: 'Confiance IA:',
+      iaPrediction: '🤖 Prédiction IA :',
+      inApprox: 'dans ~{{minutes}} min',
+    },
+    ai: {
+      recommendedActions: "Actions recommandées par l'IA",
+      version: 'IA {{version}}',
+    },
+    badge: {
+      familyNotified: 'Famille Notifiée',
+    },
+    predictiveSystem: {
+      active: 'Système IA Prédictif Actif',
+      description:
+        'Surveillance continue • Notifications famille en temps réel • Machine Learning',
+      nextAnalysisLabel: 'Prochaine analyse',
+      nextAnalysisTime: 'dans {{time}}',
+    },
+  },
+
+  SOSButton: {
+    emergency: {
+      sosButton: "🆘 Besoin d'aide urgente",
+      dialogTitle: "Demande d'aide d'urgence",
+      dialogDescription:
+        "Ceci enverra une notification prioritaire aux experts en ligne. Si c'est une urgence médicale immédiate, appelez le 15 (SAMU).",
+      contactNumbers: "Numéros d'urgence",
+      samu: 'SAMU',
+      sosDoctors: 'SOS Médecins',
+      poisonCenter: 'Centre antipoison',
+      messageLabel: 'Décrivez brièvement votre situation (optionnel)',
+      messagePlaceholder:
+        'Ex: Hypoglycémie sévère, besoin de conseil urgent...',
+      onlineExperts: 'Experts disponibles',
+      expertCount:
+        '{{count}} expert(s) en ligne · Temps de réponse moyen: < 5 min',
+      cancel: 'Annuler',
+      sending: 'Envoi...',
+      sendRequest: "Envoyer la demande d'urgence",
+    },
+  },
+
+  supportDashboard: {
+    error: {
+      retry: 'Réessayer',
+    },
+    communitySupport: {
+      title: 'Support Communautaire',
+      description: 'Entraide, sessions de groupe et défis communautaires',
+      refresh: 'Actualiser',
+    },
+    emergencySupport: {
+      title: "Support d'Urgence",
+      description:
+        "Besoin d'aide immédiate ? Nos experts sont là pour vous aider 24h/7j",
+      warning: "Cliquez seulement en cas de besoin réel d'assistance",
+      availableExperts: 'Experts disponibles',
+      averageResponse: 'Temps de réponse moyen: < 5 minutes',
+    },
+    communityTabs: {
+      sessions: 'Sessions',
+      challenges: 'Défis',
+      buddies: 'Binômes',
+      experts: 'Experts',
+    },
+    community: {
+      sessions: {
+        title: 'Sessions de Support',
+        description:
+          'Rejoignez nos sessions thématiques animées par des experts',
+        noSessions: 'Aucune session programmée pour le moment',
+      },
+      challenges: {
+        title: 'Défis Communautaires',
+        description:
+          'Participez aux défis et gagnez des badges de reconnaissance',
+        noChallenges: 'Aucun défi disponible pour le moment',
+      },
+    },
+    peerSupport: {
+      title: 'Système de Binômes',
+      description: 'Trouvez un mentor ou accompagnez un nouveau membre',
+      mentorship: 'Relation de mentorat',
+      active: 'Actif',
+      startedOn: 'Commencé le {{date}}',
+      noPairs: "Vous n'avez pas encore de binôme assigné",
+      becomeMentor: 'Devenir mentor',
+      findMentor: 'Trouver un mentor',
+    },
+    expertsOnline: {
+      title: 'Experts en Ligne',
+      description: 'Nos experts diabète disponibles pour vous aider',
+      available: 'Expert disponible',
+      specialties: 'Spécialités',
+      responseTime: 'Temps de réponse',
+      minutes: 'min',
+      totalResponses: 'réponses données',
+      noneAvailable: 'Aucun expert disponible en ce moment',
+    },
+  },
+
+  supportSessionCard: {
+    sessionType: {
+      group: 'Séance de groupe',
+      mentoring: 'Mentorat',
+      emergency: "Support d'urgence",
+      challenge: 'Groupe défi',
+    },
+    userStatus: {
+      registered: 'Inscrit',
+    },
+    session: {
+      moderatedBy: 'Animé par {{name}}',
+      recurring: 'Séance récurrente · {{pattern}}',
+      past: 'Séance passée',
+      leave: 'Se désinscrire',
+      join: 'Rejoindre',
+      full: 'Complet',
+      enter: 'Rejoindre',
+      full_waitlist:
+        "Cette session est complète. Vous pouvez vous inscrire sur liste d'attente.",
+    },
+  },
+
+  thematicGroups: {
+    groups: {
+      newcomers: {
+        name: '🌱 Nouveaux Diabétiques',
+        description: 'Support pour débuter',
+      },
+      parents: {
+        name: "👨‍👩‍👧‍👦 Parents d'Enfants Diabétiques",
+        description: 'Conseils parentaux',
+      },
+      nutrition: {
+        name: '🍽️ Nutrition Africaine',
+        description: 'Cuisine locale adaptée',
+      },
+      active: { name: '🏃 Diabète & Sport', description: 'Activité physique' },
+    },
+    community: {
+      groupsTitle: 'Groupes Thématiques',
+    },
+  },
+
+  userRoleBadge: {
+    roles: {
+      member: 'Membre',
+      verified_member: 'Vérifié',
+      expert: 'Expert',
+      moderator: 'Modérateur',
+    },
+  },
+
+  virtualizedList: {
+    virtualizedList: {
+      empty: 'Aucun élément à afficher',
+      loading: 'Chargement...',
     },
   },
 };

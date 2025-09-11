@@ -1,10 +1,17 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Trophy, TrendingUp, Users, Heart, Share, Award } from 'lucide-react';
 import { useGamification } from '@/hooks/useGamification';
 import BadgeDisplay from './BadgeDisplay';
 import { CommunityGamification } from '@/utils/CommunityGamification';
+import { useTranslation } from 'react-i18next';
 
 interface ReputationCardProps {
   userId?: string;
@@ -12,7 +19,14 @@ interface ReputationCardProps {
 }
 
 const ReputationCard = ({ userId, compact = false }: ReputationCardProps) => {
-  const { reputation, badges, loading, getReputationLevel, getBadgesByCategory } = useGamification(userId);
+  const { t } = useTranslation();
+  const {
+    reputation,
+    badges,
+    loading,
+    getReputationLevel,
+    getBadgesByCategory,
+  } = useGamification(userId);
 
   if (loading) {
     return (
@@ -44,8 +58,12 @@ const ReputationCard = ({ userId, compact = false }: ReputationCardProps) => {
           <div className="flex items-center gap-2">
             <Trophy className="w-5 h-5 text-primary" />
             <div>
-              <div className="font-semibold text-sm">{reputation.score} pts</div>
-              <div className={`text-xs ${levelInfo.color}`}>{levelInfo.level}</div>
+              <div className="font-semibold text-sm">
+                {reputation.score} pts
+              </div>
+              <div className={`text-xs ${levelInfo.color}`}>
+                {levelInfo.level}
+              </div>
             </div>
           </div>
           <div className="flex gap-1">
@@ -70,34 +88,61 @@ const ReputationCard = ({ userId, compact = false }: ReputationCardProps) => {
           <div>
             <CardTitle className="flex items-center gap-2">
               <Trophy className="w-5 h-5 text-primary" />
-              Réputation communautaire
+              {t('reputationCard.communityReputation.title')}
             </CardTitle>
-            <CardDescription>Votre contribution à la communauté DARE</CardDescription>
+            <CardDescription>
+              {t('reputationCard.communityReputation.description')}
+            </CardDescription>
           </div>
           <div className="text-right">
-            <div className="text-2xl font-bold text-primary">{reputation.score}</div>
-            <Badge variant="outline" className={`${levelInfo.color} border-current`}>
+            <div className="text-2xl font-bold text-primary">
+              {reputation.score}
+            </div>
+            <Badge
+              variant="outline"
+              className={`${levelInfo.color} border-current`}
+            >
               {levelInfo.level}
             </Badge>
           </div>
         </div>
       </CardHeader>
+
       <CardContent className="space-y-6">
         {/* Progression vers le niveau suivant */}
         {levelInfo.nextThreshold && (
           <div className="space-y-2">
             <div className="flex justify-between text-sm">
-              <span>Progression vers {levelInfo.level === 'Débutant' ? 'Actif' : 
-                    levelInfo.level === 'Actif' ? 'Contributeur' : 
-                    levelInfo.level === 'Contributeur' ? 'Expert' : 'Légende'}</span>
-              <span>{reputation.score}/{levelInfo.nextThreshold}</span>
+              <span>
+                {t('reputationCard.communityReputation.progressTowards', {
+                  nextLevel:
+                    levelInfo.level === 'beginner'
+                      ? t('reputationCard.communityReputation.levels.active')
+                      : levelInfo.level === 'active'
+                        ? t(
+                            'reputationCard.communityReputation.levels.contributor'
+                          )
+                        : levelInfo.level === 'contributor'
+                          ? t(
+                              'reputationCard.communityReputation.levels.expert'
+                            )
+                          : t(
+                              'reputationCard.communityReputation.levels.legend'
+                            ),
+                })}
+              </span>
+              <span>
+                {reputation.score}/{levelInfo.nextThreshold}
+              </span>
             </div>
-            <Progress 
+            <Progress
               value={(reputation.score / levelInfo.nextThreshold) * 100}
               className="h-2"
             />
             <p className="text-xs text-muted-foreground">
-              Plus que {levelInfo.nextThreshold - reputation.score} points pour le niveau suivant
+              {t('reputationCard.communityReputation.pointsToNext', {
+                points: levelInfo.nextThreshold - reputation.score,
+              })}
             </p>
           </div>
         )}
@@ -107,29 +152,50 @@ const ReputationCard = ({ userId, compact = false }: ReputationCardProps) => {
           <div className="flex items-center gap-2 p-2 bg-muted rounded-lg">
             <Heart className="w-4 h-4 text-red-500" />
             <div>
-              <div className="text-sm font-semibold">{reputation.helpfulMessages}</div>
-              <div className="text-xs text-muted-foreground">Messages utiles</div>
+              <div className="text-sm font-semibold">
+                {reputation.helpfulMessages}
+              </div>
+              <div className="text-xs text-muted-foreground">
+                {t('reputationCard.communityReputation.stats.helpfulMessages')}
+              </div>
             </div>
           </div>
+
           <div className="flex items-center gap-2 p-2 bg-muted rounded-lg">
             <TrendingUp className="w-4 h-4 text-green-500" />
             <div>
-              <div className="text-sm font-semibold">{reputation.positiveReactions}</div>
-              <div className="text-xs text-muted-foreground">Réactions positives</div>
+              <div className="text-sm font-semibold">
+                {reputation.positiveReactions}
+              </div>
+              <div className="text-xs text-muted-foreground">
+                {t(
+                  'reputationCard.communityReputation.stats.positiveReactions'
+                )}
+              </div>
             </div>
           </div>
+
           <div className="flex items-center gap-2 p-2 bg-muted rounded-lg">
             <Share className="w-4 h-4 text-blue-500" />
             <div>
-              <div className="text-sm font-semibold">{reputation.dataShares}</div>
-              <div className="text-xs text-muted-foreground">Partages de données</div>
+              <div className="text-sm font-semibold">
+                {reputation.dataShares}
+              </div>
+              <div className="text-xs text-muted-foreground">
+                {t('reputationCard.communityReputation.stats.dataShares')}
+              </div>
             </div>
           </div>
+
           <div className="flex items-center gap-2 p-2 bg-muted rounded-lg">
             <Users className="w-4 h-4 text-purple-500" />
             <div>
-              <div className="text-sm font-semibold">{reputation.mentoredUsers}</div>
-              <div className="text-xs text-muted-foreground">Personnes mentorées</div>
+              <div className="text-sm font-semibold">
+                {reputation.mentoredUsers}
+              </div>
+              <div className="text-xs text-muted-foreground">
+                {t('reputationCard.communityReputation.stats.mentoredUsers')}
+              </div>
             </div>
           </div>
         </div>
@@ -139,12 +205,16 @@ const ReputationCard = ({ userId, compact = false }: ReputationCardProps) => {
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <Award className="w-4 h-4 text-primary" />
-              <h4 className="font-semibold">Badges obtenus ({badges.length})</h4>
+              <h4 className="font-semibold">
+                {t('reputationCard.badges.title', { count: badges.length })}
+              </h4>
             </div>
-            
+
             {badgeCategories.engagement.length > 0 && (
               <div className="space-y-2">
-                <h5 className="text-sm font-medium text-muted-foreground">Engagement</h5>
+                <h5 className="text-sm font-medium text-muted-foreground">
+                  {t('reputationCard.badges.engagement')}
+                </h5>
                 <div className="flex flex-wrap gap-2">
                   {badgeCategories.engagement.map(badge => (
                     <BadgeDisplay key={badge!.id} badge={badge!} size="sm" />
@@ -152,10 +222,12 @@ const ReputationCard = ({ userId, compact = false }: ReputationCardProps) => {
                 </div>
               </div>
             )}
-            
+
             {badgeCategories.expertise.length > 0 && (
               <div className="space-y-2">
-                <h5 className="text-sm font-medium text-muted-foreground">Expertise</h5>
+                <h5 className="text-sm font-medium text-muted-foreground">
+                  {t('reputationCard.badges.expertise')}
+                </h5>
                 <div className="flex flex-wrap gap-2">
                   {badgeCategories.expertise.map(badge => (
                     <BadgeDisplay key={badge!.id} badge={badge!} size="sm" />
@@ -170,7 +242,7 @@ const ReputationCard = ({ userId, compact = false }: ReputationCardProps) => {
           <div className="text-center py-4">
             <Award className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
             <p className="text-sm text-muted-foreground">
-              Participez à la communauté pour gagner vos premiers badges !
+              {t('reputationCard.badges.invite')}
             </p>
           </div>
         )}

@@ -198,8 +198,8 @@ const JournalScreen = ({ showAlert, setShowAlert }: JournalScreenProps) => {
       label: isToday(new Date(day))
         ? 'Today'
         : isYesterday(new Date(day))
-        ? 'Yesterday'
-        : format(new Date(day), 'EEEE, MMM d'),
+          ? 'Yesterday'
+          : format(new Date(day), 'EEEE, MMM d'),
       entries: items,
     }));
   }, [buildEntries]);
