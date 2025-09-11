@@ -5,7 +5,15 @@ import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
 import { AuditSystem } from '@/utils/AuditSystem';
-import { Calendar, Clock, Shield, Download, Eye, MessageCircle } from 'lucide-react';
+import {
+  Calendar,
+  Clock,
+  Shield,
+  Download,
+  Eye,
+  MessageCircle,
+} from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface AccessHistoryItem {
   id: string;
@@ -24,7 +32,10 @@ interface PatientAccessHistoryProps {
   patientId: string;
 }
 
-export const PatientAccessHistory: React.FC<PatientAccessHistoryProps> = ({ patientId }) => {
+export const PatientAccessHistory: React.FC<PatientAccessHistoryProps> = ({
+  patientId,
+}) => {
+  const { t } = useTranslation();
   const [accessHistory, setAccessHistory] = useState<AccessHistoryItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -39,79 +50,113 @@ export const PatientAccessHistory: React.FC<PatientAccessHistoryProps> = ({ pati
   const loadAccessHistory = async (patientId: string) => {
     setLoading(true);
     setError(null);
-    
+
     try {
       // Charger l'historique des 30 derniers jours
       const timeframe = {
         start: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
-        end: new Date()
+        end: new Date(),
       };
-      
-      const report = await AuditSystem.generateAccessReport(patientId, timeframe);
-      
+
+      const report = await AuditSystem.generateAccessReport(
+        patientId,
+        timeframe
+      );
+
       // Pour le moment, utiliser des données simulées réalistes
       const mockHistory: AccessHistoryItem[] = [
         {
           id: '1',
           professionalName: 'Dr. Sarah Martin',
-          professionalType: 'Endocrinologue',
+          professionalType: t(
+            'patientAccessHistory.professionalType.endocrinologist'
+          ),
           professionalCode: 'ENDO-SN-2847',
-          timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), // Il y a 2 heures
+          timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
           duration: 25,
           actionType: 'consultation',
-          dataAccessed: ['glucose', 'medications', 'overview'],
-          isSuspicious: false
+          dataAccessed: [
+            t('patientAccessHistory.data.glucose'),
+            t('patientAccessHistory.data.medications'),
+            t('patientAccessHistory.data.overview'),
+          ],
+          isSuspicious: false,
         },
         {
           id: '2',
           professionalName: 'Dr. Ahmed Diop',
-          professionalType: 'Médecin généraliste',
+          professionalType: t(
+            'patientAccessHistory.professionalType.generalPractitioner'
+          ),
           professionalCode: 'MGEN-SN-1523',
-          timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(), // Hier
+          timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
           duration: 8,
           actionType: 'view',
-          dataAccessed: ['glucose', 'overview'],
-          isSuspicious: false
+          dataAccessed: [
+            t('patientAccessHistory.data.glucose'),
+            t('patientAccessHistory.data.overview'),
+          ],
+          isSuspicious: false,
         },
         {
           id: '3',
           professionalName: 'Fatou Sow',
-          professionalType: 'Nutritionniste',
+          professionalType: t(
+            'patientAccessHistory.professionalType.nutritionist'
+          ),
           professionalCode: 'NUTR-SN-8934',
-          timestamp: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(), // Il y a 3 jours
+          timestamp: new Date(
+            Date.now() - 3 * 24 * 60 * 60 * 1000
+          ).toISOString(),
           duration: 15,
           actionType: 'consultation',
-          dataAccessed: ['meals', 'glucose', 'activities'],
-          isSuspicious: false
+          dataAccessed: [
+            t('patientAccessHistory.data.meals'),
+            t('patientAccessHistory.data.glucose'),
+            t('patientAccessHistory.data.activities'),
+          ],
+          isSuspicious: false,
         },
         {
           id: '4',
           professionalName: 'Dr. Mamadou Fall',
-          professionalType: 'Endocrinologue',
+          professionalType: t(
+            'patientAccessHistory.professionalType.endocrinologist'
+          ),
           professionalCode: 'ENDO-SN-4721',
-          timestamp: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(), // Il y a une semaine
+          timestamp: new Date(
+            Date.now() - 7 * 24 * 60 * 60 * 1000
+          ).toISOString(),
           duration: 35,
-          actionType: 'consultation',
-          dataAccessed: ['glucose', 'medications', 'meals', 'activities', 'overview'],
-          isSuspicious: false
+          actionType: 'view',
+          dataAccessed: [
+            t('patientAccessHistory.data.glucose'),
+            t('patientAccessHistory.data.medications'),
+            t('patientAccessHistory.data.meals'),
+            t('patientAccessHistory.data.activities'),
+            t('patientAccessHistory.data.overview'),
+          ],
+          isSuspicious: false,
         },
         {
           id: '5',
           professionalName: 'Access Suspect',
-          professionalType: 'Inconnu',
+          professionalType: t('patientAccessHistory.professionalType.unknown'),
           professionalCode: 'UNKNOWN-XX-0000',
-          timestamp: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(), // Il y a 10 jours
+          timestamp: new Date(
+            Date.now() - 10 * 24 * 60 * 60 * 1000
+          ).toISOString(),
           duration: 1,
           actionType: 'view',
           dataAccessed: [],
-          isSuspicious: true
-        }
+          isSuspicious: true,
+        },
       ];
-      
+
       setAccessHistory(mockHistory);
     } catch (err: any) {
-      setError(err.message || 'Erreur lors du chargement de l\'historique');
-      console.error('Erreur chargement historique:', err);
+      setError(err.message || t('patientAccessHistory.errors.loadingHistory'));
+      console.error(t('patientAccessHistory.errors.loadingHistory'), err);
     } finally {
       setLoading(false);
     }
@@ -120,24 +165,31 @@ export const PatientAccessHistory: React.FC<PatientAccessHistoryProps> = ({ pati
   const formatDateTime = (timestamp: string): string => {
     const date = new Date(timestamp);
     const now = new Date();
-    const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
-    
+    const diffInHours = Math.floor(
+      (now.getTime() - date.getTime()) / (1000 * 60 * 60)
+    );
+
     if (diffInHours < 1) {
-      const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60));
-      return `Il y a ${diffInMinutes} min`;
+      const diffInMinutes = Math.floor(
+        (now.getTime() - date.getTime()) / (1000 * 60)
+      );
+      return t('patientAccessHistory.time.agoMinutes', {
+        count: diffInMinutes,
+      });
     } else if (diffInHours < 24) {
-      return `Il y a ${diffInHours}h`;
+      return t('patientAccessHistory.time.agoHours', { count: diffInHours });
     } else if (diffInHours < 48) {
-      return 'Hier';
+      return t('patientAccessHistory.time.yesterday');
     } else {
       const diffInDays = Math.floor(diffInHours / 24);
       if (diffInDays < 7) {
-        return `Il y a ${diffInDays} jours`;
+        return t('patientAccessHistory.time.agoDays', { count: diffInDays });
       } else {
-        return date.toLocaleDateString('fr-FR', {
+        return date.toLocaleDateString(undefined, {
           day: 'numeric',
           month: 'short',
-          year: date.getFullYear() !== now.getFullYear() ? 'numeric' : undefined
+          year:
+            date.getFullYear() !== now.getFullYear() ? 'numeric' : undefined,
         });
       }
     }
@@ -151,7 +203,9 @@ export const PatientAccessHistory: React.FC<PatientAccessHistoryProps> = ({ pati
     } else {
       const hours = Math.floor(minutes / 60);
       const remainingMinutes = minutes % 60;
-      return remainingMinutes > 0 ? `${hours}h ${remainingMinutes}min` : `${hours}h`;
+      return remainingMinutes > 0
+        ? `${hours}h ${remainingMinutes}min`
+        : `${hours}h`;
     }
   };
 
@@ -172,25 +226,25 @@ export const PatientAccessHistory: React.FC<PatientAccessHistoryProps> = ({ pati
   const getActionLabel = (actionType: string) => {
     switch (actionType) {
       case 'consultation':
-        return 'Consultation';
+        return t('patientAccessHistory.actions.consultation');
       case 'view':
-        return 'Consultation données';
+        return t('patientAccessHistory.actions.viewData');
       case 'download':
-        return 'Téléchargement';
+        return t('patientAccessHistory.actions.download');
       case 'export':
-        return 'Export données';
+        return t('patientAccessHistory.actions.exportData');
       default:
-        return 'Accès';
+        return t('patientAccessHistory.actions.access');
     }
   };
 
   const getSectionLabel = (section: string) => {
     const labels: Record<string, string> = {
-      'glucose': 'Glycémie',
-      'medications': 'Médications',
-      'meals': 'Repas',
-      'activities': 'Activités',
-      'overview': 'Vue d\'ensemble'
+      glucose: t('patientAccessHistory.data.glucose'),
+      medications: t('patientAccessHistory.data.medications'),
+      meals: t('patientAccessHistory.data.meals'),
+      activities: t('patientAccessHistory.data.activities'),
+      overview: t('patientAccessHistory.data.overview'),
     };
     return labels[section] || section;
   };
@@ -198,22 +252,22 @@ export const PatientAccessHistory: React.FC<PatientAccessHistoryProps> = ({ pati
   const downloadReport = async () => {
     try {
       toast({
-        title: "📄 Génération du rapport",
-        description: "Préparation du rapport d'accès en cours...",
+        title: t('patientAccessHistory.report.generatingTitle'),
+        description: t('patientAccessHistory.report.generatingDesc'),
       });
-      
+
       // Simuler la génération du rapport
       setTimeout(() => {
         toast({
-          title: "✅ Rapport généré",
-          description: "Le rapport d'accès a été téléchargé avec succès",
+          title: t('patientAccessHistory.report.successTitle'),
+          description: t('patientAccessHistory.report.successDesc'),
         });
       }, 2000);
     } catch (error) {
       toast({
-        title: "❌ Erreur",
-        description: "Impossible de générer le rapport",
-        variant: "destructive"
+        title: t('patientAccessHistory.report.errorTitle'),
+        description: t('patientAccessHistory.report.errorDesc'),
+        variant: 'destructive',
       });
     }
   };
@@ -224,7 +278,7 @@ export const PatientAccessHistory: React.FC<PatientAccessHistoryProps> = ({ pati
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Shield className="h-5 w-5" />
-            Historique d'Accès à mes Données
+            {t('patientAccessHistory.history.accessTitle')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -246,13 +300,16 @@ export const PatientAccessHistory: React.FC<PatientAccessHistoryProps> = ({ pati
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-destructive">
             <Shield className="h-5 w-5" />
-            Erreur de Chargement
+            {t('patientAccessHistory.history.loadingError')}
           </CardTitle>
         </CardHeader>
         <CardContent>
           <p className="text-muted-foreground mb-4">{error}</p>
-          <Button onClick={() => loadAccessHistory(patientId)} variant="outline">
-            Réessayer
+          <Button
+            onClick={() => loadAccessHistory(patientId)}
+            variant="outline"
+          >
+            {t('patientAccessHistory.actions.retry')}
           </Button>
         </CardContent>
       </Card>
@@ -264,10 +321,10 @@ export const PatientAccessHistory: React.FC<PatientAccessHistoryProps> = ({ pati
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Shield className="h-5 w-5" />
-          🔍 Historique d'Accès à mes Données
+          {t('history.accessTitle')}
         </CardTitle>
         <p className="text-sm text-muted-foreground">
-          Tous les accès à vos données sont tracés et sécurisés
+          {t('history.accessSubtitle')}
         </p>
       </CardHeader>
       <CardContent>
@@ -275,14 +332,16 @@ export const PatientAccessHistory: React.FC<PatientAccessHistoryProps> = ({ pati
           {accessHistory.length === 0 ? (
             <div className="text-center py-8 text-muted-foreground">
               <Shield className="h-12 w-12 mx-auto mb-4 opacity-50" />
-              <p>Aucun accès récent à vos données</p>
+              <p>{t('history.noRecentAccess')}</p>
             </div>
           ) : (
             accessHistory.map(access => (
-              <div 
-                key={access.id} 
+              <div
+                key={access.id}
                 className={`border rounded-lg p-4 transition-colors hover:bg-muted/50 ${
-                  access.isSuspicious ? 'border-destructive/50 bg-destructive/5' : 'border-border'
+                  access.isSuspicious
+                    ? 'border-destructive/50 bg-destructive/5'
+                    : 'border-border'
                 }`}
               >
                 <div className="flex justify-between items-start">
@@ -291,12 +350,13 @@ export const PatientAccessHistory: React.FC<PatientAccessHistoryProps> = ({ pati
                       <h4 className="font-bold">{access.professionalName}</h4>
                       {access.isSuspicious && (
                         <Badge variant="destructive" className="text-xs">
-                          ⚠️ Suspect
+                          {t('history.suspect')}
                         </Badge>
                       )}
                     </div>
                     <p className="text-sm text-muted-foreground">
-                      {access.professionalType} • Code: {access.professionalCode}
+                      {t(`professionalType.${access.professionalType}`)} •{' '}
+                      {t('history.code')}: {access.professionalCode}
                     </p>
                     <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
                       <div className="flex items-center gap-1">
@@ -309,10 +369,14 @@ export const PatientAccessHistory: React.FC<PatientAccessHistoryProps> = ({ pati
                       </div>
                     </div>
                   </div>
-                  
+
                   <div className="text-right">
-                    <Badge 
-                      variant={access.actionType === 'consultation' ? 'default' : 'secondary'}
+                    <Badge
+                      variant={
+                        access.actionType === 'consultation'
+                          ? 'default'
+                          : 'secondary'
+                      }
                       className="flex items-center gap-1"
                     >
                       {getActionIcon(access.actionType)}
@@ -320,16 +384,19 @@ export const PatientAccessHistory: React.FC<PatientAccessHistoryProps> = ({ pati
                     </Badge>
                   </div>
                 </div>
-                
-                {/* Données consultées */}
+
                 {access.dataAccessed.length > 0 && (
                   <div className="mt-3 pt-3 border-t">
                     <div className="text-xs text-muted-foreground mb-2">
-                      <strong>Sections consultées:</strong>
+                      <strong>{t('history.sectionsAccessed')}:</strong>
                     </div>
                     <div className="flex flex-wrap gap-1">
                       {access.dataAccessed.map((section, index) => (
-                        <Badge key={index} variant="outline" className="text-xs">
+                        <Badge
+                          key={index}
+                          variant="outline"
+                          className="text-xs"
+                        >
                           {getSectionLabel(section)}
                         </Badge>
                       ))}
@@ -340,12 +407,16 @@ export const PatientAccessHistory: React.FC<PatientAccessHistoryProps> = ({ pati
             ))
           )}
         </div>
-        
+
         {accessHistory.length > 0 && (
           <div className="mt-6 flex justify-center">
-            <Button onClick={downloadReport} variant="outline" className="flex items-center gap-2">
+            <Button
+              onClick={downloadReport}
+              variant="outline"
+              className="flex items-center gap-2"
+            >
               <Download className="h-4 w-4" />
-              📄 Télécharger Rapport Complet
+              {t('actions.downloadFullReport')}
             </Button>
           </div>
         )}

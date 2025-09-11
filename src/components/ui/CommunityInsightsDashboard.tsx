@@ -1,28 +1,38 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { 
-  TrendingUp, 
-  MapPin, 
-  Clock, 
-  AlertTriangle, 
-  Users, 
-  RefreshCw 
+import {
+  TrendingUp,
+  MapPin,
+  Clock,
+  AlertTriangle,
+  Users,
+  RefreshCw,
 } from 'lucide-react';
 import { useCommunityInsights } from '@/hooks/useDataIntegration';
+import { useTranslation } from 'react-i18next';
 
 const CommunityInsightsDashboard = () => {
+  const { t } = useTranslation();
   const { insights, loading, error, refresh } = useCommunityInsights();
 
   if (loading) {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Insights Communautaires</CardTitle>
+          <CardTitle>
+            {t('communityInsightDashboard.Community.insights')}
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="animate-pulse space-y-4">
-            {[1, 2, 3, 4].map((i) => (
+            {[1, 2, 3, 4].map(i => (
               <div key={i} className="h-16 bg-muted rounded"></div>
             ))}
           </div>
@@ -35,7 +45,9 @@ const CommunityInsightsDashboard = () => {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Insights Communautaires</CardTitle>
+          <CardTitle>
+            {t('communityInsightDashboard.Community.insights')}
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="text-center py-8">
@@ -43,7 +55,7 @@ const CommunityInsightsDashboard = () => {
             <p className="text-muted-foreground mb-4">{error}</p>
             <Button onClick={refresh} variant="outline">
               <RefreshCw className="w-4 h-4 mr-2" />
-              Réessayer
+              {t('communityInsightDashboard.Actions.retry')}
             </Button>
           </div>
         </CardContent>
@@ -60,10 +72,12 @@ const CommunityInsightsDashboard = () => {
           <div>
             <CardTitle className="flex items-center gap-2">
               <Users className="w-5 h-5 text-primary" />
-              Insights Communautaires
+              {t('communityInsightDashboard.Community.insights')}
             </CardTitle>
             <CardDescription>
-              Données anonymisées de la communauté - Mis à jour le {insights.lastUpdated}
+              {t('communityInsightDashboard.Community.anonymizedData', {
+                date: insights.lastUpdated,
+              })}
             </CardDescription>
           </div>
           <Button onClick={refresh} variant="outline" size="sm">
@@ -77,13 +91,22 @@ const CommunityInsightsDashboard = () => {
             <div className="flex items-center gap-3">
               <TrendingUp className="w-8 h-8 text-medical-green" />
               <div>
-                <h3 className="font-semibold text-lg">Temps dans la cible moyen</h3>
-                <p className="text-sm text-muted-foreground">Communauté globale</p>
+                <h3 className="font-semibold text-lg">
+                  {t('communityInsightDashboard.Community.avgTimeInTarget')}
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  {t('communityInsightDashboard.Community.globalCommunity')}
+                </p>
               </div>
             </div>
             <div className="text-right">
-              <div className="text-3xl font-bold text-medical-green">{insights.averageTimeInRange}</div>
-              <Badge variant="outline" className="bg-medical-green-light text-medical-green border-medical-green">
+              <div className="text-3xl font-bold text-medical-green">
+                {insights.averageTimeInRange}
+              </div>
+              <Badge
+                variant="outline"
+                className="bg-medical-green-light text-medical-green border-medical-green"
+              >
                 <Users className="w-3 h-3 mr-1" />
                 {insights.totalParticipants} participants
               </Badge>
@@ -95,13 +118,24 @@ const CommunityInsightsDashboard = () => {
             <div className="flex items-center gap-3">
               <MapPin className="w-8 h-8 text-medical-blue" />
               <div>
-                <h3 className="font-semibold text-lg">Région la plus active</h3>
-                <p className="text-sm text-muted-foreground">Plus d'engagement communautaire</p>
+                <h3 className="font-semibold text-lg">
+                  {t('communityInsightDashboard.Community.mostActiveRegion')}
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  {t(
+                    'communityInsightDashboard.Community.moreCommunityEngagement'
+                  )}
+                </p>
               </div>
             </div>
             <div className="text-right">
-              <div className="text-2xl font-bold text-medical-blue">{insights.mostActiveRegion}</div>
-              <Badge variant="outline" className="bg-medical-blue-light text-medical-blue border-medical-blue">
+              <div className="text-2xl font-bold text-medical-blue">
+                {insights.mostActiveRegion}
+              </div>
+              <Badge
+                variant="outline"
+                className="bg-medical-blue-light text-medical-blue border-medical-blue"
+              >
                 🏆 Champion
               </Badge>
             </div>
@@ -111,13 +145,15 @@ const CommunityInsightsDashboard = () => {
           <div className="p-4 bg-gradient-to-r from-medical-purple/10 to-medical-purple/5 rounded-lg border border-medical-purple/20">
             <div className="flex items-center gap-3 mb-3">
               <Clock className="w-6 h-6 text-medical-purple" />
-              <h3 className="font-semibold text-lg">Horaires de repas populaires</h3>
+              <h3 className="font-semibold text-lg">
+                {t('communityInsightDashboard.Community.popularMealTimes')}
+              </h3>
             </div>
             <div className="flex flex-wrap gap-2">
               {insights.popularMealTimes.map((time, index) => (
-                <Badge 
-                  key={index} 
-                  variant="outline" 
+                <Badge
+                  key={index}
+                  variant="outline"
                   className="bg-medical-purple-light text-medical-purple border-medical-purple"
                 >
                   {time}
@@ -130,7 +166,9 @@ const CommunityInsightsDashboard = () => {
           <div className="p-4 bg-gradient-to-r from-orange-50 to-orange-25 rounded-lg border border-orange-200">
             <div className="flex items-center gap-3 mb-3">
               <AlertTriangle className="w-6 h-6 text-orange-600" />
-              <h3 className="font-semibold text-lg">Défis communs</h3>
+              <h3 className="font-semibold text-lg">
+                {t('communityInsightDashboard.Community.commonChallenges')}
+              </h3>
             </div>
             <div className="space-y-2">
               {insights.commonChallenges.map((challenge, index) => (
@@ -144,7 +182,7 @@ const CommunityInsightsDashboard = () => {
 
           <div className="pt-4 border-t">
             <p className="text-xs text-muted-foreground text-center">
-              Les données sont anonymisées et agrégées pour protéger la confidentialité des utilisateurs
+              {t('communityInsightDashboard.Community.anonymizedDataNotice')}
             </p>
           </div>
         </CardContent>

@@ -1,6 +1,7 @@
 import React, { useState, useRef, useCallback } from 'react';
 import { PerformanceOptimizer } from '@/utils/PerformanceOptimizer';
 import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
+import { useTranslation } from 'react-i18next';
 
 interface LazyImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   src: string;
@@ -23,7 +24,10 @@ export const LazyImage: React.FC<LazyImageProps> = ({
   className,
   ...props
 }) => {
-  const [imageState, setImageState] = useState<'loading' | 'loaded' | 'error'>('loading');
+  const { t } = useTranslation();
+  const [imageState, setImageState] = useState<'loading' | 'loaded' | 'error'>(
+    'loading'
+  );
   const [currentSrc, setCurrentSrc] = useState(placeholder);
   const imgRef = useRef<HTMLImageElement>(null);
   const optimizer = PerformanceOptimizer.getInstance();
@@ -35,27 +39,31 @@ export const LazyImage: React.FC<LazyImageProps> = ({
   });
 
   // Détermine la qualité d'image optimale
-  const getOptimizedSrc = useCallback((originalSrc: string): string => {
-    const actualQuality = quality === 'auto' ? optimizer.getImageQuality() : quality;
-    
-    // Simulation d'URLs optimisées (à adapter selon votre CDN)
-    const qualityParams = {
-      low: 'q_30,f_auto,w_400',
-      medium: 'q_60,f_auto,w_800', 
-      high: 'q_80,f_auto,w_1200'
-    };
+  const getOptimizedSrc = useCallback(
+    (originalSrc: string): string => {
+      const actualQuality =
+        quality === 'auto' ? optimizer.getImageQuality() : quality;
 
-    // Si l'image supporte WebP et le navigateur aussi
-    if (webpSupport && supportsWebP()) {
-      return originalSrc.includes('?') 
-        ? `${originalSrc}&${qualityParams[actualQuality]},f_webp`
-        : `${originalSrc}?${qualityParams[actualQuality]},f_webp`;
-    }
+      // Simulation d'URLs optimisées (à adapter selon votre CDN)
+      const qualityParams = {
+        low: 'q_30,f_auto,w_400',
+        medium: 'q_60,f_auto,w_800',
+        high: 'q_80,f_auto,w_1200',
+      };
 
-    return originalSrc.includes('?')
-      ? `${originalSrc}&${qualityParams[actualQuality]}`
-      : `${originalSrc}?${qualityParams[actualQuality]}`;
-  }, [quality, optimizer, webpSupport]);
+      // Si l'image supporte WebP et le navigateur aussi
+      if (webpSupport && supportsWebP()) {
+        return originalSrc.includes('?')
+          ? `${originalSrc}&${qualityParams[actualQuality]},f_webp`
+          : `${originalSrc}?${qualityParams[actualQuality]},f_webp`;
+      }
+
+      return originalSrc.includes('?')
+        ? `${originalSrc}&${qualityParams[actualQuality]}`
+        : `${originalSrc}?${qualityParams[actualQuality]}`;
+    },
+    [quality, optimizer, webpSupport]
+  );
 
   // Charge l'image quand elle devient visible
   const loadImage = useCallback(async () => {
@@ -106,18 +114,20 @@ export const LazyImage: React.FC<LazyImageProps> = ({
         loading={priority ? 'eager' : 'lazy'}
         {...props}
       />
-      
+
       {imageState === 'loading' && (
         <div className="absolute inset-0 flex items-center justify-center bg-muted animate-pulse">
           <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
         </div>
       )}
-      
+
       {imageState === 'error' && (
         <div className="absolute inset-0 flex items-center justify-center bg-muted text-muted-foreground">
           <div className="text-center">
             <div className="text-2xl mb-1">📷</div>
-            <div className="text-xs">Image non disponible</div>
+            <div className="text-xs">
+              {t('lazyImage.common.imageUnavailable')}
+            </div>
           </div>
         </div>
       )}
@@ -128,10 +138,10 @@ export const LazyImage: React.FC<LazyImageProps> = ({
 // Détecte le support WebP
 function supportsWebP(): boolean {
   if (typeof window === 'undefined') return false;
-  
+
   const canvas = document.createElement('canvas');
   canvas.width = 1;
   canvas.height = 1;
-  
+
   return canvas.toDataURL('image/webp').indexOf('data:image/webp') === 0;
 }

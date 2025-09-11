@@ -15,8 +15,10 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
+import { useTranslation } from 'react-i18next';
 
 const SOSButton = () => {
+  const { t } = useTranslation();
   const { triggerSOSButton, onlineExperts } = useSupportFeatures();
   const [message, setMessage] = useState('');
   const [isTriggering, setIsTriggering] = useState(false);
@@ -36,24 +38,24 @@ const SOSButton = () => {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button 
-          variant="destructive" 
+        <Button
+          variant="destructive"
           size="lg"
           className="w-full gap-2 bg-red-600 hover:bg-red-700 text-white font-semibold py-3 animate-pulse"
         >
           <AlertTriangle className="w-5 h-5" />
-          🆘 Besoin d'aide urgente
+          {t('SOSButton.emergency.sosButton')}
         </Button>
       </AlertDialogTrigger>
+
       <AlertDialogContent className="max-w-md">
         <AlertDialogHeader>
           <AlertDialogTitle className="flex items-center gap-2 text-red-600">
             <AlertTriangle className="w-5 h-5" />
-            Demande d'aide d'urgence
+            {t('SOSButton.emergency.dialogTitle')}
           </AlertDialogTitle>
           <AlertDialogDescription>
-            Ceci enverra une notification prioritaire aux experts en ligne. 
-            Si c'est une urgence médicale immédiate, appelez le 15 (SAMU).
+            {t('SOSButton.emergency.dialogDescription')}
           </AlertDialogDescription>
         </AlertDialogHeader>
 
@@ -61,24 +63,31 @@ const SOSButton = () => {
           <div className="bg-orange-50 border border-orange-200 rounded-lg p-3">
             <div className="flex items-center gap-2 text-orange-800 font-medium mb-2">
               <Phone className="w-4 h-4" />
-              Numéros d'urgence
+              {t('SOSButton.emergency.contactNumbers')}
             </div>
             <div className="space-y-1 text-sm text-orange-700">
-              <div>SAMU: <strong>15</strong></div>
-              <div>SOS Médecins: <strong>3624</strong></div>
-              <div>Centre antipoison: <strong>01 40 05 48 48</strong></div>
+              <div>
+                {t('SOSButton.emergency.samu')}: <strong>15</strong>
+              </div>
+              <div>
+                {t('SOSButton.emergency.sosDoctors')}: <strong>3624</strong>
+              </div>
+              <div>
+                {t('SOSButton.emergency.poisonCenter')}:{' '}
+                <strong>01 40 05 48 48</strong>
+              </div>
             </div>
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="emergency-message">
-              Décrivez brièvement votre situation (optionnel)
+              {t('SOSButton.emergency.messageLabel')}
             </Label>
             <Textarea
               id="emergency-message"
-              placeholder="Ex: Hypoglycémie sévère, besoin de conseil urgent..."
+              placeholder={t('SOSButton.emergency.messagePlaceholder')}
               value={message}
-              onChange={(e) => setMessage(e.target.value)}
+              onChange={e => setMessage(e.target.value)}
               rows={3}
             />
           </div>
@@ -87,23 +96,29 @@ const SOSButton = () => {
             <div className="bg-green-50 border border-green-200 rounded-lg p-3">
               <div className="flex items-center gap-2 text-green-800 font-medium mb-1">
                 <MessageCircle className="w-4 h-4" />
-                Experts disponibles
+                {t('SOSButton.emergency.onlineExperts')}
               </div>
               <p className="text-sm text-green-700">
-                {onlineExperts.length} expert(s) en ligne · Temps de réponse moyen: &lt; 5 min
+                {t('SOSButton.emergency.expertCount', {
+                  count: onlineExperts.length,
+                })}
               </p>
             </div>
           )}
         </div>
 
         <AlertDialogFooter>
-          <AlertDialogCancel>Annuler</AlertDialogCancel>
+          <AlertDialogCancel>
+            {t('SOSButton.emergency.cancel')}
+          </AlertDialogCancel>
           <AlertDialogAction
             onClick={handleSOS}
             disabled={isTriggering}
             className="bg-red-600 hover:bg-red-700"
           >
-            {isTriggering ? 'Envoi...' : 'Envoyer la demande d\'urgence'}
+            {isTriggering
+              ? t('SOSButton.emergency.sending')
+              : t('SOSButton.emergency.sendRequest')}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

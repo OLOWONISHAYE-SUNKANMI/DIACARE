@@ -1,14 +1,29 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { RefreshCw, Users, Trophy, Heart, Calendar, AlertTriangle } from 'lucide-react';
+import {
+  RefreshCw,
+  Users,
+  Trophy,
+  Heart,
+  Calendar,
+  AlertTriangle,
+} from 'lucide-react';
 import { useSupportFeatures } from '@/hooks/useSupportFeatures';
 import SupportSessionCard from './SupportSessionCard';
 import CommunityChallengeCard from './CommunityChallengeCard';
 import SOSButton from './SOSButton';
+import { useTranslation } from 'react-i18next';
 
 const SupportDashboard = () => {
+  const { t } = useTranslation();
   const {
     supportSessions,
     communityChallenge,
@@ -20,7 +35,7 @@ const SupportDashboard = () => {
     leaveSession,
     joinChallenge,
     updateChallengeProgress,
-    reload
+    reload,
   } = useSupportFeatures();
 
   if (error) {
@@ -30,7 +45,7 @@ const SupportDashboard = () => {
           <AlertTriangle className="w-12 h-12 mx-auto mb-4 text-red-500" />
           <p className="text-muted-foreground">{error}</p>
           <Button onClick={reload} className="mt-4">
-            Réessayer
+            {t('supportDashboard.error.retry')}
           </Button>
         </CardContent>
       </Card>
@@ -41,14 +56,16 @@ const SupportDashboard = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight">Support Communautaire</h2>
+          <h2 className="text-2xl font-bold tracking-tight">
+            {t('supportDashboard.communitySupport.title')}
+          </h2>
           <p className="text-muted-foreground">
-            Entraide, sessions de groupe et défis communautaires
+            {t('supportDashboard.communitySupport.description')}
           </p>
         </div>
         <Button onClick={reload} variant="outline" size="sm" className="gap-2">
           <RefreshCw className="w-4 h-4" />
-          Actualiser
+          {t('supportDashboard.communitySupport.refresh')}
         </Button>
       </div>
 
@@ -57,10 +74,10 @@ const SupportDashboard = () => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-red-700">
             <AlertTriangle className="w-5 h-5" />
-            Support d'Urgence
+            {t('supportDashboard.emergencySupport.title')}
           </CardTitle>
           <CardDescription>
-            Besoin d'aide immédiate ? Nos experts sont là pour vous aider 24h/7j
+            {t('supportDashboard.emergencySupport.description')}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -68,20 +85,22 @@ const SupportDashboard = () => {
             <div className="space-y-2">
               <SOSButton />
               <p className="text-xs text-muted-foreground text-center">
-                Cliquez seulement en cas de besoin réel d'assistance
+                {t('supportDashboard.emergencySupport.warning')}
               </p>
             </div>
-            
+
             <div className="bg-white rounded-lg border p-4">
               <div className="flex items-center gap-2 mb-2">
                 <Users className="w-4 h-4 text-medical-green" />
-                <span className="font-medium text-sm">Experts disponibles</span>
+                <span className="font-medium text-sm">
+                  {t('supportDashboard.emergencySupport.availableExperts')}
+                </span>
               </div>
               <div className="text-2xl font-bold text-medical-green">
                 {onlineExperts.length}
               </div>
               <p className="text-xs text-muted-foreground">
-                Temps de réponse moyen: &lt; 5 minutes
+                {t('supportDashboard.emergencySupport.averageResponse')}
               </p>
             </div>
           </div>
@@ -92,40 +111,44 @@ const SupportDashboard = () => {
         <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="sessions" className="gap-2">
             <Calendar className="w-4 h-4" />
-            Sessions
+            {t('supportDashboard.communityTabs.sessions')}
           </TabsTrigger>
           <TabsTrigger value="challenges" className="gap-2">
             <Trophy className="w-4 h-4" />
-            Défis
+            {t('supportDashboard.communityTabs.challenges')}
           </TabsTrigger>
           <TabsTrigger value="buddies" className="gap-2">
             <Heart className="w-4 h-4" />
-            Binômes
+            {t('supportDashboard.communityTabs.buddies')}
           </TabsTrigger>
           <TabsTrigger value="experts" className="gap-2">
             <Users className="w-4 h-4" />
-            Experts
+            {t('supportDashboard.communityTabs.experts')}
           </TabsTrigger>
         </TabsList>
-
         <TabsContent value="sessions" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Sessions de Support</CardTitle>
+              <CardTitle>
+                {t('supportDashboard.community.sessions.title')}
+              </CardTitle>
               <CardDescription>
-                Rejoignez nos sessions thématiques animées par des experts
+                {t('supportDashboard.community.sessions.description')}
               </CardDescription>
             </CardHeader>
             <CardContent>
               {loading ? (
                 <div className="space-y-4">
                   {[...Array(3)].map((_, i) => (
-                    <div key={i} className="h-32 bg-muted rounded animate-pulse" />
+                    <div
+                      key={i}
+                      className="h-32 bg-muted rounded animate-pulse"
+                    />
                   ))}
                 </div>
               ) : supportSessions.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {supportSessions.map((session) => (
+                  {supportSessions.map(session => (
                     <SupportSessionCard
                       key={session.id}
                       session={session}
@@ -139,32 +162,36 @@ const SupportDashboard = () => {
                 <div className="text-center py-8">
                   <Calendar className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
                   <p className="text-muted-foreground">
-                    Aucune session programmée pour le moment
+                    {t('supportDashboard.community.sessions.noSessions')}
                   </p>
                 </div>
               )}
             </CardContent>
           </Card>
         </TabsContent>
-
         <TabsContent value="challenges" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Défis Communautaires</CardTitle>
+              <CardTitle>
+                {t('supportDashboard.community.challenges.title')}
+              </CardTitle>
               <CardDescription>
-                Participez aux défis et gagnez des badges de reconnaissance
+                {t('supportDashboard.community.challenges.description')}
               </CardDescription>
             </CardHeader>
             <CardContent>
               {loading ? (
                 <div className="space-y-4">
                   {[...Array(3)].map((_, i) => (
-                    <div key={i} className="h-40 bg-muted rounded animate-pulse" />
+                    <div
+                      key={i}
+                      className="h-40 bg-muted rounded animate-pulse"
+                    />
                   ))}
                 </div>
               ) : communityChallenge.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {communityChallenge.map((challenge) => (
+                  {communityChallenge.map(challenge => (
                     <CommunityChallengeCard
                       key={challenge.id}
                       challenge={challenge}
@@ -178,36 +205,39 @@ const SupportDashboard = () => {
                 <div className="text-center py-8">
                   <Trophy className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
                   <p className="text-muted-foreground">
-                    Aucun défi disponible pour le moment
+                    {t('supportDashboard.community.challenges.noChallenges')}
                   </p>
                 </div>
               )}
             </CardContent>
           </Card>
         </TabsContent>
-
         <TabsContent value="buddies" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Système de Binômes</CardTitle>
+              <CardTitle>{t('supportDashboard.peerSupport.title')}</CardTitle>
               <CardDescription>
-                Trouvez un mentor ou accompagnez un nouveau membre
+                {t('supportDashboard.peerSupport.description')}
               </CardDescription>
             </CardHeader>
             <CardContent>
               {peerSupportPairs.length > 0 ? (
                 <div className="space-y-4">
-                  {peerSupportPairs.map((pair) => (
+                  {peerSupportPairs.map(pair => (
                     <div key={pair.id} className="border rounded-lg p-4">
                       <div className="flex items-center gap-2 mb-2">
                         <Heart className="w-4 h-4 text-medical-pink" />
-                        <span className="font-medium">Relation de mentorat</span>
+                        <span className="font-medium">
+                          {t('supportDashboard.peerSupport.mentorship')}
+                        </span>
                         <Badge className="bg-medical-green-light text-medical-green">
-                          Actif
+                          {t('supportDashboard.peerSupport.active')}
                         </Badge>
                       </div>
                       <p className="text-sm text-muted-foreground">
-                        Commencé le {new Date(pair.paired_at).toLocaleDateString('fr-FR')}
+                        {t('supportDashboard.peerSupport.startedOn', {
+                          date: new Date(pair.paired_at).toLocaleDateString(),
+                        })}
                       </p>
                       {pair.notes && (
                         <p className="text-sm mt-2">{pair.notes}</p>
@@ -220,16 +250,16 @@ const SupportDashboard = () => {
                   <Heart className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
                   <div className="space-y-4">
                     <p className="text-muted-foreground">
-                      Vous n'avez pas encore de binôme assigné
+                      {t('supportDashboard.peerSupport.noPairs')}
                     </p>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-md mx-auto">
                       <Button variant="outline" className="gap-2">
                         <Users className="w-4 h-4" />
-                        Devenir mentor
+                        {t('supportDashboard.peerSupport.becomeMentor')}
                       </Button>
                       <Button variant="outline" className="gap-2">
                         <Heart className="w-4 h-4" />
-                        Trouver un mentor
+                        {t('supportDashboard.peerSupport.findMentor')}
                       </Button>
                     </div>
                   </div>
@@ -238,33 +268,38 @@ const SupportDashboard = () => {
             </CardContent>
           </Card>
         </TabsContent>
-
         <TabsContent value="experts" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Experts en Ligne</CardTitle>
+              <CardTitle>{t('supportDashboard.expertsOnline.title')}</CardTitle>
               <CardDescription>
-                Nos experts diabète disponibles pour vous aider
+                {t('supportDashboard.expertsOnline.description')}
               </CardDescription>
             </CardHeader>
             <CardContent>
               {onlineExperts.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {onlineExperts.map((expert) => (
+                  {onlineExperts.map(expert => (
                     <div key={expert.id} className="border rounded-lg p-4">
                       <div className="flex items-center gap-2 mb-2">
                         <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                        <span className="font-medium">Expert disponible</span>
+                        <span className="font-medium">
+                          {t('supportDashboard.expertsOnline.available')}
+                        </span>
                       </div>
                       <div className="space-y-1 text-sm">
                         <div>
-                          Spécialités: {expert.specialties.join(', ')}
+                          {t('supportDashboard.expertsOnline.specialties')}:{' '}
+                          {expert.specialties.join(', ')}
                         </div>
                         <div className="text-muted-foreground">
-                          Temps de réponse: ~{expert.average_response_time_minutes} min
+                          {t('supportDashboard.expertsOnline.responseTime')}: ~
+                          {expert.average_response_time_minutes}{' '}
+                          {t('supportDashboard.expertsOnline.minutes')}
                         </div>
                         <div className="text-muted-foreground">
-                          {expert.total_responses} réponses données
+                          {expert.total_responses}{' '}
+                          {t('supportDashboard.expertsOnline.totalResponses')}
                         </div>
                       </div>
                     </div>
@@ -274,7 +309,7 @@ const SupportDashboard = () => {
                 <div className="text-center py-8">
                   <Users className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
                   <p className="text-muted-foreground">
-                    Aucun expert disponible en ce moment
+                    {t('supportDashboard.expertsOnline.noneAvailable')}
                   </p>
                 </div>
               )}

@@ -71,14 +71,30 @@ export const ProfessionalNotificationCenter: React.FC<
   const [loading, setLoading] = useState(false);
 
   const consultationReasons = {
-    routine_checkup: 'Contrôle de routine',
-    urgent_consultation: 'Consultation urgente',
-    glucose_management: 'Gestion glycémie',
-    medication_adjustment: 'Ajustement traitement',
-    diet_counseling: 'Conseil nutritionnel',
-    psychological_support: 'Soutien psychologique',
-    complications: 'Complications diabète',
-    follow_up: 'Suivi post-consultation',
+    routine_checkup: t(
+      'professionalNotificationCenter.consultationReasons.routine_checkup'
+    ),
+    urgent_consultation: t(
+      'professionalNotificationCenter.consultationReasons.urgent_consultation'
+    ),
+    glucose_management: t(
+      'professionalNotificationCenter.consultationReasons.glucose_management'
+    ),
+    medication_adjustment: t(
+      'professionalNotificationCenter.consultationReasons.medication_adjustment'
+    ),
+    diet_counseling: t(
+      'professionalNotificationCenter.consultationReasons.diet_counseling'
+    ),
+    psychological_support: t(
+      'professionalNotificationCenter.consultationReasons.psychological_support'
+    ),
+    complications: t(
+      'professionalNotificationCenter.consultationReasons.complications'
+    ),
+    follow_up: t(
+      'professionalNotificationCenter.consultationReasons.follow_up'
+    ),
   };
 
   useEffect(() => {
@@ -106,7 +122,7 @@ export const ProfessionalNotificationCenter: React.FC<
       setRequests(data || []);
       setUnreadCount(data?.filter(req => req.status === 'pending').length || 0);
     } catch (error) {
-      console.error('Erreur chargement demandes:', error);
+      console.error('Error loading requests', error);
     }
   };
 
@@ -175,21 +191,39 @@ export const ProfessionalNotificationCenter: React.FC<
       toast({
         title:
           responseType === 'accept'
-            ? 'Consultation acceptée'
-            : 'Consultation refusée',
+            ? t(
+                'professionalNotificationCenter.consultation.response.acceptedTitle'
+              )
+            : t(
+                'professionalNotificationCenter.consultation.response.rejectedTitle'
+              ),
         description:
           responseType === 'accept'
-            ? 'Le patient peut maintenant démarrer le chat'
-            : 'Le patient a été notifié de votre réponse',
+            ? t(
+                'professionalNotificationCenter.consultation.response.acceptedDescription'
+              )
+            : t(
+                'professionalNotificationCenter.consultation.response.rejectedDescription'
+              ),
       });
 
       setDialogOpen(false);
       loadConsultationRequests();
     } catch (error: any) {
-      console.error('Erreur réponse:', error);
+      console.error(
+        t('professionalNotificationCenter.consultation.response.errorLog'),
+        error
+      );
+
       toast({
-        title: 'Erreur',
-        description: error.message || 'Impossible de traiter la réponse',
+        title: t(
+          'professionalNotificationCenter.consultation.response.errorTitle'
+        ),
+        description:
+          error.message ||
+          t(
+            'professionalNotificationCenter.consultation.response.errorDescription'
+          ),
         variant: 'destructive',
       });
     } finally {
@@ -249,7 +283,7 @@ export const ProfessionalNotificationCenter: React.FC<
         }
       }
     } catch (error) {
-      console.error('Erreur traitement consultation acceptée:', error);
+      console.error('Error processing accepted consultation:', error);
       throw error;
     }
   };
@@ -272,7 +306,7 @@ export const ProfessionalNotificationCenter: React.FC<
 
       if (error) throw error;
     } catch (error) {
-      console.error('Erreur ajout calendrier:', error);
+      console.error('Error adding to calendar:', error);
       throw error;
     }
   };
@@ -301,7 +335,10 @@ export const ProfessionalNotificationCenter: React.FC<
           <div className="p-4 border-b">
             <div className="flex items-center justify-between">
               <h3 className="font-semibold">
-                🩺 {t('professionalNotification.title_consultationRequests')}
+                🩺{' '}
+                {t(
+                  'professionalNotificationCenter.professionalNotification.title_consultationRequests'
+                )}
               </h3>
               <Button
                 variant="ghost"
@@ -311,10 +348,15 @@ export const ProfessionalNotificationCenter: React.FC<
                 <X className="h-4 w-4" />
               </Button>
             </div>
+
             {unreadCount > 0 && (
               <p className="text-sm text-muted-foreground mt-1">
-                {unreadCount} nouvelle{unreadCount > 1 ? 's' : ''} demande
-                {unreadCount > 1 ? 's' : ''}
+                {t(
+                  'professionalNotificationCenter.professionalNotification.newRequests',
+                  {
+                    count: unreadCount,
+                  }
+                )}
               </p>
             )}
           </div>
@@ -324,7 +366,9 @@ export const ProfessionalNotificationCenter: React.FC<
               <div className="p-8 text-center text-muted-foreground">
                 <Bell className="h-12 w-12 mx-auto mb-3 text-muted-foreground/30" />
                 <p className="text-sm">
-                  {t('professionalNotification.message_noRequests')}
+                  {t(
+                    'professionalNotificationCenter.professionalNotification.message_noRequests'
+                  )}
                 </p>
               </div>
             ) : (
@@ -354,10 +398,16 @@ export const ProfessionalNotificationCenter: React.FC<
                           }
                         >
                           {request.status === 'pending'
-                            ? 'En attente'
+                            ? t(
+                                'professionalNotificationCenter.consultationStatus.pending'
+                              )
                             : request.status === 'accepted'
-                              ? 'Acceptée'
-                              : 'Refusée'}
+                              ? t(
+                                  'professionalNotificationCenter.consultationStatus.accepted'
+                                )
+                              : t(
+                                  'professionalNotificationCenter.consultationStatus.rejected'
+                                )}
                         </Badge>
                       </div>
 
@@ -387,7 +437,9 @@ export const ProfessionalNotificationCenter: React.FC<
                             className="flex-1"
                           >
                             <Check className="h-3 w-3 mr-1" />
-                            Accepter
+                            {t(
+                              'professionalNotificationCenter.consultationActions.accept'
+                            )}
                           </Button>
                           <Button
                             size="sm"
@@ -398,7 +450,9 @@ export const ProfessionalNotificationCenter: React.FC<
                             className="flex-1"
                           >
                             <Calendar className="h-3 w-3 mr-1" />
-                            Reporter
+                            {t(
+                              'professionalNotificationCenter.consultationActions.reschedule'
+                            )}
                           </Button>
                         </div>
                       )}
@@ -406,7 +460,9 @@ export const ProfessionalNotificationCenter: React.FC<
                       {request.status === 'accepted' && (
                         <Button size="sm" className="w-full">
                           <MessageCircle className="h-3 w-3 mr-1" />
-                          Démarrer le chat
+                          {t(
+                            'professionalNotificationCenter.consultationActions.startChat'
+                          )}
                         </Button>
                       )}
                     </div>
@@ -423,8 +479,12 @@ export const ProfessionalNotificationCenter: React.FC<
           <DialogHeader>
             <DialogTitle>
               {responseType === 'accept'
-                ? 'Accepter la consultation'
-                : 'Reporter la consultation'}
+                ? t(
+                    'professionalNotificationCenter.consultationResponse.acceptTitle'
+                  )
+                : t(
+                    'professionalNotificationCenter.consultationResponse.rescheduleTitle'
+                  )}
             </DialogTitle>
           </DialogHeader>
 
@@ -432,7 +492,12 @@ export const ProfessionalNotificationCenter: React.FC<
             {selectedRequest && (
               <div className="p-3 bg-muted/30 rounded">
                 <p className="text-sm">
-                  <strong>Motif:</strong>{' '}
+                  <strong>
+                    {t(
+                      'professionalNotificationCenter.consultationDetails.reason'
+                    )}
+                    :
+                  </strong>{' '}
                   {
                     consultationReasons[
                       selectedRequest.consultation_reason as keyof typeof consultationReasons
@@ -440,12 +505,23 @@ export const ProfessionalNotificationCenter: React.FC<
                   }
                 </p>
                 <p className="text-sm">
-                  <strong>Tarif:</strong> {selectedRequest.consultation_fee} F
-                  CFA
+                  <strong>
+                    {t(
+                      'professionalNotificationCenter.consultationDetails.fee'
+                    )}
+                    :
+                  </strong>{' '}
+                  {selectedRequest.consultation_fee} F CFA
                 </p>
                 {selectedRequest.patient_message && (
                   <p className="text-sm">
-                    <strong>Message:</strong> {selectedRequest.patient_message}
+                    <strong>
+                      {t(
+                        'professionalNotificationCenter.consultationDetails.message'
+                      )}
+                      :
+                    </strong>{' '}
+                    {selectedRequest.patient_message}
                   </p>
                 )}
               </div>
@@ -455,7 +531,9 @@ export const ProfessionalNotificationCenter: React.FC<
               <div className="space-y-3">
                 <div>
                   <label className="block text-sm font-medium mb-2">
-                    Date proposée
+                    {t(
+                      'professionalNotificationCenter.consultationResponse.proposedDate'
+                    )}
                   </label>
                   <Input
                     type="date"
@@ -466,7 +544,9 @@ export const ProfessionalNotificationCenter: React.FC<
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-2">
-                    Heure proposée
+                    {t(
+                      'professionalNotificationCenter.consultationResponse.proposedTime'
+                    )}
                   </label>
                   <Input
                     type="time"
@@ -479,16 +559,22 @@ export const ProfessionalNotificationCenter: React.FC<
 
             <div>
               <label className="block text-sm font-medium mb-2">
-                Message{' '}
-                {responseType === 'accept' ? '(optionnel)' : 'pour le patient'}
+                {t('consultationResponse.message')}{' '}
+                {responseType === 'accept'
+                  ? t('consultationResponse.optional')
+                  : t('consultationResponse.forPatient')}
               </label>
               <Textarea
                 value={responseMessage}
                 onChange={e => setResponseMessage(e.target.value)}
                 placeholder={
                   responseType === 'accept'
-                    ? 'Message de confirmation...'
-                    : 'Expliquez pourquoi vous reportez et proposez une nouvelle date...'
+                    ? t(
+                        'professionalNotificationCenter.consultationResponse.confirmationPlaceholder'
+                      )
+                    : t(
+                        'professionalNotificationCenter.consultationResponse.reschedulePlaceholder'
+                      )
                 }
                 rows={3}
               />
@@ -496,7 +582,7 @@ export const ProfessionalNotificationCenter: React.FC<
 
             <div className="flex gap-2">
               <Button variant="outline" onClick={() => setDialogOpen(false)}>
-                Annuler
+                {t('professionalNotificationCenter.common.cancel')}
               </Button>
               <Button
                 onClick={submitResponse}
@@ -507,10 +593,14 @@ export const ProfessionalNotificationCenter: React.FC<
                 }
               >
                 {loading
-                  ? 'Traitement...'
+                  ? t('professionalNotificationCenter.common.processing')
                   : responseType === 'accept'
-                    ? 'Accepter'
-                    : 'Reporter'}
+                    ? t(
+                        'professionalNotificationCenter.consultationResponse.accept'
+                      )
+                    : t(
+                        'professionalNotificationCenter.consultationResponse.reschedule'
+                      )}
               </Button>
             </div>
           </div>

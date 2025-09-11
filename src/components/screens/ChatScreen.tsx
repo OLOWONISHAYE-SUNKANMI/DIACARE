@@ -278,7 +278,9 @@ const ChatScreen = ({ onBack }: ChatScreenProps) => {
                   style={{ animationDelay: '0.4s' }}
                 ></div>
               </div>
-              <span>{isTyping.join(', ')} en train d'écrire...</span>
+              {t('chatScreenFixes.typingIndicator', {
+                users: isTyping.join(', '),
+              })}
             </div>
           )}
 
