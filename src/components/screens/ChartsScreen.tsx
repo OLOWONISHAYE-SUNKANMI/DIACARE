@@ -1,7 +1,3 @@
-import { BarChart3, TrendingUp, Calendar, Target, Clock } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { useTranslation } from 'react-i18next';
 import {
   LineChart,
   Line,
@@ -10,134 +6,94 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  ReferenceLine,
-  Area,
+  BarChart,
+  Bar,
+  PieChart,
+  Pie,
+  Cell,
 } from 'recharts';
-
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { useMeals } from '@/contexts/MealContext';
 import { useMedications } from '@/contexts/MedicationContext';
 import { useActivities } from '@/contexts/ActivityContext';
 import { useGlucose } from '@/contexts/GlucoseContext';
+import { useTranslation } from 'react-i18next';
+import { Clock, Target, Activity, Droplet, BarChart3 } from 'lucide-react';
+
+// Helpers
+const formatDay = (iso: string) => {
+  const d = new Date(iso);
+  return d.toLocaleDateString([], { weekday: 'short' });
+};
+
+const formatTime = (iso: string) => {
+  const d = new Date(iso);
+  return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+};
+
+const colors = ['#3b82f6', '#10b981', '#8b5cf6', '#f59e0b', '#ef4444'];
 
 const ChartsScreen = () => {
   const { t } = useTranslation();
-
   const { meals } = useMeals();
   const { medications } = useMedications();
   const { activities } = useActivities();
   const { readings: glucose } = useGlucose();
 
-  const formatTime = (iso: string) => {
-    const d = new Date(iso);
-    return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  };
+  // Glucose data
+  const glucoseData = [...glucose]
+    .sort(
+      (a, b) =>
+        new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+    )
+    .map(r => ({
+      ...r,
+      time: formatTime(r.timestamp),
+    }));
 
-  // Enrich glucose with context
-  const enrichedGlucoseData = glucose.map(reading => {
-    const time = new Date(reading.timestamp);
-
-    return {
-      ...reading,
-      time: formatTime(reading.timestamp),
-      meals: meals.filter(
-        m => new Date(m.meal_time).getHours() === time.getHours()
-      ),
-      medications: medications.filter(
-        m => new Date(m.medication_time).getHours() === time.getHours()
-      ),
-      activities: activities.filter(
-        a => new Date(a.activity_time).getHours() === time.getHours()
-      ),
-    };
-  });
-
-  const getGlucoseColor = (value: number) => {
-    if (value < 70) return 'hsl(var(--glucose-very-low))';
-    if (value < 140) return 'hsl(var(--glucose-target))';
-    if (value < 180) return 'hsl(var(--glucose-limit-high))';
-    return 'hsl(var(--glucose-very-high))';
-  };
-
-  const CustomDot = ({ cx, cy, payload }: any) => {
-    let color = getGlucoseColor(payload.value);
-    let size = 4;
-
-    if (payload.meals?.length) {
-      color = '#3b82f6';
-      size = 6;
-    } else if (payload.medications?.length) {
-      color = '#10b981';
-      size = 6;
-    } else if (payload.activities?.length) {
-      color = '#8b5cf6';
-      size = 6;
-    }
-
-    return (
-      <circle
-        cx={cx}
-        cy={cy}
-        r={size}
-        fill={color}
-        stroke="white"
-        strokeWidth={2}
-      />
-    );
-  };
-
-  const CustomTooltip = ({ active, payload }: any) => {
-    if (active && payload && payload.length) {
-      const d = payload[0].payload;
-
-      return (
-        <div className="bg-card border border-border rounded-lg p-3 shadow-lg space-y-1">
-          <p className="font-medium">{d.time}</p>
-          <p className="text-sm">
-            {t('glucose.value')}: <b>{d.value} mg/dL</b>
-          </p>
-
-          {d.meals?.map((m: any, i: number) => (
-            <p key={i} className="text-blue-500 text-sm">
-              🍽 {m.meal_name} ({m.total_carbs}g carbs)
-            </p>
-          ))}
-          {d.medications?.map((m: any, i: number) => (
-            <p key={i} className="text-green-500 text-sm">
-              💊 {m.medication_name} ({m.dose} {m.dose_unit})
-            </p>
-          ))}
-          {d.activities?.map((a: any, i: number) => (
-            <p key={i} className="text-purple-500 text-sm">
-              🏃 {a.activity_type} ({a.duration_minutes} min)
-            </p>
-          ))}
-        </div>
-      );
-    }
-    return null;
-  };
-
-  // Stats
-  const values = enrichedGlucoseData.map(d => d.value);
-  const avg = values.length
-    ? Math.round(values.reduce((s, v) => s + v, 0) / values.length)
+  const glucoseValues = glucose.map(d => d.value);
+  const avgGlucose =
+    glucoseValues.reduce((a, b) => a + b, 0) / (glucoseValues.length || 1);
+  const maxGlucose = Math.max(...glucoseValues, 0);
+  const latestGlucose = glucoseData.length
+    ? glucoseData[glucoseData.length - 1].value
     : 0;
-  const max = values.length ? Math.max(...values) : 0;
 
-  const veryLow = values.filter(v => v < 70).length;
-  const target = values.filter(v => v >= 70 && v < 140).length;
-  const high = values.filter(v => v >= 140).length;
+  // Meals grouped by day (total carbs)
+  const mealsByDay = Object.values(
+    meals.reduce((acc: any, m) => {
+      const day = new Date(m.meal_time).toDateString();
+      acc[day] = acc[day] || { day, carbs: 0 };
+      acc[day].carbs += m.carbs_per_100g || 0;
+      return acc;
+    }, {})
+  );
 
-  const veryLowPct = Math.round((veryLow / values.length) * 100) || 0;
-  const targetPct = Math.round((target / values.length) * 100) || 0;
-  const highPct = Math.round((high / values.length) * 100) || 0;
+  //  Activities summary by type
+  const activitySummary = Object.values(
+    activities.reduce((acc: any, a) => {
+      acc[a.activity_type] = acc[a.activity_type] || {
+        type: a.activity_type,
+        minutes: 0,
+      };
+      acc[a.activity_type].minutes += a.duration_minutes || 0;
+      return acc;
+    }, {})
+  );
 
-  // Weekly trends
+  // Stats for Time-in-Range
+  const veryLow = glucoseValues.filter(v => v < 70).length;
+  const target = glucoseValues.filter(v => v >= 70 && v < 140).length;
+  const high = glucoseValues.filter(v => v >= 140).length;
+
+  const veryLowPct = Math.round((veryLow / glucoseValues.length) * 100) || 0;
+  const targetPct = Math.round((target / glucoseValues.length) * 100) || 0;
+  const highPct = Math.round((high / glucoseValues.length) * 100) || 0;
+
+  // Weekly Trends
   const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   const weeklyTrends = days.map((day, i) => {
-    const points = enrichedGlucoseData.filter(
-      d => new Date(d.timestamp).getDay() === i
-    );
+    const points = glucose.filter(d => new Date(d.timestamp).getDay() === i);
     const inRange = points.filter(d => d.value >= 70 && d.value < 140);
     const percent = points.length
       ? Math.round((inRange.length / points.length) * 100)
@@ -148,6 +104,7 @@ const ChartsScreen = () => {
   return (
     <div className="flex-1 p-4 space-y-6 pb-24 animate-fade-in">
       {/* Title */}
+
       <div className="text-center space-y-2">
         <h2 className="text-2xl font-bold flex items-center justify-center space-x-2">
           <BarChart3 className="w-6 h-6 text-medical-teal" />
@@ -155,57 +112,123 @@ const ChartsScreen = () => {
         </h2>
         <p className="text-muted-foreground">{t('charts.subtitle')}</p>
       </div>
-
-      {/* Glucose Chart */}
-      <Card className="border-medical-teal/20">
-        <CardHeader className="flex justify-between">
-          <CardTitle className="flex items-center space-x-2">
-            <TrendingUp className="w-5 h-5 text-medical-teal" />
-            <span>{t('analysis.title')}</span>
-          </CardTitle>
-          <Badge className="bg-medical-teal text-white">
-            <Calendar className="w-3 h-3 mr-1" />
-            {t('analysis.days')}
-          </Badge>
-        </CardHeader>
-        <CardContent>
-          <div className="h-80">
+      {/* KPI Summary */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <Card>
+          <CardContent className="p-4 flex flex-col items-center">
+            <Droplet className="w-6 h-6 text-blue-500 mb-2" />
+            <p className="text-sm text-muted-foreground">
+              {t('charts.latest')}
+            </p>
+            <p className="text-xl font-bold">{latestGlucose} mg/dL</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4 flex flex-col items-center">
+            <Activity className="w-6 h-6 text-green-500 mb-2" />
+            <p className="text-sm text-muted-foreground">
+              {t('charts.average')}
+            </p>
+            <p className="text-xl font-bold">{avgGlucose.toFixed(1)} mg/dL</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4 flex flex-col items-center">
+            <Target className="w-6 h-6 text-red-500 mb-2" />
+            <p className="text-sm text-muted-foreground">
+              {t('charts.highest')}
+            </p>
+            <p className="text-xl font-bold">{maxGlucose} mg/dL</p>
+          </CardContent>
+        </Card>
+      </div>
+      {/* Grid of main charts */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Blood Glucose Line */}
+        <Card>
+          <CardHeader>
+            <CardTitle>{t('charts.glucose')}</CardTitle>
+          </CardHeader>
+          <CardContent className="h-72">
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={enrichedGlucoseData}>
+              <LineChart data={glucoseData}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="time" />
-                <YAxis
-                  domain={[50, 250]}
-                  label={{ value: 'mg/dL', angle: -90 }}
-                />
-
-                <ReferenceLine y={70} stroke="red" strokeDasharray="5 5" />
-                <ReferenceLine y={140} stroke="green" strokeDasharray="5 5" />
-                <ReferenceLine y={180} stroke="orange" strokeDasharray="5 5" />
-
-                <Area
-                  type="monotone"
-                  dataKey="value"
-                  stroke="none"
-                  fill="hsl(var(--muted))"
-                />
-
+                <YAxis domain={[50, 250]} />
+                <Tooltip />
                 <Line
                   type="monotone"
                   dataKey="value"
-                  stroke="hsl(var(--primary))"
+                  stroke="#10b981"
                   strokeWidth={2}
-                  dot={<CustomDot />}
-                  activeDot={{ r: 6 }}
+                  dot
                 />
-
-                <Tooltip content={<CustomTooltip />} />
               </LineChart>
             </ResponsiveContainer>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
 
+        {/* Meals Bar */}
+        <Card>
+          <CardHeader>
+            <CardTitle>{t('charts.meals')}</CardTitle>
+          </CardHeader>
+          <CardContent className="h-72">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={mealsByDay}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="day" />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey="carbs" fill="#3b82f6" />
+              </BarChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+
+        {/* Activities Pie */}
+        <Card>
+          <CardHeader>
+            <CardTitle>{t('charts.activities')}</CardTitle>
+          </CardHeader>
+          <CardContent className="h-72">
+            <ResponsiveContainer>
+              <PieChart>
+                <Pie
+                  data={activitySummary}
+                  dataKey="minutes"
+                  nameKey="type"
+                  label
+                  outerRadius={80}
+                >
+                  {activitySummary.map((entry, index) => (
+                    <Cell key={index} fill={colors[index % colors.length]} />
+                  ))}
+                </Pie>
+                <Tooltip />
+              </PieChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+
+        {/* Medications Bar */}
+        <Card>
+          <CardHeader>
+            <CardTitle>{t('charts.medications')}</CardTitle>
+          </CardHeader>
+          <CardContent className="h-72">
+            <ResponsiveContainer>
+              <BarChart data={medications}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="medication_time" tickFormatter={formatDay} />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey="dose" fill="#8b5cf6" />
+              </BarChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+      </div>
       {/* Time in Range */}
       <Card className="border-medical-teal/20">
         <CardHeader>
@@ -227,17 +250,6 @@ const ChartsScreen = () => {
           </div>
         </CardContent>
       </Card>
-
-      {/* Stats */}
-      <div className="grid grid-cols-2 gap-3">
-        <Card>
-          <CardContent className="p-4 text-center">{avg} Avg</CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4 text-center">{max} Max</CardContent>
-        </Card>
-      </div>
-
       {/* Weekly Trends */}
       <Card className="border-medical-teal/20">
         <CardHeader>
