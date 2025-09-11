@@ -67,29 +67,43 @@ export const en = {
     missed: 'Missed injection',
     noEntries: 'No Entries',
   },
-
-  // Charts Screen
   charts: {
     title: 'Charts',
-    subtitle: 'Analysis of your blood sugar data',
-    glucoseAnalysis: 'Blood Sugar Analysis',
+    subtitle: 'Analysis of your glucose data',
+
+    // Sections
+    glucose: 'Blood Glucose',
+    meals: 'Meals',
+    activities: 'Activities',
+    medications: 'Medications',
+
+    glucoseAnalysis: 'Glucose Analysis',
     timeInRange: 'Time in Range',
     weeklyTrends: 'Weekly Trends',
     last7Days: 'Last 7 days',
+
     zones: {
       veryHigh: 'High',
       high: 'Borderline',
       target: 'Target',
       low: 'Low',
     },
+
     stats: {
       average: 'Average',
       variability: 'Variability',
       estimatedHbA1c: 'Estimated HbA1c',
+      latest: 'Latest',
       peakMax: 'Max Peak',
     },
+
     objective: 'Goal: >70% in target',
     percentageByDay: 'Percentage of time in target per day',
+
+    trend: {
+      title: 'Trends',
+      message: 'Percentage of time in range this week',
+    },
   },
 
   // Doses Screen
