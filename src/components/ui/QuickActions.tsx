@@ -28,8 +28,7 @@ import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { cn } from '@/lib/utils';
 import { useTranslation } from 'react-i18next';
-import { useToast } from "@/hooks/use-toast";
-
+import { useToast } from '@/hooks/use-toast';
 
 export const QuickActions = () => {
   const { t } = useTranslation();
@@ -43,24 +42,24 @@ export const QuickActions = () => {
 
   const handleScheduleConsultation = () => {
     toast({
-      title: 'Consultation programmée',
-      description: 'La consultation a été ajoutée au planning',
+      title: t('quickActions.actions.scheduleConsultation.title'),
+      description: t('quickActions.actions.scheduleConsultation.description'),
     });
     setConsultationOpen(false);
   };
 
   const handleGenerateReport = () => {
     toast({
-      title: 'Rapport généré',
-      description: 'Le rapport a été généré avec succès',
+      title: t('quickActions.actions.generateReport.title'),
+      description: t('quickActions.actions.generateReport.description'),
     });
     setReportOpen(false);
   };
 
   const handleAddPatient = () => {
     toast({
-      title: 'Patient ajouté',
-      description: 'Le nouveau patient a été ajouté à votre liste',
+      title: t('quickActions.actions.addPatient.title'),
+      description: t('quickActions.actions.addPatient.description'),
     });
     setPatientOpen(false);
   };
