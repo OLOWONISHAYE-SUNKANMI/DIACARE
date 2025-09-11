@@ -1,12 +1,22 @@
 import React, { useMemo, useCallback, useState, useEffect } from 'react';
-import { FixedSizeList as List, VariableSizeList, ListChildComponentProps, ListOnScrollProps } from 'react-window';
+import {
+  FixedSizeList as List,
+  VariableSizeList,
+  ListChildComponentProps,
+  ListOnScrollProps,
+} from 'react-window';
+import { useTranslation } from 'react-i18next';
 
 interface VirtualizedListProps<T> {
   items: T[];
   itemHeight?: number | ((index: number) => number);
   height: number;
   width?: string | number;
-  renderItem: (item: T, index: number, style: React.CSSProperties) => React.ReactNode;
+  renderItem: (
+    item: T,
+    index: number,
+    style: React.CSSProperties
+  ) => React.ReactNode;
   overscan?: number;
   className?: string;
   emptyMessage?: string;
@@ -24,41 +34,44 @@ export function VirtualizedList<T>({
   renderItem,
   overscan = 5,
   className,
-  emptyMessage = "Aucun élément à afficher",
-  loadingMessage = "Chargement...",
+  emptyMessage,
+  loadingMessage,
   isLoading = false,
   onScroll,
-  estimatedItemSize = 60
+  estimatedItemSize = 60,
 }: VirtualizedListProps<T>) {
+  const { t } = useTranslation();
+
   const [scrollOffset, setScrollOffset] = useState(0);
-  
-  // Détermine si on utilise une hauteur fixe ou variable
+
+  emptyMessage = emptyMessage || t('virtualizedList.empty');
+  loadingMessage = loadingMessage || t('virtualizedList.loading');
+
   const isFixedHeight = typeof itemHeight === 'number';
 
-  // Composant pour rendre chaque élément
-  const ItemRenderer = useCallback(({ index, style }: ListChildComponentProps) => {
-    const item = items[index];
-    if (!item) return null;
+  const ItemRenderer = useCallback(
+    ({ index, style }: ListChildComponentProps) => {
+      const item = items[index];
+      if (!item) return null;
 
-    return (
-      <div style={style}>
-        {renderItem(item, index, style)}
-      </div>
-    );
-  }, [items, renderItem]);
+      return <div style={style}>{renderItem(item, index, style)}</div>;
+    },
+    [items, renderItem]
+  );
 
-  // Gestion du scroll
-  const handleScroll = useCallback((props: ListOnScrollProps) => {
-    setScrollOffset(props.scrollOffset);
-    onScroll?.(props.scrollOffset);
-  }, [onScroll]);
+  const handleScroll = useCallback(
+    (props: ListOnScrollProps) => {
+      setScrollOffset(props.scrollOffset);
+      onScroll?.(props.scrollOffset);
+    },
+    [onScroll]
+  );
 
-  // Optimisation pour les grandes listes
   const memoizedItems = useMemo(() => items, [items]);
 
   if (isLoading) {
     return (
-      <div 
+      <div
         className={`flex items-center justify-center ${className}`}
         style={{ height, width }}
       >
@@ -72,7 +85,7 @@ export function VirtualizedList<T>({
 
   if (memoizedItems.length === 0) {
     return (
-      <div 
+      <div
         className={`flex items-center justify-center ${className}`}
         style={{ height, width }}
       >
@@ -118,8 +131,11 @@ export function VirtualizedList<T>({
   );
 }
 
-// Hook pour observer la visibilité d'un élément dans la liste virtualisée
-export function useVirtualizedListItem(index: number, scrollOffset: number, itemHeight: number) {
+export function useVirtualizedListItem(
+  index: number,
+  scrollOffset: number,
+  itemHeight: number
+) {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -135,16 +151,11 @@ export function useVirtualizedListItem(index: number, scrollOffset: number, item
   return isVisible;
 }
 
-// Composant optimisé pour les éléments de liste
 export const VirtualizedListItem = React.memo<{
   children: React.ReactNode;
   className?: string;
 }>(({ children, className }) => {
-  return (
-    <div className={`${className} will-change-transform`}>
-      {children}
-    </div>
-  );
+  return <div className={`${className} will-change-transform`}>{children}</div>;
 });
 
 VirtualizedListItem.displayName = 'VirtualizedListItem';
