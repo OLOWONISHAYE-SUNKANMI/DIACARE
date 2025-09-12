@@ -81,7 +81,7 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
     () => ({
       amount: convertedPrices?.amount || selectedPlan?.price_eur || 800, // 8€ par défaut
       currency: currency.currency,
-      reference: `DIACARE-${Date.now()}`,
+      reference: `KLUKOO-${Date.now()}`,
       description:
         selectedPlan?.description ||
         t('paymentScreen.subscription.defaultDescription'),
@@ -196,7 +196,7 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
             <CreditCard className="w-8 h-8 text-medical-teal" />
           </div>
           <h2 className="text-2xl font-bold text-medical-teal mb-2">
-            {selectedPlan?.name || 'DiaCare Premium'}
+            {selectedPlan?.name || 'Klukoo Premium'}
           </h2>
           <p className="text-3xl font-bold text-foreground">
             {convertedPrices
@@ -282,7 +282,7 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
 
             <div className="bg-muted/50 rounded-lg p-3 space-y-2">
               <div className="flex justify-between text-sm">
-                <span>{selectedPlan?.name || 'DiaCare Premium'}</span>
+                <span>{selectedPlan?.name || 'Klukoo Premium'}</span>
                 <span className="font-semibold">
                   {convertedPrices
                     ? convertedPrices.formatted
