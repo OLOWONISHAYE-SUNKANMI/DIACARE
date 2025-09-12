@@ -447,16 +447,16 @@ const AuthPage = () => {
 
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <div className="w-20 h-20 bg-gradient-medical rounded-full mx-auto mb-4 flex items-center justify-center shadow-lg">
+          <div className="mx-auto mb-4 flex items-center justify-center">
             <img
-              src="https://res.cloudinary.com/depeqzb6z/image/upload/v1756502933/Layer_0_aezqw1.png"
-              className="w-15 h-15 text-primary-foreground"
+              src="https://res.cloudinary.com/depeqzb6z/image/upload/v1757665702/WhatsApp_Image_2025-09-10_%C3%A0_23.51.01_43a85c4a-removebg-preview_jnqaja.png"
+              className="w-20 h-20 text-primary-foreground"
               alt="logo"
             />
           </div>
-          <h1 className="text-3xl font-bold text-[#4B2E2B] mb-4">
+          {/* <h1 className="text-3xl font-bold text-[#4B2E2B] mb-4">
             {t('appName')}
-          </h1>
+          </h1> */}
           <p className="text-lg font-medium text-muted-foreground mb-2">
             {t('appSlogan')}
           </p>
@@ -749,7 +749,7 @@ const AuthPage = () => {
               </TabsContent>
 
               <TabsContent value="professional" className="mt-6">
-                <div className="text-center mb-4">
+                {/* <div className="text-center mb-4">
                   <div className="w-12 h-12 bg-medical-green-light rounded-full mx-auto mb-2 flex items-center justify-center">
                     <img
                       src="https://res.cloudinary.com/depeqzb6z/image/upload/v1756502933/Layer_0_aezqw1.png"
@@ -762,7 +762,7 @@ const AuthPage = () => {
                   <p className="text-sm text-muted-foreground">
                     {t('professionalLoginCard.subtitle')}
                   </p>
-                </div>
+                </div> */}
 
                 <form
                   onSubmit={handleProfessionalCodeLogin}
