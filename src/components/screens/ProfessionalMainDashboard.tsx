@@ -258,7 +258,7 @@ export const ProfessionalMainDashboard: React.FC<
             <div>
               <h1 className="text-2xl font-bold">Dr. {professional.name}</h1>
               <p className="text-primary-foreground/80">
-                {professional.type} • DARE Pro
+                {professional.type} • KLUKOO Pro
               </p>
               <p className="text-sm text-primary-foreground/80">
                 🔑 Code: {professional.identificationCode}
