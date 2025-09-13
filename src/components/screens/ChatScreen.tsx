@@ -4,62 +4,26 @@ import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import {
-  Send,
-  Phone,
-  Video,
-  MoreVertical,
-  Heart,
-  Users2,
-  Stethoscope,
-} from 'lucide-react';
+import { Send, MoreVertical, Heart, Users2, Stethoscope } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useTranslation } from 'react-i18next';
-
-interface Message {
-  id: string;
-  user: string;
-  avatar?: string;
-  message: string;
-  timestamp: Date;
-  type: 'message' | 'support' | 'milestone';
-  reactions?: { emoji: string; count: number }[];
-}
+import { useChat } from '@/contexts/ChatContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { formatTimestamp } from '@/utils/FormatTimeStamps';
+import { stringToPastelColor } from '@/utils/StringToColor';
+import { cn } from '@/lib/utils';
 
 interface ChatScreenProps {
   onBack?: () => void;
 }
 
+const availableReactions = ['👍', '❤️', '🔥', '😂', '🙏'];
+
 const ChatScreen = ({ onBack }: ChatScreenProps) => {
   const { t } = useTranslation();
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: '1',
-      user: 'Marie D.',
-      message: 'chatTestimonial.firstMessage',
-      timestamp: new Date(Date.now() - 2 * 60 * 1000),
-      type: 'milestone',
-      reactions: [
-        { emoji: '👏', count: 8 },
-        { emoji: '💚', count: 5 },
-      ],
-    },
-    {
-      id: '2',
-      user: 'Dr. Konaté',
-      message: 'chatTestimonial.secondMessage',
-      timestamp: new Date(Date.now() - 1 * 60 * 1000),
-      type: 'support',
-    },
-    {
-      id: '3',
-      user: 'Ahmed S.',
-      message: 'chatTestimonial.thirdMessage',
-      timestamp: new Date(Date.now() - 30 * 1000),
-      type: 'message',
-    },
-  ]);
-
+  const { messages, sendMessage, toggleReaction, setTypingStatus, typing } =
+    useChat();
+  const { user } = useAuth();
   const [newMessage, setNewMessage] = useState('');
   const [isTyping, setIsTyping] = useState<string[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -68,24 +32,68 @@ const ChatScreen = ({ onBack }: ChatScreenProps) => {
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
+  const peepSound = useRef<HTMLAudioElement>(
+    typeof Audio !== 'undefined' ? new Audio('/sounds/peep.mp3') : null
+  );
 
+  const [audioAllowed, setAudioAllowed] = useState(false);
+  const lastMessageIdRef = useRef<string | null>(null);
+
+  // --- enable audio after first user interaction
   useEffect(() => {
+    const enableAudio = () => setAudioAllowed(true);
+    window.addEventListener('click', enableAudio, { once: true });
+    window.addEventListener('keydown', enableAudio, { once: true });
+
+    return () => {
+      window.removeEventListener('click', enableAudio);
+      window.removeEventListener('keydown', enableAudio);
+    };
+  }, []);
+
+  // --- play sound for new incoming messages
+  useEffect(() => {
+    if (!audioAllowed || messages.length === 0) return;
+
+    const lastMessage = messages[messages.length - 1];
+    if (
+      lastMessage.sender_id !== user?.id &&
+      lastMessage.id !== lastMessageIdRef.current
+    ) {
+      lastMessageIdRef.current = lastMessage.id;
+      peepSound.current!.currentTime = 0;
+      peepSound
+        .current!.play()
+        .catch(() => console.log('Sound playback failed'));
+    }
+  }, [messages, audioAllowed]);
+
+  // --- auto-scroll to bottom
+  useEffect(() => {
+    if (messages.length === 0) return;
     scrollToBottom();
   }, [messages]);
 
-  const handleSendMessage = () => {
+  useEffect(() => {
+    if (messages.length > 0) {
+      scrollToBottom();
+
+      // play sound only for messages not sent by me
+      const lastMessage = messages[messages.length - 1];
+      if (lastMessage.sender_id !== user?.id) {
+        peepSound.current?.play().catch(() => {
+          console.log('Sound playback failed');
+        });
+      }
+    }
+  }, [messages]);
+
+  const handleSendMessage = async () => {
     if (!newMessage.trim()) return;
 
-    const message: Message = {
-      id: Date.now().toString(),
-      user: 'Vous',
-      message: newMessage,
-      timestamp: new Date(),
-      type: 'message',
-    };
-
-    setMessages(prev => [...prev, message]);
+    await sendMessage(newMessage);
     setNewMessage('');
+    setTypingStatus(false);
 
     toast({
       title: t('chatScreen.messageSent'),
@@ -100,33 +108,7 @@ const ChatScreen = ({ onBack }: ChatScreenProps) => {
     }
   };
 
-  const addReaction = (messageId: string, emoji: string) => {
-    setMessages(prev =>
-      prev.map(msg => {
-        if (msg.id === messageId) {
-          const reactions = msg.reactions || [];
-          const existingReaction = reactions.find(r => r.emoji === emoji);
-
-          if (existingReaction) {
-            return {
-              ...msg,
-              reactions: reactions.map(r =>
-                r.emoji === emoji ? { ...r, count: r.count + 1 } : r
-              ),
-            };
-          } else {
-            return {
-              ...msg,
-              reactions: [...reactions, { emoji, count: 1 }],
-            };
-          }
-        }
-        return msg;
-      })
-    );
-  };
-
-  const getMessageStyle = (type: Message['type']) => {
+  const getMessageStyle = (type: 'support' | 'milestone' | 'message') => {
     switch (type) {
       case 'support':
         return 'bg-medical-green-light border-l-4 border-medical-green';
@@ -137,7 +119,7 @@ const ChatScreen = ({ onBack }: ChatScreenProps) => {
     }
   };
 
-  const getMessageIcon = (type: Message['type']) => {
+  const getMessageIcon = (type: 'support' | 'milestone' | 'message') => {
     switch (type) {
       case 'support':
         return <Stethoscope className="w-4 h-4 text-medical-green" />;
@@ -171,12 +153,6 @@ const ChatScreen = ({ onBack }: ChatScreenProps) => {
           </div>
 
           <div className="flex items-center gap-2">
-            {/* <Button variant="ghost" size="sm" className="h-9 w-9 p-0">
-              <Phone className="w-4 h-4" />
-            </Button>
-            <Button variant="ghost" size="sm" className="h-9 w-9 p-0">
-              <Video className="w-4 h-4" />
-            </Button> */}
             <Button variant="ghost" size="sm" className="h-9 w-9 p-0">
               <MoreVertical className="w-4 h-4" />
             </Button>
@@ -184,7 +160,7 @@ const ChatScreen = ({ onBack }: ChatScreenProps) => {
         </div>
 
         {/* Community Stats */}
-        <div className="flex items-center gap-4 mt-3 pt-3 border-t border-border">
+        {/* <div className="flex items-center gap-4 mt-3 pt-3 border-t border-border">
           <Badge variant="secondary" className="text-xs">
             {t('chatScreen.successesThisWeek')}
           </Badge>
@@ -194,92 +170,105 @@ const ChatScreen = ({ onBack }: ChatScreenProps) => {
           <Badge variant="secondary" className="text-xs">
             {t('chatScreen.newMembers')}
           </Badge>
-        </div>
+        </div> */}
       </div>
 
       {/* Messages */}
       <ScrollArea className="flex-1 p-4">
         <div className="space-y-4">
-          {messages.map(message => (
-            <div key={message.id} className="animate-fade-in">
-              <div
-                className={`rounded-lg p-4 ${getMessageStyle(message.type)}`}
-              >
-                <div className="flex items-start gap-3">
-                  <Avatar className="w-8 h-8">
-                    <AvatarImage src={message.avatar} alt={message.user} />
-                    <AvatarFallback className="bg-medical-teal text-white text-xs">
-                      {message.user
-                        .split(' ')
-                        .map(n => n[0])
-                        .join('')}
-                    </AvatarFallback>
-                  </Avatar>
+          {messages.map(msg => {
+            const isMine = msg.sender_id === user?.id;
+            return (
+              <div key={msg.id} className="animate-fade-in">
+                <div className={`rounded-lg p-4 ${getMessageStyle(msg.type)}`}>
+                  <div className="flex items-start gap-3">
+                    <Avatar className="w-8 h-8">
+                      <AvatarImage
+                        src={undefined}
+                        alt={isMine ? 'You' : msg.sender_id}
+                      />
+                      <AvatarFallback
+                        className="text-white text-xs"
+                        style={{
+                          backgroundColor: isMine
+                            ? '#00b894' // teal for yourself
+                            : stringToPastelColor(msg.sender_id),
+                        }}
+                      >
+                        {isMine
+                          ? 'ME'
+                          : `${msg.first_name?.[0] ?? ''}${
+                              msg.last_name?.[0] ?? ''
+                            }`.toUpperCase() || 'U'}
+                      </AvatarFallback>
+                    </Avatar>
 
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="font-medium text-sm text-foreground">
-                        {message.user}
-                      </span>
-                      {getMessageIcon(message.type)}
-                      <span className="text-xs text-muted-foreground">
-                        {message.timestamp.toLocaleTimeString('fr-FR', {
-                          hour: '2-digit',
-                          minute: '2-digit',
-                        })}
-                      </span>
-                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="font-medium text-sm text-foreground">
+                          {isMine
+                            ? 'You'
+                            : `${msg.first_name ?? ''} ${
+                                msg.last_name ?? ''
+                              }`.trim() || 'User'}
+                        </span>
 
-                    <p className="text-foreground text-sm leading-relaxed">
-                      {t(message.message)}
-                    </p>
+                        {getMessageIcon(msg.type)}
+                        <span className="text-xs text-muted-foreground">
+                          {formatTimestamp(msg.created_at)}
+                        </span>
+                      </div>
 
-                    {message.reactions && message.reactions.length > 0 && (
-                      <div className="flex items-center gap-2 mt-3">
-                        {message.reactions.map((reaction, index) => (
-                          <button
-                            key={index}
-                            onClick={() =>
-                              addReaction(message.id, reaction.emoji)
-                            }
-                            className="flex items-center gap-1 px-2 py-1 rounded-full bg-accent hover:bg-accent/80 transition-colors text-xs"
+                      <p className="text-foreground text-sm leading-relaxed">
+                        {msg.message}
+                      </p>
+
+                      {/* Reactions */}
+                      <div className="flex items-center gap-2 mt-2 flex-wrap">
+                        {msg.reactions?.map(r => (
+                          <Button
+                            key={r.emoji}
+                            size="sm"
+                            variant={r.reactedByMe ? 'default' : 'outline'}
+                            className="h-6 px-2 text-xs"
+                            onClick={() => toggleReaction(msg.id, r.emoji)}
                           >
-                            <span>{reaction.emoji}</span>
-                            <span className="text-accent-foreground">
-                              {reaction.count}
-                            </span>
-                          </button>
+                            {r.emoji} {r.count}
+                          </Button>
                         ))}
 
-                        <button
-                          onClick={() => addReaction(message.id, '👍')}
-                          className="flex items-center justify-center w-6 h-6 rounded-full bg-muted hover:bg-accent transition-colors text-xs"
-                        >
-                          +
-                        </button>
+                        {/* Reaction Picker */}
+                        <div className="flex gap-1">
+                          {availableReactions.map(emoji => (
+                            <Button
+                              key={emoji}
+                              size="sm"
+                              variant="ghost"
+                              className="h-6 px-2 text-xs"
+                              onClick={() => toggleReaction(msg.id, emoji)}
+                            >
+                              {emoji}
+                            </Button>
+                          ))}
+                        </div>
                       </div>
-                    )}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
 
-          {isTyping.length > 0 && (
+          {/* Typing indicator */}
+          {typing.length > 0 && (
             <div className="flex items-center gap-2 text-muted-foreground text-sm">
               <div className="flex gap-1">
                 <div className="w-2 h-2 bg-medical-teal rounded-full animate-pulse"></div>
-                <div
-                  className="w-2 h-2 bg-medical-teal rounded-full animate-pulse"
-                  style={{ animationDelay: '0.2s' }}
-                ></div>
-                <div
-                  className="w-2 h-2 bg-medical-teal rounded-full animate-pulse"
-                  style={{ animationDelay: '0.4s' }}
-                ></div>
+                <div className="w-2 h-2 bg-medical-teal rounded-full animate-pulse delay-200"></div>
+                <div className="w-2 h-2 bg-medical-teal rounded-full animate-pulse delay-400"></div>
               </div>
               {t('chatScreenFixes.typingIndicator', {
-                users: isTyping.join(', '),
+                users: typing.join(', '),
               })}
             </div>
           )}
@@ -294,7 +283,11 @@ const ChatScreen = ({ onBack }: ChatScreenProps) => {
           <div className="flex-1">
             <Input
               value={newMessage}
-              onChange={e => setNewMessage(e.target.value)}
+              onChange={e => {
+                setNewMessage(e.target.value);
+                setTypingStatus(e.target.value.length > 0);
+              }}
+              onBlur={() => setTypingStatus(false)}
               onKeyPress={handleKeyPress}
               placeholder={t('chatScreen.typingMessage')}
               className="border-0 bg-background focus-visible:ring-1 focus-visible:ring-ring"

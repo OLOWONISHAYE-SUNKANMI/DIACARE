@@ -779,6 +779,7 @@ export const en = {
     title: 'Current Blood Sugar',
     state: 'Within normal range',
     measurement: 'Last measurement',
+    noReading: 'No Reading',
   },
 
   Actions: {
