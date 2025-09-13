@@ -2,7 +2,7 @@ export const en = {
   // App general
   appName: 'Klukoo',
   appDescription: '',
-  appSlogan: 'The first diabetes management and monitoring platform in Africa',
+  appSlogan: 'The first smart application in Africa that helps diabetic patients live better, anticipate better, and respond better.',
 
   // Navigation
   nav: {

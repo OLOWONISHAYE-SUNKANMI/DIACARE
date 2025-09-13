@@ -466,8 +466,8 @@ const AuthPage = () => {
         </div>
         <Card className="shadow-xl">
           <CardHeader className="text-center pb-4">
-            <CardTitle className="text-xl">{t('auth.signInTitle')}</CardTitle>
-            <CardDescription>{t('auth.description')}</CardDescription>
+            {/* <CardTitle className="text-xl">{t('auth.signInTitle')}</CardTitle> */}
+            <CardDescription className='font-bold text-md text-[#00000]'>{t('auth.description')}</CardDescription>
           </CardHeader>
 
           <CardContent>
