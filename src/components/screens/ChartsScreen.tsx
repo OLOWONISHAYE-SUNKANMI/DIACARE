@@ -186,6 +186,24 @@ const ChartsScreen = () => {
           </CardContent>
         </Card>
 
+        {/* Medications Bar */}
+        <Card>
+          <CardHeader>
+            <CardTitle>{t('charts.medications')}</CardTitle>
+          </CardHeader>
+          <CardContent className="h-72">
+            <ResponsiveContainer>
+              <BarChart data={medications}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="medication_time" tickFormatter={formatDay} />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey="dose" fill="#8b5cf6" />
+              </BarChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+
         {/* Activities Pie */}
         <Card>
           <CardHeader>
@@ -207,24 +225,6 @@ const ChartsScreen = () => {
                 </Pie>
                 <Tooltip />
               </PieChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
-
-        {/* Medications Bar */}
-        <Card>
-          <CardHeader>
-            <CardTitle>{t('charts.medications')}</CardTitle>
-          </CardHeader>
-          <CardContent className="h-72">
-            <ResponsiveContainer>
-              <BarChart data={medications}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="medication_time" tickFormatter={formatDay} />
-                <YAxis />
-                <Tooltip />
-                <Bar dataKey="dose" fill="#8b5cf6" />
-              </BarChart>
             </ResponsiveContainer>
           </CardContent>
         </Card>
