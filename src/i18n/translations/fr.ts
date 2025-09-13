@@ -2,7 +2,7 @@ export const fr = {
   // App general
   appName: 'Klukoo',
   appDescription: '',
-  appSlogan: 'La première plateforme de gestion et suivi du diabète en Afrique',
+  appSlogan: 'La première application intelligente en Afrique qui aide les patients diabétiques à mieux vivre, mieux anticiper et mieux réagir.',
 
   // Navigation
   nav: {
