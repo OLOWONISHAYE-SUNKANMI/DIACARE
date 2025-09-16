@@ -91,7 +91,10 @@ const AuthPage = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-medical-blue-light via-background to-medical-green-light">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"> <Loader/></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary">
+          {' '}
+          <Loader />
+        </div>
       </div>
     );
   }
@@ -219,7 +222,7 @@ const AuthPage = () => {
         .single();
 
       if (planError || !planData) {
-        throw new Error('Plan non trouvé');
+        throw new Error('Plan not confirmed');
       }
 
       // Close plan selection and redirect to payment with Flutterwave
@@ -231,11 +234,10 @@ const AuthPage = () => {
       // Navigate to payment page
       navigate('/payment');
     } catch (err: any) {
-      setError(err.message || 'Erreur lors de la sélection du plan');
+      setError(err.message || 'Error selecting plan');
       toast({
-        title: 'Erreur',
-        description:
-          err.message || 'Impossible de traiter la sélection du plan',
+        title: t('authFixes.error'),
+        description: err.message || t('authFixes.plan_selection.failed'),
         variant: 'destructive',
       });
     } finally {
@@ -271,10 +273,9 @@ const AuthPage = () => {
         }
 
         toast({
-          title: '🧪 Mode Test Activé',
-          description: 'Accès famille autorisé en mode test',
+          title: t('authFixes.test_mode.enabled_title'),
+          description: t('authFixes.test_mode.enabled_description'),
         });
-
         navigate('/');
         return;
       } catch (err: any) {
@@ -358,8 +359,8 @@ const AuthPage = () => {
     try {
       // Bypass direct vers l'interface professionnelle
       toast({
-        title: '🚀 Mode Demo Activé',
-        description: "Redirection vers l'interface professionnelle",
+        title: t('authFixes.demo_mode.enabled_title'),
+        description: t('authFixes.demo_mode.enabled_description'),
       });
 
       // Simuler un utilisateur professionnel connecté
@@ -372,7 +373,7 @@ const AuthPage = () => {
           user_metadata: {
             first_name: 'Dr Demo',
             last_name: 'Professional',
-            specialty: 'Endocrinologie',
+            specialty: 'Endocrinologist',
           },
         })
       );
@@ -380,7 +381,7 @@ const AuthPage = () => {
       // Rediriger vers le tableau de bord professionnel
       navigate('/professional-dashboard');
     } catch (err: any) {
-      setError('Erreur mode test: ' + err.message);
+      setError('Error mode test: ' + err.message);
     } finally {
       setIsLoading(false);
     }
@@ -402,22 +403,21 @@ const AuthPage = () => {
       const { error } = await signOut();
       if (error) {
         toast({
-          title: 'Erreur',
-          description: 'Impossible de se déconnecter',
+          title: t('authFixes.logout.error.title'),
+          description: t('authFixes.logout.error.description'),
           variant: 'destructive',
         });
       } else {
         toast({
-          title: 'Déconnexion réussie',
-          description: 'Vous êtes maintenant déconnecté',
+          title: t('authFixes.logout.success.title'),
+          description: t('authFixes.logout.success.description'),
         });
-        // Remove force parameter from URL
         navigate('/auth', { replace: true });
       }
     } catch (err) {
       toast({
-        title: 'Erreur',
-        description: 'Erreur lors de la déconnexion',
+        title: t('authFixes.logout.error.title'),
+        description: t('authFixes.logout.error.catch_description'),
         variant: 'destructive',
       });
     } finally {
@@ -440,7 +440,9 @@ const AuthPage = () => {
             onClick={handleSignOut}
             disabled={isLoading}
           >
-            {isLoading ? 'Déconnexion...' : 'Se déconnecter'}
+            {isLoading
+              ? t('authFixes.logout.loading')
+              : t('authFixes.logout.button')}
           </Button>
         </div>
       )}
@@ -542,7 +544,6 @@ const AuthPage = () => {
                             }
                             className="pl-10"
                             required
-                            
                           />
                         </div>
                       </div>
@@ -857,7 +858,7 @@ const AuthPage = () => {
                     />
                     <p className="text-xs text-muted-foreground text-center">
                       {isTestMode
-                        ? "🧪 En mode test, n'importe quel code fonctionne"
+                        ? t('auth.testModeHint')
                         : t('auth.codeProvidedByPatient')}
                     </p>
                   </div>
@@ -869,7 +870,9 @@ const AuthPage = () => {
                       isLoading || (!isTestMode && !familyData.patientCode)
                     }
                   >
-                    {isLoading ? t('auth.connecting') : t('auth.familyAccess')}
+                    {isLoading
+                      ? t('authFixes.auth.connecting')
+                      : t('authFixes.auth.familyAccess')}
                   </Button>
                 </form>
 
