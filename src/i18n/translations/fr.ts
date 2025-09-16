@@ -5082,4 +5082,81 @@ Le non-respect de cette charte peut entraîner une suspension temporaire ou déf
       loading: 'Chargement...',
     },
   },
+
+  authFixes: {
+    error: 'Erreur',
+    plan_selection: {
+      failed: 'Impossible de traiter la sélection du plan',
+    },
+    test_mode: {
+      enabled_title: '🧪 Mode Test Activé',
+      enabled_description: 'Accès famille autorisé en mode test',
+    },
+    demo_mode: {
+      enabled_title: '🚀 Mode Demo Activé',
+      enabled_description: "Redirection vers l'interface professionnelle",
+    },
+    logout: {
+      success: {
+        title: 'Déconnexion réussie',
+        description: 'Vous êtes maintenant déconnecté',
+      },
+      error: {
+        title: 'Erreur',
+        description: 'Impossible de se déconnecter',
+        catch_description: 'Erreur lors de la déconnexion',
+      },
+      button: 'Se déconnecter',
+      loading: 'Déconnexion...',
+    },
+    auth: {
+      codeProvidedByPatient: 'Code fourni par le patient',
+      testModeHint: "🧪 En mode test, n'importe quel code fonctionne",
+    },
+  },
+
+  index: {
+    loading: {
+      charts: 'Chargement des graphiques...',
+      blog: 'Chargement du blog...',
+      journal: 'Chargement du journal...',
+      family: 'Chargement famille...',
+      chat: 'Chargement du chat...',
+      consultation: 'Chargement consultation...',
+      alerts: 'Chargement alertes...',
+    },
+  },
+
+  notFound: {
+    links: {
+      dashboard: 'Tableau de bord',
+      glucoseTracking: 'Suivi glycémie',
+      medicationReminders: 'Rappels médicaments',
+    },
+    errors: {
+      pageNotFound: 'Page introuvable',
+      pageNotFoundDescription:
+        "La page que vous recherchez n'existe pas ou a été déplacée.",
+    },
+    buttons: {
+      back: 'Retour',
+      home: 'Accueil',
+    },
+    footer: {
+      tagline: '💪 DARE - Votre compagnon diabète',
+    },
+  },
+
+  editProfileModalChanges: {
+    common: {
+      saving: 'Enregistrement...',
+      saveChanges: 'Enregistrer les modifications',
+    },
+  },
+
+  app: {
+    status: {
+      offline: '📡 Mode hors ligne - Certaines fonctionnalités sont limitées',
+    },
+  },
 };

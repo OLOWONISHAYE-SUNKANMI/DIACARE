@@ -4,6 +4,7 @@ import { PerformanceOptimizer } from '@/utils/PerformanceOptimizer';
 import { BundlePreloader } from '@/utils/BundleOptimizer';
 import { useAuth } from '@/contexts/AuthContext';
 import Layout from '@/layouts/Layout';
+import { useTranslation } from 'react-i18next';
 
 // Import critical screens
 import HomeScreen from '@/components/screens/HomeScreen';
@@ -43,6 +44,7 @@ const PredictiveAlertsScreen = React.lazy(
 );
 
 const Index = () => {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState('home');
   const [glucoseValue, setGlucoseValue] = useState(126);
   const [carbValue, setCarbValue] = useState(45);
@@ -63,9 +65,12 @@ const Index = () => {
       performanceOptimizer.getPerformanceMetrics().networkCondition;
     BundlePreloader.preloadByNetworkCondition(networkCondition.effectiveType);
 
-    const cleanupInterval = setInterval(() => {
-      performanceOptimizer.clearExpiredCache();
-    }, 5 * 60 * 1000);
+    const cleanupInterval = setInterval(
+      () => {
+        performanceOptimizer.clearExpiredCache();
+      },
+      5 * 60 * 1000
+    );
 
     return () => clearInterval(cleanupInterval);
   }, [user, performanceOptimizer]);
@@ -133,7 +138,7 @@ const Index = () => {
         return (
           <Suspense
             fallback={
-              <LoadingSpinner fullScreen text="Chargement des graphiques..." />
+              <LoadingSpinner fullScreen text={t('index.loading.charts')} />
             }
           >
             <ChartsScreen />
@@ -143,7 +148,7 @@ const Index = () => {
         return (
           <Suspense
             fallback={
-              <LoadingSpinner fullScreen text="Chargement du blog..." />
+              <LoadingSpinner fullScreen text={t('index.loading.blog')} />
             }
           >
             <BlogScreen />
@@ -153,7 +158,7 @@ const Index = () => {
         return (
           <Suspense
             fallback={
-              <LoadingSpinner fullScreen text="Chargement du journal..." />
+              <LoadingSpinner fullScreen text={t('index.loading.journal')} />
             }
           >
             <JournalScreen showAlert={showAlert} setShowAlert={setShowAlert} />
@@ -163,7 +168,7 @@ const Index = () => {
         return (
           <Suspense
             fallback={
-              <LoadingSpinner fullScreen text="Chargement famille..." />
+              <LoadingSpinner fullScreen text={t('index.loading.family')} />
             }
           >
             <FamilyScreen />
@@ -173,7 +178,7 @@ const Index = () => {
         return (
           <Suspense
             fallback={
-              <LoadingSpinner fullScreen text="Chargement du chat..." />
+              <LoadingSpinner fullScreen text={t('index.loading.chat')} />
             }
           >
             <ChatScreen />
@@ -183,7 +188,10 @@ const Index = () => {
         return (
           <Suspense
             fallback={
-              <LoadingSpinner fullScreen text="Chargement consultation..." />
+              <LoadingSpinner
+                fullScreen
+                text={t('index.loading.consultation')}
+              />
             }
           >
             <ConsultationRequest />
@@ -193,7 +201,7 @@ const Index = () => {
         return (
           <Suspense
             fallback={
-              <LoadingSpinner fullScreen text="Chargement alertes..." />
+              <LoadingSpinner fullScreen text={t('index.loading.alerts')} />
             }
           >
             <PredictiveAlertsScreen />
