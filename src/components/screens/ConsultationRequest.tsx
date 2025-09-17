@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+'use client';
+
+import React, { useState } from 'react';
 import {
   Card,
   CardContent,
@@ -17,43 +19,20 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Clock, User, DollarSign, Send, CheckCircle } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/contexts/AuthContext';
 import { useTranslation } from 'react-i18next';
-
-interface Professional {
-  id: string;
-  first_name: string;
-  last_name: string;
-  professional_type: string;
-  professional_code: string;
-  status: string;
-  specialty?: string;
-}
-
-interface ConsultationRequest {
-  id: string;
-  professional_id: string;
-  consultation_reason: string;
-  status: string;
-  requested_at: string;
-  consultation_fee: number;
-  professional_response?: string;
-  responded_at?: string;
-}
+import { useToast } from '@/hooks/use-toast';
+import { useConsultation } from '@/contexts/ConsultationContext';
 
 const ConsultationRequest = () => {
   const { t } = useTranslation();
-  const { user } = useAuth();
   const { toast } = useToast();
 
-  const [professionals, setProfessionals] = useState<Professional[]>([]);
-  const [selectedProfessional, setSelectedProfessional] = useState<string>('');
-  const [consultationReason, setConsultationReason] = useState<string>('');
-  const [patientMessage, setPatientMessage] = useState<string>('');
-  const [myRequests, setMyRequests] = useState<ConsultationRequest[]>([]);
-  const [loading, setLoading] = useState(false);
+  const { professionals, myRequests, loading, submitRequest } =
+    useConsultation();
+
+  const [selectedProfessional, setSelectedProfessional] = useState('');
+  const [consultationReason, setConsultationReason] = useState('');
+  const [patientMessage, setPatientMessage] = useState('');
 
   const consultationReasons = [
     {
@@ -98,52 +77,8 @@ const ConsultationRequest = () => {
     nutritionist: { rate: 100, percentage: 5 },
   };
 
-  useEffect(() => {
-    loadProfessionals();
-    if (user) {
-      loadMyRequests();
-    }
-  }, [user]);
-
-  const loadProfessionals = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('professional_applications')
-        .select('*')
-        .eq('status', 'approved');
-
-      if (error) throw error;
-      setProfessionals(data || []);
-    } catch (error) {
-      console.error(
-        t('consultationRequestFixes.errors.loadProfessionals'),
-        error
-      );
-    }
-  };
-
-  const loadMyRequests = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('consultation_requests')
-        .select(
-          `
-          *,
-          professional:professional_applications(first_name, last_name, professional_type)
-        `
-        )
-        .eq('patient_id', user?.id)
-        .order('requested_at', { ascending: false });
-
-      if (error) throw error;
-      setMyRequests(data || []);
-    } catch (error) {
-      console.error(t('consultationRequestFixes.errors.loadRequests'), error);
-    }
-  };
-
   const handleSubmitRequest = async () => {
-    if (!selectedProfessional || !consultationReason || !user) {
+    if (!selectedProfessional || !consultationReason) {
       toast({
         title: t('consultationRequestFixes.fieldsRequiredTitle'),
         description: t('consultationRequestFixes.fieldsRequiredDescription'),
@@ -152,60 +87,16 @@ const ConsultationRequest = () => {
       return;
     }
 
-    setLoading(true);
-    try {
-      const professional = professionals.find(
-        p => p.id === selectedProfessional
-      );
-      if (!professional)
-        throw new Error(
-          t('consultationRequestFixes.errors.professionalNotFound')
-        );
-      // Calculer le tarif selon le nouveau système
-      const specialtyKey =
-        professional.professional_type as keyof typeof professionalRates;
-      const rateInfo = professionalRates[specialtyKey];
-      const consultationFee = rateInfo ? rateInfo.rate : 500; // Défaut 500 F
+    await submitRequest(
+      selectedProfessional,
+      consultationReason,
+      patientMessage
+    );
 
-      const { error } = await supabase.from('consultation_requests').insert({
-        patient_id: user.id,
-        professional_id: selectedProfessional,
-        professional_code: professional.professional_code,
-        consultation_reason: consultationReason,
-        patient_message: patientMessage,
-        consultation_fee: consultationFee,
-        status: 'pending',
-      });
-
-      if (error) throw error;
-
-      toast({
-        title: t('consultationRequestFixes.requestSentTitle'),
-        description: t('consultationRequestFixes.requestSentDescription'),
-      });
-
-      // Reset form
-      setSelectedProfessional('');
-      setConsultationReason('');
-      setPatientMessage('');
-
-      // Recharger les demandes
-      loadMyRequests();
-    } catch (error: any) {
-      console.error(
-        t('consultationRequestFixes.errors.sendRequestConsole'),
-        error
-      );
-      toast({
-        title: t('consultationRequestFixes.errors.sendRequestToastTitle'),
-        description:
-          error.message ||
-          t('consultationRequestFixes.errors.sendRequestToastDescription'),
-        variant: 'destructive',
-      });
-    } finally {
-      setLoading(false);
-    }
+    // Reset form
+    setSelectedProfessional('');
+    setConsultationReason('');
+    setPatientMessage('');
   };
 
   const getStatusBadge = (status: string) => {
@@ -253,7 +144,7 @@ const ConsultationRequest = () => {
 
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-8">
-      {/* En-tête */}
+      {/* Header */}
       <div className="text-center">
         <h1 className="text-3xl font-bold text-primary mb-2">
           💊 {t('consultation.title')}
@@ -261,7 +152,7 @@ const ConsultationRequest = () => {
         <p className="text-muted-foreground">{t('consultation.subtitle')}</p>
       </div>
 
-      {/* Nouvelle demande de consultation */}
+      {/* New Consultation Request */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -273,7 +164,7 @@ const ConsultationRequest = () => {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          {/* Sélection du professionnel */}
+          {/* Select Professional */}
           <div>
             <label className="block text-sm font-medium mb-2">
               {t('consultation.request.input1.title')}
@@ -316,7 +207,7 @@ const ConsultationRequest = () => {
             </Select>
           </div>
 
-          {/* Motif de consultation */}
+          {/* Consultation Reason */}
           <div>
             <label className="block text-sm font-medium mb-2">
               {t('consultation.request.input2.title')}
@@ -340,7 +231,7 @@ const ConsultationRequest = () => {
             </Select>
           </div>
 
-          {/* Message optionnel */}
+          {/* Optional Message */}
           <div>
             <label className="block text-sm font-medium mb-2">
               {t('consultation.request.input3.title')}
@@ -353,7 +244,7 @@ const ConsultationRequest = () => {
             />
           </div>
 
-          {/* Affichage du tarif */}
+          {/* Fee Display */}
           {selectedProfessional && (
             <div className="p-4 bg-muted/30 rounded-lg">
               <div className="flex items-center justify-between">
@@ -381,9 +272,7 @@ const ConsultationRequest = () => {
                         <p className="text-sm text-muted-foreground">
                           {t(
                             'consultationRequestFixes.monthlyPackagePercentage',
-                            {
-                              percentage: rateInfo?.percentage || 0,
-                            }
+                            { percentage: rateInfo?.percentage || 0 }
                           )}
                         </p>
                       </>
@@ -412,7 +301,7 @@ const ConsultationRequest = () => {
         </CardContent>
       </Card>
 
-      {/* Mes demandes de consultation */}
+      {/* My Consultation Requests */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -431,7 +320,6 @@ const ConsultationRequest = () => {
                 const reason = consultationReasons.find(
                   r => r.value === request.consultation_reason
                 );
-
                 return (
                   <div key={request.id} className="p-4 border rounded-lg">
                     <div className="flex items-start justify-between">
@@ -448,7 +336,6 @@ const ConsultationRequest = () => {
                             )}
                           </Badge>
                         </div>
-
                         <div>
                           <p className="text-sm text-muted-foreground">
                             {t(
@@ -459,7 +346,6 @@ const ConsultationRequest = () => {
                             {reason?.label || request.consultation_reason}
                           </p>
                         </div>
-
                         <div className="flex items-center gap-4 text-sm text-muted-foreground">
                           <span>
                             {t(
@@ -474,7 +360,6 @@ const ConsultationRequest = () => {
                             {request.consultation_fee} F
                           </span>
                         </div>
-
                         {request.professional_response && (
                           <div className="mt-3 p-3 bg-muted/30 rounded">
                             <p className="text-sm text-muted-foreground">
@@ -488,7 +373,6 @@ const ConsultationRequest = () => {
                           </div>
                         )}
                       </div>
-
                       <div className="text-right">
                         <Badge
                           variant={status.variant}
