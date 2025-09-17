@@ -1,23 +1,33 @@
-import { useLocation, Link } from "react-router-dom";
-import { useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Home, ArrowLeft, Search, MapPin } from "lucide-react";
+import { useLocation, Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Home, ArrowLeft, Search, MapPin } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const NotFound = () => {
+  const { t } = useTranslation();
   const location = useLocation();
 
   useEffect(() => {
     console.error(
-      "404 Error: User attempted to access non-existent route:",
+      '404 Error: User attempted to access non-existent route:',
       location.pathname
     );
   }, [location.pathname]);
 
   const suggestedLinks = [
-    { label: "Tableau de bord", path: "/", icon: Home },
-    { label: "Suivi glycémie", path: "/?tab=charts", icon: Search },
-    { label: "Rappels médicaments", path: "/?tab=reminders", icon: MapPin },
+    { label: t('notFound.links.dashboard'), path: '/', icon: Home },
+    {
+      label: t('notFound.links.glucoseTracking'),
+      path: '/?tab=charts',
+      icon: Search,
+    },
+    {
+      label: t('notFound.links.medicationReminders'),
+      path: '/?tab=reminders',
+      icon: MapPin,
+    },
   ];
 
   return (
@@ -27,18 +37,20 @@ const NotFound = () => {
           <div className="mx-auto w-20 h-20 bg-gradient-medical rounded-full mb-4 flex items-center justify-center shadow-lg">
             <span className="text-4xl text-primary-foreground">404</span>
           </div>
-          <CardTitle className="text-2xl text-foreground">Page introuvable</CardTitle>
+          <CardTitle className="text-2xl text-foreground">
+            {t('notFound.errors.pageNotFound')}
+          </CardTitle>
         </CardHeader>
-        
+
         <CardContent className="space-y-6">
           <p className="text-muted-foreground">
-            La page que vous recherchez n'existe pas ou a été déplacée.
+            {t('notFound.errors.pageNotFoundDescription')}
           </p>
-          
+
           <div className="space-y-3">
             <p className="text-sm font-medium text-foreground">Suggestions :</p>
             <div className="grid gap-2">
-              {suggestedLinks.map((link) => (
+              {suggestedLinks.map(link => (
                 <Link key={link.path} to={link.path}>
                   <Button variant="outline" className="w-full justify-start">
                     <link.icon className="w-4 h-4 mr-2" />
@@ -48,26 +60,26 @@ const NotFound = () => {
               ))}
             </div>
           </div>
-          
+
           <div className="flex gap-2">
-            <Button 
-              onClick={() => window.history.back()} 
+            <Button
+              onClick={() => window.history.back()}
               variant="outline"
               className="flex-1"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
-              Retour
+              {t('notFound.buttons.back')}
             </Button>
+
             <Link to="/" className="flex-1">
               <Button className="w-full bg-medical-teal hover:bg-medical-teal/90">
                 <Home className="w-4 h-4 mr-2" />
-                Accueil
+                {t('notFound.buttons.home')}
               </Button>
             </Link>
           </div>
-          
           <p className="text-xs text-muted-foreground border-t pt-4">
-            💪 DARE - Votre compagnon diabète
+            {t('notFound.footer.tagline')}
           </p>
         </CardContent>
       </Card>

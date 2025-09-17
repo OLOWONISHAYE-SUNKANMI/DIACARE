@@ -5026,4 +5026,81 @@ Failure to comply with this charter may result in temporary or permanent suspens
       loading: 'Loading...',
     },
   },
+
+  authFixes: {
+    error: 'Error',
+    plan_selection: {
+      failed: 'Unable to process plan selection',
+    },
+    test_mode: {
+      enabled_title: '🧪 Test Mode Enabled',
+      enabled_description: 'Family access granted in test mode',
+    },
+    demo_mode: {
+      enabled_title: '🚀 Demo Mode Enabled',
+      enabled_description: 'Redirecting to the professional interface',
+    },
+    logout: {
+      success: {
+        title: 'Signed out successfully',
+        description: 'You are now signed out',
+      },
+      error: {
+        title: 'Error',
+        description: 'Unable to sign out',
+        catch_description: 'An error occurred while signing out',
+      },
+      button: 'Sign out',
+      loading: 'Signing out...',
+    },
+    auth: {
+      codeProvidedByPatient: 'Code provided by patient',
+      testModeHint: '🧪 In test mode, any code works',
+    },
+  },
+
+  index: {
+    loading: {
+      charts: 'Loading charts...',
+      blog: 'Loading blog...',
+      journal: 'Loading journal...',
+      family: 'Loading family...',
+      chat: 'Loading chat...',
+      consultation: 'Loading consultation...',
+      alerts: 'Loading alerts...',
+    },
+  },
+
+  notFound: {
+    links: {
+      dashboard: 'Dashboard',
+      glucoseTracking: 'Glucose Tracking',
+      medicationReminders: 'Medication Reminders',
+    },
+    errors: {
+      pageNotFound: 'Page not found',
+      pageNotFoundDescription:
+        'The page you are looking for does not exist or has been moved.',
+    },
+    buttons: {
+      back: 'Back',
+      home: 'Home',
+    },
+    footer: {
+      tagline: '💪 DARE - Your diabetes companion',
+    },
+  },
+
+  editProfileModalChanges: {
+    common: {
+      saving: 'Saving...',
+      saveChanges: 'Save Changes',
+    },
+  },
+
+  app: {
+    status: {
+      offline: '📡 Offline Mode - Some features are limited',
+    },
+  },
 };

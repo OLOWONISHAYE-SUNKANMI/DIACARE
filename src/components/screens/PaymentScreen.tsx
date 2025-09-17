@@ -187,7 +187,7 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
             <ArrowLeft className="w-4 h-4" />
           </Button>
           <h1 className="text-xl font-semibold">
-            {t('paymentScreen.paymentScreen.payment.secure')}
+            {t('paymentScreen.payment.secure')}
           </h1>
         </div>
 
@@ -345,17 +345,17 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
           <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
             <h4 className="font-semibold text-orange-700 mb-2 flex items-center">
               <Shield className="w-4 h-4 mr-2" />
-              {t('paymentScreen.paymentMethod,title')}
+              {t('paymentScreen.paymentMethod.title')}
             </h4>
             <div className="text-sm text-muted-foreground space-y-1">
-              <p>{t('paymentScreen.paymentMethod,orangeMoney')}</p>
-              <p>{t('paymentScreen.paymentMethod,mtnMoney')}</p>
-              <p>{t('paymentScreen.paymentMethod,wave')}</p>
-              <p>{t('paymentScreen.paymentMethod,djamo')}</p>
-              <p>{t('paymentScreen.paymentMethod,mpesa')}</p>
-              <p>{t('paymentScreen.paymentMethod,airtel')}</p>
-              <p>{t('paymentScreen.paymentMethod,visa')}</p>
-              <p>{t('paymentScreen.paymentMethod,bank')}</p>
+              <p>{t('paymentScreen.paymentMethod.orangeMoney')}</p>
+              <p>{t('paymentScreen.paymentMethod.mtnMoney')}</p>
+              <p>{t('paymentScreen.paymentMethod.wave')}</p>
+              <p>{t('paymentScreen.paymentMethod.djamo')}</p>
+              <p>{t('paymentScreen.paymentMethod.mpesa')}</p>
+              <p>{t('paymentScreen.paymentMethod.airtel')}</p>
+              <p>{t('paymentScreen.paymentMethod.visa')}</p>
+              <p>{t('paymentScreen.paymentMethod.bank')}</p>
             </div>
           </div>
 
