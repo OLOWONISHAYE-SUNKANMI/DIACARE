@@ -177,7 +177,9 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
                 _hover={{ bg: '#32948f' }}
                 color="#fff"
               >
-                {loading ? 'Saving...' : 'Save Changes'}
+                {loading
+                  ? t('editProfileModalChanges.common.saving')
+                  : t('editProfileModalChanges.common.saveChanges')}
               </Button>
             </form>
           </ModalBody>

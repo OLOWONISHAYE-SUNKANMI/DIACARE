@@ -14,6 +14,7 @@ import { ProfessionalDashboard } from './components/screens/ProfessionalDashboar
 import { ProfessionalRegistrationScreen } from './components/screens/ProfessionalRegistrationScreen';
 import { ChakraProvider } from '@chakra-ui/react';
 import { Toaster } from 'sonner';
+import { useTranslation } from 'react-i18next';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -26,14 +27,13 @@ const queryClient = new QueryClient({
 });
 
 const AppContent = () => {
+  const { t } = useTranslation();
   const { isOnline } = useOfflineDetection();
 
   return (
     <>
       {!isOnline && (
-        <div className="offline-indicator show">
-          📡 Mode hors ligne - Certaines fonctionnalités sont limitées
-        </div>
+        <div className="offline-indicator show">{t('app.status.offline')}</div>
       )}
       <BrowserRouter>
         <Routes>
