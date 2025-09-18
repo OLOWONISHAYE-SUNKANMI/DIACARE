@@ -70,7 +70,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       .from('profiles')
       .select('*')
       .eq('user_id', userId)
-      .single();
+      .maybeSingle();
 
     if (error) {
       console.error('Error fetching profile:', error.message);
@@ -156,8 +156,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         .select('*')
         .eq('reviewed_by', userId)
         .eq('status', 'approved')
-        .single();
-
+        .maybeSingle();
       if (!error && professionalApp) {
         setIsProfessional(true);
         setProfessionalData(professionalApp);

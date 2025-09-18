@@ -250,34 +250,6 @@ const ChartsScreen = () => {
           </div>
         </CardContent>
       </Card>
-      {/* Weekly Trends */}
-      <Card className="border-medical-teal/20">
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
-            <Clock className="w-5 h-5 text-medical-teal" />
-            <span>{t('trend.title')}</span>
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex justify-between items-end h-24 space-x-2">
-            {weeklyTrends.map((trend, i) => (
-              <div
-                key={i}
-                className="flex flex-col items-center space-y-2 flex-1"
-              >
-                <div
-                  className="w-full bg-green-400 rounded-t"
-                  style={{ height: `${trend.percent}%` }}
-                ></div>
-                <div className="text-xs text-muted-foreground">{trend.day}</div>
-              </div>
-            ))}
-          </div>
-          <div className="text-center text-xs text-muted-foreground mt-4">
-            {t('trend.message')}
-          </div>
-        </CardContent>
-      </Card>
     </div>
   );
 };

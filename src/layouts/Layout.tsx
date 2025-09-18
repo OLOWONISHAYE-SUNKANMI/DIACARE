@@ -11,6 +11,7 @@ import { MealProvider } from '@/contexts/MealContext';
 import { MedicationProvider } from '@/contexts/MedicationContext';
 import { ActivityProvider } from '@/contexts/ActivityContext';
 import { ChatProvider } from '@/contexts/ChatContext';
+import { ConsultationProvider } from '@/contexts/ConsultationContext';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -40,31 +41,32 @@ const Layout = ({ children, activeTab, onTabChange }: LayoutProps) => {
         <MealProvider>
           <MedicationProvider>
             <ActivityProvider>
-              <div className="h-screen w-full bg-background flex flex-col relative">
-                {/* ✅ Fixed Header */}
-                <div className="fixed top-0 left-0 right-0 z-50">
-                  <Header
-                    user={user}
-                    onLogout={handleLogout}
-                    isProfessional={isProfessional}
-                    professionalData={professionalData}
-                    activeTab={activeTab}
-                    onTabChange={onTabChange}
-                  />
-                </div>
-                {/* ✅ Main content */}
-                <div
-                  className={`flex-1 overflow-auto relative ${
-                    activeTab !== 'payment' && activeTab !== 'chat'
-                      ? 'pb-16'
-                      : ''
-                  }`}
-                >
-                  <div className="relative h-full">{children}</div>
-                </div>
+              <ConsultationProvider>
+                <div className="h-screen w-full bg-background flex flex-col relative">
+                  {/* ✅ Fixed Header */}
+                  <div className="fixed top-0 left-0 right-0 z-50">
+                    <Header
+                      user={user}
+                      onLogout={handleLogout}
+                      isProfessional={isProfessional}
+                      professionalData={professionalData}
+                      activeTab={activeTab}
+                      onTabChange={onTabChange}
+                    />
+                  </div>
+                  {/* ✅ Main content */}
+                  <div
+                    className={`flex-1 overflow-auto relative ${
+                      activeTab !== 'payment' && activeTab !== 'chat'
+                        ? 'pb-16'
+                        : ''
+                    }`}
+                  >
+                    <div className="relative h-full">{children}</div>
+                  </div>
 
-                {/* plus icon (it is suppose to be floating on the right side of the screen) */}
-                {/* <Button
+                  {/* plus icon (it is suppose to be floating on the right side of the screen) */}
+                  {/* <Button
             onClick={handleQuickAdd}
             className="fixed bottom-24 right-0 w-14 h-14 rounded-full bg-medical-teal hover:bg-medical-teal/90 shadow-xl hover:shadow-2xl transition-all duration-200 hover:scale-110 z-50 ring-4 ring-medical-teal/20"
             size="icon"
@@ -72,16 +74,17 @@ const Layout = ({ children, activeTab, onTabChange }: LayoutProps) => {
             <Plus className="w-6 h-6" />
           </Button> */}
 
-                {/* ✅ Fixed Bottom Navigation */}
-                {activeTab !== 'payment' && (
-                  <div className="fixed bottom-0 left-0 right-0 z-40 hidden md:block">
-                    <BottomNavigation
-                      activeTab={activeTab}
-                      onTabChange={onTabChange}
-                    />
-                  </div>
-                )}
-              </div>
+                  {/* ✅ Fixed Bottom Navigation */}
+                  {activeTab !== 'payment' && (
+                    <div className="fixed bottom-0 left-0 right-0 z-40 hidden md:block">
+                      <BottomNavigation
+                        activeTab={activeTab}
+                        onTabChange={onTabChange}
+                      />
+                    </div>
+                  )}
+                </div>
+              </ConsultationProvider>
             </ActivityProvider>
           </MedicationProvider>
         </MealProvider>
