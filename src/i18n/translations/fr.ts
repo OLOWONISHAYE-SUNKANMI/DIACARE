@@ -2,7 +2,7 @@ export const fr = {
   // App general
   appName: 'Klukoo',
   appDescription: '',
-  appSlogan: 'La première plateforme de gestion et suivi du diabète en Afrique',
+  appSlogan: 'La première application intelligente en Afrique qui aide les patients diabétiques à mieux vivre, mieux anticiper et mieux réagir.',
 
   // Navigation
   nav: {
@@ -59,7 +59,7 @@ export const fr = {
       avgGlucose: 'Moyenne glycémique',
     },
     advice: {
-      title: '💡 Conseil DiabCare personnalisé',
+      title: '💡 Conseil Klukoo personnalisé',
       example:
         "Excellente adherence cette semaine ! Vos glycémies en fin d'après-midi sont légèrement élevées. Considérez ajuster votre collation de 15h ou anticiper votre injection de Humalog de 10 minutes.",
     },
@@ -155,7 +155,7 @@ export const fr = {
 
   // Blog/News Screen - COMPLETE
   blog: {
-    title: 'DiabCare News',
+    title: 'Klukoo News',
     subtitle: 'Actualités et conseils sur le diabète',
     readMore: 'Lire',
     readFull: "Lire l'article complet",
@@ -254,7 +254,7 @@ export const fr = {
     loading: 'Chargement...',
     signInTitle: 'Connexion',
     signUpTitle: 'Inscription',
-    description: 'Accédez à votre compte DiabCare',
+    description: 'Accédez à votre compte Klukoo',
     appSlogan: "Diabète Africain & Ressources d'Excellence",
     patient: 'Patient',
     professional: 'Professionnel',
@@ -416,9 +416,9 @@ export const fr = {
 
   // Home Screen
   homeScreen: {
-    mission: 'Mission DiabCare',
-    darePackage: 'Forfait DiabCare',
-    completePlan: 'DiabCare Complet',
+    mission: 'Mission Klukoo',
+    darePackage: 'Forfait Klukoo',
+    completePlan: 'Klukoo Complet',
     premium: 'PREMIUM',
     monthlyPrice: 'F CFA/mois',
     healthPriceless: "Votre santé n'a pas de prix",
@@ -427,8 +427,8 @@ export const fr = {
     clarityCharts: 'Graphiques style Clarity',
     advancedCalculator: 'Calculateur doses avancé',
     familySupport: 'Support familial',
-    aiAssistant: 'Assistant IA DiabCare',
-    startTracking: 'Commencer mon suivi DiabCare',
+    aiAssistant: 'Assistant IA Klukoo',
+    startTracking: 'Commencer mon suivi Klukoo',
     freeTrial: '✨ Essai gratuit 7 jours',
     cancelAnytime: 'Annulable à tout moment • Support inclus',
     lastReading: "Aujourd'hui 14:30",
@@ -445,7 +445,7 @@ export const fr = {
   // Profile Screen
   profileScreen: {
     years: 'ans',
-    yearsWithDare: 'Années avec DiabCare',
+    yearsWithDare: 'Années avec Klukoo',
     glucoseMeasures: 'Mesures glycémie',
     adherence: 'Observance',
     personalInfo: 'Informations Personnelles',
@@ -483,7 +483,7 @@ export const fr = {
 
   // Chat Screen
   chatScreen: {
-    title: 'DiabCare Chat',
+    title: 'Klukoo Chat',
     membersConnected: 'membres connectés',
     successesThisWeek: '💚 142 succès cette semaine',
     inTargetZone: '🎯 89% dans la zone cible',
@@ -494,7 +494,7 @@ export const fr = {
     typingMessage: 'Écrivez votre message de soutien...',
     typing: "en train d'écrire...",
     messageSent: 'Message envoyé',
-    messageShared: 'Votre message a été partagé avec la communauté DiabCare',
+    messageShared: 'Votre message a été partagé avec la communauté Klukoo',
   },
 
   // Professional Access
@@ -516,7 +516,7 @@ export const fr = {
     institution: 'Établissement',
     motivation: 'Motivation',
     motivationPlaceholder:
-      'Expliquez pourquoi vous souhaitez accéder à DiabCare...',
+      'Expliquez pourquoi vous souhaitez accéder à Klukoo...',
     requestSent: 'Demande envoyée',
     requestSentDescription:
       "Votre demande d'accès professionnel a été envoyée avec succès",
@@ -530,17 +530,17 @@ export const fr = {
     getStarted: 'Commencer',
     languageSelection: {
       title: 'Choisissez votre langue',
-      description: 'Sélectionnez votre langue préférée pour utiliser DiabCare',
+      description: 'Sélectionnez votre langue préférée pour utiliser Klukoo',
     },
     welcome: {
-      title: 'Bienvenue dans DiabCare',
+      title: 'Bienvenue dans Klukoo',
       subtitle: 'La première plateforme africaine de gestion du diabète',
       description:
         'Nous sommes ravis de vous accompagner dans votre parcours de santé',
     },
     profile: {
       title: 'Configurez votre profil',
-      subtitle: 'Aidez-nous à personnaliser votre expérience DiabCare',
+      subtitle: 'Aidez-nous à personnaliser votre expérience Klukoo',
       description:
         'Ces informations nous permettront de vous offrir un suivi adapté',
       namePlaceholder: 'Entrez votre prénom',
@@ -558,9 +558,9 @@ export const fr = {
       remindersDesc: 'Rappels adaptatifs basés sur vos habitudes',
     },
     features: {
-      title: 'Découvrez DiabCare',
+      title: 'Découvrez Klukoo',
       subtitle: 'Toutes les fonctionnalités pour gérer votre diabète',
-      description: 'Voici ce que DiabCare peut faire pour vous',
+      description: 'Voici ce que Klukoo peut faire pour vous',
       glucose: 'Suivi glycémique',
       reminders: 'Rappels intelligents',
       consultation: 'Téléconsultations',
@@ -576,7 +576,7 @@ export const fr = {
     },
     completion: {
       title: 'Configuration terminée !',
-      description: "Votre compte DiabCare est prêt à l'emploi",
+      description: "Votre compte Klukoo est prêt à l'emploi",
     },
   },
 
@@ -590,10 +590,10 @@ export const fr = {
       'Découvrez comment nous protégeons vos données personnelles',
     termsContent: `
       <h3>1. Acceptation des Conditions</h3>
-      <p>En utilisant DiabCare (Diabète Africain & Ressources d'Excellence), vous acceptez les présentes conditions d'utilisation.</p>
+      <p>En utilisant Klukoo (Diabète Africain & Ressources d'Excellence), vous acceptez les présentes conditions d'utilisation.</p>
       
       <h3>2. Description du Service</h3>
-      <p>DiabCare est la première plateforme de gestion et suivi du diabète en Afrique, offrant :</p>
+      <p>Klukoo est la première plateforme de gestion et suivi du diabète en Afrique, offrant :</p>
       <ul>
         <li>Suivi personnalisé de la glycémie</li>
         <li>Gestion des médicaments et rappels</li>
@@ -621,7 +621,7 @@ export const fr = {
       <p>Les consultations médicales sont fournies par des professionnels certifiés. Elles ne remplacent pas les soins d'urgence.</p>
       
       <h3>7. Limitation de Responsabilité</h3>
-      <p>DiabCare fournit des outils d'aide à la gestion du diabète mais ne remplace pas un avis médical professionnel.</p>
+      <p>Klukoo fournit des outils d'aide à la gestion du diabète mais ne remplace pas un avis médical professionnel.</p>
       
       <h3>8. Résiliation</h3>
       <p>Vous pouvez supprimer votre compte à tout moment. Nous nous réservons le droit de suspendre des comptes en cas de violation.</p>
@@ -630,7 +630,7 @@ export const fr = {
       <p>Nous nous réservons le droit de modifier ces conditions avec préavis.</p>
       
       <h3>10. Contact</h3>
-      <p>Pour toute question : support@dare-africa.com</p>
+      <p>Pour toute question : support@Klukoo-africa.com</p>
     `,
     privacyContent: `
       <h3>1. Collecte des Données</h3>
@@ -684,7 +684,7 @@ export const fr = {
       <p>Vos données sont hébergées en Afrique. Tout transfert international respecte les accords de protection des données.</p>
       
       <h3>10. Contact DPO</h3>
-      <p>Pour toute question sur vos données : dpo@dare-africa.com</p>
+      <p>Pour toute question sur vos données : dpo@Klukoo-africa.com</p>
       
       <p><strong>Dernière mise à jour :</strong> Décembre 2024</p>
     `,
@@ -882,7 +882,7 @@ export const fr = {
   },
 
   mission: {
-    title: 'La mission de DiabCare',
+    title: 'La mission de Klukoo',
     message:
       'Notre mission est de vous aider à mieux comprendre et gérer votre diabète avec des outils adaptés à votre réalité.',
   },
@@ -1616,10 +1616,10 @@ export const fr = {
   errorBoundary: {
     error_occurred: "Oups! Une erreur s'est produite",
     unexpected_error_message:
-      "Une erreur inattendue s'est produite dans l'application DARE. Notre équipe technique a été informée automatiquement.",
+      "Une erreur inattendue s'est produite dans l'application Klukoo. Notre équipe technique a été informée automatiquement.",
     button_restart: 'Redémarrer',
     button_home: 'Accueil',
-    footer_text: '💪 DARE - Osez vaincre le diabète ensemble',
+    footer_text: '💪 Klukoo - Osez vaincre le diabète ensemble',
   },
 
   onboardingFlow: {
@@ -1634,7 +1634,7 @@ export const fr = {
     loading_plans: 'Chargement des forfaits...',
     plans_error_title: 'Erreur',
     plans_error_description: 'Impossible de charger les forfaits',
-    choose_plan_title: 'Choisissez votre forfait DiaCare',
+    choose_plan_title: 'Choisissez votre forfait Klukoo',
     choose_plan_description:
       'Sélectionnez le forfait qui correspond le mieux à vos besoins',
     badge_recommended_family: 'Recommandé pour la famille',
@@ -1668,7 +1668,7 @@ export const fr = {
     access_denied_description: "Code d'accès invalide ou patient introuvable",
     professional_id_code: "Code d'identification professionnel",
     professional_code_description:
-      'Générez votre code unique pour accéder aux données patients DARE',
+      'Générez votre code unique pour accéder aux données patients Klukoo',
     generate_professional_code: 'Générer mon code professionnel',
     generated_on: 'Généré le',
     badge_active: 'Actif',
@@ -2035,7 +2035,7 @@ Déployée sur 15,000 patients dans 12 pays, l'IA montre des résultats exceptio
 
 "Nous entrons dans l'ère de la prévention totale", déclare le Dr. Lisa Wang, directrice de Google Health Diabetes. "L'hypoglycémie sévère devient un événement évitable."
 
-L'application DARE AI sera la première à intégrer cette technologie dès septembre 2025, avec certification CE et FDA approuvée.`,
+L'application Klukoo AI sera la première à intégrer cette technologie dès septembre 2025, avec certification CE et FDA approuvée.`,
     save: 'Sauvegarder',
     fullSource: 'Source complète',
     all: 'Tous',
@@ -2058,7 +2058,7 @@ L'application DARE AI sera la première à intégrer cette technologie dès sept
     statusPending: 'En attente',
     statusApproved: 'Approuvé',
     statusRejected: 'Rejeté',
-    adminTitle: '🏥 Administration DARE',
+    adminTitle: '🏥 Administration Klukoo',
     adminSubtitle: 'Gestion des candidatures professionnelles',
     totalApplications: 'Total candidatures',
     searchPlaceholder: 'Rechercher par nom, email, ou spécialité...',
@@ -2094,7 +2094,7 @@ L'application DARE AI sera la première à intégrer cette technologie dès sept
       '{{firstName}} {{lastName}} a été rejeté(e)',
     applicationRejectError: 'Impossible de rejeter la candidature',
     loadingApplications: 'Chargement des candidatures...',
-    adminApplicationsTitle: '🔧 DARE Admin - Candidatures',
+    adminApplicationsTitle: '🔧 Klukoo Admin - Candidatures',
     pendingApplications: "{{count}} candidature(s) en attente d'examen",
     refresh: 'Actualiser',
     noPending: {
@@ -2124,7 +2124,7 @@ L'application DARE AI sera la première à intégrer cette technologie dès sept
         'Impossible de charger les métriques du tableau de bord.',
       loadingAdmin: 'Chargement du tableau de bord administrateur...',
     },
-    title: '🔧 DARE Administration',
+    title: '🔧 Klukoo Administration',
     subtitle: 'Gestion des professionnels de santé',
     metrics: {
       paymentsThisMonth: 'Paiements ce mois',
@@ -2207,7 +2207,7 @@ L'application DARE AI sera la première à intégrer cette technologie dès sept
     },
     doctor: {
       title: 'Dr. Mamadou Kane',
-      subtitle: 'Endocrinologue • DARE Pro',
+      subtitle: 'Endocrinologue • Klukoo Pro',
     },
     earningsToday: "Gains aujourd'hui",
     statusButton: {
@@ -2237,7 +2237,7 @@ L'application DARE AI sera la première à intégrer cette technologie dès sept
         "Votre demande d'inscription sera examinée sous 24h",
       accessDeniedTitle: 'Accès refusé',
       accessDeniedDescription:
-        "L'acceptation de la charte déontologique DARE est obligatoire",
+        "L'acceptation de la charte déontologique Klukoo est obligatoire",
     },
     teleconsultation: {
       startedTitle: 'Téléconsultation initiée',
@@ -2254,7 +2254,7 @@ L'application DARE AI sera la première à intégrer cette technologie dès sept
       scheduled: 'Programmée',
     },
     professionalPortal: {
-      title: 'Portal Professionnel DARE',
+      title: 'Portal Professionnel Klukoo',
       description:
         'Rejoignez notre réseau de professionnels de santé et offrez des téléconsultations spécialisées en diabète',
     },
@@ -2278,7 +2278,7 @@ L'application DARE AI sera la première à intégrer cette technologie dès sept
       email: 'Email professionnel *',
       phone: 'Téléphone *',
       terms: "J'accepte les conditions d'utilisation",
-      charter: "J'accepte la charte de déontologie DARE (obligatoire)",
+      charter: "J'accepte la charte de déontologie Klukoo (obligatoire)",
       submitApplication: 'Soumettre ma candidature',
     },
     professionalBenefits: {
@@ -2320,7 +2320,7 @@ L'application DARE AI sera la première à intégrer cette technologie dès sept
       consultations_management: {
         title: 'Gestion des consultations',
         description:
-          'Planifiez et gérez vos téléconsultations avec les patients DARE',
+          'Planifiez et gérez vos téléconsultations avec les patients Klukoo',
         available_slots: 'Créneaux disponibles',
         manage_slots: 'Gérer mes créneaux',
       },
@@ -2358,9 +2358,9 @@ L'application DARE AI sera la première à intégrer cette technologie dès sept
     },
     dialog: {
       codeOfConduct: {
-        title: 'Charte Déontologique DARE',
+        title: 'Charte Déontologique Klukoo',
         description:
-          'Veuillez lire attentivement et accepter notre charte déontologique pour rejoindre DARE',
+          'Veuillez lire attentivement et accepter notre charte déontologique pour rejoindre Klukoo',
       },
     },
     codeOfConductFull: `
@@ -2368,7 +2368,7 @@ Article 1 - Engagement professionnel
 Le professionnel de santé s'engage à respecter les principes déontologiques de sa profession et à maintenir ses compétences à jour dans le domaine du diabète.
 
 Article 2 - Qualité des soins
-Tous les soins dispensés via DARE doivent respecter les standards de qualité les plus élevés. Le professionnel s'engage à fournir des consultations complètes et adaptées aux besoins spécifiques de chaque patient diabétique.
+Tous les soins dispensés via Klukoo doivent respecter les standards de qualité les plus élevés. Le professionnel s'engage à fournir des consultations complètes et adaptées aux besoins spécifiques de chaque patient diabétique.
 
 Article 3 - Confidentialité et protection des données
 Le professionnel s'engage à respecter strictement la confidentialité des données patients et à ne jamais divulguer d'informations médicales sans autorisation expresse. Toutes les données sont protégées selon les normes RGPD.
@@ -2377,13 +2377,13 @@ Article 4 - Disponibilité et ponctualité
 Le professionnel s'engage à respecter ses créneaux de consultation et à être ponctuel. En cas d'empêchement, il doit prévenir au minimum 2 heures à l'avance.
 
 Article 5 - Responsabilité médicale
-Le professionnel reste pleinement responsable de ses actes médicaux et diagnostics. DARE fournit uniquement la plateforme technologique, la responsabilité médicale incombe entièrement au professionnel de santé.
+Le professionnel reste pleinement responsable de ses actes médicaux et diagnostics. Klukoo fournit uniquement la plateforme technologique, la responsabilité médicale incombe entièrement au professionnel de santé.
 
 Article 6 - Formation continue
-Le professionnel s'engage à participer aux formations DARE proposées et à maintenir ses connaissances à jour concernant les nouvelles pratiques en diabétologie.
+Le professionnel s'engage à participer aux formations Klukoo proposées et à maintenir ses connaissances à jour concernant les nouvelles pratiques en diabétologie.
 
 Article 7 - Sanctions
-Le non-respect de cette charte peut entraîner une suspension temporaire ou définitive de l'accès à la plateforme DARE, sans préavis ni compensation.
+Le non-respect de cette charte peut entraîner une suspension temporaire ou définitive de l'accès à la plateforme Klukoo, sans préavis ni compensation.
 `,
   },
   charterFooter: {
@@ -2437,9 +2437,9 @@ Le non-respect de cette charte peut entraîner une suspension temporaire ou déf
       variant: 'destructive',
     },
     professionalPortal: {
-      title: '🏥 DARE Pro - Professionnels de Santé',
+      title: '🏥 Klukoo Pro - Professionnels de Santé',
       subtitle:
-        'Rejoignez le réseau DARE et monétisez vos consultations de télémédecine',
+        'Rejoignez le réseau Klukoo et monétisez vos consultations de télémédecine',
       benefits: {
         freeRegistration: 'Inscription gratuite',
         validatedWithin48h: 'Validation sous 48h',
@@ -2550,7 +2550,7 @@ Le non-respect de cette charte peut entraîner une suspension temporaire ou déf
 
   paymentScreen: {
     subscription: {
-      defaultDescription: 'Abonnement mensuel DiaCare Premium',
+      defaultDescription: 'Abonnement mensuel Klukoo Premium',
       period: 'Période',
       oneMonth: '1 mois',
     },
@@ -2578,8 +2578,8 @@ Le non-respect de cette charte peut entraîner une suspension temporaire ou déf
     paymentSuccess: {
       title: 'Paiement confirmé !',
       welcome:
-        'Bienvenue dans DARE Premium. Votre abonnement est maintenant actif.',
-      activated: 'DARE Premium activé',
+        'Bienvenue dans Klukoo Premium. Votre abonnement est maintenant actif.',
+      activated: 'Klukoo Premium activé',
       access: 'Accès complet à toutes les fonctionnalités',
     },
     form: {
@@ -2608,7 +2608,7 @@ Le non-respect de cette charte peut entraîner une suspension temporaire ou déf
       paymentConfirmed: {
         title: 'Paiement confirmé !',
         description:
-          'Votre abonnement DiaCare est maintenant actif (Mode Test).',
+          'Votre abonnement Klukoo est maintenant actif (Mode Test).',
       },
       copyCode: {
         title: 'Code copié !',
@@ -2621,7 +2621,7 @@ Le non-respect de cette charte peut entraîner une suspension temporaire ou déf
     },
     payment: {
       successTitle: 'Paiement confirmé !',
-      successDescription: 'Votre abonnement DiaCare est maintenant actif.',
+      successDescription: 'Votre abonnement Klukoo est maintenant actif.',
       verifyError: 'Échec de la vérification du paiement',
       verifyErrorToast: 'Impossible de vérifier le paiement',
       verifying: 'Vérification du paiement en cours...',
@@ -2629,10 +2629,10 @@ Le non-respect de cette charte peut entraîner une suspension temporaire ou déf
       backToAuth: "Retour à l'authentification",
       errorMessage: '{{error}}',
       successMessage:
-        'Félicitations ! Votre abonnement DiaCare est maintenant actif.',
+        'Félicitations ! Votre abonnement Klukoo est maintenant actif.',
     },
     patient: {
-      codeTitle: 'Votre code patient DiaCare',
+      codeTitle: 'Votre code patient Klukoo',
       codeUsage:
         'Utilisez ce code pour accéder à vos fonctionnalités et le partager avec votre famille',
     },
@@ -2647,11 +2647,11 @@ Le non-respect de cette charte peut entraîner une suspension temporaire ou déf
       next: 'Prochaine facturation',
     },
     benefits: {
-      title: '🎉 Vos avantages DiaCare',
+      title: '🎉 Vos avantages Klukoo',
       list: {
-        fullAccess: 'Accès complet à toutes les fonctionnalités DiaCare',
+        fullAccess: 'Accès complet à toutes les fonctionnalités Klukoo',
         consultations: '10 téléconsultations par mois',
-        chatNews: 'DiaCare Chat et DiaCare News',
+        chatNews: 'Klukoo Chat et Klukoo News',
         alerts: 'Alertes personnalisées et suivi glycémie',
       },
     },
@@ -2662,7 +2662,7 @@ Le non-respect de cette charte peut entraîner une suspension temporaire ou déf
     },
     buttons: {
       completeProfile: 'Compléter mon profil',
-      accessApp: 'Accéder à DiaCare',
+      accessApp: 'Accéder à Klukoo',
     },
   },
 
@@ -2709,7 +2709,7 @@ Le non-respect de cette charte peut entraîner une suspension temporaire ou déf
     verifiedStatus: '🟢 Vérifié',
     validity: 'Validité : {{date}}',
     patientDataAccess: '🔍 Accès aux Données Patient',
-    patientCode: 'Code Patient DARE',
+    patientCode: 'Code Patient Klukoo',
     access: 'Accéder',
     scan_qr_code: 'Scanner QR Code Patient',
     last_glucose: 'Dernière glycémie',
@@ -2787,7 +2787,7 @@ Le non-respect de cette charte peut entraîner une suspension temporaire ou déf
       login: 'Se connecter',
     },
     apply: {
-      title: 'Candidature DARE Pro',
+      title: 'Candidature Klukoo Pro',
       subtitle: 'Rejoignez la plateforme de consultation diabétologique',
     },
     personalInfo: {
@@ -2831,7 +2831,7 @@ Le non-respect de cette charte peut entraîner une suspension temporaire ou déf
     terms: {
       title: "Conditions d'utilisation",
       agreement:
-        "En soumettant cette candidature, vous acceptez les conditions d'utilisation de la plateforme DARE et vous engagez à respecter la charte professionnelle et déontologique.",
+        "En soumettant cette candidature, vous acceptez les conditions d'utilisation de la plateforme Klukoo et vous engagez à respecter la charte professionnelle et déontologique.",
       privacy:
         'Vos données personnelles seront traitées conformément à notre politique de confidentialité.',
     },
@@ -3635,7 +3635,7 @@ Le non-respect de cette charte peut entraîner une suspension temporaire ou déf
       approved: {
         title: 'Candidature approuvée',
         description:
-          'Le professionnel a été approuvé et peut maintenant utiliser DARE Pro.',
+          'Le professionnel a été approuvé et peut maintenant utiliser Klukoo Pro.',
       },
       rejected: {
         title: 'Candidature rejetée',
@@ -3813,7 +3813,7 @@ Le non-respect de cette charte peut entraîner une suspension temporaire ou déf
       feePerSession: '{{amount}} par consultation',
       payment: 'Paiement',
       paymentMethod: 'Automatique avant consultation',
-      dareCommission: 'Commission DARE',
+      dareCommission: 'Commission Klukoo',
       commissionRate: '10% (50 FCFA)',
       patientCodePlaceholder: 'Code patient (ex: PAT001)',
       processingPayment: '⏳ Traitement paiement...',
@@ -4441,7 +4441,7 @@ Le non-respect de cette charte peut entraîner une suspension temporaire ou déf
       error_description: 'Impossible de générer le QR Code',
     },
     certificate: {
-      title: 'DARE - Certificat Professionnel',
+      title: 'Klukoo - Certificat Professionnel',
       institution: 'Institution',
       license: 'Licence',
       approved_at: "Date d'approbation",
@@ -4450,9 +4450,9 @@ Le non-respect de cette charte peut entraîner une suspension temporaire ou déf
       platform: 'Plateforme',
       not_specified: 'Non spécifiée',
       approval_statement:
-        "Ce certificat atteste de l'approbation du professionnel sur la plateforme DARE.",
+        "Ce certificat atteste de l'approbation du professionnel sur la plateforme Klukoo.",
       verification_contact:
-        'Pour toute vérification, contactez support@dare-health.com',
+        'Pour toute vérification, contactez support@Klukoo-health.com',
       download_success_title: '✅ Certificat téléchargé',
       download_success_description:
         'Le certificat professionnel a été téléchargé avec succès',
@@ -4469,7 +4469,7 @@ Le non-respect de cette charte peut entraîner une suspension temporaire ou déf
     approval: {
       congratulations: 'Félicitations Dr. {{name}} !',
       message:
-        'Votre candidature a été approuvée. Voici vos identifiants DARE Pro.',
+        'Votre candidature a été approuvée. Voici vos identifiants Klukoo Pro.',
     },
     identification: {
       title: "🔑 Votre Code d'Identification",
@@ -4489,7 +4489,7 @@ Le non-respect de cette charte peut entraîner une suspension temporaire ou déf
     },
     instructions: {
       title: "Instructions d'utilisation",
-      use_code: 'Utilisez ce code pour vous identifier sur DARE Pro',
+      use_code: 'Utilisez ce code pour vous identifier sur Klukoo Pro',
       request_patient_code:
         'Demandez le code patient pour accéder à ses données',
       consultation_fee:
@@ -4613,7 +4613,7 @@ Le non-respect de cette charte peut entraîner une suspension temporaire ou déf
     },
     patientData: {
       title: 'Données patient',
-      description: 'Accès aux données de santé du patient (sauf DiaCare Chat)',
+      description: 'Accès aux données de santé du patient (sauf Klukoo Chat)',
       glycemic: {
         title: 'Données glycémiques',
         description:
@@ -4638,7 +4638,7 @@ Le non-respect de cette charte peut entraîner une suspension temporaire ou déf
       restrictedAccess: {
         title: 'Accès restreint',
         description:
-          "L'interface DiaCare Chat n'est pas accessible aux professionnels pour préserver la confidentialité des échanges personnels du patient.",
+          "L'interface Klukoo Chat n'est pas accessible aux professionnels pour préserver la confidentialité des échanges personnels du patient.",
       },
     },
   },
@@ -4753,7 +4753,7 @@ Le non-respect de cette charte peut entraîner une suspension temporaire ou déf
   reputationCard: {
     communityReputation: {
       title: 'Réputation communautaire',
-      description: 'Votre contribution à la communauté DARE',
+      description: 'Votre contribution à la communauté Klukoo',
       progressTowards: 'Progression vers {{nextLevel}}',
       pointsToNext: 'Plus que {{points}} points pour le niveau suivant',
       levels: {
