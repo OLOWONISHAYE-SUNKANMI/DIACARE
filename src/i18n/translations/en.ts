@@ -93,6 +93,10 @@ export const en = {
     latest: 'Latest',
     average: 'Average',
     highest: 'Highest',
+    trend: {
+      title: 'Trends',
+      message: 'Percentage of time in range this week',
+    },
   },
 
   // Doses Screen
