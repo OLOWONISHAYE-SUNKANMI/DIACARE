@@ -100,6 +100,10 @@ export const en = {
     objective: 'Goal: >70% in target',
     percentageByDay: 'Percentage of time in target per day',
 
+    latest: 'Latest',
+    average: 'Average',
+    highest: 'Highest',
+
     trend: {
       title: 'Trends',
       message: 'Percentage of time in range this week',
@@ -4612,6 +4616,7 @@ Failure to comply with this charter may result in temporary or permanent suspens
       title_consultationRequests: 'Consultation Requests',
       newRequests_one: '{{count}} new request',
       newRequests_other: '{{count}} new requests',
+      message_noRequests: 'There are no consultation requests avalaible',
     },
     consultationStatus: {
       pending: 'Pending',
@@ -5056,6 +5061,8 @@ Failure to comply with this charter may result in temporary or permanent suspens
     auth: {
       codeProvidedByPatient: 'Code provided by patient',
       testModeHint: '🧪 In test mode, any code works',
+      connecting: 'Connecting',
+      familyAccess: 'Access Family',
     },
   },
 
