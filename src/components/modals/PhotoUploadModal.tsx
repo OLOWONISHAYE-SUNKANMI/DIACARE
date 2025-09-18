@@ -1,13 +1,15 @@
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  ModalCloseButton,
+  Button as ChakraButton,
+  useDisclosure,
+} from '@chakra-ui/react';
 import { Camera, Upload, X } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useTranslation } from 'react-i18next';
@@ -24,7 +26,7 @@ const PhotoUploadModal = ({
   currentPhoto,
 }: PhotoUploadModalProps) => {
   const { t } = useTranslation();
-  const [isOpen, setIsOpen] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [preview, setPreview] = useState<string | null>(currentPhoto || null);
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,85 +43,92 @@ const PhotoUploadModal = ({
 
   const handleSave = () => {
     onPhotoChange(preview);
-    setIsOpen(false);
+    onClose();
   };
 
   const handleRemove = () => {
     setPreview(null);
     onPhotoChange(null);
-    setIsOpen(false);
+    onClose();
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle>{t('photoUploadModal.profilePhoto.title')}</DialogTitle>
-          <DialogDescription>
-            {t('photoUploadModal.profilePhoto.description')}
-          </DialogDescription>
-        </DialogHeader>
+    <>
+      <span onClick={onOpen} className="cursor-pointer">
+        {children}
+      </span>
 
-        <div className="space-y-6">
-          <div className="flex justify-center">
-            <Avatar className="w-32 h-32">
-              {preview ? (
-                <AvatarImage src={preview} alt="Preview" />
-              ) : (
-                <AvatarFallback className="text-2xl">
-                  <Camera className="w-8 h-8" />
-                </AvatarFallback>
-              )}
-            </Avatar>
-          </div>
+      <Modal isOpen={isOpen} onClose={onClose} isCentered>
+        <ModalOverlay />
+        <ModalContent className="sm:max-w-md p-6">
+          <ModalHeader>{t('photoUploadModal.profilePhoto.title')}</ModalHeader>
+          <ModalCloseButton />
 
-          <div className="space-y-3">
-            <div>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleFileSelect}
-                className="hidden"
-                id="photo-upload"
-              />
-              <label htmlFor="photo-upload">
-                <Button asChild className="w-full">
-                  <span>
-                    <Upload className="w-4 h-4 mr-2" />
-                    {t('photoUploadModal.profilePhoto.choosePhoto')}
-                  </span>
-                </Button>
-              </label>
+          <ModalBody>
+            <p className="text-gray-600 mb-6">
+              {t('photoUploadModal.profilePhoto.description')}
+            </p>
+
+            <div className="flex justify-center mb-6">
+              <Avatar className="w-32 h-32">
+                {preview ? (
+                  <AvatarImage src={preview} alt="Preview" />
+                ) : (
+                  <AvatarFallback className="text-2xl">
+                    <Camera className="w-8 h-8" />
+                  </AvatarFallback>
+                )}
+              </Avatar>
             </div>
 
-            {preview && (
-              <Button
-                variant="outline"
-                onClick={handleRemove}
-                className="w-full"
-              >
-                <X className="w-4 h-4 mr-2" />
-                {t('photoUploadModal.profilePhoto.removePhoto')}
-              </Button>
-            )}
-          </div>
+            <div className="space-y-3">
+              <div>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileSelect}
+                  className="hidden"
+                  id="photo-upload"
+                />
+                <label htmlFor="photo-upload" className="block">
+                  <ChakraButton w="100%" leftIcon={<Upload className="w-4 h-4" />}>
+                    {t('photoUploadModal.profilePhoto.choosePhoto')}
+                  </ChakraButton>
+                </label>
+              </div>
 
-          <div className="flex gap-2">
-            <Button
+              {preview && (
+                <ChakraButton
+                  variant="outline"
+                  onClick={handleRemove}
+                  w="100%"
+                  leftIcon={<X className="w-4 h-4" />}
+                >
+                  {t('photoUploadModal.profilePhoto.removePhoto')}
+                </ChakraButton>
+              )}
+            </div>
+          </ModalBody>
+
+          <ModalFooter className="flex gap-2 w-full">
+            <ChakraButton
               variant="outline"
-              onClick={() => setIsOpen(false)}
-              className="flex-1"
+              onClick={onClose}
+              flex="1"
             >
               {t('photoUploadModal.buttons.cancel')}
-            </Button>
-            <Button onClick={handleSave} className="flex-1">
+            </ChakraButton>
+            <ChakraButton
+              colorScheme="blue"
+              onClick={handleSave}
+              flex="1"
+            >
               {t('photoUploadModal.buttons.save')}
-            </Button>
-          </div>
-        </div>
-      </DialogContent>
-    </Dialog>
+            </ChakraButton>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
   );
 };
 

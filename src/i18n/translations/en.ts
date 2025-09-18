@@ -2,17 +2,17 @@ export const en = {
   // App general
   appName: 'Klukoo',
   appDescription: '',
-  appSlogan: 'The first diabetes management and monitoring platform in Africa',
+  appSlogan: 'The first smart application in Africa that helps diabetic patients live better, anticipate better, and respond better.',
 
   // Navigation
   nav: {
     home: 'Home',
     charts: 'Data',
     doses: 'Doses',
-    teleconsultation: 'Tele',
+    teleconsultation: 'TeleHealth',
     chat: 'Chat',
     assistant: 'Assistant',
-    journal: 'Logbook',
+    journal: 'Journal',
     blog: 'Blog',
     family: 'Family',
     profile: 'Profile',
@@ -59,7 +59,7 @@ export const en = {
       avgGlucose: 'Average blood sugar',
     },
     advice: {
-      title: '💡 Personalized DiabCare advice',
+      title: '💡 Personalized Klukoo advice',
       example:
         'Excellent adherence this week! Your blood sugar levels in the late afternoon are slightly high. Consider adjusting your 3 PM snack or taking your Humalog injection 10 minutes earlier.',
     },
@@ -67,32 +67,43 @@ export const en = {
     missed: 'Missed injection',
     noEntries: 'No Entries',
   },
-
-  // Charts Screen
   charts: {
     title: 'Charts',
-    subtitle: 'Analysis of your blood sugar data',
-    glucoseAnalysis: 'Blood Sugar Analysis',
+    subtitle: 'Analysis of your glucose data',
+
+    // Sections
+    glucose: 'Blood Glucose',
+    meals: 'Meals',
+    activities: 'Activities',
+    medications: 'Medications',
+
+    glucoseAnalysis: 'Glucose Analysis',
     timeInRange: 'Time in Range',
     weeklyTrends: 'Weekly Trends',
     last7Days: 'Last 7 days',
+
     zones: {
       veryHigh: 'High',
       high: 'Borderline',
       target: 'Target',
       low: 'Low',
     },
+
     stats: {
       average: 'Average',
       variability: 'Variability',
       estimatedHbA1c: 'Estimated HbA1c',
+      latest: 'Latest',
       peakMax: 'Max Peak',
     },
+
     objective: 'Goal: >70% in target',
     percentageByDay: 'Percentage of time in target per day',
+
     latest: 'Latest',
     average: 'Average',
     highest: 'Highest',
+
     trend: {
       title: 'Trends',
       message: 'Percentage of time in range this week',
@@ -160,7 +171,7 @@ export const en = {
 
   // Blog/News Screen - COMPLETE
   blog: {
-    title: 'DiabCare News',
+    title: 'Klukoo News',
     subtitle: 'News and advice on diabetes',
     readMore: 'Read',
     readFull: 'Read full article',
@@ -259,7 +270,7 @@ export const en = {
     loading: 'Loading...',
     signInTitle: 'Login',
     signUpTitle: 'Registration',
-    description: 'Access your DiabCare account',
+    description: 'Access your Klukoo account',
     appSlogan: 'African Diabetes & Resources of Excellence',
     patient: 'Patient',
     professional: 'Professional',
@@ -421,9 +432,9 @@ export const en = {
 
   // Home Screen
   homeScreen: {
-    mission: 'DiabCare Mission',
-    darePackage: 'DiabCare Package',
-    completePlan: 'Complete DiabCare',
+    mission: 'Klukoo Mission',
+    darePackage: 'Klukoo Package',
+    completePlan: 'Complete Klukoo',
     premium: 'PREMIUM',
     monthlyPrice: 'F CFA/month',
     healthPriceless: 'Your health is priceless',
@@ -432,8 +443,8 @@ export const en = {
     clarityCharts: 'Clarity-style charts',
     advancedCalculator: 'Advanced dose calculator',
     familySupport: 'Family support',
-    aiAssistant: 'DiabCare AI Assistant',
-    startTracking: 'Start my DiabCare tracking',
+    aiAssistant: 'Klukoo AI Assistant',
+    startTracking: 'Start my Klukoo tracking',
     freeTrial: '✨ 7-day free trial',
     cancelAnytime: 'Cancelable anytime • Support included',
     lastReading: 'Today 14:30',
@@ -450,7 +461,7 @@ export const en = {
   // Profile Screen
   profileScreen: {
     years: 'years',
-    yearsWithDare: 'Years with DiabCare',
+    yearsWithDare: 'Years with Klukoo',
     glucoseMeasures: 'Blood sugar measurements',
     adherence: 'Adherence',
     personalInfo: 'Personal Information',
@@ -488,7 +499,7 @@ export const en = {
 
   // Chat Screen
   chatScreen: {
-    title: 'DiabCare Chat',
+    title: 'Klukoo Chat',
     membersConnected: 'members connected',
     successesThisWeek: '💚 142 successes this week',
     inTargetZone: '🎯 89% in target zone',
@@ -499,7 +510,7 @@ export const en = {
     typingMessage: 'Write your support message...',
     typing: 'typing...',
     messageSent: 'Message sent',
-    messageShared: 'Your message has been shared with the DiabCare community',
+    messageShared: 'Your message has been shared with the Klukoo community',
   },
 
   // Professional Access
@@ -520,7 +531,7 @@ export const en = {
     licenseNumber: 'License Number',
     institution: 'Institution',
     motivation: 'Motivation',
-    motivationPlaceholder: 'Explain why you want to access DiabCare...',
+    motivationPlaceholder: 'Explain why you want to access Klukoo...',
     requestSent: 'Request sent',
     requestSentDescription:
       'Your professional access request has been successfully sent',
@@ -534,16 +545,16 @@ export const en = {
     getStarted: 'Get started',
     languageSelection: {
       title: 'Choose your language',
-      description: 'Select your preferred language to use DiabCare',
+      description: 'Select your preferred language to use Klukoo',
     },
     welcome: {
-      title: 'Welcome to DiabCare',
+      title: 'Welcome to Klukoo',
       subtitle: 'The first African diabetes management platform',
       description: 'We are delighted to support you on your health journey',
     },
     profile: {
       title: 'Set up your profile',
-      subtitle: 'Help us personalize your DiabCare experience',
+      subtitle: 'Help us personalize your Klukoo experience',
       description:
         'This information will allow us to offer you tailored support',
       namePlaceholder: 'Enter your first name',
@@ -561,9 +572,9 @@ export const en = {
       remindersDesc: 'Adaptive reminders based on your habits',
     },
     features: {
-      title: 'Discover DiabCare',
+      title: 'Discover Klukoo',
       subtitle: 'All the features to manage your diabetes',
-      description: 'Here’s what DiabCare can do for you',
+      description: 'Here’s what Klukoo can do for you',
       glucose: 'Glucose tracking',
       reminders: 'Smart reminders',
       consultation: 'Teleconsultations',
@@ -579,7 +590,7 @@ export const en = {
     },
     completion: {
       title: 'Setup complete!',
-      description: 'Your DiabCare account is ready to use',
+      description: 'Your Klukoo account is ready to use',
     },
   },
 
@@ -591,10 +602,10 @@ export const en = {
     privacyDescription: 'Learn how we protect your personal data',
     termsContent: `
     <h3>1. Acceptance of Terms</h3>
-    <p>By using DiabCare (African Diabetes & Excellence Resources), you agree to these terms of use.</p>
+    <p>By using Klukoo (African Diabetes & Excellence Resources), you agree to these terms of use.</p>
     
     <h3>2. Service Description</h3>
-    <p>DiabCare is the first diabetes management and monitoring platform in Africa, offering:</p>
+    <p>Klukoo is the first diabetes management and monitoring platform in Africa, offering:</p>
     <ul>
       <li>Personalized glucose tracking</li>
       <li>Medication management and reminders</li>
@@ -622,7 +633,7 @@ export const en = {
     <p>Medical consultations are provided by certified professionals. They do not replace emergency care.</p>
     
     <h3>7. Limitation of Liability</h3>
-    <p>DiabCare provides tools to assist with diabetes management but does not replace professional medical advice.</p>
+    <p>Klukoo provides tools to assist with diabetes management but does not replace professional medical advice.</p>
     
     <h3>8. Termination</h3>
     <p>You may delete your account at any time. We reserve the right to suspend accounts in case of violations.</p>
@@ -631,7 +642,7 @@ export const en = {
     <p>We reserve the right to modify these terms with prior notice.</p>
     
     <h3>10. Contact</h3>
-    <p>For any questions: support@dare-africa.com</p>
+    <p>For any questions: support@Klukoo-africa.com</p>
   `,
     privacyContent: `
     <h3>1. Data Collection</h3>
@@ -685,7 +696,7 @@ export const en = {
     <p>Your data is hosted in Africa. Any international transfers comply with data protection agreements.</p>
     
     <h3>10. DPO Contact</h3>
-    <p>For any questions about your data: dpo@dare-africa.com</p>
+    <p>For any questions about your data: dpo@Klukoo-africa.com</p>
     
     <p><strong>Last updated:</strong> December 2024</p>
   `,
@@ -773,6 +784,7 @@ export const en = {
     title: 'Current Blood Sugar',
     state: 'Within normal range',
     measurement: 'Last measurement',
+    noReading: 'No Reading',
   },
 
   Actions: {
@@ -883,7 +895,7 @@ export const en = {
   },
 
   mission: {
-    title: 'The Mission of DiabCare',
+    title: 'The Mission of Klukoo',
     message:
       'Our mission is to help you better understand and manage your diabetes with tools adapted to your reality.',
   },
@@ -1603,10 +1615,10 @@ export const en = {
   errorBoundary: {
     error_occurred: 'Oops! An error occurred',
     unexpected_error_message:
-      'An unexpected error occurred in the DARE application. Our technical team has been automatically notified.',
+      'An unexpected error occurred in the Klukoo application. Our technical team has been automatically notified.',
     button_restart: 'Restart',
     button_home: 'Home',
-    footer_text: '💪 DARE - Dare to overcome diabetes together',
+    footer_text: '💪 Klukoo - Klukoo to overcome diabetes together',
   },
 
   onboardingFlow: {
@@ -1620,7 +1632,7 @@ export const en = {
     loading_plans: 'Loading plans...',
     plans_error_title: 'Error',
     plans_error_description: 'Unable to load plans',
-    choose_plan_title: 'Choose your DiaCare plan',
+    choose_plan_title: 'Choose your Klukoo plan',
     choose_plan_description: 'Select the plan that best suits your needs',
     badge_recommended_family: 'Recommended for family',
     per_month: 'per month',
@@ -1653,7 +1665,7 @@ export const en = {
     access_denied_description: 'Invalid access code or patient not found',
     professional_id_code: 'Professional identification code',
     professional_code_description:
-      'Generate your unique code to access DARE patient data',
+      'Generate your unique code to access Klukoo patient data',
     generate_professional_code: 'Generate my professional code',
     generated_on: 'Generated on',
     badge_active: 'Active',
@@ -1993,7 +2005,7 @@ Deployed on 15,000 patients across 12 countries, the AI shows exceptional result
 
 "We are entering the era of total prevention," said Dr. Lisa Wang, director of Google Health Diabetes. "Severe hypoglycemia is becoming avoidable."
 
-The DARE AI app will be the first to integrate this technology by September 2025, with CE and FDA certification.`,
+The Klukoo AI app will be the first to integrate this technology by September 2025, with CE and FDA certification.`,
 
     save: 'Save',
     fullSource: 'Full Source',
@@ -2017,7 +2029,7 @@ The DARE AI app will be the first to integrate this technology by September 2025
     statusPending: 'Pending',
     statusApproved: 'Approved',
     statusRejected: 'Rejected',
-    adminTitle: '🏥 DARE Administration',
+    adminTitle: '🏥 Klukoo Administration',
     adminSubtitle: 'Professional applications management',
     totalApplications: 'Total applications',
     searchPlaceholder: 'Search by name, email, or specialty...',
@@ -2053,7 +2065,7 @@ The DARE AI app will be the first to integrate this technology by September 2025
       '{{firstName}} {{lastName}} has been rejected',
     applicationRejectError: 'Unable to reject application',
     loadingApplications: 'Loading applications...',
-    adminApplicationsTitle: '🔧 DARE Admin - Applications',
+    adminApplicationsTitle: '🔧 Klukoo Admin - Applications',
     pendingApplications: '{{count}} application(s) pending review',
     refresh: 'Refresh',
     noPending: {
@@ -2082,7 +2094,7 @@ The DARE AI app will be the first to integrate this technology by September 2025
       loadErrorDescription: 'Unable to load dashboard metrics.',
       loadingAdmin: 'Loading admin dashboard...',
     },
-    title: '🔧 DARE Administration',
+    title: '🔧 Klukoo Administration',
     subtitle: 'Healthcare professionals management',
     metrics: {
       paymentsThisMonth: 'Payments this month',
@@ -2165,7 +2177,7 @@ The DARE AI app will be the first to integrate this technology by September 2025
     },
     doctor: {
       title: 'Dr. Mamadou Kane',
-      subtitle: 'Endocrinologist • DARE Pro',
+      subtitle: 'Endocrinologist • Klukoo Pro',
     },
     earningsToday: "Today's earnings",
     statusButton: {
@@ -2195,7 +2207,7 @@ The DARE AI app will be the first to integrate this technology by September 2025
         'Your registration request will be reviewed within 24h',
       accessDeniedTitle: 'Access Denied',
       accessDeniedDescription:
-        'Acceptance of the DARE code of ethics is mandatory',
+        'Acceptance of the Klukoo code of ethics is mandatory',
     },
     teleconsultation: {
       startedTitle: 'Teleconsultation Initiated',
@@ -2212,7 +2224,7 @@ The DARE AI app will be the first to integrate this technology by September 2025
       scheduled: 'Scheduled',
     },
     professionalPortal: {
-      title: 'DARE Professional Portal',
+      title: 'Klukoo Professional Portal',
       description:
         'Join our network of healthcare professionals and provide specialized diabetes teleconsultations',
     },
@@ -2236,7 +2248,7 @@ The DARE AI app will be the first to integrate this technology by September 2025
       email: 'Professional Email *',
       phone: 'Phone *',
       terms: 'I accept the terms of use',
-      charter: 'I accept the DARE code of ethics (mandatory)',
+      charter: 'I accept the Klukoo code of ethics (mandatory)',
       submitApplication: 'Submit my application',
     },
     professionalBenefits: {
@@ -2278,7 +2290,7 @@ The DARE AI app will be the first to integrate this technology by September 2025
       consultations_management: {
         title: 'Consultation Management',
         description:
-          'Schedule and manage your teleconsultations with DARE patients',
+          'Schedule and manage your teleconsultations with Klukoo patients',
         available_slots: 'Available Slots',
         manage_slots: 'Manage My Slots',
       },
@@ -2315,9 +2327,9 @@ The DARE AI app will be the first to integrate this technology by September 2025
     },
     dialog: {
       codeOfConduct: {
-        title: 'DARE Code of Ethics',
+        title: 'Klukoo Code of Ethics',
         description:
-          'Please read carefully and accept our code of ethics to join DARE',
+          'Please read carefully and accept our code of ethics to join Klukoo',
       },
     },
     codeOfConductFull: `
@@ -2325,7 +2337,7 @@ Article 1 - Professional Commitment
 The healthcare professional agrees to respect the ethical principles of their profession and to keep their skills up to date in the field of diabetes.
 
 Article 2 - Quality of Care
-All care provided via DARE must meet the highest quality standards. The professional commits to providing complete consultations tailored to the specific needs of each diabetic patient.
+All care provided via Klukoo must meet the highest quality standards. The professional commits to providing complete consultations tailored to the specific needs of each diabetic patient.
 
 Article 3 - Confidentiality and Data Protection
 The professional commits to strictly respecting patient data confidentiality and never disclosing medical information without express authorization. All data is protected under GDPR standards.
@@ -2334,13 +2346,13 @@ Article 4 - Availability and Punctuality
 The professional commits to respecting their consultation slots and being punctual. In case of impediment, they must notify at least 2 hours in advance.
 
 Article 5 - Medical Responsibility
-The professional remains fully responsible for their medical actions and diagnoses. DARE only provides the technological platform; medical responsibility lies entirely with the healthcare professional.
+The professional remains fully responsible for their medical actions and diagnoses. Klukoo only provides the technological platform; medical responsibility lies entirely with the healthcare professional.
 
 Article 6 - Continuing Education
-The professional commits to participating in DARE-provided training and keeping their knowledge up to date with new practices in diabetology.
+The professional commits to participating in Klukoo-provided training and keeping their knowledge up to date with new practices in diabetology.
 
 Article 7 - Sanctions
-Failure to comply with this charter may result in temporary or permanent suspension of access to the DARE platform, without notice or compensation.
+Failure to comply with this charter may result in temporary or permanent suspension of access to the Klukoo platform, without notice or compensation.
 `,
   },
   charterFooter: {
@@ -2394,9 +2406,9 @@ Failure to comply with this charter may result in temporary or permanent suspens
       variant: 'destructive',
     },
     professionalPortal: {
-      title: '🏥 DARE Pro - Healthcare Professionals',
+      title: '🏥 Klukoo Pro - Healthcare Professionals',
       subtitle:
-        'Join the DARE network and monetize your telemedicine consultations',
+        'Join the Klukoo network and monetize your telemedicine consultations',
       benefits: {
         freeRegistration: 'Free Registration',
         validatedWithin48h: 'Validated within 48h',
@@ -2505,7 +2517,7 @@ Failure to comply with this charter may result in temporary or permanent suspens
 
   paymentScreen: {
     subscription: {
-      defaultDescription: 'Monthly DiaCare Premium Subscription',
+      defaultDescription: 'Monthly Klukoo Premium Subscription',
       period: 'Period',
       oneMonth: '1 month',
     },
@@ -2532,8 +2544,8 @@ Failure to comply with this charter may result in temporary or permanent suspens
     },
     paymentSuccess: {
       title: 'Payment Confirmed!',
-      welcome: 'Welcome to DARE Premium. Your subscription is now active.',
-      activated: 'DARE Premium Activated',
+      welcome: 'Welcome to Klukoo Premium. Your subscription is now active.',
+      activated: 'Klukoo Premium Activated',
       access: 'Full access to all features',
     },
     form: {
@@ -2561,7 +2573,7 @@ Failure to comply with this charter may result in temporary or permanent suspens
     toast: {
       paymentConfirmed: {
         title: 'Payment Confirmed!',
-        description: 'Your DiaCare subscription is now active (Test Mode).',
+        description: 'Your Klukoo subscription is now active (Test Mode).',
       },
       copyCode: {
         title: 'Code Copied!',
@@ -2573,7 +2585,7 @@ Failure to comply with this charter may result in temporary or permanent suspens
     },
     payment: {
       successTitle: 'Payment Confirmed!',
-      successDescription: 'Your DiaCare subscription is now active.',
+      successDescription: 'Your Klukoo subscription is now active.',
       verifyError: 'Payment verification failed',
       verifyErrorToast: 'Unable to verify payment',
       verifying: 'Verifying payment...',
@@ -2581,10 +2593,10 @@ Failure to comply with this charter may result in temporary or permanent suspens
       backToAuth: 'Back to Authentication',
       errorMessage: '{{error}}',
       successMessage:
-        'Congratulations! Your DiaCare subscription is now active.',
+        'Congratulations! Your Klukoo subscription is now active.',
     },
     patient: {
-      codeTitle: 'Your DiaCare Patient Code',
+      codeTitle: 'Your Klukoo Patient Code',
       codeUsage:
         'Use this code to access your features and share it with your family',
     },
@@ -2599,11 +2611,11 @@ Failure to comply with this charter may result in temporary or permanent suspens
       next: 'Next Billing',
     },
     benefits: {
-      title: '🎉 Your DiaCare Benefits',
+      title: '🎉 Your Klukoo Benefits',
       list: {
-        fullAccess: 'Full access to all DiaCare features',
+        fullAccess: 'Full access to all Klukoo features',
         consultations: '10 teleconsultations per month',
-        chatNews: 'DiaCare Chat and DiaCare News',
+        chatNews: 'Klukoo Chat and Klukoo News',
         alerts: 'Personalized alerts and glucose monitoring',
       },
     },
@@ -2614,7 +2626,7 @@ Failure to comply with this charter may result in temporary or permanent suspens
     },
     buttons: {
       completeProfile: 'Complete My Profile',
-      accessApp: 'Access DiaCare',
+      accessApp: 'Access Klukoo',
     },
   },
 
@@ -2660,7 +2672,7 @@ Failure to comply with this charter may result in temporary or permanent suspens
     verifiedStatus: '🟢 Verified',
     validity: 'Validity: {{date}}',
     patientDataAccess: '🔍 Patient Data Access',
-    patientCode: 'DARE Patient Code',
+    patientCode: 'Klukoo Patient Code',
     access: 'Access',
     scan_qr_code: 'Scan Patient QR Code',
     last_glucose: 'Last Glucose',
@@ -2738,7 +2750,7 @@ Failure to comply with this charter may result in temporary or permanent suspens
       login: 'Login',
     },
     apply: {
-      title: 'DARE Pro Application',
+      title: 'Klukoo Pro Application',
       subtitle: 'Join the diabetes consultation platform',
     },
     personalInfo: {
@@ -2782,7 +2794,7 @@ Failure to comply with this charter may result in temporary or permanent suspens
     terms: {
       title: 'Terms of use',
       agreement:
-        'By submitting this application, you agree to the DARE platform terms of use and commit to respecting the professional and ethical charter.',
+        'By submitting this application, you agree to the Klukoo platform terms of use and commit to respecting the professional and ethical charter.',
       privacy:
         'Your personal data will be processed in accordance with our privacy policy.',
     },
@@ -3583,7 +3595,7 @@ Failure to comply with this charter may result in temporary or permanent suspens
       approved: {
         title: 'Application approved',
         description:
-          'The professional has been approved and can now use DARE Pro.',
+          'The professional has been approved and can now use Klukoo Pro.',
       },
       rejected: {
         title: 'Application rejected',
@@ -3759,7 +3771,7 @@ Failure to comply with this charter may result in temporary or permanent suspens
       feePerSession: '{{amount}} per consultation',
       payment: 'Payment',
       paymentMethod: 'Automatic before consultation',
-      dareCommission: 'DARE Commission',
+      dareCommission: 'Klukoo Commission',
       commissionRate: '10% (50 FCFA)',
       patientCodePlaceholder: 'Patient code (ex: PAT001)',
       processingPayment: '⏳ Processing payment...',
@@ -4385,7 +4397,7 @@ Failure to comply with this charter may result in temporary or permanent suspens
       error_description: 'Unable to generate the QR Code',
     },
     certificate: {
-      title: 'DARE - Professional Certificate',
+      title: 'Klukoo - Professional Certificate',
       institution: 'Institution',
       license: 'License',
       approved_at: 'Approval Date',
@@ -4394,8 +4406,8 @@ Failure to comply with this charter may result in temporary or permanent suspens
       platform: 'Platform',
       not_specified: 'Not specified',
       approval_statement:
-        "This certificate confirms the professional's approval on the DARE platform.",
-      verification_contact: 'For verification, contact support@dare-health.com',
+        "This certificate confirms the professional's approval on the Klukoo platform.",
+      verification_contact: 'For verification, contact support@Klukoo-health.com',
       download_success_title: '✅ Certificate Downloaded',
       download_success_description:
         'The professional certificate has been successfully downloaded',
@@ -4412,7 +4424,7 @@ Failure to comply with this charter may result in temporary or permanent suspens
     approval: {
       congratulations: 'Congratulations Dr. {{name}}!',
       message:
-        'Your application has been approved. Here are your DARE Pro credentials.',
+        'Your application has been approved. Here are your Klukoo Pro credentials.',
     },
     identification: {
       title: '🔑 Your Identification Code',
@@ -4432,7 +4444,7 @@ Failure to comply with this charter may result in temporary or permanent suspens
     },
     instructions: {
       title: 'Usage Instructions',
-      use_code: 'Use this code to identify yourself on DARE Pro',
+      use_code: 'Use this code to identify yourself on Klukoo Pro',
       request_patient_code: 'Request the patient code to access their data',
       consultation_fee: 'Each consultation is automatically paid 500 F CFA',
       keep_code_safe: 'Keep this code securely',
@@ -4551,7 +4563,7 @@ Failure to comply with this charter may result in temporary or permanent suspens
     },
     patientData: {
       title: 'Patient Data',
-      description: 'Access the patient’s health data (excluding DiaCare Chat)',
+      description: 'Access the patient’s health data (excluding Klukoo Chat)',
       glycemic: {
         title: 'Glycemic Data',
         description:
@@ -4576,7 +4588,7 @@ Failure to comply with this charter may result in temporary or permanent suspens
       restrictedAccess: {
         title: 'Restricted Access',
         description:
-          'The DiaCare Chat interface is not accessible to professionals to protect the patient’s personal communication confidentiality.',
+          'The Klukoo Chat interface is not accessible to professionals to protect the patient’s personal communication confidentiality.',
       },
     },
   },
@@ -4691,7 +4703,7 @@ Failure to comply with this charter may result in temporary or permanent suspens
   reputationCard: {
     communityReputation: {
       title: 'Community Reputation',
-      description: 'Your contribution to the DARE community',
+      description: 'Your contribution to the Klukoo community',
       progressTowards: 'Progress towards {{nextLevel}}',
       pointsToNext: '{{points}} points left for the next level',
       levels: {

@@ -111,7 +111,7 @@ const BlogScreen = () => {
       {/* Header */}
       <div className="text-center">
         <h1 className="text-2xl font-bold flex items-center justify-center gap-2">
-          <Globe className="w-6 h-6 text-medical-teal" /> DARE News
+          <Globe className="w-6 h-6 text-medical-teal" /> Klukoo News
         </h1>
         <p className="text-muted-foreground">
           {t('blogScreenFixes.title_diabetesNews')}

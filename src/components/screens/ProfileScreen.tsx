@@ -697,18 +697,10 @@ const ProfileScreen = () => {
       </Card>
 
       {/* Action Buttons */}
-      <div className="space-y-3">
-        <Button variant="outline" className="w-full">
-          <User className="w-4 h-4 mr-2" />
-          {t('profileScreen.editProfile')}
-        </Button>
+      <div className="flex space-x-3">
         <Button variant="outline" className="w-full">
           <Download className="w-4 h-4 mr-2" />
           {t('profileScreen.exportData')}
-        </Button>
-        <Button variant="outline" className="w-full">
-          <Shield className="w-4 h-4 mr-2" />
-          {t('profileScreen.privacy')}
         </Button>
         <Button variant="destructive" className="w-full" onClick={signOut}>
           <LogOut className="w-4 h-4 mr-2" />
