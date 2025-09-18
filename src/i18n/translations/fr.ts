@@ -90,6 +90,9 @@ export const fr = {
     },
     objective: 'Objectif : >70% dans la cible',
     percentageByDay: 'Pourcentage de temps dans la cible par jour',
+    latest: 'Dernier',
+    average: 'Moyenne',
+    highest: 'élevé',
   },
 
   // Doses Screen
@@ -4666,6 +4669,7 @@ Le non-respect de cette charte peut entraîner une suspension temporaire ou déf
       title_consultationRequests: 'Demandes de consultation',
       newRequests_one: '{{count}} nouvelle demande',
       newRequests_other: '{{count}} nouvelles demandes',
+      message_noRequests: 'Il n y a aucune demande de consultation disponible.',
     },
     consultationStatus: {
       pending: 'En attente',
@@ -5112,6 +5116,8 @@ Le non-respect de cette charte peut entraîner une suspension temporaire ou déf
     auth: {
       codeProvidedByPatient: 'Code fourni par le patient',
       testModeHint: "🧪 En mode test, n'importe quel code fonctionne",
+      connecting: 'Connexion',
+      familyAccess: 'Accès Famille',
     },
   },
 
