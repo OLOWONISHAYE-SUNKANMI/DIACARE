@@ -245,7 +245,15 @@ export type Database = {
           sender_role?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "fk_sender"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       community_challenges: {
         Row: {
@@ -792,6 +800,76 @@ export type Database = {
           notes?: string | null
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      message_reactions: {
+        Row: {
+          created_at: string | null
+          emoji: string
+          id: string
+          message_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          emoji: string
+          id?: string
+          message_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          emoji?: string
+          id?: string
+          message_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "message_reactions_message_id_fkey"
+            columns: ["message_id"]
+            isOneToOne: false
+            referencedRelation: "messages"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "message_reactions_message_id_fkey"
+            columns: ["message_id"]
+            isOneToOne: false
+            referencedRelation: "messages_with_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "message_reactions_message_id_fkey"
+            columns: ["message_id"]
+            isOneToOne: false
+            referencedRelation: "messages_with_reactions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      messages: {
+        Row: {
+          created_at: string
+          id: string
+          message: string
+          room_id: string
+          sender_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message: string
+          room_id?: string
+          sender_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message?: string
+          room_id?: string
+          sender_id?: string
         }
         Relationships: []
       }
@@ -1937,7 +2015,31 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      messages_with_profiles: {
+        Row: {
+          created_at: string | null
+          first_name: string | null
+          id: string | null
+          last_name: string | null
+          message: string | null
+          room_id: string | null
+          sender_id: string | null
+        }
+        Relationships: []
+      }
+      messages_with_reactions: {
+        Row: {
+          created_at: string | null
+          first_name: string | null
+          id: string | null
+          last_name: string | null
+          message: string | null
+          reactions: Json | null
+          room_id: string | null
+          sender_id: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       approve_professional_application: {
