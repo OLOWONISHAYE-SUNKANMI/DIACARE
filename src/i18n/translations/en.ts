@@ -97,6 +97,7 @@ export const en = {
       title: 'Trends',
       message: 'Percentage of time in range this week',
     },
+    inRange: 'In Range',
   },
 
   // Doses Screen
@@ -3125,6 +3126,8 @@ Failure to comply with this charter may result in temporary or permanent suspens
       create: 'Create',
       edit: 'Edit',
     },
+    reminderType: 'Reminder Type',
+    title: 'Title',
   },
 
   injectionInsulinModal: {

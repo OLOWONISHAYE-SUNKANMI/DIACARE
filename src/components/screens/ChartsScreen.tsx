@@ -221,9 +221,15 @@ const ChartsScreen = () => {
             <div className="bg-orange-400" style={{ width: `${highPct}%` }} />
           </div>
           <div className="flex justify-between text-xs mt-2">
-            <span>{veryLowPct}% Low</span>
-            <span>{targetPct}% In Range</span>
-            <span>{highPct}% High</span>
+            <span>
+              {veryLowPct}% {t('charts.zones.low')}
+            </span>
+            <span>
+              {targetPct}% {t('charts.inRange')}
+            </span>
+            <span>
+              {highPct}% {t('charts.zones.high')}
+            </span>
           </div>
         </CardContent>
       </Card>

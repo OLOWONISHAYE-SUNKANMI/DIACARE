@@ -93,6 +93,7 @@ export const fr = {
     latest: 'Dernier',
     average: 'Moyenne',
     highest: 'élevé',
+    inRange: 'Dans la plage',
   },
 
   // Doses Screen
@@ -3178,6 +3179,8 @@ Le non-respect de cette charte peut entraîner une suspension temporaire ou déf
       create: 'Créer',
       edit: 'Modifier',
     },
+    reminderType: 'Type de rappel',
+    title: 'Titre',
   },
 
   injectionInsulinModal: {
