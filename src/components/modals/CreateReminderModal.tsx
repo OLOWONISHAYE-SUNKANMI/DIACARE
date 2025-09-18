@@ -201,7 +201,7 @@ export const CreateReminderModal: React.FC<CreateReminderModalProps> = ({
             <VStack spacing={4} align="stretch">
               {/* Type */}
               <FormControl isRequired>
-                <FormLabel>Type de rappel</FormLabel>
+                <FormLabel>{t('createReminderModal.reminderType')}</FormLabel>
                 <Select
                   placeholder={t('createReminderModal.placeholders.selectType')}
                   value={formData.reminder_type}
@@ -223,7 +223,7 @@ export const CreateReminderModal: React.FC<CreateReminderModalProps> = ({
 
               {/* Titre */}
               <FormControl isRequired>
-                <FormLabel>Titre</FormLabel>
+                <FormLabel>{t('createReminderModal.title')}</FormLabel>
                 <Input
                   value={formData.title}
                   onChange={e =>
