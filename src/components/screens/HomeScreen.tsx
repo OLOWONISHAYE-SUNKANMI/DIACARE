@@ -1,16 +1,14 @@
-import { useState } from 'react';
-import { Target, Check } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { useTranslation } from 'react-i18next';
-import NativeHeader from '@/components/ui/NativeHeader';
-import GlucoseWidget from '@/components/ui/GlucoseWidget';
-import ActionsRapides from '@/components/ui/ActionsRapides';
-import PredictiveAlerts from '@/components/ui/PredictiveAlerts';
-import { useGlucose } from '@/contexts/GlucoseContext';
-
-import { useAuth } from '@/contexts/AuthContext';
+import { useState, useEffect } from "react";
+import { Target } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import NativeHeader from "@/components/ui/NativeHeader";
+import GlucoseWidget from "@/components/ui/GlucoseWidget";
+import ActionsRapides from "@/components/ui/ActionsRapides";
+import PredictiveAlerts from "@/components/ui/PredictiveAlerts";
+import { useGlucose } from "@/contexts/GlucoseContext";
+import { useAuth } from "@/contexts/AuthContext";
+import { useThemeStore } from "@/store/useThemeStore"; // ✅ Zustand theme store
+import { useTranslation } from "react-i18next";
 
 interface HomeScreenProps {
   onTabChange?: (tab: string) => void;
@@ -25,17 +23,32 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
   const { getLatestReading, getTrend } = useGlucose();
   const { user, profile } = useAuth();
 
+  const { theme } = useThemeStore(); // ✅ zustand theme
+  const isDark = theme === "dark";
+
   const userName =
     profile?.first_name ||
     user?.user_metadata?.first_name ||
     user?.email ||
-    'Invité';
+    "Invité";
 
   const latestReading = getLatestReading();
   const currentGlucose = latestReading?.value || 126;
 
+  useEffect(() => {
+    // Sync <html> class with Zustand theme
+    if (isDark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [isDark]);
+
   return (
-    <div className="flex-1 bg-gray-50 min-h-screen pb-20 sm:pb-24 overflow-x-hidden">
+    <div
+      className={`flex-1 min-h-screen pb-20 sm:pb-24 overflow-x-hidden transition-colors
+      bg-background text-foreground`}
+    >
       {/* Native Header */}
       <NativeHeader userName={userName} />
 
@@ -46,31 +59,19 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
           currentGlucose={currentGlucose}
           lastReading={
             latestReading
-              ? new Date(latestReading.timestamp).toLocaleString('fr-FR')
-              : t('homeScreen.lastReading')
+              ? new Date(latestReading.timestamp).toLocaleString("fr-FR")
+              : t("homeScreen.lastReading")
           }
           trend={getTrend()}
         />
 
-        {/* Actions Rapides - FONCTIONNELLES */}
+        {/* Actions Rapides */}
         <ActionsRapides
           onTabChange={onTabChange}
-          onGlycemieClick={() => {
-            console.log('Setting showAddMeasure to true');
-            setShowAddMeasure(true);
-          }}
-          onMedicamentClick={() => {
-            console.log('Setting showAddDose to true');
-            setShowAddDose(true);
-          }}
-          onMealClick={() => {
-            console.log('Setting showAddMeal to true');
-            setShowAddMeal(true);
-          }}
-          onActivityClick={() => {
-            console.log('Setting showAddActivity to true');
-            setShowAddActivity(true);
-          }}
+          onGlycemieClick={() => setShowAddMeasure(true)}
+          onMedicamentClick={() => setShowAddDose(true)}
+          onMealClick={() => setShowAddMeal(true)}
+          onActivityClick={() => setShowAddActivity(true)}
         />
 
         {/* Predictive Alerts */}
@@ -80,21 +81,19 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
 
         {/* Mission DiabCare */}
         <div className="px-3 sm:px-4">
-          <Card className="bg-white shadow-lg border-0 rounded-xl sm:rounded-2xl overflow-hidden">
-            <CardHeader className="bg-gradient-to-r from-medical-green to-medical-teal text-white p-4 sm:p-6">
+          <Card className="shadow-lg border rounded-xl sm:rounded-2xl overflow-hidden transition-colors bg-card text-card-foreground border-border">
+            <CardHeader className="p-4 sm:p-6 bg-primary text-primary-foreground">
               <CardTitle className="text-base sm:text-lg flex items-center space-x-2">
-                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm flex-shrink-0">
-                  <Target className="w-4 h-4 sm:w-5 sm:h-5 text-medical-orange" />
+                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center flex-shrink-0 bg-accent">
+                  <Target className="w-4 h-4 sm:w-5 sm:h-5 text-accent-foreground" />
                 </div>
-                <span className="leading-tight text-medical-orange">
-                  {t('mission.title')}
-                </span>
+                <span className="leading-tight">{t("mission.title")}</span>
               </CardTitle>
             </CardHeader>
 
             <CardContent className="p-3 sm:p-6">
-              <p className="text-card-foreground text-sm  sm:text-base leading-relaxed">
-                {t('mission.message')}
+              <p className="text-sm sm:text-base leading-relaxed text-foreground">
+                {t("mission.message")}
               </p>
             </CardContent>
           </Card>
