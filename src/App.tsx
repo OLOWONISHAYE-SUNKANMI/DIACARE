@@ -14,6 +14,8 @@ import { ProfessionalDashboard } from './components/screens/ProfessionalDashboar
 import { ProfessionalRegistrationScreen } from './components/screens/ProfessionalRegistrationScreen';
 import { ChakraProvider } from '@chakra-ui/react';
 import { Toaster } from 'sonner';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useTranslation } from 'react-i18next';
 import { useThemeStore } from '@/store/useThemeStore';
 import { getChakraTheme } from './lib/theme';
@@ -93,6 +95,7 @@ const App = () => {
           <AuthProvider>
             <TooltipProvider>
               <Toaster richColors position="top-right" />
+              <ToastContainer />
               <AppContent />
             </TooltipProvider>
           </AuthProvider>

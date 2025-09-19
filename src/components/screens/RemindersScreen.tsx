@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
@@ -8,6 +8,7 @@ import { useReminders, Reminder } from '@/hooks/useReminders';
 import { CreateReminderModal } from '@/components/modals/CreateReminderModal';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 interface ReminderCardProps {
   reminder: Reminder;
@@ -70,7 +71,9 @@ const ReminderCard: React.FC<ReminderCardProps> = ({
 
   return (
     <Card
-      className={`transition-all hover:shadow-md ${!reminder.is_active ? 'opacity-60' : ''} ${isUpcoming() ? 'ring-2 ring-primary' : ''}`}
+      className={`transition-all hover:shadow-md ${
+        !reminder.is_active ? 'opacity-60' : ''
+      } ${isUpcoming() ? 'ring-2 ring-primary' : ''}`}
     >
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
@@ -172,6 +175,7 @@ const ReminderCard: React.FC<ReminderCardProps> = ({
 };
 
 export const RemindersScreen: React.FC = () => {
+  // All hooks at the top level
   const { t } = useTranslation();
   const {
     reminders,
@@ -181,13 +185,80 @@ export const RemindersScreen: React.FC = () => {
     logReminderAction,
     getTodaysReminders,
     getUpcomingReminders,
+    getReminderTypeInfo,
+    refreshReminders,
   } = useReminders();
+
+  // Helper to get next reminder Date object
+  function getNextReminderDate(reminder) {
+    const now = new Date();
+    const [hours, minutes] = reminder.scheduled_time.split(':').map(Number);
+    let next = new Date();
+    next.setHours(hours, minutes, 0, 0);
+    // If today is not a valid day or time has passed, find next valid day
+    let dayOffset = 0;
+    while (
+      !reminder.days_of_week.includes(
+        ((getTodayDayOfWeek() + dayOffset - 1) % 7) + 1
+      ) ||
+      (dayOffset === 0 && next < now)
+    ) {
+      dayOffset++;
+      next = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate() + dayOffset,
+        hours,
+        minutes,
+        0,
+        0
+      );
+    }
+    return next;
+  }
+  // Helper to get today as 1-7 (Mon-Sun)
+  function getTodayDayOfWeek() {
+    const today = new Date().getDay();
+    return today === 0 ? 7 : today;
+  }
 
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [editingReminder, setEditingReminder] = useState<Reminder | null>(null);
+  const [isSyncing, setIsSyncing] = useState(false);
 
-  const todaysReminders = getTodaysReminders();
-  const upcomingReminders = getUpcomingReminders();
+  // Remove these variables; call the functions directly in render
+
+  // Toast scheduling logic
+  const scheduledTimeouts = useRef([]);
+  useEffect(() => {
+    // Clear previous timeouts
+    scheduledTimeouts.current.forEach(clearTimeout);
+    scheduledTimeouts.current = [];
+    reminders.forEach(reminder => {
+      if (!reminder.is_active || !reminder.scheduled_time) return;
+      const next = getNextReminderDate(reminder);
+      const now = new Date();
+      const msUntil = next.getTime() - now.getTime();
+      if (msUntil > 0 && msUntil < 1000 * 60 * 60 * 24 * 7) {
+        console.log(
+          'Scheduling toast for',
+          reminder.title,
+          'in',
+          msUntil / 1000,
+          'seconds'
+        );
+        // only schedule up to 7 days ahead
+        const timeoutId = setTimeout(() => {
+          toast.info(`⏰ ${reminder.title}`, {
+            body: reminder.description || undefined,
+            autoClose: 30000, // 30 seconds
+          });
+        }, msUntil);
+        scheduledTimeouts.current.push(timeoutId);
+      }
+    });
+    return () => scheduledTimeouts.current.forEach(clearTimeout);
+  }, [reminders]);
 
   const handleDelete = async (id: string) => {
     if (confirm(t('remindersScreen.reminder.delete_confirmation'))) {
@@ -200,12 +271,15 @@ export const RemindersScreen: React.FC = () => {
     setIsCreateModalOpen(true);
   };
 
-  const handleCloseModal = () => {
+  const handleCloseModal = async () => {
     setIsCreateModalOpen(false);
     setEditingReminder(null);
+    setIsSyncing(true);
+    await refreshReminders();
+    setIsSyncing(false);
   };
 
-  if (loading) {
+  if (loading || isSyncing) {
     return (
       <div className="flex justify-center items-center h-64">
         <LoadingSpinner />
@@ -239,7 +313,7 @@ export const RemindersScreen: React.FC = () => {
       </div>
 
       {/* Upcoming Reminders Alert */}
-      {upcomingReminders.length > 0 && (
+      {getUpcomingReminders().length > 0 && (
         <Card className="border-orange-200 bg-orange-50">
           <CardHeader>
             <CardTitle className="flex items-center text-orange-800 text-base sm:text-lg">
@@ -251,18 +325,15 @@ export const RemindersScreen: React.FC = () => {
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              {upcomingReminders.map(reminder => {
-                const typeInfo =
-                  reminders.length > 0
-                    ? useReminders().getReminderTypeInfo(reminder.reminder_type)
-                    : { icon: '⏰', name: 'Rappel' };
-
+              {getUpcomingReminders().map(reminder => {
+                const typeInfo = getReminderTypeInfo
+                  ? getReminderTypeInfo(reminder.reminder_type)
+                  : { icon: '⏰', name: 'Rappel' };
                 return (
                   <div
                     key={reminder.id}
                     className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 bg-white rounded gap-2"
                   >
-                    {' '}
                     {/* 📌 stacks on mobile */}
                     <div className="flex flex-wrap items-center gap-2 text-sm">
                       <span>{typeInfo.icon}</span>
@@ -291,19 +362,18 @@ export const RemindersScreen: React.FC = () => {
       )}
 
       {/* Today's Reminders */}
-      {todaysReminders.length > 0 && (
+      {getTodaysReminders().length > 0 && (
         <div>
           <h2 className="text-lg sm:text-xl font-semibold mb-4">
             📅{' '}
             {t('remindersScreen.reminder.today', {
-              count: todaysReminders.length,
+              count: getTodaysReminders().length,
             })}
           </h2>
 
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {' '}
             {/* 📌 responsive grid */}
-            {todaysReminders.map(reminder => (
+            {getTodaysReminders().map(reminder => (
               <ReminderCard
                 key={reminder.id}
                 reminder={reminder}

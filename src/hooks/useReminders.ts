@@ -5,7 +5,12 @@ import { useToast } from '@/hooks/use-toast';
 export interface Reminder {
   id: string;
   user_id: string;
-  reminder_type: 'insulin' | 'medication' | 'glucose_test' | 'meal' | 'activity';
+  reminder_type:
+    | 'insulin'
+    | 'medication'
+    | 'glucose_test'
+    | 'meal'
+    | 'activity';
   title: string;
   description?: string;
   scheduled_time: string; // HH:MM format
@@ -49,9 +54,9 @@ export function useReminders() {
     } catch (err: any) {
       setError(err.message);
       toast({
-        title: "Erreur",
-        description: "Impossible de charger les rappels",
-        variant: "destructive"
+        title: 'Erreur',
+        description: 'Impossible de charger les rappels',
+        variant: 'destructive',
       });
     } finally {
       setLoading(false);
@@ -59,31 +64,34 @@ export function useReminders() {
   };
 
   // Create new reminder
-  const createReminder = async (reminderData: Omit<Reminder, 'id' | 'user_id' | 'created_at' | 'updated_at'>) => {
+  const createReminder = async (
+    reminderData: Omit<Reminder, 'id' | 'user_id' | 'created_at' | 'updated_at'>
+  ) => {
     try {
       const { data, error } = await supabase
         .from('user_reminders')
         .insert({
           ...reminderData,
-          user_id: (await supabase.auth.getUser()).data.user?.id
+          user_id: (await supabase.auth.getUser()).data.user?.id,
         })
         .select()
         .single();
 
       if (error) throw error;
 
-      setReminders(prev => [...prev, data as Reminder]);
+      // Refetch from backend to ensure UI is always in sync
+      await fetchReminders();
       toast({
-        title: "✅ Rappel créé",
+        title: '✅ Rappel créé',
         description: `${reminderData.title} a été programmé`,
       });
 
       return data as Reminder;
     } catch (err: any) {
       toast({
-        title: "Erreur",
-        description: "Impossible de créer le rappel",
-        variant: "destructive"
+        title: 'Erreur',
+        description: 'Impossible de créer le rappel',
+        variant: 'destructive',
       });
       throw err;
     }
@@ -101,18 +109,20 @@ export function useReminders() {
 
       if (error) throw error;
 
-      setReminders(prev => prev.map(r => r.id === id ? data as Reminder : r));
+      setReminders(prev =>
+        prev.map(r => (r.id === id ? (data as Reminder) : r))
+      );
       toast({
-        title: "✅ Rappel mis à jour",
-        description: "Les modifications ont été sauvegardées",
+        title: '✅ Rappel mis à jour',
+        description: 'Les modifications ont été sauvegardées',
       });
 
       return data as Reminder;
     } catch (err: any) {
       toast({
-        title: "Erreur",
-        description: "Impossible de modifier le rappel",
-        variant: "destructive"
+        title: 'Erreur',
+        description: 'Impossible de modifier le rappel',
+        variant: 'destructive',
       });
       throw err;
     }
@@ -130,14 +140,14 @@ export function useReminders() {
 
       setReminders(prev => prev.filter(r => r.id !== id));
       toast({
-        title: "🗑️ Rappel supprimé",
-        description: "Le rappel a été supprimé",
+        title: '🗑️ Rappel supprimé',
+        description: 'Le rappel a été supprimé',
       });
     } catch (err: any) {
       toast({
-        title: "Erreur",
-        description: "Impossible de supprimer le rappel",
-        variant: "destructive"
+        title: 'Erreur',
+        description: 'Impossible de supprimer le rappel',
+        variant: 'destructive',
       });
     }
   };
@@ -148,35 +158,43 @@ export function useReminders() {
   };
 
   // Log reminder action
-  const logReminderAction = async (reminderId: string, actionType: 'completed' | 'snoozed' | 'missed', notes?: string) => {
+  const logReminderAction = async (
+    reminderId: string,
+    actionType: 'completed' | 'snoozed' | 'missed',
+    notes?: string
+  ) => {
     try {
       const userId = (await supabase.auth.getUser()).data.user?.id;
-      const { error } = await supabase
-        .from('reminder_logs')
-        .insert({
-          reminder_id: reminderId,
-          action_type: actionType,
-          user_id: userId,
-          notes
-        });
+      const { error } = await supabase.from('reminder_logs').insert({
+        reminder_id: reminderId,
+        action_type: actionType,
+        user_id: userId,
+        notes,
+      });
 
       if (error) throw error;
 
       const actionEmoji = {
         completed: '✅',
         snoozed: '⏰',
-        missed: '❌'
+        missed: '❌',
       };
 
       toast({
-        title: `${actionEmoji[actionType]} Rappel ${actionType === 'completed' ? 'complété' : actionType === 'snoozed' ? 'reporté' : 'marqué manqué'}`,
-        description: notes || "Action enregistrée",
+        title: `${actionEmoji[actionType]} Rappel ${
+          actionType === 'completed'
+            ? 'complété'
+            : actionType === 'snoozed'
+            ? 'reporté'
+            : 'marqué manqué'
+        }`,
+        description: notes || 'Action enregistrée',
       });
     } catch (err: any) {
       toast({
-        title: "Erreur",
+        title: 'Erreur',
         description: "Impossible d'enregistrer l'action",
-        variant: "destructive"
+        variant: 'destructive',
       });
     }
   };
@@ -186,9 +204,9 @@ export function useReminders() {
     const today = new Date().getDay(); // 0=Sunday, 1=Monday...
     const dayOfWeek = today === 0 ? 7 : today; // Convert to 1-7 format
 
-    return reminders.filter(reminder => 
-      reminder.is_active && 
-      reminder.days_of_week.includes(dayOfWeek)
+    return reminders.filter(
+      reminder =>
+        reminder.is_active && reminder.days_of_week.includes(dayOfWeek)
     );
   };
 
@@ -201,7 +219,7 @@ export function useReminders() {
     return getTodaysReminders().filter(reminder => {
       const [hours, minutes] = reminder.scheduled_time.split(':').map(Number);
       const reminderTime = hours * 60 + minutes;
-      
+
       return reminderTime >= currentTime && reminderTime <= twoHoursLater;
     });
   };
@@ -209,11 +227,31 @@ export function useReminders() {
   // Get reminder type icon and color
   const getReminderTypeInfo = (type: Reminder['reminder_type']) => {
     const typeMap = {
-      insulin: { icon: '💉', color: 'text-blue-600 bg-blue-50', name: 'Insuline' },
-      medication: { icon: '💊', color: 'text-green-600 bg-green-50', name: 'Médicament' },
-      glucose_test: { icon: '🩸', color: 'text-red-600 bg-red-50', name: 'Test glycémie' },
-      meal: { icon: '🍽️', color: 'text-orange-600 bg-orange-50', name: 'Repas' },
-      activity: { icon: '🏃', color: 'text-purple-600 bg-purple-50', name: 'Activité' }
+      insulin: {
+        icon: '💉',
+        color: 'text-blue-600 bg-blue-50',
+        name: 'Insuline',
+      },
+      medication: {
+        icon: '💊',
+        color: 'text-green-600 bg-green-50',
+        name: 'Médicament',
+      },
+      glucose_test: {
+        icon: '🩸',
+        color: 'text-red-600 bg-red-50',
+        name: 'Test glycémie',
+      },
+      meal: {
+        icon: '🍽️',
+        color: 'text-orange-600 bg-orange-50',
+        name: 'Repas',
+      },
+      activity: {
+        icon: '🏃',
+        color: 'text-purple-600 bg-purple-50',
+        name: 'Activité',
+      },
     };
     return typeMap[type];
   };
@@ -234,6 +272,6 @@ export function useReminders() {
     getTodaysReminders,
     getUpcomingReminders,
     getReminderTypeInfo,
-    refreshReminders: fetchReminders
+    refreshReminders: fetchReminders,
   };
 }
