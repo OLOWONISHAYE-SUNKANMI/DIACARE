@@ -790,6 +790,10 @@ export const en = {
 
   Actions: {
     actions: 'Quick Actions',
+    addMeal: 'Add Meal',
+    addMedication: 'Add Medication',
+    addActivity: 'Add Activity',
+    reminders: 'Add Reminders',
     actionsPopover: {
       bloodSugar: {
         increment: 'Add Blood Sugar',
