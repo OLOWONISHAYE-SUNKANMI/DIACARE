@@ -421,6 +421,7 @@ import WeightModal from '@/components/modals/WeightModal';
 import ReactSwitch from 'react-switch';
 import { toast } from 'sonner';
 import { EditProfileModal } from '../modals/EditProfileModal';
+import { useThemeStore } from '@/store/useThemeStore';
 
 const ProfileScreen = () => {
   const { t } = useTranslation();
@@ -437,6 +438,9 @@ const ProfileScreen = () => {
     specialty: profile?.specialty || '',
     professional_license: profile?.professional_license || '',
   });
+
+  const { theme, toggleTheme } = useThemeStore(); // ✅ zustand theme
+  const isDark = theme === 'dark';
 
   const [loading, setLoading] = useState(false);
 
@@ -682,8 +686,8 @@ const ProfileScreen = () => {
               {t('profileScreen.darkMode')}
             </span>
             <ReactSwitch
-              onChange={setDarkMode}
-              checked={darkMode}
+              onChange={toggleTheme}
+              checked={isDark} // ✅ must be true or false
               onColor="#14b8a6"
               offColor="#d1d5db"
               uncheckedIcon={false}
@@ -698,7 +702,10 @@ const ProfileScreen = () => {
 
       {/* Action Buttons */}
       <div className="flex space-x-3">
-        <Button variant="outline" className="w-full">
+        <Button
+          variant="outline"
+          className={`w-full ${isDark ? 'text-white' : ''}`}
+        >
           <Download className="w-4 h-4 mr-2" />
           {t('profileScreen.exportData')}
         </Button>
