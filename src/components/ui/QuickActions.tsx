@@ -1,584 +1,500 @@
 import { useState } from 'react';
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import {
+  Button,
+  Input,
+  Textarea,
   Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { Calendar } from '@/components/ui/calendar';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
-import { CalendarIcon, Clock, Users, FileText, Settings } from 'lucide-react';
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  FormControl,
+  FormLabel,
+  useDisclosure,
+  useToast,
+} from '@chakra-ui/react';
+import { CalendarIcon, Users, FileText, Settings } from 'lucide-react';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
-import { cn } from '@/lib/utils';
 import { useTranslation } from 'react-i18next';
-import { useToast } from '@/hooks/use-toast';
+
+// ✅ Zustand dark mode store
+import { useThemeStore } from '@/store/useThemeStore.js';
+
+// 🔹 Reusable Action Button
+const ActionButton = ({ onClick, icon: Icon, label }) => (
+  <Button
+    onClick={onClick}
+    variant="outline"
+    w="full"
+    justifyContent="flex-start"
+  >
+    <Icon className="h-4 w-4 mr-2" />
+    {label}
+  </Button>
+);
 
 export const QuickActions = () => {
   const { t } = useTranslation();
+  const toast = useToast();
+
   const [consultationDate, setConsultationDate] = useState<Date>();
-  const [consultationOpen, setConsultationOpen] = useState(false);
-  const [reportOpen, setReportOpen] = useState(false);
-  const [patientOpen, setPatientOpen] = useState(false);
-  const [settingsOpen, setSettingsOpen] = useState(false);
 
-  const { toast } = useToast();
+  const consultationModal = useDisclosure();
+  const reportModal = useDisclosure();
+  const patientModal = useDisclosure();
+  const settingsModal = useDisclosure();
 
-  const handleScheduleConsultation = () => {
+  // ✅ Zustand dark mode
+  const { darkMode } = useThemeStore();
+
+  // ✅ Themed Components
+  const ThemedModalContent = ({ children }) => (
+    <ModalContent>{children}</ModalContent>
+  );
+
+  const ThemedModalHeader = ({ children }) => (
+    <ModalHeader>{children}</ModalHeader>
+  );
+
+  const ThemedModalBody = ({ children }) => <ModalBody>{children}</ModalBody>;
+
+  const ThemedModalFooter = ({ children }) => (
+    <ModalFooter>{children}</ModalFooter>
+  );
+
+  // ✅ Success Toast Handler
+  const handleSuccess = (title, description, onClose) => {
     toast({
-      title: t('quickActions.actions.scheduleConsultation.title'),
-      description: t('quickActions.actions.scheduleConsultation.description'),
+      title,
+      description,
+      status: 'success',
+      duration: 2500,
+      isClosable: true,
+      position: 'top-right',
     });
-    setConsultationOpen(false);
-  };
-
-  const handleGenerateReport = () => {
-    toast({
-      title: t('quickActions.actions.generateReport.title'),
-      description: t('quickActions.actions.generateReport.description'),
-    });
-    setReportOpen(false);
-  };
-
-  const handleAddPatient = () => {
-    toast({
-      title: t('quickActions.actions.addPatient.title'),
-      description: t('quickActions.actions.addPatient.description'),
-    });
-    setPatientOpen(false);
+    onClose();
   };
 
   return (
     <div className="space-y-3">
-      {/* Programmer une consultation */}
-      <Dialog open={consultationOpen} onOpenChange={setConsultationOpen}>
-        <DialogTrigger asChild>
-          <Button className="w-full justify-start" variant="outline">
-            <CalendarIcon className="h-4 w-4 mr-2" />
+      {/* ================= Consultation ================= */}
+      <ActionButton
+        onClick={consultationModal.onOpen}
+        icon={CalendarIcon}
+        label={t(
+          'professionalDashboard.overview.quickActions.scheduleAppointment.title'
+        )}
+      />
+      <Modal
+        isOpen={consultationModal.isOpen}
+        onClose={consultationModal.onClose}
+        isCentered
+      >
+        <ModalOverlay />
+        <ThemedModalContent>
+          <ThemedModalHeader>
             {t(
               'professionalDashboard.overview.quickActions.scheduleAppointment.title'
             )}
-          </Button>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>
-              {t(
-                'professionalDashboard.overview.quickActions.scheduleAppointment.title'
-              )}
-            </DialogTitle>
-          </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="grid gap-2">
-              <Label htmlFor="patient-select">Patient</Label>
-              <Select>
-                <SelectTrigger>
-                  <SelectValue
-                    placeholder={t(
-                      'professionalDashboard.overview.quickActions.scheduleAppointment.patient.placeholder'
-                    )}
-                  />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="marie">Marie Dubois</SelectItem>
-                  <SelectItem value="pierre">Pierre Martin</SelectItem>
-                  <SelectItem value="sophie">Sophie Laurent</SelectItem>
-                  <SelectItem value="jean">Jean Bernard</SelectItem>
-                </SelectContent>
+          </ThemedModalHeader>
+          <ModalCloseButton color={darkMode ? '#AEE6DA' : 'gray.600'} />
+          <ThemedModalBody>
+            <FormControl mb={3}>
+              <FormLabel>Patient</FormLabel>
+              <Select
+                placeholder="Select patient"
+                bg={darkMode ? '#137657' : 'white'}
+                color={darkMode ? '#E2E8F0' : 'gray.800'}
+              >
+                <option value="marie">Marie Dubois</option>
+                <option value="pierre">Pierre Martin</option>
+                <option value="sophie">Sophie Laurent</option>
+                <option value="jean">Jean Bernard</option>
               </Select>
-            </div>
-            <div className="grid gap-2">
-              <Label>Date</Label>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant={'outline'}
-                    className={cn(
-                      'justify-start text-left font-normal',
-                      !consultationDate && 'text-muted-foreground'
+            </FormControl>
+
+            <FormControl mb={3}>
+              <FormLabel>Date</FormLabel>
+              <Button
+                variant="outline"
+                w="full"
+                onClick={() => setConsultationDate(new Date())}
+              >
+                <CalendarIcon className="mr-2 h-4 w-4" />
+                {consultationDate
+                  ? format(consultationDate, 'PPP', { locale: fr })
+                  : t(
+                      'professionalDashboard.overview.quickActions.scheduleAppointment.date.placeholder'
                     )}
-                  >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
-                    {consultationDate ? (
-                      format(consultationDate, 'PPP', { locale: fr })
-                    ) : (
-                      <span>
-                        {t(
-                          'professionalDashboard.overview.quickActions.scheduleAppointment.date.placeholder'
-                        )}
-                      </span>
-                    )}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0">
-                  <Calendar
-                    mode="single"
-                    selected={consultationDate}
-                    onSelect={setConsultationDate}
-                    initialFocus
-                    className="pointer-events-auto"
-                  />
-                </PopoverContent>
-              </Popover>
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="time">
+              </Button>
+            </FormControl>
+
+            <FormControl mb={3}>
+              <FormLabel>
                 {t(
                   'professionalDashboard.overview.quickActions.scheduleAppointment.time.title'
                 )}
-              </Label>
-              <Select>
-                <SelectTrigger>
-                  <SelectValue
-                    placeholder={t(
-                      'professionalDashboard.overview.quickActions.scheduleAppointment.time.placeholder'
-                    )}
-                  />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="09:00">09:00</SelectItem>
-                  <SelectItem value="10:00">10:00</SelectItem>
-                  <SelectItem value="11:00">11:00</SelectItem>
-                  <SelectItem value="14:00">14:00</SelectItem>
-                  <SelectItem value="15:00">15:00</SelectItem>
-                  <SelectItem value="16:00">16:00</SelectItem>
-                </SelectContent>
+              </FormLabel>
+              <Select
+                placeholder={t(
+                  'professionalDashboard.overview.quickActions.scheduleAppointment.time.placeholder'
+                )}
+                bg={darkMode ? '#137657' : 'white'}
+                color={darkMode ? '#E2E8F0' : 'gray.800'}
+              >
+                {['09:00', '10:00', '11:00', '14:00', '15:00', '16:00'].map(
+                  time => (
+                    <option key={time} value={time}>
+                      {time}
+                    </option>
+                  )
+                )}
               </Select>
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="type">
+            </FormControl>
+
+            <FormControl mb={3}>
+              <FormLabel>
                 {t(
                   'professionalDashboard.overview.quickActions.scheduleAppointment.consultationType.title'
                 )}
-              </Label>
-              <Select>
-                <SelectTrigger>
-                  <SelectValue
-                    placeholder={t(
-                      'professionalDashboard.overview.quickActions.scheduleAppointment.consultationType.placeholder.title'
-                    )}
-                  />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="routine">
-                    {t(
-                      'professionalDashboard.overview.quickActions.scheduleAppointment.consultationType.placeholder.routine'
-                    )}
-                  </SelectItem>
-                  <SelectItem value="urgent">
-                    {t(
-                      'professionalDashboard.overview.quickActions.scheduleAppointment.consultationType.placeholder.urgent'
-                    )}
-                  </SelectItem>
-                  <SelectItem value="teleconsultation">
-                    {t(
-                      'professionalDashboard.overview.quickActions.scheduleAppointment.consultationType.placeholder.teleconsultation'
-                    )}
-                  </SelectItem>
-                  <SelectItem value="first">
-                    {t(
-                      'professionalDashboard.overview.quickActions.scheduleAppointment.consultationType.placeholder.first'
-                    )}
-                  </SelectItem>
-                </SelectContent>
+              </FormLabel>
+              <Select
+                placeholder="Select type"
+                bg={darkMode ? '#137657' : 'white'}
+                color={darkMode ? '#E2E8F0' : 'gray.800'}
+              >
+                <option value="routine">{t('...routine')}</option>
+                <option value="urgent">{t('...urgent')}</option>
+                <option value="teleconsultation">
+                  {t('...teleconsultation')}
+                </option>
+                <option value="first">{t('...first')}</option>
               </Select>
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="notes">
+            </FormControl>
+
+            <FormControl>
+              <FormLabel>
                 Notes (
                 {t(
                   'professionalDashboard.overview.quickActions.scheduleAppointment.notes.title'
                 )}
                 )
-              </Label>
+              </FormLabel>
               <Textarea
                 placeholder={t(
                   'professionalDashboard.overview.quickActions.scheduleAppointment.notes.placeholder'
                 )}
+                bg={darkMode ? '#137657' : 'white'}
+                color={darkMode ? '#E2E8F0' : 'gray.800'}
               />
-            </div>
-          </div>
-          <div className="flex justify-end space-x-2">
+            </FormControl>
+          </ThemedModalBody>
+          <ThemedModalFooter>
             <Button
               variant="outline"
-              onClick={() => setConsultationOpen(false)}
+              mr={3}
+              onClick={consultationModal.onClose}
             >
               {t(
                 'professionalDashboard.overview.quickActions.scheduleAppointment.button1'
               )}
             </Button>
-            <Button onClick={handleScheduleConsultation}>
+            <Button
+              bg={darkMode ? '#FA6657' : 'blue.500'}
+              color="white"
+              _hover={{ bg: darkMode ? '#F7845D' : 'blue.600' }}
+              onClick={() =>
+                handleSuccess(
+                  t('quickActions.actions.scheduleConsultation.title'),
+                  t('quickActions.actions.scheduleConsultation.description'),
+                  consultationModal.onClose
+                )
+              }
+            >
               {t(
                 'professionalDashboard.overview.quickActions.scheduleAppointment.button2'
               )}
             </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
+          </ThemedModalFooter>
+        </ThemedModalContent>
+      </Modal>
 
-      {/* Générer un rapport */}
-      <Dialog open={reportOpen} onOpenChange={setReportOpen}>
-        <DialogTrigger asChild>
-          <Button className="w-full justify-start" variant="outline">
-            <FileText className="h-4 w-4 mr-2" />
+      {/* ================= Report ================= */}
+      <ActionButton
+        onClick={reportModal.onOpen}
+        icon={FileText}
+        label={t(
+          'professionalDashboard.overview.quickActions.reportGenerator.title'
+        )}
+      />
+      <Modal
+        isOpen={reportModal.isOpen}
+        onClose={reportModal.onClose}
+        isCentered
+      >
+        <ModalOverlay />
+        <ThemedModalContent>
+          <ThemedModalHeader>
             {t(
               'professionalDashboard.overview.quickActions.reportGenerator.title'
             )}
-          </Button>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>
-              {t(
-                'professionalDashboard.overview.quickActions.reportGenerator.title'
-              )}
-            </DialogTitle>
-          </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="grid gap-2">
-              <Label htmlFor="report-type">
-                {t(
-                  'professionalDashboard.overview.quickActions.reportGenerator.reportType.title'
-                )}
-              </Label>
-              <Select>
-                <SelectTrigger>
-                  <SelectValue
-                    placeholder={t(
-                      'professionalDashboard.overview.quickActions.reportGenerator.reportType.placeholder.title'
-                    )}
-                  />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="monthly">
-                    placeholder=
-                    {t(
-                      'professionalDashboard.overview.quickActions.reportGenerator.reportType.placeholder.monthly'
-                    )}
-                  </SelectItem>
-                  <SelectItem value="patient">
-                    {t(
-                      'professionalDashboard.overview.quickActions.reportGenerator.reportType.placeholder.patient'
-                    )}
-                  </SelectItem>
-                  <SelectItem value="financial">
-                    {t(
-                      'professionalDashboard.overview.quickActions.reportGenerator.reportType.placeholder.financial'
-                    )}
-                  </SelectItem>
-                  <SelectItem value="activity">
-                    {t(
-                      'professionalDashboard.overview.quickActions.reportGenerator.reportType.placeholder.activity'
-                    )}
-                  </SelectItem>
-                </SelectContent>
+          </ThemedModalHeader>
+          <ModalCloseButton color={darkMode ? '#AEE6DA' : 'gray.600'} />
+          <ThemedModalBody>
+            <FormControl mb={3}>
+              <FormLabel>Type</FormLabel>
+              <Select
+                placeholder="Select report type"
+                bg={darkMode ? '#137657' : 'white'}
+                color={darkMode ? '#E2E8F0' : 'gray.800'}
+              >
+                <option value="monthly">Monthly</option>
+                <option value="patient">Patient</option>
+                <option value="financial">Financial</option>
+                <option value="activity">Activity</option>
               </Select>
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="period">
-                {t(
-                  'professionalDashboard.overview.quickActions.reportGenerator.timeframe.title'
-                )}
-              </Label>
-              <Select>
-                <SelectTrigger>
-                  <SelectValue
-                    placeholder={t(
-                      'professionalDashboard.overview.quickActions.reportGenerator.timeframe.placeholder.title'
-                    )}
-                  />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="last-week">
-                    placeholder=
-                    {t(
-                      'professionalDashboard.overview.quickActions.reportGenerator.timeframe.placeholder.lastWeek'
-                    )}
-                  </SelectItem>
-                  <SelectItem value="last-month">
-                    {t(
-                      'professionalDashboard.overview.quickActions.reportGenerator.timeframe.placeholder.lastMonth'
-                    )}
-                  </SelectItem>
-                  <SelectItem value="last-quarter">
-                    {t(
-                      'professionalDashboard.overview.quickActions.reportGenerator.timeframe.placeholder.lastQuarter'
-                    )}
-                  </SelectItem>
-                  <SelectItem value="custom">
-                    {t(
-                      'professionalDashboard.overview.quickActions.reportGenerator.timeframe.placeholder.custom'
-                    )}
-                  </SelectItem>
-                </SelectContent>
+            </FormControl>
+            <FormControl mb={3}>
+              <FormLabel>Period</FormLabel>
+              <Select
+                placeholder="Select period"
+                bg={darkMode ? '#137657' : 'white'}
+                color={darkMode ? '#E2E8F0' : 'gray.800'}
+              >
+                <option value="last-week">Last Week</option>
+                <option value="last-month">Last Month</option>
+                <option value="last-quarter">Last Quarter</option>
+                <option value="custom">Custom</option>
               </Select>
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="format">Format</Label>
-              <Select>
-                <SelectTrigger>
-                  <SelectValue
-                    placeholder={t(
-                      'professionalDashboard.overview.quickActions.reportGenerator.format.placeholder'
-                    )}
-                  />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="pdf">PDF</SelectItem>
-                  <SelectItem value="excel">Excel</SelectItem>
-                  <SelectItem value="csv">CSV</SelectItem>
-                </SelectContent>
+            </FormControl>
+            <FormControl>
+              <FormLabel>Format</FormLabel>
+              <Select
+                placeholder="Select format"
+                bg={darkMode ? '#137657' : 'white'}
+                color={darkMode ? '#E2E8F0' : 'gray.800'}
+              >
+                <option value="pdf">PDF</option>
+                <option value="excel">Excel</option>
+                <option value="csv">CSV</option>
               </Select>
-            </div>
-          </div>
-          <div className="flex justify-end space-x-2">
-            <Button variant="outline" onClick={() => setReportOpen(false)}>
+            </FormControl>
+          </ThemedModalBody>
+          <ThemedModalFooter>
+            <Button variant="outline" mr={3} onClick={reportModal.onClose}>
               {t(
                 'professionalDashboard.overview.quickActions.reportGenerator.button1'
               )}
             </Button>
-            <Button onClick={handleGenerateReport}>
+            <Button
+              bg={darkMode ? '#FA6657' : 'blue.500'}
+              color="white"
+              _hover={{ bg: darkMode ? '#F7845D' : 'blue.600' }}
+              onClick={() =>
+                handleSuccess(
+                  t('quickActions.actions.generateReport.title'),
+                  t('quickActions.actions.generateReport.description'),
+                  reportModal.onClose
+                )
+              }
+            >
               {t(
                 'professionalDashboard.overview.quickActions.reportGenerator.button2'
               )}
             </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
+          </ThemedModalFooter>
+        </ThemedModalContent>
+      </Modal>
 
-      {/* Ajouter un patient */}
-      <Dialog open={patientOpen} onOpenChange={setPatientOpen}>
-        <DialogTrigger asChild>
-          <Button className="w-full justify-start" variant="outline">
-            <Users className="h-4 w-4 mr-2" />
-            {t('professionalDashboard.overview.quickActions.addPatient.title')}
-          </Button>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>
-              {t(
-                'professionalDashboard.overview.quickActions.addPatient.subtitle'
-              )}
-            </DialogTitle>
-          </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="grid gap-2">
-                <Label htmlFor="first-name">
-                  {t(
-                    'professionalDashboard.overview.quickActions.addPatient.name.firstName'
-                  )}
-                </Label>
-                <Input
-                  id="first-name"
-                  placeholder={t(
-                    'professionalDashboard.overview.quickActions.addPatient.name.firstName'
-                  )}
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="last-name">
-                  {' '}
-                  {t(
-                    'professionalDashboard.overview.quickActions.addPatient.name.lastName'
-                  )}
-                </Label>
-                <Input
-                  id="last-name"
-                  placeholder={t(
-                    'professionalDashboard.overview.quickActions.addPatient.name.lastName'
-                  )}
-                />
-              </div>
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" placeholder="email@exemple.com" />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="phone">
-                {t(
-                  'professionalDashboard.overview.quickActions.addPatient.number'
-                )}
-              </Label>
-              <Input id="phone" placeholder="+33 6 12 34 56 78" />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="diabetes-type">
-                {t(
-                  'professionalDashboard.overview.quickActions.addPatient.diabetesTypes.title'
-                )}
-              </Label>
-              <Select>
-                <SelectTrigger>
-                  <SelectValue
-                    placeholder={t(
-                      'professionalDashboard.overview.quickActions.addPatient.diabetesTypes.placeholder.title'
-                    )}
-                  />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="type1">Type 1</SelectItem>
-                  <SelectItem value="type2">Type 2</SelectItem>
-                  <SelectItem value="gestational">
-                    {t(
-                      'professionalDashboard.overview.quickActions.addPatient.diabetesTypes.placeholder.gestational'
-                    )}
-                  </SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="notes">
-                {t(
-                  'professionalDashboard.overview.quickActions.addPatient.medicalNotes.title'
-                )}
-              </Label>
-              <Textarea
-                placeholder={t(
-                  'professionalDashboard.overview.quickActions.addPatient.medicalNotes.placeholder'
-                )}
+      {/* ================= Patient ================= */}
+      <ActionButton
+        onClick={patientModal.onOpen}
+        icon={Users}
+        label={t(
+          'professionalDashboard.overview.quickActions.addPatient.title'
+        )}
+      />
+      <Modal
+        isOpen={patientModal.isOpen}
+        onClose={patientModal.onClose}
+        isCentered
+      >
+        <ModalOverlay />
+        <ThemedModalContent>
+          <ThemedModalHeader>
+            {t(
+              'professionalDashboard.overview.quickActions.addPatient.subtitle'
+            )}
+          </ThemedModalHeader>
+          <ModalCloseButton color={darkMode ? '#AEE6DA' : 'gray.600'} />
+          <ThemedModalBody>
+            <FormControl mb={3}>
+              <FormLabel>First Name</FormLabel>
+              <Input
+                placeholder="First Name"
+                bg={darkMode ? '#137657' : 'white'}
+                color={darkMode ? '#E2E8F0' : 'gray.800'}
               />
-            </div>
-          </div>
-          <div className="flex justify-end space-x-2">
-            <Button variant="outline" onClick={() => setPatientOpen(false)}>
+            </FormControl>
+            <FormControl mb={3}>
+              <FormLabel>Last Name</FormLabel>
+              <Input
+                placeholder="Last Name"
+                bg={darkMode ? '#137657' : 'white'}
+                color={darkMode ? '#E2E8F0' : 'gray.800'}
+              />
+            </FormControl>
+            <FormControl mb={3}>
+              <FormLabel>Email</FormLabel>
+              <Input
+                type="email"
+                placeholder="email@example.com"
+                bg={darkMode ? '#137657' : 'white'}
+                color={darkMode ? '#E2E8F0' : 'gray.800'}
+              />
+            </FormControl>
+            <FormControl mb={3}>
+              <FormLabel>Phone</FormLabel>
+              <Input
+                placeholder="+33 6 12 34 56 78"
+                bg={darkMode ? '#137657' : 'white'}
+                color={darkMode ? '#E2E8F0' : 'gray.800'}
+              />
+            </FormControl>
+            <FormControl mb={3}>
+              <FormLabel>Diabetes Type</FormLabel>
+              <Select
+                placeholder="Select type"
+                bg={darkMode ? '#137657' : 'white'}
+                color={darkMode ? '#E2E8F0' : 'gray.800'}
+              >
+                <option value="type1">Type 1</option>
+                <option value="type2">Type 2</option>
+                <option value="gestational">Gestational</option>
+              </Select>
+            </FormControl>
+            <FormControl>
+              <FormLabel>Notes</FormLabel>
+              <Textarea
+                placeholder="Medical notes"
+                bg={darkMode ? '#137657' : 'white'}
+                color={darkMode ? '#E2E8F0' : 'gray.800'}
+              />
+            </FormControl>
+          </ThemedModalBody>
+          <ThemedModalFooter>
+            <Button variant="outline" mr={3} onClick={patientModal.onClose}>
               {t(
                 'professionalDashboard.overview.quickActions.addPatient.button1'
               )}
             </Button>
-            <Button onClick={handleAddPatient}>
+            <Button
+              bg={darkMode ? '#FA6657' : 'blue.500'}
+              color="white"
+              _hover={{ bg: darkMode ? '#F7845D' : 'blue.600' }}
+              onClick={() =>
+                handleSuccess(
+                  t('quickActions.actions.addPatient.title'),
+                  t('quickActions.actions.addPatient.description'),
+                  patientModal.onClose
+                )
+              }
+            >
               {t(
                 'professionalDashboard.overview.quickActions.addPatient.button2'
               )}
             </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
+          </ThemedModalFooter>
+        </ThemedModalContent>
+      </Modal>
 
-      {/* Paramètres du compte */}
-      <Dialog open={settingsOpen} onOpenChange={setSettingsOpen}>
-        <DialogTrigger asChild>
-          <Button className="w-full justify-start" variant="outline">
-            <Settings className="h-4 w-4 mr-2" />
+      {/* ================= Settings ================= */}
+      <ActionButton
+        onClick={settingsModal.onOpen}
+        icon={Settings}
+        label={t(
+          'professionalDashboard.overview.quickActions.accountSetting.title'
+        )}
+      />
+      <Modal
+        isOpen={settingsModal.isOpen}
+        onClose={settingsModal.onClose}
+        isCentered
+      >
+        <ModalOverlay />
+        <ThemedModalContent>
+          <ThemedModalHeader>
             {t(
               'professionalDashboard.overview.quickActions.accountSetting.title'
             )}
-          </Button>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>
-              {t(
-                'professionalDashboard.overview.quickActions.accountSetting.title'
-              )}
-            </DialogTitle>
-          </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="grid gap-2">
-              <Label htmlFor="availability">
-                {t(
-                  'professionalDashboard.overview.quickActions.accountSetting.currentStatus.title'
-                )}
-              </Label>
-              <Select>
-                <SelectTrigger>
-                  <SelectValue
-                    placeholder={t(
-                      'professionalDashboard.overview.quickActions.accountSetting.currentStatus.placeholder'
-                    )}
-                  />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="available">
-                    {t(
-                      'professionalDashboard.overview.quickActions.accountSetting.currentStatus.options.available'
-                    )}
-                  </SelectItem>
-                  <SelectItem value="busy">
-                    {' '}
-                    {t(
-                      'professionalDashboard.overview.quickActions.accountSetting.currentStatus.options.busy'
-                    )}
-                  </SelectItem>
-                  <SelectItem value="offline">
-                    {t(
-                      'professionalDashboard.overview.quickActions.accountSetting.currentStatus.options.offline'
-                    )}
-                  </SelectItem>
-                </SelectContent>
+          </ThemedModalHeader>
+          <ModalCloseButton color={darkMode ? '#AEE6DA' : 'gray.600'} />
+          <ThemedModalBody>
+            <FormControl mb={3}>
+              <FormLabel>Status</FormLabel>
+              <Select
+                placeholder="Select status"
+                bg={darkMode ? '#137657' : 'white'}
+                color={darkMode ? '#E2E8F0' : 'gray.800'}
+              >
+                <option value="available">Available</option>
+                <option value="busy">Busy</option>
+                <option value="offline">Offline</option>
               </Select>
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="notifications">Notifications</Label>
-              <Select>
-                <SelectTrigger>
-                  <SelectValue
-                    placeholder={t(
-                      'professionalDashboard.overview.quickActions.accountSetting.notifications.placeholder'
-                    )}
-                  />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">
-                    {t(
-                      'professionalDashboard.overview.quickActions.accountSetting.notifications.options.all'
-                    )}
-                  </SelectItem>
-                  <SelectItem value="important">
-                    {t(
-                      'professionalDashboard.overview.quickActions.accountSetting.notifications.options.important'
-                    )}
-                  </SelectItem>
-                  <SelectItem value="none">
-                    {t(
-                      'professionalDashboard.overview.quickActions.accountSetting.notifications.options.none'
-                    )}
-                  </SelectItem>
-                </SelectContent>
+            </FormControl>
+            <FormControl mb={3}>
+              <FormLabel>Notifications</FormLabel>
+              <Select
+                placeholder="Select notification preference"
+                bg={darkMode ? '#137657' : 'white'}
+                color={darkMode ? '#E2E8F0' : 'gray.800'}
+              >
+                <option value="all">All</option>
+                <option value="important">Important only</option>
+                <option value="none">None</option>
               </Select>
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="consultation-rate">
-                {t(
-                  'professionalDashboard.overview.quickActions.accountSetting.consultationFee'
-                )}{' '}
-                consultation (XOF)
-              </Label>
-              <Input id="consultation-rate" type="number" placeholder="5000" />
-            </div>
-          </div>
-          <div className="flex justify-end space-x-2">
-            <Button variant="outline" onClick={() => setSettingsOpen(false)}>
+            </FormControl>
+            <FormControl>
+              <FormLabel>Consultation Fee (XOF)</FormLabel>
+              <Input
+                type="number"
+                placeholder="5000"
+                bg={darkMode ? '#137657' : 'white'}
+                color={darkMode ? '#E2E8F0' : 'gray.800'}
+              />
+            </FormControl>
+          </ThemedModalBody>
+          <ThemedModalFooter>
+            <Button variant="outline" mr={3} onClick={settingsModal.onClose}>
               {t(
                 'professionalDashboard.overview.quickActions.accountSetting.button1'
               )}
             </Button>
-            <Button>
+            <Button
+              bg={darkMode ? '#FA6657' : 'blue.500'}
+              color="white"
+              _hover={{ bg: darkMode ? '#F7845D' : 'blue.600' }}
+              onClick={() =>
+                handleSuccess(
+                  t('quickActions.actions.accountSetting.title'),
+                  t('quickActions.actions.accountSetting.description'),
+                  settingsModal.onClose
+                )
+              }
+            >
               {t(
                 'professionalDashboard.overview.quickActions.accountSetting.button2'
               )}
             </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
+          </ThemedModalFooter>
+        </ThemedModalContent>
+      </Modal>
     </div>
   );
 };
+
+export default QuickActions;

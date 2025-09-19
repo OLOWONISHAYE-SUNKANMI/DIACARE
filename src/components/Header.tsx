@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Home,
   FileText,
@@ -7,36 +8,34 @@ import {
   MessageCircle,
   BookOpen,
   User,
-  TestTube,
+  Sun,
+  Moon,
   Menu,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import LanguageToggle from './ui/LanguageToggle';
-import { Button } from './ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 import { useDisclosure } from '@chakra-ui/react';
 import MobileDrawer from './ui/MobileDrawer';
+import { useThemeStore } from '@/store/useThemeStore';
 
 interface HeaderProps {
-  // user?: any;
   onLogout?: () => void;
   isProfessional?: boolean;
-  // professionalData?: any;
   onTabChange?: (tab: string) => void;
   activeTab?: string;
 }
 
-const Header = ({
-  // user,
+const Header: React.FC<HeaderProps> = ({
   onLogout,
   isProfessional,
-  // professionalData,
   onTabChange,
   activeTab,
-}: HeaderProps) => {
+}) => {
   const { t } = useTranslation();
-  const { isTestMode, toggleTestMode } = useAuth();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { theme, toggleTheme } = useThemeStore();
+  const isDark = theme === 'dark';
 
   const tabs = [
     { id: 'home', label: t('nav.home'), icon: Home, color: 'blue' },
@@ -55,36 +54,64 @@ const Header = ({
   ];
 
   return (
-    <header className="w-full bg-gradient-to-r from-medical-blue-dark to-medical-blue-light border-b border-border/20 pt-safe-area-inset-top relative z-50">
+    <header
+      className={`w-full border-b pt-safe-area-inset-top relative z-50 transition-colors ${
+        isDark
+          ? 'bg-[#006078] border-[#248378] text-[#AEE6DA]'
+          : 'bg-medical-blue-dark border-border/20 text-white'
+      }`}
+    >
       <div className="flex items-center justify-between py-4 px-4">
-        <h1 className="text-2xl font-bold tracking-wide text-white">
+        {/* Logo / App Name */}
+        <h1
+          className={`text-2xl font-bold tracking-wide ${
+            isDark ? 'text-[#AEE6DA]' : 'text-white'
+          }`}
+        >
           {t('appName')}
         </h1>
 
-        <div className="flex items-center gap-2">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={toggleTestMode}
-            className={`text-white hover:text-white hover:bg-white/20 ${
-              isTestMode ? 'bg-white/30' : ''
-            }`}
-          >
-            <TestTube className="w-4 h-4" />
-          </Button>
-          <LanguageToggle />
+        {/* Desktop Controls */}
+        <div className="flex items-center gap-3">
+          <LanguageToggle
+            className={`${isDark ? 'text-white' : 'text-black'}`}
+          />
 
-          {/* Mobile Drawer Button */}
+          {/* Dark / Light Mode Toggle */}
           <button
-            onClick={onOpen}
-            className="lg:hidden text-white p-2 hover:bg-white/20 rounded-md"
+            onClick={toggleTheme}
+            className={`p-2 rounded-md transition-colors ${
+              isDark
+                ? 'text-[#AEE6DA] hover:bg-[#248378]'
+                : 'text-white hover:bg-white/20'
+            }`}
+            aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
           >
-            <Menu className="w-5 h-5" />
+            {isDark ? (
+              <Sun className="w-5 h-5" />
+            ) : (
+              <Moon className="w-5 h-5" />
+            )}
           </button>
+          <div className="md:hidden">
+            <button
+              onClick={onOpen}
+              className="p-2 rounded-md bg-white/10 hover:bg-white/20 transition-colors"
+              aria-label="Open menu"
+            >
+              <Menu
+                className={`w-6 h-6 ${
+                  isDark ? 'text-[#AEE6DA]' : 'text-white'
+                }`}
+              />
+            </button>
+          </div>
         </div>
+
+        {/* Mobile Menu Button */}
       </div>
 
-      {/* Drawer Component */}
+      {/* Mobile Drawer */}
       <MobileDrawer
         isOpen={isOpen}
         onClose={onClose}
