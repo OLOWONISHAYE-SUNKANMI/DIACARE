@@ -94,8 +94,8 @@ const FamilyScreen = (props: FamilyScreenProps) => {
   return (
     <div className="flex-1 p-4 space-y-6 pb-24 animate-fade-in">
       {/* Header */}
-      <div className="text-center space-y-2">
-        <h1 className="text-2xl font-bold text-foreground flex items-center justify-center gap-2">
+      <div className="text-center space-y-2 ">
+        <h1 className="text-2xl font-bold text-[#FFAB40] flex items-center justify-center gap-2">
           <Users className="w-6 h-6 text-medical-teal" />
           {t('familyScreen.heading.title')} DARE
         </h1>

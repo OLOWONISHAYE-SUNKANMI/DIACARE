@@ -110,7 +110,7 @@ const BlogScreen = () => {
     <div className="flex-1 p-4 space-y-6 pb-24">
       {/* Header */}
       <div className="text-center">
-        <h1 className="text-2xl font-bold flex items-center justify-center gap-2">
+        <h1 className="text-2xl font-bold flex items-center text-[#FFAB40] justify-center gap-2">
           <Globe className="w-6 h-6 text-medical-teal" /> Klukoo News
         </h1>
         <p className="text-muted-foreground">
@@ -225,44 +225,63 @@ const BlogScreen = () => {
         <ModalContent maxH="80vh" overflowY="auto">
           {selectedArticle && (
             <>
-              <ModalHeader>
+              <ModalHeader
+                sx={{
+                  borderBottom: '1px solid var(--border)',
+                  paddingBottom: '0.5rem',
+                }}
+              >
                 <Text fontSize="xl" fontWeight="bold" lineHeight="short">
                   {selectedArticle.title}
                 </Text>
-                <Text fontSize="sm" color="gray.500">
+                <Text fontSize="sm" color="var(--muted-foreground)">
                   {new Date(selectedArticle.pubDate).toLocaleString()} •{' '}
                   {selectedArticle.source_id}
                 </Text>
               </ModalHeader>
+
               <ModalCloseButton />
 
               <ModalBody>
                 <Box>
-                  <Text color="gray.800" lineHeight="tall" fontSize="sm">
+                  <Text
+                    fontSize="sm"
+                    lineHeight="tall"
+                    color="var(--foreground)"
+                  >
                     {selectedArticle.description || 'No summary available.'}
                   </Text>
                 </Box>
               </ModalBody>
-              <ModalFooter gap={2} borderTop="1px solid" borderColor="gray.200">
+
+              <ModalFooter
+                gap={3}
+                sx={{
+                  borderTop: '1px solid var(--border)',
+                  paddingTop: '1rem',
+                }}
+              >
                 <Button
-                  variant="outline"
+                  variant="accent"
                   size="sm"
                   flex="1"
                   leftIcon={<Bookmark className="w-4 h-4" />}
+                  className="bg-[hsl(var(--accent))] text-[hsl(var(--accent-foreground))] hover:opacity-90"
                 >
                   {t('blogScreenRead.save')}
                 </Button>
 
                 <Button
-                  variant="outline"
+                  variant="accent"
                   size="sm"
-                  w="100%"
+                  flex="1"
                   leftIcon={<ExternalLink className="w-4 h-4" />}
                   isDisabled={!selectedArticle.link}
                   as="a"
                   href={selectedArticle.link}
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="bg-[hsl(var(--secondary))] text-[hsl(var(--secondary-foreground))] hover:opacity-90"
                 >
                   {t('blogScreenRead.fullSource')}
                 </Button>
