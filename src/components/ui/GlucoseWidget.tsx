@@ -64,7 +64,7 @@ const GlucoseWidget = () => {
 
   return (
     <div className="flex justify-center">
-      <Card className="bg-white shadow-xl border-0 rounded-2xl sm:rounded-3xl mx-3 sm:mx-4 -mt-4 sm:-mt-6 relative overflow-hidden max-w-full w-full">
+      <Card className="bg-card shadow-xl border-0 rounded-2xl sm:rounded-3xl mx-3 sm:mx-4 -mt-4 sm:-mt-6 relative overflow-hidden max-w-full w-full">
         {/* Gradient accent */}
         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-medical-green to-medical-teal"></div>
 

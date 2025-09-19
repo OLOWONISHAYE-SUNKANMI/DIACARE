@@ -106,7 +106,7 @@ const ChartsScreen = () => {
       {/* Title */}
 
       <div className="text-center space-y-2">
-        <h2 className="text-2xl font-bold flex items-center justify-center space-x-2">
+        <h2 className="text-2xl text-[#FFAB40] font-bold flex items-center justify-center space-x-2">
           <BarChart3 className="w-6 h-6 text-medical-teal" />
           <span>{t('charts.title')}</span>
         </h2>
