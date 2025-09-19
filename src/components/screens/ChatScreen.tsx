@@ -290,7 +290,7 @@ const ChatScreen = ({ onBack }: ChatScreenProps) => {
               onBlur={() => setTypingStatus(false)}
               onKeyPress={handleKeyPress}
               placeholder={t('chatScreen.typingMessage')}
-              className="border-0 bg-background focus-visible:ring-1 focus-visible:ring-ring"
+              className="border-0 bg-background focus-visible:ring-1 focus-visible:ring-ring text-accent-foreground"
             />
           </div>
 

@@ -430,25 +430,9 @@ const AuthPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-background">
+    <div className="relative min-h-screen flex items-center justify-center p-4 bg-background">
       {/* Language Selector - Top Right */}
-      <div className="hidden md:flex fixed top-4 right-4 z-50 items-center gap-2">
-        {/* Language Switcher */}
-        <LanguageSwitcher />
-
-        {/* Dark / Light Mode Toggle */}
-        <button
-          onClick={toggleTheme}
-          className={`p-2 rounded-md transition-colors shadow-md border border-border ${
-            isDark
-              ? 'text-[#AEE6DA] hover:bg-[#248378]'
-              : 'text-grey-800 hover:bg-white/20'
-          }`}
-          title={isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-        >
-          {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-        </button>
-      </div>
+      
 
       {/* Sign Out Button - Top Left (if user is connected and force mode) */}
       {user && forceAuth && (
@@ -481,9 +465,32 @@ const AuthPage = () => {
             {t('appSlogan')}
           </p>
         </div>
-        <div className="md:hidden w-40 m-auto mb-2">
-          <LanguageSwitcher />
+        <div className=" flex items-center justify-center gap-3 max-w-md mb-4">
+          {/* Control Wrapper */}
+          <div className="flex items-center gap-3 px-4 py-2 rounded-xl  bg-card">
+            {/* Language Switcher */}
+            <LanguageSwitcher />
+
+            {/* Dark / Light Mode Toggle */}
+            <button
+              onClick={toggleTheme}
+              className={`p-2 rounded-lg transition-colors border border-border
+        ${
+          isDark
+            ? 'bg-[hsl(var(--muted))] text-[hsl(var(--secondary))] hover:bg-[hsl(var(--muted-foreground))]/20'
+            : 'bg-[hsl(var(--secondary))] text-[hsl(var(--foreground))] hover:bg-[hsl(var(--secondary))]/80'
+        }`}
+              title={isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+            >
+              {isDark ? (
+                <Sun className="w-5 h-5" />
+              ) : (
+                <Moon className="w-5 h-5" />
+              )}
+            </button>
+          </div>
         </div>
+
         <Card className="shadow-xl">
           <CardHeader className="text-center pb-4">
             {/* <CardTitle className="text-xl">{t('auth.signInTitle')}</CardTitle> */}

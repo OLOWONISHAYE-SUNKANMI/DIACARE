@@ -229,7 +229,7 @@ const JournalScreen = ({ showAlert, setShowAlert }: JournalScreenProps) => {
   return (
     <div className="flex-1 p-4 space-y-6 pb-24">
       <div className="text-center space-y-2">
-        <h2 className="text-2xl font-bold text-foreground flex items-center justify-center space-x-2">
+        <h2 className="text-2xl font-bold text-[#FFAB40] flex items-center justify-center space-x-2">
           <BookOpen className="w-6 h-6 text-medical-teal" />
           <span>{t('journal.title')}</span>
         </h2>
