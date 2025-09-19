@@ -1,28 +1,28 @@
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import ErrorBoundary from "@/components/ErrorBoundary";
-import { AuthProvider } from "@/contexts/AuthContext";
-import { ProtectedRoute } from "@/components/ProtectedRoute";
-import { useOfflineDetection } from "@/hooks/useOfflineDetection";
-import Index from "./pages/Index";
-import Auth from "./pages/Auth";
-import NotFound from "./pages/NotFound";
-import PaymentSuccess from "./components/screens/PaymentSuccess";
-import PaymentScreen from "./components/screens/PaymentScreen";
-import { ProfessionalDashboard } from "./components/screens/ProfessionalDashboard";
-import { ProfessionalRegistrationScreen } from "./components/screens/ProfessionalRegistrationScreen";
-import { ChakraProvider } from "@chakra-ui/react";
-import { Toaster } from "sonner";
-import { useTranslation } from "react-i18next";
-import { useThemeStore } from "@/store/useThemeStore";
-import { getChakraTheme } from "./lib/theme";
+import { TooltipProvider } from '@/components/ui/tooltip';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import ErrorBoundary from '@/components/ErrorBoundary';
+import { AuthProvider } from '@/contexts/AuthContext';
+import { ProtectedRoute } from '@/components/ProtectedRoute';
+import { useOfflineDetection } from '@/hooks/useOfflineDetection';
+import Index from './pages/Index';
+import Auth from './pages/Auth';
+import NotFound from './pages/NotFound';
+import PaymentSuccess from './components/screens/PaymentSuccess';
+import PaymentScreen from './components/screens/PaymentScreen';
+import { ProfessionalDashboard } from './components/screens/ProfessionalDashboard';
+import { ProfessionalRegistrationScreen } from './components/screens/ProfessionalRegistrationScreen';
+import { ChakraProvider } from '@chakra-ui/react';
+import { Toaster } from 'sonner';
+import { useTranslation } from 'react-i18next';
+import { useThemeStore } from '@/store/useThemeStore';
+import { getChakraTheme } from './lib/theme';
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       retry: 3,
-      retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
+      retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 30000),
       staleTime: 5 * 60 * 1000,
     },
   },
@@ -35,7 +35,7 @@ const AppContent = () => {
   return (
     <>
       {!isOnline && (
-        <div className="offline-indicator show">{t("app.status.offline")}</div>
+        <div className="offline-indicator show">{t('app.status.offline')}</div>
       )}
       <BrowserRouter>
         <Routes>
@@ -45,7 +45,9 @@ const AppContent = () => {
             element={
               <PaymentScreen
                 onBack={() => window.history.back()}
-                onPaymentSuccess={() => (window.location.href = "/payment-success")}
+                onPaymentSuccess={() =>
+                  (window.location.href = '/payment-success')
+                }
               />
             }
           />
@@ -58,7 +60,10 @@ const AppContent = () => {
               </ProtectedRoute>
             }
           />
-          <Route path="/professional-dashboard" element={<ProfessionalDashboard />} />
+          <Route
+            path="/professional-dashboard"
+            element={<ProfessionalDashboard />}
+          />
           <Route
             path="/"
             element={
@@ -77,7 +82,7 @@ const AppContent = () => {
 
 const App = () => {
   const { theme } = useThemeStore();
-  const isDark = theme === "dark";
+  const isDark = theme === 'dark';
 
   const chakraTheme = getChakraTheme({ darkMode: isDark });
 
@@ -87,7 +92,7 @@ const App = () => {
         <ErrorBoundary>
           <AuthProvider>
             <TooltipProvider>
-              <Toaster richColors position="bottom-right" />
+              <Toaster richColors position="top-right" />
               <AppContent />
             </TooltipProvider>
           </AuthProvider>
