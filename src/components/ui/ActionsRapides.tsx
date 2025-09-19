@@ -20,9 +20,13 @@ import { useThemeStore } from '@/store/useThemeStore';
 
 interface ActionsRapidesProps {
   onTabChange?: (tab: string) => void;
+  onGlucoseSubmit?: (glucoseValue: string) => void;
 }
 
-const ActionsRapides: React.FC<ActionsRapidesProps> = ({ onTabChange }) => {
+const ActionsRapides: React.FC<ActionsRapidesProps> = ({
+  onTabChange,
+  onGlucoseSubmit,
+}) => {
   const { toast } = useToast();
   const { addReading } = useGlucose();
   const { t } = useTranslation();
@@ -64,6 +68,7 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({ onTabChange }) => {
       notes: glucoseNotes,
       createdAt: new Date(),
     });
+    onGlucoseSubmit?.(glucoseValue);
     toast({
       title: t('Actions.actionsPopover.saved'),
       description: `${glucoseValue} mg/dL`,
@@ -132,7 +137,9 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({ onTabChange }) => {
 
   return (
     <div className="px-3 sm:px-4">
-      <div className={`rounded-xl p-4 sm:p-6 shadow-md transition-colors ${bgCard} ${textCard}`}>
+      <div
+        className={`rounded-xl p-4 sm:p-6 shadow-md transition-colors ${bgCard} ${textCard}`}
+      >
         <h3 className={`font-semibold mb-3 sm:mb-4 ${textCard}`}>
           {t('Actions.actions')}
         </h3>
@@ -148,7 +155,9 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({ onTabChange }) => {
             <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary rounded-full flex items-center justify-center mb-2">
               <span className="text-lg sm:text-xl">🩸</span>
             </div>
-            <span className={`text-xs sm:text-sm font-medium text-center ${textButton}`}>
+            <span
+              className={`text-xs sm:text-sm font-medium text-center ${textButton}`}
+            >
               {t('Actions.actionsPopover.bloodSugar.increment')}
             </span>
           </button>
@@ -190,8 +199,14 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({ onTabChange }) => {
                       className="mt-1"
                     />
                   </div>
-                  <Button type="submit" className="w-full" disabled={glucoseLoading}>
-                    {glucoseLoading ? t('actionsRapides.loadingSave') : t('Actions.button')}
+                  <Button
+                    type="submit"
+                    className="w-full"
+                    disabled={glucoseLoading}
+                  >
+                    {glucoseLoading
+                      ? t('actionsRapides.loadingSave')
+                      : t('Actions.button')}
                   </Button>
                 </form>
               </ModalBody>
@@ -213,17 +228,36 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({ onTabChange }) => {
             </span>
           </button>
 
-          <Modal isOpen={isMealModalOpen} onClose={() => setIsMealModalOpen(false)} isCentered>
+          <Modal
+            isOpen={isMealModalOpen}
+            onClose={() => setIsMealModalOpen(false)}
+            isCentered
+          >
             <ModalOverlay />
             <ModalContent className={`${bgCard} ${textCard}`}>
               <ModalHeader>🍽️ {t('Actions.addMeal')}</ModalHeader>
               <ModalCloseButton />
               <ModalBody>
                 <form onSubmit={handleMealSubmit} className="space-y-4 py-6">
-                  <Input placeholder={t('Actions.mealName')} value={mealName} onChange={e => setMealName(e.target.value)} />
-                  <Input type="number" placeholder={t('Actions.mealCarbs')} value={mealCarbs} onChange={e => setMealCarbs(e.target.value)} />
-                  <Input placeholder={t('Actions.notes')} value={mealNotes} onChange={e => setMealNotes(e.target.value)} />
-                  <Button type="submit" className="w-full">{t('Actions.button')}</Button>
+                  <Input
+                    placeholder={t('Actions.mealName')}
+                    value={mealName}
+                    onChange={e => setMealName(e.target.value)}
+                  />
+                  <Input
+                    type="number"
+                    placeholder={t('Actions.mealCarbs')}
+                    value={mealCarbs}
+                    onChange={e => setMealCarbs(e.target.value)}
+                  />
+                  <Input
+                    placeholder={t('Actions.notes')}
+                    value={mealNotes}
+                    onChange={e => setMealNotes(e.target.value)}
+                  />
+                  <Button type="submit" className="w-full">
+                    {t('Actions.button')}
+                  </Button>
                 </form>
               </ModalBody>
             </ModalContent>
@@ -244,17 +278,38 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({ onTabChange }) => {
             </span>
           </button>
 
-          <Modal isOpen={isMedicationModalOpen} onClose={() => setIsMedicationModalOpen(false)} isCentered>
+          <Modal
+            isOpen={isMedicationModalOpen}
+            onClose={() => setIsMedicationModalOpen(false)}
+            isCentered
+          >
             <ModalOverlay />
             <ModalContent className={`${bgCard} ${textCard}`}>
               <ModalHeader>💊 {t('Actions.addMedication')}</ModalHeader>
               <ModalCloseButton />
               <ModalBody>
-                <form onSubmit={handleMedicationSubmit} className="space-y-4 py-6">
-                  <Input placeholder={t('Actions.medName')} value={medName} onChange={e => setMedName(e.target.value)} />
-                  <Input placeholder={t('Actions.medDose')} value={medDose} onChange={e => setMedDose(e.target.value)} />
-                  <Input placeholder={t('Actions.notes')} value={medNotes} onChange={e => setMedNotes(e.target.value)} />
-                  <Button type="submit" className="w-full">{t('Actions.button')}</Button>
+                <form
+                  onSubmit={handleMedicationSubmit}
+                  className="space-y-4 py-6"
+                >
+                  <Input
+                    placeholder={t('Actions.medName')}
+                    value={medName}
+                    onChange={e => setMedName(e.target.value)}
+                  />
+                  <Input
+                    placeholder={t('Actions.medDose')}
+                    value={medDose}
+                    onChange={e => setMedDose(e.target.value)}
+                  />
+                  <Input
+                    placeholder={t('Actions.notes')}
+                    value={medNotes}
+                    onChange={e => setMedNotes(e.target.value)}
+                  />
+                  <Button type="submit" className="w-full">
+                    {t('Actions.button')}
+                  </Button>
                 </form>
               </ModalBody>
             </ModalContent>
@@ -275,17 +330,39 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({ onTabChange }) => {
             </span>
           </button>
 
-          <Modal isOpen={isActivityModalOpen} onClose={() => setIsActivityModalOpen(false)} isCentered>
+          <Modal
+            isOpen={isActivityModalOpen}
+            onClose={() => setIsActivityModalOpen(false)}
+            isCentered
+          >
             <ModalOverlay />
             <ModalContent className={`${bgCard} ${textCard}`}>
               <ModalHeader>🏃 {t('Actions.addActivity')}</ModalHeader>
               <ModalCloseButton />
               <ModalBody>
-                <form onSubmit={handleActivitySubmit} className="space-y-4 py-6">
-                  <Input placeholder={t('Actions.activityName')} value={activityName} onChange={e => setActivityName(e.target.value)} />
-                  <Input type="number" placeholder={t('Actions.activityDuration')} value={activityDuration} onChange={e => setActivityDuration(e.target.value)} />
-                  <Input placeholder={t('Actions.notes')} value={activityNotes} onChange={e => setActivityNotes(e.target.value)} />
-                  <Button type="submit" className="w-full">{t('Actions.button')}</Button>
+                <form
+                  onSubmit={handleActivitySubmit}
+                  className="space-y-4 py-6"
+                >
+                  <Input
+                    placeholder={t('Actions.activityName')}
+                    value={activityName}
+                    onChange={e => setActivityName(e.target.value)}
+                  />
+                  <Input
+                    type="number"
+                    placeholder={t('Actions.activityDuration')}
+                    value={activityDuration}
+                    onChange={e => setActivityDuration(e.target.value)}
+                  />
+                  <Input
+                    placeholder={t('Actions.notes')}
+                    value={activityNotes}
+                    onChange={e => setActivityNotes(e.target.value)}
+                  />
+                  <Button type="submit" className="w-full">
+                    {t('Actions.button')}
+                  </Button>
                 </form>
               </ModalBody>
             </ModalContent>

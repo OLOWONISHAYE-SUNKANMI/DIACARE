@@ -1,14 +1,14 @@
-import { useState, useEffect } from "react";
-import { Target } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import NativeHeader from "@/components/ui/NativeHeader";
-import GlucoseWidget from "@/components/ui/GlucoseWidget";
-import ActionsRapides from "@/components/ui/ActionsRapides";
-import PredictiveAlerts from "@/components/ui/PredictiveAlerts";
-import { useGlucose } from "@/contexts/GlucoseContext";
-import { useAuth } from "@/contexts/AuthContext";
-import { useThemeStore } from "@/store/useThemeStore"; // ✅ Zustand theme store
-import { useTranslation } from "react-i18next";
+import { useState, useEffect } from 'react';
+import { Target } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import NativeHeader from '@/components/ui/NativeHeader';
+import GlucoseWidget from '@/components/ui/GlucoseWidget';
+import ActionsRapides from '@/components/ui/ActionsRapides';
+import PredictiveAlerts from '@/components/ui/PredictiveAlerts';
+import { useGlucose } from '@/contexts/GlucoseContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { useThemeStore } from '@/store/useThemeStore'; // ✅ Zustand theme store
+import { useTranslation } from 'react-i18next';
 
 interface HomeScreenProps {
   onTabChange?: (tab: string) => void;
@@ -16,6 +16,7 @@ interface HomeScreenProps {
 
 const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
   const { t } = useTranslation();
+  const [glucoseValue, setGlucoseValue] = useState<string>('');
   const [showAddMeasure, setShowAddMeasure] = useState(false);
   const [showAddDose, setShowAddDose] = useState(false);
   const [showAddMeal, setShowAddMeal] = useState(false);
@@ -24,13 +25,13 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
   const { user, profile } = useAuth();
 
   const { theme } = useThemeStore(); // ✅ zustand theme
-  const isDark = theme === "dark";
+  const isDark = theme === 'dark';
 
   const userName =
     profile?.first_name ||
     user?.user_metadata?.first_name ||
     user?.email ||
-    "Invité";
+    'Invité';
 
   const latestReading = getLatestReading();
   const currentGlucose = latestReading?.value || 126;
@@ -38,9 +39,9 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
   useEffect(() => {
     // Sync <html> class with Zustand theme
     if (isDark) {
-      document.documentElement.classList.add("dark");
+      document.documentElement.classList.add('dark');
     } else {
-      document.documentElement.classList.remove("dark");
+      document.documentElement.classList.remove('dark');
     }
   }, [isDark]);
 
@@ -59,8 +60,8 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
           currentGlucose={currentGlucose}
           lastReading={
             latestReading
-              ? new Date(latestReading.timestamp).toLocaleString("fr-FR")
-              : t("homeScreen.lastReading")
+              ? new Date(latestReading.timestamp).toLocaleString('fr-FR')
+              : t('homeScreen.lastReading')
           }
           trend={getTrend()}
         />
@@ -68,6 +69,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
         {/* Actions Rapides */}
         <ActionsRapides
           onTabChange={onTabChange}
+          onGlucoseSubmit={value => setGlucoseValue(value)}
           onGlycemieClick={() => setShowAddMeasure(true)}
           onMedicamentClick={() => setShowAddDose(true)}
           onMealClick={() => setShowAddMeal(true)}
@@ -76,7 +78,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
 
         {/* Predictive Alerts */}
         <div className="px-3 sm:px-4">
-          <PredictiveAlerts />
+          <PredictiveAlerts glucoseValue={glucoseValue} />
         </div>
 
         {/* Mission DiabCare */}
@@ -87,13 +89,13 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
                 <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center flex-shrink-0 bg-accent">
                   <Target className="w-4 h-4 sm:w-5 sm:h-5 text-accent-foreground" />
                 </div>
-                <span className="leading-tight">{t("mission.title")}</span>
+                <span className="leading-tight">{t('mission.title')}</span>
               </CardTitle>
             </CardHeader>
 
             <CardContent className="p-3 sm:p-6">
               <p className="text-sm sm:text-base leading-relaxed text-foreground">
-                {t("mission.message")}
+                {t('mission.message')}
               </p>
             </CardContent>
           </Card>
