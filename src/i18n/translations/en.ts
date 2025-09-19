@@ -2,7 +2,8 @@ export const en = {
   // App general
   appName: 'Klukoo',
   appDescription: '',
-  appSlogan: 'The first smart application in Africa that helps diabetic patients live better, anticipate better, and respond better.',
+  appSlogan:
+    'The first smart application in Africa that helps diabetic patients live better, anticipate better, and respond better.',
 
   // Navigation
   nav: {
@@ -1138,8 +1139,10 @@ export const en = {
     familySharingCode: {
       title: 'Family Sharing Code',
       subtitle: 'Share this code with your loved ones so they can support you.',
-      button: 'Copy Code',
+      copyButton: 'Copy Code', // when a code exists
+      generateButton: 'Generate Invite', // when no code exists yet
     },
+
     numOfPatients: {
       first: 'Alerts',
       second: 'Connected Days',
@@ -4400,7 +4403,8 @@ Failure to comply with this charter may result in temporary or permanent suspens
       not_specified: 'Not specified',
       approval_statement:
         "This certificate confirms the professional's approval on the Klukoo platform.",
-      verification_contact: 'For verification, contact support@Klukoo-health.com',
+      verification_contact:
+        'For verification, contact support@Klukoo-health.com',
       download_success_title: '✅ Certificate Downloaded',
       download_success_description:
         'The professional certificate has been successfully downloaded',

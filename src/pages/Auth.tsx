@@ -84,7 +84,7 @@ const AuthPage = () => {
 
   // Données pour famille
   const [familyData, setFamilyData] = useState({
-    patientCode: '',
+    patientCode: '1234',
   });
 
   // Show loading first
@@ -469,7 +469,9 @@ const AuthPage = () => {
         <Card className="shadow-xl">
           <CardHeader className="text-center pb-4">
             {/* <CardTitle className="text-xl">{t('auth.signInTitle')}</CardTitle> */}
-            <CardDescription className='font-bold text-md text-[#00000]'>{t('auth.description')}</CardDescription>
+            <CardDescription className="font-bold text-md text-[#00000]">
+              {t('auth.description')}
+            </CardDescription>
           </CardHeader>
 
           <CardContent>
@@ -750,21 +752,6 @@ const AuthPage = () => {
               </TabsContent>
 
               <TabsContent value="professional" className="mt-6">
-                {/* <div className="text-center mb-4">
-                  <div className="w-12 h-12 bg-medical-green-light rounded-full mx-auto mb-2 flex items-center justify-center">
-                    <img
-                      src="https://res.cloudinary.com/depeqzb6z/image/upload/v1756502933/Layer_0_aezqw1.png"
-                      alt="logo"
-                    />
-                  </div>
-                  <h3 className="font-semibold text-foreground">
-                    {t('professionalLoginCard.title')}
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    {t('professionalLoginCard.subtitle')}
-                  </p>
-                </div> */}
-
                 <form
                   onSubmit={handleProfessionalCodeLogin}
                   className="space-y-4"
