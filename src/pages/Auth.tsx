@@ -36,6 +36,8 @@ import {
   Heart,
   Loader,
 } from 'lucide-react';
+import { useThemeStore } from '@/store/useThemeStore';
+import { Sun, Moon } from 'lucide-react';
 
 const AuthPage = () => {
   const {
@@ -87,6 +89,8 @@ const AuthPage = () => {
     patientCode: '',
   });
 
+  const { theme, toggleTheme } = useThemeStore();
+  const isDark = theme === 'dark';
   // Show loading first
   if (loading) {
     return (
@@ -426,10 +430,24 @@ const AuthPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-medical-blue-light via-background to-medical-green-light flex items-center justify-center p-4">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-background">
       {/* Language Selector - Top Right */}
-      <div className="hidden md:block fixed top-4 right-4 z-50">
+      <div className="hidden md:flex fixed top-4 right-4 z-50 items-center gap-2">
+        {/* Language Switcher */}
         <LanguageSwitcher />
+
+        {/* Dark / Light Mode Toggle */}
+        <button
+          onClick={toggleTheme}
+          className={`p-2 rounded-md transition-colors shadow-md border border-border ${
+            isDark
+              ? 'text-[#AEE6DA] hover:bg-[#248378]'
+              : 'text-grey-800 hover:bg-white/20'
+          }`}
+          title={isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+        >
+          {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+        </button>
       </div>
 
       {/* Sign Out Button - Top Left (if user is connected and force mode) */}
@@ -469,7 +487,9 @@ const AuthPage = () => {
         <Card className="shadow-xl">
           <CardHeader className="text-center pb-4">
             {/* <CardTitle className="text-xl">{t('auth.signInTitle')}</CardTitle> */}
-            <CardDescription className='font-bold text-md text-[#00000]'>{t('auth.description')}</CardDescription>
+            <CardDescription className="font-bold text-md text-[#00000]">
+              {t('auth.description')}
+            </CardDescription>
           </CardHeader>
 
           <CardContent>

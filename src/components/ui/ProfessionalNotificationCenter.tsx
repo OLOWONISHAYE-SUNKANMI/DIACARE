@@ -13,11 +13,15 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalCloseButton,
+  ModalFooter,
+  ModalFooterProps,
+} from '@chakra-ui/react';
 import { Textarea } from '@/components/ui/textarea';
 import {
   Select,
@@ -33,6 +37,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { formatDistanceToNow } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { useTranslation } from 'react-i18next';
+import { useThemeStore } from '@/store/useThemeStore.js';
+import { Label } from './label';
 
 interface ConsultationRequest {
   id: string;
@@ -69,6 +75,8 @@ export const ProfessionalNotificationCenter: React.FC<
   const [isOpen, setIsOpen] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const darkMode = useThemeStore();
 
   const consultationReasons = {
     routine_checkup: t(
@@ -376,7 +384,11 @@ export const ProfessionalNotificationCenter: React.FC<
                 {requests.map(request => (
                   <Card
                     key={request.id}
-                    className={`p-3 mb-2 ${request.status === 'pending' ? 'border-primary bg-primary/5' : ''}`}
+                    className={`p-3 mb-2 ${
+                      request.status === 'pending'
+                        ? 'border-primary bg-primary/5'
+                        : ''
+                    }`}
                   >
                     <div className="space-y-3">
                       <div className="flex items-start justify-between">
@@ -402,12 +414,12 @@ export const ProfessionalNotificationCenter: React.FC<
                                 'professionalNotificationCenter.consultationStatus.pending'
                               )
                             : request.status === 'accepted'
-                              ? t(
-                                  'professionalNotificationCenter.consultationStatus.accepted'
-                                )
-                              : t(
-                                  'professionalNotificationCenter.consultationStatus.rejected'
-                                )}
+                            ? t(
+                                'professionalNotificationCenter.consultationStatus.accepted'
+                              )
+                            : t(
+                                'professionalNotificationCenter.consultationStatus.rejected'
+                              )}
                         </Badge>
                       </div>
 
@@ -474,138 +486,148 @@ export const ProfessionalNotificationCenter: React.FC<
         </Card>
       )}
 
-      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>
-              {responseType === 'accept'
-                ? t(
-                    'professionalNotificationCenter.consultationResponse.acceptTitle'
-                  )
-                : t(
-                    'professionalNotificationCenter.consultationResponse.rescheduleTitle'
-                  )}
-            </DialogTitle>
-          </DialogHeader>
+      <Modal
+        isOpen={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+        isCentered
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>
+            {responseType === 'accept'
+              ? t(
+                  'professionalNotificationCenter.consultationResponse.acceptTitle'
+                )
+              : t(
+                  'professionalNotificationCenter.consultationResponse.rescheduleTitle'
+                )}
+          </ModalHeader>
+          <ModalCloseButton />
 
-          <div className="space-y-4">
-            {selectedRequest && (
-              <div className="p-3 bg-muted/30 rounded">
-                <p className="text-sm">
-                  <strong>
-                    {t(
-                      'professionalNotificationCenter.consultationDetails.reason'
-                    )}
-                    :
-                  </strong>{' '}
-                  {
-                    consultationReasons[
-                      selectedRequest.consultation_reason as keyof typeof consultationReasons
-                    ]
-                  }
-                </p>
-                <p className="text-sm">
-                  <strong>
-                    {t(
-                      'professionalNotificationCenter.consultationDetails.fee'
-                    )}
-                    :
-                  </strong>{' '}
-                  {selectedRequest.consultation_fee} F CFA
-                </p>
-                {selectedRequest.patient_message && (
+          <ModalBody>
+            <div className="space-y-4">
+              {selectedRequest && (
+                <div className="p-3 rounded bg-gray-100 dark:bg-gray-700">
                   <p className="text-sm">
                     <strong>
                       {t(
-                        'professionalNotificationCenter.consultationDetails.message'
+                        'professionalNotificationCenter.consultationDetails.reason'
                       )}
                       :
                     </strong>{' '}
-                    {selectedRequest.patient_message}
+                    {
+                      consultationReasons[
+                        selectedRequest.consultation_reason as keyof typeof consultationReasons
+                      ]
+                    }
                   </p>
-                )}
-              </div>
-            )}
-
-            {responseType === 'reject' && (
-              <div className="space-y-3">
-                <div>
-                  <label className="block text-sm font-medium mb-2">
-                    {t(
-                      'professionalNotificationCenter.consultationResponse.proposedDate'
-                    )}
-                  </label>
-                  <Input
-                    type="date"
-                    value={proposedDate}
-                    onChange={e => setProposedDate(e.target.value)}
-                    min={new Date().toISOString().split('T')[0]}
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2">
-                    {t(
-                      'professionalNotificationCenter.consultationResponse.proposedTime'
-                    )}
-                  </label>
-                  <Input
-                    type="time"
-                    value={proposedTime}
-                    onChange={e => setProposedTime(e.target.value)}
-                  />
-                </div>
-              </div>
-            )}
-
-            <div>
-              <label className="block text-sm font-medium mb-2">
-                {t('consultationResponse.message')}{' '}
-                {responseType === 'accept'
-                  ? t('consultationResponse.optional')
-                  : t('consultationResponse.forPatient')}
-              </label>
-              <Textarea
-                value={responseMessage}
-                onChange={e => setResponseMessage(e.target.value)}
-                placeholder={
-                  responseType === 'accept'
-                    ? t(
-                        'professionalNotificationCenter.consultationResponse.confirmationPlaceholder'
-                      )
-                    : t(
-                        'professionalNotificationCenter.consultationResponse.reschedulePlaceholder'
-                      )
-                }
-                rows={3}
-              />
-            </div>
-
-            <div className="flex gap-2">
-              <Button variant="outline" onClick={() => setDialogOpen(false)}>
-                {t('professionalNotificationCenter.common.cancel')}
-              </Button>
-              <Button
-                onClick={submitResponse}
-                disabled={
-                  loading ||
-                  (responseType === 'reject' &&
-                    (!proposedDate || !proposedTime))
-                }
-              >
-                {loading
-                  ? t('professionalNotificationCenter.common.processing')
-                  : responseType === 'accept'
-                    ? t(
-                        'professionalNotificationCenter.consultationResponse.accept'
-                      )
-                    : t(
-                        'professionalNotificationCenter.consultationResponse.reschedule'
+                  <p className="text-sm">
+                    <strong>
+                      {t(
+                        'professionalNotificationCenter.consultationDetails.fee'
                       )}
-              </Button>
+                      :
+                    </strong>{' '}
+                    {selectedRequest.consultation_fee} F CFA
+                  </p>
+                  {selectedRequest.patient_message && (
+                    <p className="text-sm">
+                      <strong>
+                        {t(
+                          'professionalNotificationCenter.consultationDetails.message'
+                        )}
+                        :
+                      </strong>{' '}
+                      {selectedRequest.patient_message}
+                    </p>
+                  )}
+                </div>
+              )}
+
+              {responseType === 'reject' && (
+                <div className="space-y-3">
+                  <div>
+                    <Label>
+                      {t(
+                        'professionalNotificationCenter.consultationResponse.proposedDate'
+                      )}
+                    </Label>
+                    <Input
+                      type="date"
+                      value={proposedDate}
+                      onChange={e => setProposedDate(e.target.value)}
+                      min={new Date().toISOString().split('T')[0]}
+                    />
+                  </div>
+                  <div>
+                    <Label>
+                      {t(
+                        'professionalNotificationCenter.consultationResponse.proposedTime'
+                      )}
+                    </Label>
+                    <Input
+                      type="time"
+                      value={proposedTime}
+                      onChange={e => setProposedTime(e.target.value)}
+                    />
+                  </div>
+                </div>
+              )}
+
+              <div>
+                <Label>
+                  {t('consultationResponse.message')}{' '}
+                  {responseType === 'accept'
+                    ? t('consultationResponse.optional')
+                    : t('consultationResponse.forPatient')}
+                </Label>
+                <Textarea
+                  value={responseMessage}
+                  onChange={e => setResponseMessage(e.target.value)}
+                  placeholder={
+                    responseType === 'accept'
+                      ? t(
+                          'professionalNotificationCenter.consultationResponse.confirmationPlaceholder'
+                        )
+                      : t(
+                          'professionalNotificationCenter.consultationResponse.reschedulePlaceholder'
+                        )
+                  }
+                  rows={3}
+                />
+              </div>
             </div>
-          </div>
-        </DialogContent>
-      </Dialog>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button
+              variant="outline"
+              mr={3}
+              onClick={() => setDialogOpen(false)}
+            >
+              {t('professionalNotificationCenter.common.cancel')}
+            </Button>
+            <Button
+              colorScheme="blue"
+              onClick={submitResponse}
+              isDisabled={
+                loading ||
+                (responseType === 'reject' && (!proposedDate || !proposedTime))
+              }
+            >
+              {loading
+                ? t('professionalNotificationCenter.common.processing')
+                : responseType === 'accept'
+                ? t(
+                    'professionalNotificationCenter.consultationResponse.accept'
+                  )
+                : t(
+                    'professionalNotificationCenter.consultationResponse.reschedule'
+                  )}
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </>
   );
 };
