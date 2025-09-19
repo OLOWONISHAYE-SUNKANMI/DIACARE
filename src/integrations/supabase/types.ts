@@ -631,6 +631,79 @@ export type Database = {
         }
         Relationships: []
       }
+      family_activity_logs: {
+        Row: {
+          action: string
+          actor_name: string
+          family_membership_id: string | null
+          id: string
+          time: string
+        }
+        Insert: {
+          action: string
+          actor_name: string
+          family_membership_id?: string | null
+          id?: string
+          time?: string
+        }
+        Update: {
+          action?: string
+          actor_name?: string
+          family_membership_id?: string | null
+          id?: string
+          time?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "family_activity_logs_family_membership_id_fkey"
+            columns: ["family_membership_id"]
+            isOneToOne: false
+            referencedRelation: "family_memberships"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      family_memberships: {
+        Row: {
+          created_at: string
+          id: string
+          patient_id: string | null
+          permission: string
+          role: string
+          status: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          patient_id?: string | null
+          permission: string
+          role: string
+          status?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          patient_id?: string | null
+          permission?: string
+          role?: string
+          status?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "family_memberships_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       glucose_readings: {
         Row: {
           context: string
@@ -938,32 +1011,37 @@ export type Database = {
       patient_access_codes: {
         Row: {
           access_code: string
-          expires_at: string
-          generated_at: string | null
+          created_at: string
           id: string
-          is_active: boolean | null
-          professional_access_count: number | null
-          user_id: string
+          is_active: boolean
+          patient_id: string | null
+          updated_at: string
         }
         Insert: {
           access_code: string
-          expires_at: string
-          generated_at?: string | null
+          created_at?: string
           id?: string
-          is_active?: boolean | null
-          professional_access_count?: number | null
-          user_id: string
+          is_active?: boolean
+          patient_id?: string | null
+          updated_at?: string
         }
         Update: {
           access_code?: string
-          expires_at?: string
-          generated_at?: string | null
+          created_at?: string
           id?: string
-          is_active?: boolean | null
-          professional_access_count?: number | null
-          user_id?: string
+          is_active?: boolean
+          patient_id?: string | null
+          updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "patient_access_codes_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       patient_access_permissions: {
         Row: {
@@ -1110,6 +1188,7 @@ export type Database = {
           reviewed_by: string | null
           status: string | null
           updated_at: string | null
+          user_id: string | null
         }
         Insert: {
           city?: string | null
@@ -1132,6 +1211,7 @@ export type Database = {
           reviewed_by?: string | null
           status?: string | null
           updated_at?: string | null
+          user_id?: string | null
         }
         Update: {
           city?: string | null
@@ -1154,6 +1234,7 @@ export type Database = {
           reviewed_by?: string | null
           status?: string | null
           updated_at?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }
