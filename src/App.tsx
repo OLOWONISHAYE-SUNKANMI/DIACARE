@@ -19,6 +19,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useTranslation } from 'react-i18next';
 import { useThemeStore } from '@/store/useThemeStore';
 import { getChakraTheme } from './lib/theme';
+import { ForgotPassword } from './pages/ForgotPassword';
+import { ResetPassword } from './pages/ResetPassword';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -54,6 +56,8 @@ const AppContent = () => {
             }
           />
           <Route path="/payment-success" element={<PaymentSuccess />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route
             path="/professional-registration"
             element={
