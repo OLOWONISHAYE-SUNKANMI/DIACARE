@@ -13,7 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Separator } from '@/components/ui/separator';
 import { useAuth } from '@/contexts/AuthContext';
-import { useNavigate, Navigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, Navigate, useSearchParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useToast } from '@/hooks/use-toast';
 import PlanSelection from '@/components/PlanSelection';
@@ -432,7 +432,6 @@ const AuthPage = () => {
   return (
     <div className="relative min-h-screen flex items-center justify-center p-4 bg-background">
       {/* Language Selector - Top Right */}
-      
 
       {/* Sign Out Button - Top Left (if user is connected and force mode) */}
       {user && forceAuth && (
@@ -579,36 +578,7 @@ const AuthPage = () => {
                         <Label htmlFor="patient-signin-password">
                           {t('auth.password')}
                         </Label>
-                        {/* <div className="relative">
-                          <Lock className="absolute left-3 top-7 h-4 w-4 text-muted-foreground" />
-                          <Input
-                            id="patient-signin-password"
-                            type={showPassword ? 'text' : 'password'}
-                            placeholder={t('auth.password')}
-                            value={patientSignInData.password}
-                            onChange={e =>
-                              setPatientSignInData(prev => ({
-                                ...prev,
-                                password: e.target.value,
-                              }))
-                            }
-                            className="pl-10 pr-10"
-                            required
-                          />
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="sm"
-                            className="absolute  ml-96 right-7 bottom-7 h-full px-3"
-                            onClick={() => setShowPassword(!showPassword)}
-                          >
-                            {showPassword ? (
-                              <EyeOff className="h-4 w-4" />
-                            ) : (
-                              <Eye className="h-4 w-4" />
-                            )}
-                          </Button>
-                        </div> */}
+
                         <div className="w-full rounded-md border focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
                           <div className="relative flex items-center w-full bg-background">
                             {/* Left lock icon */}
@@ -644,6 +614,23 @@ const AuthPage = () => {
                             </button>
                           </div>
                         </div>
+                      </div>
+                      <div
+                        className={`text-center text-sm font-medium ${
+                          theme === 'dark' ? 'text-gray-200' : 'text-gray-700'
+                        }`}
+                      >
+                        Forgot Password?{' '}
+                        <Link
+                          className={`ml-1 cursor-pointer transition-colors duration-200 ${
+                            theme === 'dark'
+                              ? 'text-[#F7845D] hover:text-[#FA6657]'
+                              : 'text-[#137657] hover:text-[#248378]'
+                          }`}
+                          to="/forgot-password"
+                        >
+                          Request reset link
+                        </Link>
                       </div>
 
                       <Button
