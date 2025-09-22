@@ -8,6 +8,7 @@ import {
   FileText,
   MessageCircle,
   Stethoscope,
+  Brain,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
@@ -24,8 +25,9 @@ const BottomNavigation: React.FC<BottomNavigationProps> = ({
 
   const tabs = [
     { id: "home", label: t("nav.home"), icon: Home, color: "teal" },
-    { id: "journal", label: t("nav.journal"), icon: FileText, color: "coral" },
     { id: "charts", label: t("nav.charts"), icon: BarChart3, color: "orange" },
+    { id: "journal", label: t("nav.journal"), icon: FileText, color: "coral" },
+    { id: "predictive", label: "AI alert", icon: Brain, color: "orange" },
     { id: "consultation-request", label: t("nav.teleconsultation"), icon: Stethoscope, color: "teal" },
     { id: "family", label: t("nav.family"), icon: Users, color: "green" },
     { id: "chat", label: t("nav.chat"), icon: MessageCircle, color: "coral" },
