@@ -237,9 +237,10 @@ const PredictiveAlerts: React.FC<PredictiveAlertsProps> = ({
               </p>
             </div>
           </div>
-          <button
+          <Button
           onClick={handleViewMore}
-          >View more </button>
+          variant="default"
+          >Enter </Button>
         </CardContent>
       </Card>
     </div>
