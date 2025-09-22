@@ -340,7 +340,7 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
               Insulin Dosage
             </span>
           </button>
-          <button
+          {/* <button
             onClick={handleInsulinClick}
             className={`flex flex-col items-center p-3 sm:p-4 rounded-xl transition-colors active:scale-95 ${
               darkMode ? bgButtonDark : bgButtonLight
@@ -352,7 +352,7 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
             <span className={`text-xs sm:text-sm font-medium ${textButton}`}>
               Biomarker tracker
             </span>
-          </button>
+          </button> */}
         </div>
       </div>
     </div>
