@@ -49,17 +49,6 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
   const [glucoseNotes, setGlucoseNotes] = useState('');
   const [glucoseLoading, setGlucoseLoading] = useState(false);
 
-  const [mealName, setMealName] = useState('');
-  const [mealCarbs, setMealCarbs] = useState('');
-  const [mealNotes, setMealNotes] = useState('');
-
-  const [medName, setMedName] = useState('');
-  const [medDose, setMedDose] = useState('');
-  const [medNotes, setMedNotes] = useState('');
-
-  const [activityName, setActivityName] = useState('');
-  const [activityDuration, setActivityDuration] = useState('');
-  const [activityNotes, setActivityNotes] = useState('');
 
   // Handlers
   const handleGlucoseSubmit = (e: React.FormEvent) => {
@@ -83,56 +72,14 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
     setIsGlucoseModalOpen(false);
   };
 
-  const handleMealSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    addMeal({
-      name: mealName,
-      carbs: parseFloat(mealCarbs),
-      notes: mealNotes,
-      createdAt: new Date(),
-    });
-    toast({ title: t('Actions.mealSaved') });
-    setMealName('');
-    setMealCarbs('');
-    setMealNotes('');
-    setIsMealModalOpen(false);
-  };
-
-  const handleMedicationSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    addMedication({
-      name: medName,
-      dose: medDose,
-      notes: medNotes,
-      createdAt: new Date(),
-    });
-    toast({ title: t('Actions.medicamentSaved') });
-    setMedName('');
-    setMedDose('');
-    setMedNotes('');
-    setIsMedicationModalOpen(false);
-  };
-
-  const handleActivitySubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    addActivity({
-      name: activityName,
-      duration: parseInt(activityDuration),
-      notes: activityNotes,
-      createdAt: new Date(),
-    });
-    toast({ title: t('Actions.activitySaved') });
-    setActivityName('');
-    setActivityDuration('');
-    setActivityNotes('');
-    setIsActivityModalOpen(false);
-  };
-
   const handleRappelsClick = () => {
     onTabChange?.('reminders');
   };
   const handleInsulinClick = () => {
     onTabChange?.('insulin');
+  };
+  const handleBiomarkerClick = () => {
+    onTabChange?.('biomarker');
   };
 
   // Utility for semantic colors
@@ -340,8 +287,8 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
               Insulin Dosage
             </span>
           </button>
-          {/* <button
-            onClick={handleInsulinClick}
+          <button
+            onClick={handleBiomarkerClick}
             className={`flex flex-col items-center p-3 sm:p-4 rounded-xl transition-colors active:scale-95 ${
               darkMode ? bgButtonDark : bgButtonLight
             }`}
@@ -352,7 +299,7 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
             <span className={`text-xs sm:text-sm font-medium ${textButton}`}>
               Biomarker tracker
             </span>
-          </button> */}
+          </button>
         </div>
       </div>
     </div>
