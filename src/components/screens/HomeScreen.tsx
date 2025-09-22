@@ -23,6 +23,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
   const [showAddActivity, setShowAddActivity] = useState(false);
   const { getLatestReading, getTrend } = useGlucose();
   const { user, profile } = useAuth();
+  const [predictiveVisible, setPredictiveVisible] = useState<boolean>(true);
 
   const { theme } = useThemeStore(); // ✅ zustand theme
   const isDark = theme === 'dark';
@@ -51,7 +52,8 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
       bg-muted text-foreground`}
     >
       {/* Native Header */}
-      <NativeHeader userName={userName} />
+      <NativeHeader userName={userName}  visible={predictiveVisible}
+        setVisible={setPredictiveVisible} />
 
       {/* Main Content */}
       <div className="space-y-4 sm:space-y-6 pb-5">
