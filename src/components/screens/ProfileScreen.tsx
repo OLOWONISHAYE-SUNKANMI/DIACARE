@@ -640,7 +640,129 @@ const ProfileScreen = () => {
         </CardContent>
       </Card>
 
-      {/* Settings */}
+
+
+
+
+      {/* Équipe Médicale */}
+      <Card className="border-l-4 border-l-medical-teal">
+        <CardHeader>
+          <CardTitle className="text-lg flex items-center gap-2">
+            <Users className="w-5 h-5 text-medical-teal" />
+            {t('profileScreen.medicalTeam')}
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <div className="font-medium">Dr. Mamadou Kane</div>
+            <div className="text-sm text-muted-foreground">
+              {t('profileScreen.doctor')}
+            </div>
+            <div className="text-sm">📞 +221 33 825 14 52</div>
+          </div>
+
+          <Separator />
+
+          <div className="space-y-2">
+            <div className="font-medium">CHU Aristide Le Dantec</div>
+            <div className="text-sm text-muted-foreground">
+              {t('profileScreen.followUpCenter')}
+            </div>
+            <div className="text-sm text-muted-foreground">
+              📍 Dakar, Sénégal
+            </div>
+          </div>
+
+          <Separator />
+
+          <div className="space-y-2">
+            <div className="font-medium">Dr. Aminata Sow</div>
+            <div className="text-sm text-muted-foreground">
+              {t('profileScreen.consultant')}
+            </div>
+            <div className="text-sm text-muted-foreground">
+              🏥 Polyclinique du Point E
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Traitement Actuel */}
+      <Card className="border-l-4 border-l-medical-teal">
+        <CardHeader>
+          <CardTitle className="text-lg flex items-center gap-2">
+            <Pill className="w-5 h-5 text-medical-teal" />
+            {t('profileScreen.currentTreatment')}
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          <div>
+            <span className="text-muted-foreground text-sm">
+              {t('profileScreen.insulins')}
+            </span>
+            <p className="font-medium">
+              Lantus 20UI matin • Humalog selon glycémie
+            </p>
+            <p className="text-xs text-muted-foreground">
+              {t('profileScreen.keepCool')}
+            </p>
+          </div>
+          <div>
+            <span className="text-muted-foreground text-sm">
+              {t('profileScreen.oralMedications')}
+            </span>
+            <p className="font-medium">Metformine 1000mg 2x/j</p>
+            <p className="text-xs text-muted-foreground">
+              {t('profileScreen.price')}: 2,500 F CFA/mois
+            </p>
+          </div>
+          <div>
+            <span className="text-muted-foreground text-sm">
+              {t('profileScreen.glucoseTarget')}
+            </span>
+            <p className="font-medium">70-140 mg/dL (norme UEMOA)</p>
+            <p className="text-xs text-muted-foreground">
+              {t('profileScreen.adaptedClimate')}
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Contact d'urgence */}
+      <Card className="border-l-4 border-l-red-500 bg-red-50">
+        <CardHeader>
+          <CardTitle className="text-lg flex items-center gap-2 text-red-700">
+            <Phone className="w-5 h-5" />
+            {t('profileScreen.emergencyContact')}
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          <div>
+            <div className="font-medium text-red-700">
+              Fatou Diop ({t('profileScreen.spouse')})
+            </div>
+            <div className="text-sm text-red-600">+221 77 987 65 43</div>
+          </div>
+          <div className="flex gap-2">
+            <Button
+              size="sm"
+              className="bg-red-600 hover:bg-red-700 text-white"
+            >
+              <PhoneCall className="w-4 h-4 mr-1" />
+              {t('profileScreen.call')}
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              className="border-red-600 text-red-600 hover:bg-red-50"
+            >
+              <MessageSquare className="w-4 h-4 mr-1" />
+              {t('profileScreen.sms')}
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+            {/* Settings */}
       <Card className="border-l-4 border-l-medical-teal">
         <CardHeader>
           <CardTitle className="text-lg flex items-center gap-2">
@@ -700,20 +822,28 @@ const ProfileScreen = () => {
         </CardContent>
       </Card>
 
-      {/* Action Buttons */}
-      <div className="flex space-x-3">
-        <Button
-          variant="outline"
-          className={`w-full ${isDark ? 'text-white' : ''}`}
-        >
+  
+
+      {/* Boutons Actions */}
+      <div className="space-y-3">
+        <Button variant="outline" className="w-full">
+          <User className="w-4 h-4 mr-2" />
+          {t('profileScreen.editProfile')}
+        </Button>
+        <Button variant="outline" className="w-full">
           <Download className="w-4 h-4 mr-2" />
           {t('profileScreen.exportData')}
+        </Button>
+        <Button variant="outline" className="w-full">
+          <Shield className="w-4 h-4 mr-2" />
+          {t('profileScreen.privacy')}
         </Button>
         <Button variant="destructive" className="w-full" onClick={signOut}>
           <LogOut className="w-4 h-4 mr-2" />
           {t('profileScreen.signOut')}
         </Button>
       </div>
+      
     </div>
   );
 };

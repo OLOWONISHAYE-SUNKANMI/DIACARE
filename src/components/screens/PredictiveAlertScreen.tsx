@@ -1,4 +1,5 @@
 import { AlertTriangle, Activity, Utensils, Syringe } from "lucide-react";
+import PredictiveCard from "../ui/PredictiveCard";
 
 export default function PredictiveAlertScreen() {
   return (
@@ -7,22 +8,7 @@ export default function PredictiveAlertScreen() {
       <h1 className="text-lg font-semibold text-center">Kluko</h1>
 
       {/* Predictive Alert Card */}
-      <div className="rounded-xl p-4 bg-destructive text-destructive-foreground space-y-2">
-        <div className="flex items-center gap-2 font-bold text-lg">
-          <AlertTriangle className="w-5 h-5" />
-          <span>Predictive Alert!</span>
-        </div>
-        <p className="text-sm">
-          Risk of Hypoglycemia <span className="font-semibold">(prob=78%)</span>
-        </p>
-        <p className="text-sm">
-          Forecast: BG may drop to{" "}
-          <span className="font-bold">62 mg/dL</span> in 25 min
-        </p>
-        <p className="text-sm font-medium">
-          Suggestion: Re-check BG in 10 min
-        </p>
-      </div>
+     <PredictiveCard cancelable={false} visible={true} setVisible={null} />
 
       {/* Current BG */}
       <div className="rounded-xl bg-card text-card-foreground p-4 text-center space-y-1">

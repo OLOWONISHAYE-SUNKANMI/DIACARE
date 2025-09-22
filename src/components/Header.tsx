@@ -11,6 +11,7 @@ import {
   Sun,
   Moon,
   Menu,
+  Brain,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import LanguageToggle from './ui/LanguageToggle';
@@ -39,8 +40,9 @@ const Header: React.FC<HeaderProps> = ({
 
   const tabs = [
     { id: 'home', label: t('nav.home'), icon: Home, color: 'blue' },
-    { id: 'journal', label: t('nav.journal'), icon: FileText, color: 'coral' },
     { id: 'charts', label: t('nav.charts'), icon: BarChart3, color: 'orange' },
+    { id: 'journal', label: t('nav.journal'), icon: FileText, color: 'coral' },
+    { id: 'predictive', label: t('nav.charts'), icon: Brain, color: 'orange' },
     {
       id: 'consultation-request',
       label: t('nav.teleconsultation'),
