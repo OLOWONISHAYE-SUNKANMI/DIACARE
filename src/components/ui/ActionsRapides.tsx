@@ -21,6 +21,9 @@ import ActivityModal from '../modals/ActivityModal';
 import MedicationModal from '../modals/MedicationModal';
 import MealModal from '../modals/ScanMealModal';
 import AddGlucoseModal from '../modals/AddGlucoseModal';
+import BarcodeScanModal from '../modals/BarcodeScanModal';
+import PhotoUploadModal from '../modals/PhotoUploadModal';
+import PhotoAnalysisModal from '../modals/PhotoAnalysisModal';
 
 interface ActionsRapidesProps {
   onTabChange?: (tab: string) => void;
@@ -44,11 +47,15 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
   const [isMealModalOpen, setIsMealModalOpen] = useState(false);
   const [isMedicationModalOpen, setIsMedicationModalOpen] = useState(false);
   const [isActivityModalOpen, setIsActivityModalOpen] = useState(false);
+   const [isBarcodeModalOpen, setIsBarcodeModalOpen] = useState(false);
+  const [isPhotoModalOpen, setIsPhotoModalOpen] = useState(false);
+
 
   const [glucoseValue, setGlucoseValue] = useState('');
   const [glucoseNotes, setGlucoseNotes] = useState('');
   const [glucoseLoading, setGlucoseLoading] = useState(false);
-
+    const [foodName, setFoodName] = useState("");
+  const [carbs, setCarbs] = useState("");
 
   // Handlers
   const handleGlucoseSubmit = (e: React.FormEvent) => {
@@ -70,6 +77,13 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
     setGlucoseNotes('');
     setGlucoseLoading(false);
     setIsGlucoseModalOpen(false);
+  };
+   const handleMealSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log("Meal:", { foodName, carbs });
+    setFoodName("");
+    setCarbs("");
+    setIsMealModalOpen(false)
   };
 
   const handleRappelsClick = () => {
@@ -117,6 +131,7 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
           </button>
           {/* <AddGlucoseModal/> */}
 
+       
           <Modal
             isOpen={isGlucoseModalOpen}
             onClose={() => setIsGlucoseModalOpen(false)}
@@ -183,10 +198,89 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
             </span>
           </button>
 
-          <MealModal
+   <Modal
+             isOpen={isMealModalOpen}
+            onClose={() => setIsMealModalOpen(false)}
+            isCentered
+          >
+            <ModalOverlay />
+            <ModalContent className="rounded-2xl p-2">
+              <ModalHeader className="font-semibold text-lg flex items-center gap-2">
+                🍽 Journal des Repas
+              </ModalHeader>
+              <ModalCloseButton />
+
+              <ModalBody>
+                <div className="space-y-4">
+                  {/* Options de saisie */}
+                  <div className="grid grid-cols-2 gap-2">
+                    <Button
+                      variant="outline"
+                      className="flex flex-col items-center p-4 h-auto"
+                      onClick={() => setIsBarcodeModalOpen(true)}
+                    >
+                      <span className="text-xl mb-1">📱</span>
+                      <span className="text-xs">Scanner code-barres</span>
+                    </Button>
+
+                    <Button
+                      variant="outline"
+                      className="flex flex-col items-center p-4 h-auto"
+                      onClick={() => setIsPhotoModalOpen(true)}
+                    >
+                      <span className="text-xl mb-1">📸</span>
+                      <span className="text-xs">Photo + IA</span>
+                    </Button>
+                  </div>
+
+                  {/* Divider */}
+                  <div className="relative">
+                    <div className="absolute inset-0 flex items-center">
+                      <span className="w-full border-t" />
+                    </div>
+                    <div className="relative flex justify-center text-xs uppercase">
+                      <span className=" px-2 text-muted-foreground">
+                        ou saisie manuelle
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Form */}
+                  <form onSubmit={handleMealSubmit} className="space-y-3">
+                    <div>
+                      <Label htmlFor="foodName">Nom de l&apos;aliment</Label>
+                      <Input
+                        id="foodName"
+                        placeholder="Ex: Pomme, Riz, Salade..."
+                        value={foodName}
+                        onChange={e => setFoodName(e.target.value)}
+                        className="mt-1"
+                        autoFocus
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="carbs">Glucides (g) - optionnel</Label>
+                      <Input
+                        id="carbs"
+                        type="number"
+                        placeholder="Ex: 25"
+                        value={carbs}
+                        onChange={e => setCarbs(e.target.value)}
+                        className="mt-1"
+                      />
+                    </div>
+                    <Button type="submit" className="w-full">
+                      Ajouter
+                    </Button>
+                  </form>
+                </div>
+              </ModalBody>
+            </ModalContent>
+          </Modal>
+          {/* <MealModal
             isOpen={isMealModalOpen}
             onClose={() => setIsMealModalOpen(false)}
-          />
+          /> */}
           {/* <Modal
             isOpen={isMealModalOpen}
             onClose={() => setIsMealModalOpen(false)}
@@ -302,6 +396,8 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
           </button>
         </div>
       </div>
+      <BarcodeScanModal isOpen={isBarcodeModalOpen} onClose={setIsBarcodeModalOpen}  /> 
+      <PhotoAnalysisModal isOpen={isPhotoModalOpen} onClose={setIsPhotoModalOpen}  />
     </div>
   );
 };
