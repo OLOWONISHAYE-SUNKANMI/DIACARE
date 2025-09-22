@@ -1,10 +1,13 @@
 import { useState } from 'react';
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  ModalCloseButton,
+} from '@chakra-ui/react';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import {
@@ -119,111 +122,126 @@ const ActivityModal = ({ isOpen, onClose }: ActivityModalProps) => {
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-md">
-        <DialogHeader>
-          <DialogTitle className="flex items-center space-x-2">
+    <Modal isOpen={isOpen} onClose={onClose} isCentered>
+      <ModalOverlay />
+      <ModalContent className="max-w-md">
+        <ModalHeader>
+          <div className="flex items-center space-x-2">
             <span className="text-2xl">🏃</span>
             <span>{t('activityModal.save_activity')}</span>
-          </DialogTitle>
-        </DialogHeader>
+          </div>
+        </ModalHeader>
+        <ModalCloseButton />
 
-        <div className="space-y-6">
-          <div className="space-y-2">
-            <Label>{t('activityModal.activity_type_label')}</Label>
-            <Select value={activityType} onValueChange={setActivityType}>
-              <SelectTrigger>
-                <SelectValue
-                  placeholder={t('activityModal.activity_type_placeholder')}
-                />
-              </SelectTrigger>
-              <SelectContent>
-                {activityOptions.map(option => (
-                  <SelectItem key={option.value} value={option.value}>
-                    <div className="flex items-center space-x-2">
-                      <span>{option.emoji}</span>
-                      <span>{option.label}</span>
+        <ModalBody>
+          <div className="space-y-6">
+            {/* Activity Type */}
+            <div className="space-y-2">
+              <Label>{t('activityModal.activity_type_label')}</Label>
+              <Select>
+                <SelectTrigger>
+                  <SelectValue
+                    placeholder={t('activityModal.activity_type_placeholder')}
+                  />
+                </SelectTrigger>
+                <SelectContent
+                  position="popper"
+                  className="z-[1500]" // make sure it's above Chakra's modal overlay
+                >
+                  {activityOptions.map(option => (
+                    <SelectItem key={option.value} value={option.value}>
+                      <div className="flex items-center space-x-2">
+                        <span>{option.emoji}</span>
+                        <span>{option.label}</span>
+                      </div>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Duration */}
+            <div className="space-y-3">
+              <Label>
+                {t('activityModal.duration_label', { duration: duration[0] })}
+              </Label>
+              <Slider
+                value={duration}
+                onValueChange={setDuration}
+                max={120}
+                min={15}
+                step={5}
+                className="w-full"
+              />
+              <div className="flex justify-between text-xs text-muted-foreground">
+                <span>{t('activityModal.duration_min')}</span>
+                <span>{t('activityModal.duration_max')}</span>
+              </div>
+            </div>
+
+            {/* Intensity */}
+            <div className="space-y-3">
+              <Label>
+                {t('intensity_label', {
+                  intensity: intensityLabels[intensity[0] - 1],
+                })}
+              </Label>
+              <Slider
+                value={intensity}
+                onValueChange={setIntensity}
+                max={3}
+                min={1}
+                step={1}
+                className="w-full"
+              />
+              <div className="flex justify-between text-xs text-muted-foreground">
+                <span>{t('activityModal.intensity_light')}</span>
+                <span>{t('activityModal.intensity_moderate')}</span>
+                <span>{t('activityModal.intensity_intense')}</span>
+              </div>
+            </div>
+
+            {/* Estimation Card */}
+            {activityType && (
+              <Card className="bg-muted/50">
+                <CardContent className="p-4 space-y-2">
+                  <h4 className="font-medium text-sm">
+                    {t('activityModal.estimation_title')}
+                  </h4>
+                  <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div>
+                      <span className="text-muted-foreground">
+                        {t('activityModal.estimation_duration')}
+                      </span>
+                      <span className="ml-2 font-medium">
+                        {duration[0]} min
+                      </span>
                     </div>
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="space-y-3">
-            <Label>
-              {t('activityModal.duration_label', { duration: duration[0] })}
-            </Label>
-            <Slider
-              value={duration}
-              onValueChange={setDuration}
-              max={120}
-              min={15}
-              step={5}
-              className="w-full"
-            />
-            <div className="flex justify-between text-xs text-muted-foreground">
-              <span>{t('activityModal.duration_min')}</span>
-              <span>{t('activityModal.duration_max')}</span>
-            </div>
-          </div>
-
-          <div className="space-y-3">
-            <Label>
-              {t('intensity_label', {
-                intensity: intensityLabels[intensity[0] - 1],
-              })}
-            </Label>
-            <Slider
-              value={intensity}
-              onValueChange={setIntensity}
-              max={3}
-              min={1}
-              step={1}
-              className="w-full"
-            />
-            <div className="flex justify-between text-xs text-muted-foreground">
-              <span>{t('activityModal.intensity_light')}</span>
-              <span>{t('activityModal.intensity_moderate')}</span>
-              <span>{t('activityModal.intensity_intense')}</span>
-            </div>
-          </div>
-
-          {activityType && (
-            <Card className="bg-muted/50">
-              <CardContent className="p-4 space-y-2">
-                <h4 className="font-medium text-sm">
-                  {t('activityModal.estimation_title')}
-                </h4>
-                <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div>
-                    <span className="text-muted-foreground">
-                      {t('activityModal.estimation_duration')}
-                    </span>
-                    <span className="ml-2 font-medium">{duration[0]} min</span>
+                    <div>
+                      <span className="text-muted-foreground">
+                        {t('activityModal.estimation_intensity')}
+                      </span>
+                      <span className="ml-2 font-medium">
+                        {intensityLabels[intensity[0] - 1]}
+                      </span>
+                    </div>
+                    <div className="col-span-2">
+                      <span className="text-muted-foreground">
+                        {t('activityModal.estimation_calories')}
+                      </span>
+                      <span className="ml-2 font-medium text-medical-green">
+                        {estimatedCalories} kcal
+                      </span>
+                    </div>
                   </div>
-                  <div>
-                    <span className="text-muted-foreground">
-                      {t('activityModal.estimation_intensity')}
-                    </span>
-                    <span className="ml-2 font-medium">
-                      {intensityLabels[intensity[0] - 1]}
-                    </span>
-                  </div>
-                  <div className="col-span-2">
-                    <span className="text-muted-foreground">
-                      {t('activityModal.estimation_calories')}
-                    </span>
-                    <span className="ml-2 font-medium text-medical-green">
-                      {estimatedCalories} kcal
-                    </span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          )}
+                </CardContent>
+              </Card>
+            )}
+          </div>
+        </ModalBody>
 
-          <div className="flex space-x-3">
+        <ModalFooter>
+          <div className="flex space-x-3 w-full">
             <Button variant="outline" onClick={onClose} className="flex-1">
               {t('activityModal.cancel_button')}
             </Button>
@@ -231,9 +249,9 @@ const ActivityModal = ({ isOpen, onClose }: ActivityModalProps) => {
               {t('activityModal.save_button')}
             </Button>
           </div>
-        </div>
-      </DialogContent>
-    </Dialog>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
   );
 };
 
