@@ -1,10 +1,13 @@
 import { useState } from 'react';
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  ModalCloseButton,
+} from '@chakra-ui/react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -128,16 +131,18 @@ const MedicationModal = ({ isOpen, onClose }: MedicationModalProps) => {
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-md">
-        <DialogHeader>
-          <DialogTitle className="flex items-center space-x-2">
-            <span className="text-2xl">💊</span>
-            <span>{t('medicationModal.medication.logTitle')}</span>
-          </DialogTitle>
-        </DialogHeader>
+    <Modal isOpen={isOpen} onClose={onClose} size="md" isCentered>
+      <ModalOverlay />
+      <ModalContent className="max-w-md rounded-lg">
+        {/* Header */}
+        <ModalHeader className="flex items-center space-x-2">
+          <span className="text-2xl">💊</span>
+          <span>{t('medicationModal.medication.logTitle')}</span>
+        </ModalHeader>
+        <ModalCloseButton />
 
-        <div className="space-y-6">
+        {/* Body */}
+        <ModalBody className="space-y-6">
           <div className="space-y-2">
             <Label>{t('medicationModal.medication.typeLabel')}</Label>
             <Select value={medicationType} onValueChange={setMedicationType}>
@@ -146,7 +151,8 @@ const MedicationModal = ({ isOpen, onClose }: MedicationModalProps) => {
                   placeholder={t('medicationModal.medication.typePlaceholder')}
                 />
               </SelectTrigger>
-              <SelectContent>
+              {/* force portal so it escapes Chakra Modal's clipping */}
+              <SelectContent position="popper" className="z-[1500]">
                 {medicationOptions.map(option => (
                   <SelectItem key={option.value} value={option.value}>
                     {option.label}
@@ -186,7 +192,6 @@ const MedicationModal = ({ isOpen, onClose }: MedicationModalProps) => {
               <Label>
                 {t('medicationModal.medication.injectionSiteLabel')}
               </Label>
-
               <RadioGroup
                 value={injectionSite}
                 onValueChange={setInjectionSite}
@@ -219,18 +224,19 @@ const MedicationModal = ({ isOpen, onClose }: MedicationModalProps) => {
               </Label>
             </div>
           )}
+        </ModalBody>
 
-          <div className="flex space-x-3">
-            <Button variant="outline" onClick={onClose} className="flex-1">
-              {t('medicationModal.buttons.cancel')}
-            </Button>
-            <Button onClick={handleSubmit} className="flex-1">
-              {t('medicationModal.buttons.confirm')}
-            </Button>
-          </div>
-        </div>
-      </DialogContent>
-    </Dialog>
+        {/* Footer */}
+        <ModalFooter className="flex space-x-3 w-full">
+          <Button variant="outline" onClick={onClose} className="flex-1">
+            {t('medicationModal.buttons.cancel')}
+          </Button>
+          <Button onClick={handleSubmit} className="flex-1">
+            {t('medicationModal.buttons.confirm')}
+          </Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
   );
 };
 

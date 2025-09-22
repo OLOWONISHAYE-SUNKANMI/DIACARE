@@ -62,6 +62,17 @@ const Header: React.FC<HeaderProps> = ({
       }`}
     >
       <div className="flex items-center justify-between py-4 px-4">
+        <div className="md:hidden">
+          <button
+            onClick={onOpen}
+            className="p-2 rounded-md bg-white/10 hover:bg-white/20 transition-colors"
+            aria-label="Open menu"
+          >
+            <Menu
+              className={`w-6 h-6 ${isDark ? 'text-[#AEE6DA]' : 'text-white'}`}
+            />
+          </button>
+        </div>
         {/* Logo / App Name */}
         <h1
           className={`text-2xl font-bold tracking-wide ${
@@ -93,19 +104,6 @@ const Header: React.FC<HeaderProps> = ({
               <Moon className="w-5 h-5" />
             )}
           </button>
-          <div className="md:hidden">
-            <button
-              onClick={onOpen}
-              className="p-2 rounded-md bg-white/10 hover:bg-white/20 transition-colors"
-              aria-label="Open menu"
-            >
-              <Menu
-                className={`w-6 h-6 ${
-                  isDark ? 'text-[#AEE6DA]' : 'text-white'
-                }`}
-              />
-            </button>
-          </div>
         </div>
 
         {/* Mobile Menu Button */}

@@ -22,6 +22,7 @@ import { useThemeStore } from '@/store/useThemeStore';
 import { toast } from 'sonner';
 
 interface PredictiveAlertsProps {
+  onTabChange?: (tab: string) => void;
   className?: string;
   glucoseValue: string;
 }
@@ -29,6 +30,7 @@ interface PredictiveAlertsProps {
 const PredictiveAlerts: React.FC<PredictiveAlertsProps> = ({
   className = '',
   glucoseValue,
+  onTabChange
 }) => {
   console.log('glucoseValue', glucoseValue);
   const { t } = useTranslation();
@@ -175,6 +177,10 @@ const PredictiveAlerts: React.FC<PredictiveAlertsProps> = ({
   }, [glucoseValue]);
   console.log(glucoseStats);
 
+  const handleViewMore = () => {
+ onTabChange?.('predictive');
+  }
+
   // --- End dynamic stats logic ---
 
   // Optionally, you can render nothing or a placeholder
@@ -219,7 +225,7 @@ const PredictiveAlerts: React.FC<PredictiveAlertsProps> = ({
 
       {/* AI Analysis Summary */}
       <Card className="bg-accent text-foreground">
-        <CardContent className="p-4">
+        <CardContent className="p-4 flex justify-between items-center ">
           <div className="flex items-center space-x-3">
             <Brain className="w-6 h-6 text-accent-foreground" />
             <div>
@@ -231,6 +237,9 @@ const PredictiveAlerts: React.FC<PredictiveAlertsProps> = ({
               </p>
             </div>
           </div>
+          <button
+          onClick={handleViewMore}
+          >View more </button>
         </CardContent>
       </Card>
     </div>

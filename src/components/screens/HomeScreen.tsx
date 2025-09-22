@@ -48,7 +48,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
   return (
     <div
       className={`flex-1 min-h-screen pb-20 sm:pb-24 overflow-x-hidden transition-colors
-      bg-background text-foreground`}
+      bg-muted text-foreground`}
     >
       {/* Native Header */}
       <NativeHeader userName={userName} />
@@ -78,7 +78,10 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
 
         {/* Predictive Alerts */}
         <div className="px-3 sm:px-4">
-          <PredictiveAlerts glucoseValue={glucoseValue} />
+          <PredictiveAlerts
+            glucoseValue={glucoseValue}
+            onTabChange={onTabChange}
+          />
         </div>
 
         {/* Mission DiabCare */}

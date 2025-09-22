@@ -293,9 +293,9 @@ import {
 import { useToast } from '@/hooks/use-toast';
 import { Badge } from '../ui/badge';
 
-interface FamilyScreenProps {}
+// interface FamilyScreenProps {}
 
-const FamilyScreen = (props: FamilyScreenProps) => {
+const FamilyScreen = (props) => {
   const { t } = useTranslation();
   const { familyMembers, activityLogs, generateAccessCode } = useFamily();
   const { isOpen, onOpen, onClose } = useDisclosure();
