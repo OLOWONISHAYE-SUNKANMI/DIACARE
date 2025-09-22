@@ -1,5 +1,14 @@
 import { useState } from 'react';
 import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
+} from '@chakra-ui/react';
+import {
   Dialog,
   DialogContent,
   DialogHeader,
@@ -108,132 +117,135 @@ const MealModal: React.FC<MealModalProps> = ({ isOpen, onClose }) => {
 
   if (activeOption === null) {
     return (
-      <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2 text-xl">
+      <Modal isOpen={isOpen} onClose={onClose} size="md" isCentered>
+        <ModalOverlay />
+        <ModalContent className="sm:max-w-md rounded-lg">
+          {/* Header */}
+          <ModalHeader>
+            <div className="flex items-center gap-2 text-xl">
               <Utensils className="w-6 h-6 text-medical-green" />
               {t('scanMealModal.dailyMealDialog.title')}
-            </DialogTitle>
+            </div>
             <p className="text-muted-foreground">
               {t('scanMealModal.dailyMealDialog.description')}
             </p>
-          </DialogHeader>
+          </ModalHeader>
+          <ModalCloseButton />
 
-          <div className="space-y-4 pt-4">
-            {/* Scanner Code-Barres */}
-            <Card
-              className="bg-gradient-to-r from-blue-500 to-blue-600 text-white border-0 cursor-pointer transform transition-transform active:scale-95"
-              onClick={handleScanBarcode}
-            >
-              <CardContent className="p-6">
-                <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 bg-white bg-opacity-20 rounded-xl flex items-center justify-center">
-                    <Scan className="w-8 h-8 text-white" />
-                  </div>
-                  <div className="text-left flex-1">
-                    <h3 className="text-lg font-bold">
-                      📱 Scanner Code-Barres
-                    </h3>
-                    <p className="text-blue-100 text-sm">
-                      {t('scanMealModal.foodInfo.industrialProducts')}
-                    </p>
-                    <p className="text-xs text-blue-200 mt-1">
-                      {t('scanMealModal.foodInfo.exactNutrition')}
-                    </p>
+          {/* Body */}
+          <ModalBody>
+            <div className="space-y-4 pt-4">
+              {/* Scanner Code-Barres */}
+              <div
+                className="bg-gradient-to-r from-blue-500 to-blue-600 text-white border-0 cursor-pointer transform transition-transform active:scale-95 rounded-lg"
+                onClick={handleScanBarcode}
+              >
+                <div className="p-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-16 h-16 bg-white bg-opacity-20 rounded-xl flex items-center justify-center">
+                      <Scan className="w-8 h-8 text-white" />
+                    </div>
+                    <div className="text-left flex-1">
+                      <h3 className="text-lg font-bold">
+                        📱 Scanner Code-Barres
+                      </h3>
+                      <p className="text-blue-100 text-sm">
+                        {t('scanMealModal.foodInfo.industrialProducts')}
+                      </p>
+                      <p className="text-xs text-blue-200 mt-1">
+                        {t('scanMealModal.foodInfo.exactNutrition')}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
 
-            {/* Rechercher un Aliment */}
-            <Card
-              className="bg-gradient-to-r from-medical-green to-emerald-600 text-white border-0 cursor-pointer transform transition-transform active:scale-95"
-              onClick={handleSearchFood}
-            >
-              <CardContent className="p-6">
-                <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 bg-white bg-opacity-20 rounded-xl flex items-center justify-center">
-                    <Search className="w-8 h-8 text-white" />
-                  </div>
-                  <div className="text-left flex-1">
-                    <h3 className="text-lg font-bold">
-                      {t('scanMealModal.searchFood.title')}
-                    </h3>
-                    <p className="text-green-100 text-sm">
-                      {t('scanMealModal.searchFood.subtitle')}
-                    </p>
-                    <p className="text-xs text-green-200 mt-1">
-                      {t('scanMealModal.searchFood.note')}
-                    </p>
+              {/* Rechercher un Aliment */}
+              <div
+                className="bg-gradient-to-r from-medical-green to-emerald-600 text-white border-0 cursor-pointer transform transition-transform active:scale-95 rounded-lg"
+                onClick={handleSearchFood}
+              >
+                <div className="p-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-16 h-16 bg-white bg-opacity-20 rounded-xl flex items-center justify-center">
+                      <Search className="w-8 h-8 text-white" />
+                    </div>
+                    <div className="text-left flex-1">
+                      <h3 className="text-lg font-bold">
+                        {t('scanMealModal.searchFood.title')}
+                      </h3>
+                      <p className="text-green-100 text-sm">
+                        {t('scanMealModal.searchFood.subtitle')}
+                      </p>
+                      <p className="text-xs text-green-200 mt-1">
+                        {t('scanMealModal.searchFood.note')}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
 
-            {/* Ajouter Manuellement */}
-            <Card
-              className="bg-gradient-to-r from-orange-500 to-orange-600 text-white border-0 cursor-pointer transform transition-transform active:scale-95"
-              onClick={handleAddCustom}
-            >
-              <CardContent className="p-6">
-                <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 bg-white bg-opacity-20 rounded-xl flex items-center justify-center">
-                    <Plus className="w-8 h-8 text-white" />
-                  </div>
-                  <div className="text-left flex-1">
-                    <h3 className="text-lg font-bold">
-                      {t('scanMealModal.manualAdd.title')}
-                    </h3>
-                    <p className="text-orange-100 text-sm">
-                      {t('scanMealModal.manualAdd.subtitle')}
-                    </p>
-                    <p className="text-xs text-orange-200 mt-1">
-                      {t('scanMealModal.manualAdd.note')}
-                    </p>
+              {/* Ajouter Manuellement */}
+              <div
+                className="bg-gradient-to-r from-orange-500 to-orange-600 text-white border-0 cursor-pointer transform transition-transform active:scale-95 rounded-lg"
+                onClick={handleAddCustom}
+              >
+                <div className="p-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-16 h-16 bg-white bg-opacity-20 rounded-xl flex items-center justify-center">
+                      <Plus className="w-8 h-8 text-white" />
+                    </div>
+                    <div className="text-left flex-1">
+                      <h3 className="text-lg font-bold">
+                        {t('scanMealModal.manualAdd.title')}
+                      </h3>
+                      <p className="text-orange-100 text-sm">
+                        {t('scanMealModal.manualAdd.subtitle')}
+                      </p>
+                      <p className="text-xs text-orange-200 mt-1">
+                        {t('scanMealModal.manualAdd.note')}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-          </div>
-        </DialogContent>
-      </Dialog>
+              </div>
+            </div>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
     );
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setActiveOption(null)}
-            >
-              ←
-            </Button>
-            <Utensils className="w-5 h-5 text-medical-green" />
-            {activeOption === 'barcode' &&
-              t('scanMealModal.activeOptions.barcode')}
-            {activeOption === 'search' &&
-              t('scanMealModal.activeOptions.search')}
-            {activeOption === 'custom' &&
-              t('scanMealModal.activeOptions.custom')}
-          </DialogTitle>
-        </DialogHeader>
+       <Modal isOpen={isOpen} onClose={onClose} size="lg" isCentered>
+      <ModalOverlay />
+      <ModalContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto p-4 rounded-lg">
+        {/* Header */}
+        <ModalHeader className="flex items-center gap-2">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setActiveOption(null)}
+          >
+            ←
+          </Button>
+          <Utensils className="w-5 h-5 text-medical-green" />
+          {activeOption === "barcode" && t("scanMealModal.activeOptions.barcode")}
+          {activeOption === "search" && t("scanMealModal.activeOptions.search")}
+          {activeOption === "custom" && t("scanMealModal.activeOptions.custom")}
+        </ModalHeader>
 
-        <div className="space-y-6">
-          {/* Moment du repas */}
+        <ModalBody className="space-y-6">
+          {/* Meal Times */}
           <div className="space-y-3">
             <Label className="text-sm font-medium">
-              {t('scanMealModal.meal.mealTimeLabel')}
+              {t("scanMealModal.meal.mealTimeLabel")}
             </Label>
             <div className="grid grid-cols-2 gap-2">
-              {mealTimes.map(time => (
+              {mealTimes.map((time) => (
                 <Button
                   key={time.id}
-                  variant={mealTime === time.id ? 'default' : 'outline'}
+                  variant={mealTime === time.id ? "default" : "outline"}
                   size="sm"
                   onClick={() => setMealTime(time.id)}
                   className="h-12 text-xs"
@@ -249,8 +261,8 @@ const MealModal: React.FC<MealModalProps> = ({ isOpen, onClose }) => {
 
           <Separator />
 
-          {/* Contenu spécifique selon l'option */}
-          {activeOption === 'barcode' && (
+          {/* Barcode Scanner */}
+          {activeOption === "barcode" && (
             <div className="space-y-4">
               {selectedFood ? (
                 <Card className="bg-green-50 border-green-200">
@@ -264,7 +276,7 @@ const MealModal: React.FC<MealModalProps> = ({ isOpen, onClose }) => {
                           {selectedFood}
                         </h4>
                         <p className="text-sm text-green-600">
-                          {t('scanMealModal.toast.productScanned')}
+                          {t("scanMealModal.toast.productScanned")}
                         </p>
                       </div>
                     </div>
@@ -275,10 +287,10 @@ const MealModal: React.FC<MealModalProps> = ({ isOpen, onClose }) => {
                   <CardContent className="p-6 text-center">
                     <Camera className="w-16 h-16 mx-auto text-blue-500 mb-4" />
                     <p className="text-blue-700 font-medium">
-                      {t('scanMealModal.scanner.scanning')}
+                      {t("scanMealModal.scanner.scanning")}
                     </p>
                     <p className="text-sm text-blue-600 mt-2">
-                      {t('scanMealModal.scanner.positionBarcode')}
+                      {t("scanMealModal.scanner.positionBarcode")}
                     </p>
                   </CardContent>
                 </Card>
@@ -286,21 +298,22 @@ const MealModal: React.FC<MealModalProps> = ({ isOpen, onClose }) => {
             </div>
           )}
 
-          {activeOption === 'search' && (
+          {/* Search */}
+          {activeOption === "search" && (
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label>{t('scanMealModal.search.label')}</Label>
+                <Label>{t("scanMealModal.search.label")}</Label>
                 <Input
                   value={searchQuery}
-                  onChange={e => setSearchQuery(e.target.value)}
-                  placeholder={t('scanMealModal.search.placeholder')}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder={t("scanMealModal.search.placeholder")}
                   className="w-full"
                 />
               </div>
 
               <div className="space-y-3">
                 <Label className="text-sm font-medium">
-                  {t('scanMealModal.popularFoods.label')}
+                  {t("scanMealModal.popularFoods.label")}
                 </Label>
                 <div className="grid grid-cols-2 gap-2">
                   {popularFoods.map((food, index) => (
@@ -328,27 +341,28 @@ const MealModal: React.FC<MealModalProps> = ({ isOpen, onClose }) => {
             </div>
           )}
 
-          {activeOption === 'custom' && (
+          {/* Custom Food */}
+          {activeOption === "custom" && (
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label>{t('scanMealModal.manualFood.nameLabel')}</Label>
+                <Label>{t("scanMealModal.manualFood.nameLabel")}</Label>
                 <Input
                   value={searchQuery}
-                  onChange={e => setSearchQuery(e.target.value)}
-                  placeholder={t('scanMealModal.manualFood.namePlaceholder')}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder={t("scanMealModal.manualFood.namePlaceholder")}
                   className="w-full"
                 />
               </div>
             </div>
           )}
 
-          {/* Portion (commun à toutes les options) */}
+          {/* Portion */}
           {(selectedFood || searchQuery) && (
             <>
               <Separator />
               <div className="space-y-3">
                 <Label className="text-sm font-medium">
-                  {t('scanMealModal.meal.consumedPortion')}
+                  {t("scanMealModal.meal.consumedPortion")}
                 </Label>
                 <div className="space-y-3">
                   <Slider
@@ -369,14 +383,14 @@ const MealModal: React.FC<MealModalProps> = ({ isOpen, onClose }) => {
                 </div>
               </div>
 
-              {/* Estimation glucides */}
+              {/* Carbs estimation */}
               <Card className="bg-medical-green-light border-medical-green/20">
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <span className="text-2xl">📊</span>
                       <span className="font-medium">
-                        {t('scanMealModal.nutrition.estimatedCarbs')}
+                        {t("scanMealModal.nutrition.estimatedCarbs")}
                       </span>
                     </div>
                     <div className="text-2xl font-bold text-medical-green">
@@ -387,12 +401,12 @@ const MealModal: React.FC<MealModalProps> = ({ isOpen, onClose }) => {
               </Card>
             </>
           )}
-        </div>
+        </ModalBody>
 
-        {/* Actions */}
-        <div className="flex gap-3 pt-4">
+        {/* Footer Actions */}
+        <ModalFooter className="flex gap-3">
           <Button variant="outline" onClick={onClose} className="flex-1">
-            {t('scanMealModal.buttons.cancel')}
+            {t("scanMealModal.buttons.cancel")}
           </Button>
           <Button
             onClick={handleSave}
@@ -400,11 +414,11 @@ const MealModal: React.FC<MealModalProps> = ({ isOpen, onClose }) => {
             className="flex-1 bg-medical-green hover:bg-medical-green/90"
           >
             <Plus className="w-4 h-4 mr-2" />
-            {t('scanMealModal.buttons.addToJournal')}
+            {t("scanMealModal.buttons.addToJournal")}
           </Button>
-        </div>
-      </DialogContent>
-    </Dialog>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
   );
 };
 

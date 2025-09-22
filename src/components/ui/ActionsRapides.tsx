@@ -17,6 +17,13 @@ import { useMeals } from '@/contexts/MealContext';
 import { useMedications } from '@/contexts/MedicationContext';
 import { useActivities } from '@/contexts/ActivityContext';
 import { useThemeStore } from '@/store/useThemeStore';
+import ActivityModal from '../modals/ActivityModal';
+import MedicationModal from '../modals/MedicationModal';
+import MealModal from '../modals/ScanMealModal';
+import AddGlucoseModal from '../modals/AddGlucoseModal';
+import BarcodeScanModal from '../modals/BarcodeScanModal';
+import PhotoUploadModal from '../modals/PhotoUploadModal';
+import PhotoAnalysisModal from '../modals/PhotoAnalysisModal';
 
 interface ActionsRapidesProps {
   onTabChange?: (tab: string) => void;
@@ -40,22 +47,15 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
   const [isMealModalOpen, setIsMealModalOpen] = useState(false);
   const [isMedicationModalOpen, setIsMedicationModalOpen] = useState(false);
   const [isActivityModalOpen, setIsActivityModalOpen] = useState(false);
+   const [isBarcodeModalOpen, setIsBarcodeModalOpen] = useState(false);
+  const [isPhotoModalOpen, setIsPhotoModalOpen] = useState(false);
+
 
   const [glucoseValue, setGlucoseValue] = useState('');
   const [glucoseNotes, setGlucoseNotes] = useState('');
   const [glucoseLoading, setGlucoseLoading] = useState(false);
-
-  const [mealName, setMealName] = useState('');
-  const [mealCarbs, setMealCarbs] = useState('');
-  const [mealNotes, setMealNotes] = useState('');
-
-  const [medName, setMedName] = useState('');
-  const [medDose, setMedDose] = useState('');
-  const [medNotes, setMedNotes] = useState('');
-
-  const [activityName, setActivityName] = useState('');
-  const [activityDuration, setActivityDuration] = useState('');
-  const [activityNotes, setActivityNotes] = useState('');
+    const [foodName, setFoodName] = useState("");
+  const [carbs, setCarbs] = useState("");
 
   // Handlers
   const handleGlucoseSubmit = (e: React.FormEvent) => {
@@ -78,54 +78,22 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
     setGlucoseLoading(false);
     setIsGlucoseModalOpen(false);
   };
-
-  const handleMealSubmit = (e: React.FormEvent) => {
+   const handleMealSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    addMeal({
-      name: mealName,
-      carbs: parseFloat(mealCarbs),
-      notes: mealNotes,
-      createdAt: new Date(),
-    });
-    toast({ title: t('Actions.mealSaved') });
-    setMealName('');
-    setMealCarbs('');
-    setMealNotes('');
-    setIsMealModalOpen(false);
-  };
-
-  const handleMedicationSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    addMedication({
-      name: medName,
-      dose: medDose,
-      notes: medNotes,
-      createdAt: new Date(),
-    });
-    toast({ title: t('Actions.medicamentSaved') });
-    setMedName('');
-    setMedDose('');
-    setMedNotes('');
-    setIsMedicationModalOpen(false);
-  };
-
-  const handleActivitySubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    addActivity({
-      name: activityName,
-      duration: parseInt(activityDuration),
-      notes: activityNotes,
-      createdAt: new Date(),
-    });
-    toast({ title: t('Actions.activitySaved') });
-    setActivityName('');
-    setActivityDuration('');
-    setActivityNotes('');
-    setIsActivityModalOpen(false);
+    console.log("Meal:", { foodName, carbs });
+    setFoodName("");
+    setCarbs("");
+    setIsMealModalOpen(false)
   };
 
   const handleRappelsClick = () => {
     onTabChange?.('reminders');
+  };
+  const handleInsulinClick = () => {
+    onTabChange?.('insulin');
+  };
+  const handleBiomarkerClick = () => {
+    onTabChange?.('biomarker');
   };
 
   // Utility for semantic colors
@@ -161,7 +129,9 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
               {t('Actions.actionsPopover.bloodSugar.increment')}
             </span>
           </button>
+          {/* <AddGlucoseModal/> */}
 
+       
           <Modal
             isOpen={isGlucoseModalOpen}
             onClose={() => setIsGlucoseModalOpen(false)}
@@ -228,7 +198,90 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
             </span>
           </button>
 
-          <Modal
+   <Modal
+             isOpen={isMealModalOpen}
+            onClose={() => setIsMealModalOpen(false)}
+            isCentered
+          >
+            <ModalOverlay />
+            <ModalContent className="rounded-2xl p-2">
+              <ModalHeader className="font-semibold text-lg flex items-center gap-2">
+                🍽 Journal des Repas
+              </ModalHeader>
+              <ModalCloseButton />
+
+              <ModalBody>
+                <div className="space-y-4">
+                  {/* Options de saisie */}
+                  <div className="grid grid-cols-2 gap-2">
+                    <Button
+                      variant="outline"
+                      className="flex flex-col items-center p-4 h-auto"
+                      onClick={() => setIsBarcodeModalOpen(true)}
+                    >
+                      <span className="text-xl mb-1">📱</span>
+                      <span className="text-xs">Scanner code-barres</span>
+                    </Button>
+
+                    <Button
+                      variant="outline"
+                      className="flex flex-col items-center p-4 h-auto"
+                      onClick={() => setIsPhotoModalOpen(true)}
+                    >
+                      <span className="text-xl mb-1">📸</span>
+                      <span className="text-xs">Photo + IA</span>
+                    </Button>
+                  </div>
+
+                  {/* Divider */}
+                  <div className="relative">
+                    <div className="absolute inset-0 flex items-center">
+                      <span className="w-full border-t" />
+                    </div>
+                    <div className="relative flex justify-center text-xs uppercase">
+                      <span className=" px-2 text-muted-foreground">
+                        ou saisie manuelle
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Form */}
+                  <form onSubmit={handleMealSubmit} className="space-y-3">
+                    <div>
+                      <Label htmlFor="foodName">Nom de l&apos;aliment</Label>
+                      <Input
+                        id="foodName"
+                        placeholder="Ex: Pomme, Riz, Salade..."
+                        value={foodName}
+                        onChange={e => setFoodName(e.target.value)}
+                        className="mt-1"
+                        autoFocus
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="carbs">Glucides (g) - optionnel</Label>
+                      <Input
+                        id="carbs"
+                        type="number"
+                        placeholder="Ex: 25"
+                        value={carbs}
+                        onChange={e => setCarbs(e.target.value)}
+                        className="mt-1"
+                      />
+                    </div>
+                    <Button type="submit" className="w-full">
+                      Ajouter
+                    </Button>
+                  </form>
+                </div>
+              </ModalBody>
+            </ModalContent>
+          </Modal>
+          {/* <MealModal
+            isOpen={isMealModalOpen}
+            onClose={() => setIsMealModalOpen(false)}
+          /> */}
+          {/* <Modal
             isOpen={isMealModalOpen}
             onClose={() => setIsMealModalOpen(false)}
             isCentered
@@ -261,7 +314,7 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
                 </form>
               </ModalBody>
             </ModalContent>
-          </Modal>
+          </Modal> */}
 
           {/* Medications */}
           <button
@@ -277,43 +330,10 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
               {t('Actions.addMedication')}
             </span>
           </button>
-
-          <Modal
+          <MedicationModal
             isOpen={isMedicationModalOpen}
             onClose={() => setIsMedicationModalOpen(false)}
-            isCentered
-          >
-            <ModalOverlay />
-            <ModalContent className={`${bgCard} ${textCard}`}>
-              <ModalHeader>💊 {t('Actions.addMedication')}</ModalHeader>
-              <ModalCloseButton />
-              <ModalBody>
-                <form
-                  onSubmit={handleMedicationSubmit}
-                  className="space-y-4 py-6"
-                >
-                  <Input
-                    placeholder={t('Actions.medName')}
-                    value={medName}
-                    onChange={e => setMedName(e.target.value)}
-                  />
-                  <Input
-                    placeholder={t('Actions.medDose')}
-                    value={medDose}
-                    onChange={e => setMedDose(e.target.value)}
-                  />
-                  <Input
-                    placeholder={t('Actions.notes')}
-                    value={medNotes}
-                    onChange={e => setMedNotes(e.target.value)}
-                  />
-                  <Button type="submit" className="w-full">
-                    {t('Actions.button')}
-                  </Button>
-                </form>
-              </ModalBody>
-            </ModalContent>
-          </Modal>
+          />
 
           {/* Activities */}
           <button
@@ -329,44 +349,10 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
               {t('Actions.addActivity')}
             </span>
           </button>
-
-          <Modal
+          <ActivityModal
             isOpen={isActivityModalOpen}
             onClose={() => setIsActivityModalOpen(false)}
-            isCentered
-          >
-            <ModalOverlay />
-            <ModalContent className={`${bgCard} ${textCard}`}>
-              <ModalHeader>🏃 {t('Actions.addActivity')}</ModalHeader>
-              <ModalCloseButton />
-              <ModalBody>
-                <form
-                  onSubmit={handleActivitySubmit}
-                  className="space-y-4 py-6"
-                >
-                  <Input
-                    placeholder={t('Actions.activityName')}
-                    value={activityName}
-                    onChange={e => setActivityName(e.target.value)}
-                  />
-                  <Input
-                    type="number"
-                    placeholder={t('Actions.activityDuration')}
-                    value={activityDuration}
-                    onChange={e => setActivityDuration(e.target.value)}
-                  />
-                  <Input
-                    placeholder={t('Actions.notes')}
-                    value={activityNotes}
-                    onChange={e => setActivityNotes(e.target.value)}
-                  />
-                  <Button type="submit" className="w-full">
-                    {t('Actions.button')}
-                  </Button>
-                </form>
-              </ModalBody>
-            </ModalContent>
-          </Modal>
+          />
 
           {/* Reminders */}
           <button
@@ -382,8 +368,36 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
               {t('Actions.reminders')}
             </span>
           </button>
+          <button
+            onClick={handleInsulinClick}
+            className={`flex flex-col items-center p-3 sm:p-4 rounded-xl transition-colors active:scale-95 ${
+              darkMode ? bgButtonDark : bgButtonLight
+            }`}
+          >
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-accent rounded-full flex items-center justify-center mb-2">
+              💉
+            </div>
+            <span className={`text-xs sm:text-sm font-medium ${textButton}`}>
+              Insulin Dosage
+            </span>
+          </button>
+          <button
+            onClick={handleBiomarkerClick}
+            className={`flex flex-col items-center p-3 sm:p-4 rounded-xl transition-colors active:scale-95 ${
+              darkMode ? bgButtonDark : bgButtonLight
+            }`}
+          >
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-accent rounded-full flex items-center justify-center mb-2">
+              🩺
+            </div>
+            <span className={`text-xs sm:text-sm font-medium ${textButton}`}>
+              Biomarker tracker
+            </span>
+          </button>
         </div>
       </div>
+      <BarcodeScanModal isOpen={isBarcodeModalOpen} onClose={setIsBarcodeModalOpen}  /> 
+      <PhotoAnalysisModal isOpen={isPhotoModalOpen} onClose={setIsPhotoModalOpen}  />
     </div>
   );
 };

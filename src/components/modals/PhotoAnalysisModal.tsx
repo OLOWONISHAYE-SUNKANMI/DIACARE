@@ -148,7 +148,7 @@ const PhotoAnalysisModal = ({
           <div className="space-y-4">
             {!selectedImage ? (
               <div className="space-y-3">
-                <p className="text-sm text-gray-600 mb-4">
+                <p className="text-sm text-foreground mb-4">
                   {t('photoAnalysisModal.modal.instructions')}
                 </p>
                 <Button

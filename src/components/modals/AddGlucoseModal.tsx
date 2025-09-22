@@ -1,11 +1,14 @@
 import { useState } from 'react';
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalCloseButton,
+} from '@chakra-ui/react';
+import { Clock, Calendar } from 'lucide-react';
+
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -108,105 +111,123 @@ const AddGlucoseModal = ({ children, onGlucoseAdd }: AddGlucoseModalProps) => {
   ];
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="max-w-md">
-        <DialogHeader>
-          <DialogTitle className="flex items-center space-x-2">
+    <Modal
+      isOpen={isOpen}
+      onClose={() => setIsOpen(false)}
+      size="md"
+      isCentered
+    >
+      <ModalOverlay />
+      <ModalContent className="max-w-md">
+        <ModalHeader>
+          <div className="flex items-center space-x-2">
             <span className="text-2xl">📊</span>
             <span>{t('addGlucoseModal.new_blood_sugar_measure')}</span>
-          </DialogTitle>
-        </DialogHeader>
-
-        <div className="space-y-6">
-          <div className="space-y-2">
-            <Label htmlFor="glucose">
-              {t('addGlucoseModal.glucose_label')}
-            </Label>
-            <Input
-              id="glucose"
-              type="number"
-              placeholder={t('addGlucoseModal.glucose_placeholder')}
-              value={glucose}
-              onChange={e => setGlucose(e.target.value)}
-              className="text-lg text-center"
-            />
           </div>
+        </ModalHeader>
+        <ModalCloseButton />
 
-          <div className="space-y-3">
-            <Label>{t('addGlucoseModal.measurement_time_label')}</Label>
-            <RadioGroup value={time} onValueChange={setTime}>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="now" id="now" />
-                <Label htmlFor="now" className="flex items-center space-x-2">
-                  <Clock className="w-4 h-4" />
-                  <span>{t('addGlucoseModal.time_now')}</span>
-                </Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="custom" id="custom" />
-                <Label htmlFor="custom" className="flex items-center space-x-2">
-                  <Calendar className="w-4 h-4" />
-                  <span>{t('addGlucoseModal.time_custom')}</span>
-                </Label>
-              </div>
-            </RadioGroup>
-
-            {time === 'custom' && (
+        <ModalBody>
+          <div className="space-y-6">
+            {/* Glucose input */}
+            <div className="space-y-2">
+              <Label htmlFor="glucose">
+                {t('addGlucoseModal.glucose_label')}
+              </Label>
               <Input
-                type="time"
-                value={customTime}
-                onChange={e => setCustomTime(e.target.value)}
-                className="mt-2"
+                id="glucose"
+                type="number"
+                placeholder={t('addGlucoseModal.glucose_placeholder')}
+                value={glucose}
+                onChange={e => setGlucose(e.target.value)}
+                className="text-lg text-center"
               />
-            )}
-          </div>
+            </div>
 
-          <div className="space-y-3">
-            <Label>{t('addGlucoseModal.measurement_context_label')}</Label>
-
-            <RadioGroup value={context} onValueChange={setContext}>
-              {contextOptions.map(option => (
-                <div key={option.value} className="flex items-center space-x-2">
-                  <RadioGroupItem value={option.value} id={option.value} />
-                  <Label
-                    htmlFor={option.value}
-                    className="flex items-center space-x-2"
-                  >
-                    <span className="text-lg">{option.emoji}</span>
-                    <span>{option.label}</span>
+            {/* Measurement time */}
+            <div className="space-y-3">
+              <Label>{t('addGlucoseModal.measurement_time_label')}</Label>
+              <RadioGroup value={time} onValueChange={setTime}>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="now" id="now" />
+                  <Label htmlFor="now" className="flex items-center space-x-2">
+                    <Clock className="w-4 h-4" />
+                    <span>{t('addGlucoseModal.time_now')}</span>
                   </Label>
                 </div>
-              ))}
-            </RadioGroup>
-          </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="custom" id="custom" />
+                  <Label
+                    htmlFor="custom"
+                    className="flex items-center space-x-2"
+                  >
+                    <Calendar className="w-4 h-4" />
+                    <span>{t('addGlucoseModal.time_custom')}</span>
+                  </Label>
+                </div>
+              </RadioGroup>
 
-          <div className="space-y-2">
-            <Label htmlFor="notes">{t('addGlucoseModal.notes_label')}</Label>
-            <Textarea
-              id="notes"
-              placeholder={t('addGlucoseModal.notes_placeholder')}
-              value={notes}
-              onChange={e => setNotes(e.target.value)}
-              rows={3}
-            />
-          </div>
+              {time === 'custom' && (
+                <Input
+                  type="time"
+                  value={customTime}
+                  onChange={e => setCustomTime(e.target.value)}
+                  className="mt-2"
+                />
+              )}
+            </div>
 
-          <div className="flex space-x-3">
-            <Button
-              variant="outline"
-              onClick={() => setIsOpen(false)}
-              className="flex-1"
-            >
-              {t('addGlucoseModal.cancel_button')}
-            </Button>
-            <Button onClick={handleSubmit} className="flex-1">
-              {t('addGlucoseModal.save_button')}
-            </Button>
+            {/* Context options */}
+            <div className="space-y-3">
+              <Label>{t('addGlucoseModal.measurement_context_label')}</Label>
+              <RadioGroup value={context} onValueChange={setContext}>
+                {contextOptions.map(option => (
+                  <div
+                    key={option.value}
+                    className="flex items-center space-x-2"
+                  >
+                    <RadioGroupItem value={option.value} id={option.value} />
+                    <Label
+                      htmlFor={option.value}
+                      className="flex items-center space-x-2"
+                    >
+                      <span className="text-lg">{option.emoji}</span>
+                      <span>{option.label}</span>
+                    </Label>
+                  </div>
+                ))}
+              </RadioGroup>
+            </div>
+
+            {/* Notes */}
+            <div className="space-y-2">
+              <Label htmlFor="notes">{t('addGlucoseModal.notes_label')}</Label>
+              <Textarea
+                id="notes"
+                placeholder={t('addGlucoseModal.notes_placeholder')}
+                value={notes}
+                onChange={e => setNotes(e.target.value)}
+                rows={3}
+              />
+            </div>
+
+            {/* Buttons */}
+            <div className="flex space-x-3">
+              <Button
+                variant="outline"
+                onClick={() => setIsOpen(false)}
+                className="flex-1"
+              >
+                {t('addGlucoseModal.cancel_button')}
+              </Button>
+              <Button onClick={handleSubmit} className="flex-1">
+                {t('addGlucoseModal.save_button')}
+              </Button>
+            </div>
           </div>
-        </div>
-      </DialogContent>
-    </Dialog>
+        </ModalBody>
+      </ModalContent>
+    </Modal>
   );
 };
 
