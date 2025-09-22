@@ -17,6 +17,10 @@ import { useMeals } from '@/contexts/MealContext';
 import { useMedications } from '@/contexts/MedicationContext';
 import { useActivities } from '@/contexts/ActivityContext';
 import { useThemeStore } from '@/store/useThemeStore';
+import ActivityModal from '../modals/ActivityModal';
+import MedicationModal from '../modals/MedicationModal';
+import MealModal from '../modals/ScanMealModal';
+import AddGlucoseModal from '../modals/AddGlucoseModal';
 
 interface ActionsRapidesProps {
   onTabChange?: (tab: string) => void;
@@ -127,6 +131,9 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
   const handleRappelsClick = () => {
     onTabChange?.('reminders');
   };
+  const handleInsulinClick = () => {
+    onTabChange?.('insulin');
+  };
 
   // Utility for semantic colors
   const bgCard = 'bg-card';
@@ -161,6 +168,7 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
               {t('Actions.actionsPopover.bloodSugar.increment')}
             </span>
           </button>
+          {/* <AddGlucoseModal/> */}
 
           <Modal
             isOpen={isGlucoseModalOpen}
@@ -228,7 +236,11 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
             </span>
           </button>
 
-          <Modal
+          <MealModal
+            isOpen={isMealModalOpen}
+            onClose={() => setIsMealModalOpen(false)}
+          />
+          {/* <Modal
             isOpen={isMealModalOpen}
             onClose={() => setIsMealModalOpen(false)}
             isCentered
@@ -261,7 +273,7 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
                 </form>
               </ModalBody>
             </ModalContent>
-          </Modal>
+          </Modal> */}
 
           {/* Medications */}
           <button
@@ -277,43 +289,10 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
               {t('Actions.addMedication')}
             </span>
           </button>
-
-          <Modal
+          <MedicationModal
             isOpen={isMedicationModalOpen}
             onClose={() => setIsMedicationModalOpen(false)}
-            isCentered
-          >
-            <ModalOverlay />
-            <ModalContent className={`${bgCard} ${textCard}`}>
-              <ModalHeader>💊 {t('Actions.addMedication')}</ModalHeader>
-              <ModalCloseButton />
-              <ModalBody>
-                <form
-                  onSubmit={handleMedicationSubmit}
-                  className="space-y-4 py-6"
-                >
-                  <Input
-                    placeholder={t('Actions.medName')}
-                    value={medName}
-                    onChange={e => setMedName(e.target.value)}
-                  />
-                  <Input
-                    placeholder={t('Actions.medDose')}
-                    value={medDose}
-                    onChange={e => setMedDose(e.target.value)}
-                  />
-                  <Input
-                    placeholder={t('Actions.notes')}
-                    value={medNotes}
-                    onChange={e => setMedNotes(e.target.value)}
-                  />
-                  <Button type="submit" className="w-full">
-                    {t('Actions.button')}
-                  </Button>
-                </form>
-              </ModalBody>
-            </ModalContent>
-          </Modal>
+          />
 
           {/* Activities */}
           <button
@@ -329,44 +308,10 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
               {t('Actions.addActivity')}
             </span>
           </button>
-
-          <Modal
+          <ActivityModal
             isOpen={isActivityModalOpen}
             onClose={() => setIsActivityModalOpen(false)}
-            isCentered
-          >
-            <ModalOverlay />
-            <ModalContent className={`${bgCard} ${textCard}`}>
-              <ModalHeader>🏃 {t('Actions.addActivity')}</ModalHeader>
-              <ModalCloseButton />
-              <ModalBody>
-                <form
-                  onSubmit={handleActivitySubmit}
-                  className="space-y-4 py-6"
-                >
-                  <Input
-                    placeholder={t('Actions.activityName')}
-                    value={activityName}
-                    onChange={e => setActivityName(e.target.value)}
-                  />
-                  <Input
-                    type="number"
-                    placeholder={t('Actions.activityDuration')}
-                    value={activityDuration}
-                    onChange={e => setActivityDuration(e.target.value)}
-                  />
-                  <Input
-                    placeholder={t('Actions.notes')}
-                    value={activityNotes}
-                    onChange={e => setActivityNotes(e.target.value)}
-                  />
-                  <Button type="submit" className="w-full">
-                    {t('Actions.button')}
-                  </Button>
-                </form>
-              </ModalBody>
-            </ModalContent>
-          </Modal>
+          />
 
           {/* Reminders */}
           <button
@@ -380,6 +325,32 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
             </div>
             <span className={`text-xs sm:text-sm font-medium ${textButton}`}>
               {t('Actions.reminders')}
+            </span>
+          </button>
+          <button
+            onClick={handleInsulinClick}
+            className={`flex flex-col items-center p-3 sm:p-4 rounded-xl transition-colors active:scale-95 ${
+              darkMode ? bgButtonDark : bgButtonLight
+            }`}
+          >
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-accent rounded-full flex items-center justify-center mb-2">
+              💉
+            </div>
+            <span className={`text-xs sm:text-sm font-medium ${textButton}`}>
+              Insulin Dosage
+            </span>
+          </button>
+          <button
+            onClick={handleInsulinClick}
+            className={`flex flex-col items-center p-3 sm:p-4 rounded-xl transition-colors active:scale-95 ${
+              darkMode ? bgButtonDark : bgButtonLight
+            }`}
+          >
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-accent rounded-full flex items-center justify-center mb-2">
+              🩺
+            </div>
+            <span className={`text-xs sm:text-sm font-medium ${textButton}`}>
+              Biomarker tracker
             </span>
           </button>
         </div>

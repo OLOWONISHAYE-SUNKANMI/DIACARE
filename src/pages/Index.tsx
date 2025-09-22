@@ -23,6 +23,7 @@ import ProfessionalRequestDashboard from '@/components/screens/ProfessionalReque
 import PatientAccessInterface from '@/components/ui/PatientAccessInterface';
 import CalendarScheduler from '@/components/ui/CalendarScheduler';
 import ProfessionalDashboardNew from '@/components/ui/ProfessionalDashboardNew';
+import DiabetesMonitoringApp from '@/components/screens/DiabetesMonitoringApp';
 
 // Lazy load non-critical
 const ChartsScreen = React.lazy(
@@ -99,6 +100,8 @@ const Index = () => {
         return <ProfileScreen />;
       case 'reminders':
         return <RemindersScreen />;
+      case 'insulin':
+        return <DiabetesMonitoringApp />;
       case 'health-pro':
         return <HealthProfessionalScreen />;
       case 'admin':
