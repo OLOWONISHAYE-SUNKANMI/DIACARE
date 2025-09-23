@@ -18,6 +18,7 @@ import {
   Legend,
   ReferenceLine,
 } from 'recharts';
+import { useTranslation } from 'react-i18next';
 
 // ✅ Placeholder component for InsulinDoseSheet (replace with your actual one)
 const InsulinDoseSheet = () => (
@@ -27,6 +28,7 @@ const InsulinDoseSheet = () => (
 );
 
 const Biomarkers = () => {
+  const { t } = useTranslation();
   // ✅ Example biomarker state
   const [biomarkers, setBiomarkers] = useState({
     hba1c: '',
@@ -66,20 +68,36 @@ const Biomarkers = () => {
   };
 
   const getBMICategory = bmi => {
-    if (!bmi) return { category: 'Not set', color: 'text-gray-400' };
+    if (!bmi)
+      return {
+        category: t('biomarkerTracker.bmi.notSet'),
+        color: 'text-gray-400',
+      };
     const val = parseFloat(bmi);
-    if (val < 18.5) return { category: 'Underweight', color: 'text-blue-600' };
-    if (val < 25) return { category: 'Normal', color: 'text-green-600' };
-    if (val < 30) return { category: 'Overweight', color: 'text-orange-600' };
-    return { category: 'Obese', color: 'text-red-600' };
+    if (val < 18.5)
+      return {
+        category: t('biomarkerTracker.bmi.underweight'),
+        color: 'text-blue-600',
+      };
+    if (val < 25)
+      return {
+        category: t('biomarkerTracker.bmi.normal'),
+        color: 'text-green-600',
+      };
+    if (val < 30)
+      return {
+        category: t('biomarkerTracker.bmi.overweight'),
+        color: 'text-orange-600',
+      };
+    return { category: t('biomarkerTracker.bmi.obese'), color: 'text-red-600' };
   };
 
   // ✅ Dummy prediction + notes
   const prediction = 140;
   const doctorNotes = {
-    recommendations: 'Continue current medication and diet.',
-    specialInstructions: 'Monitor glucose before bedtime.',
-    followUpDate: '2025-10-01',
+    recommendations: t('biomarkerTracker.doctorNotes.recommendations'),
+    specialInstructions: t('biomarkerTracker.doctorNotes.specialInstructions'),
+    followUpDate: '2025-10-01', // Dates usually stay as-is, but you can format with locale
   };
 
   // ✅ Example glucose data
@@ -92,8 +110,8 @@ const Biomarkers = () => {
 
   const alertSettings = { lowThreshold: 70, highThreshold: 180 };
   const alerts = [
-    { id: 1, type: 'hypo', message: 'Glucose dropped below 70 mg/dL' },
-    { id: 2, type: 'hyper', message: 'Glucose exceeded 180 mg/dL' },
+    { id: 1, type: 'hypo', message: t('biomarkerTracker.alerts.hypo') },
+    { id: 2, type: 'hyper', message: t('biomarkerTracker.alerts.hyper') },
   ];
 
   const showBiomarkers = true;
@@ -107,7 +125,7 @@ const Biomarkers = () => {
             <div className="flex items-center mb-4">
               <Activity className="text-purple-500 mr-2" size={24} />
               <h2 className="text-xl font-semibold text-foreground">
-                Biomarkers Tracking
+                {t('biomarkerTracker.title')}
               </h2>
             </div>
 
@@ -115,7 +133,7 @@ const Biomarkers = () => {
               {/* HbA1c */}
               <div className="p-4 bg-red-50 rounded-lg border border-red-200">
                 <h3 className="font-medium text-red-800 mb-3">
-                  HbA1c (Glycated Hemoglobin)
+                  {t('biomarkerTracker.hba1cTitle')}
                 </h3>
                 <div className="space-y-2">
                   <div className="flex gap-2">
@@ -126,11 +144,11 @@ const Biomarkers = () => {
                       onChange={e =>
                         handleBiomarkerChange('hba1c', e.target.value)
                       }
-                      placeholder="7.5"
+                      placeholder={t('biomarkerTracker.hba1cPlaceholder')}
                       className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm"
                     />
                     <span className="flex items-center text-sm text-gray-600">
-                      %
+                      {t('biomarkerTracker.hba1cUnit')}
                     </span>
                   </div>
                   <input
@@ -147,11 +165,11 @@ const Biomarkers = () => {
                         parseFloat(biomarkers.hba1c) < 7
                           ? 'text-green-600'
                           : parseFloat(biomarkers.hba1c) < 8
-                          ? 'text-orange-600'
-                          : 'text-red-600'
+                            ? 'text-orange-600'
+                            : 'text-red-600'
                       }`}
                     >
-                      Target: &lt;7% for most adults
+                      {t('biomarkerTracker.hba1cTarget')}
                     </p>
                   )}
                 </div>
@@ -160,7 +178,7 @@ const Biomarkers = () => {
               {/* Blood Pressure */}
               <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
                 <h3 className="font-medium text-blue-800 mb-3">
-                  Blood Pressure
+                  {t('biomarkerTracker.bloodPressureTitle')}
                 </h3>
                 <div className="space-y-2">
                   <div className="flex gap-2">
@@ -170,7 +188,9 @@ const Biomarkers = () => {
                       onChange={e =>
                         handleBiomarkerChange('systolicBP', e.target.value)
                       }
-                      placeholder="120"
+                      placeholder={t(
+                        'biomarkerTracker.bloodPressureSystolicPlaceholder'
+                      )}
                       className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm"
                     />
                     <span className="flex items-center text-sm">/</span>
@@ -180,11 +200,13 @@ const Biomarkers = () => {
                       onChange={e =>
                         handleBiomarkerChange('diastolicBP', e.target.value)
                       }
-                      placeholder="80"
+                      placeholder={t(
+                        'biomarkerTracker.bloodPressureDiastolicPlaceholder'
+                      )}
                       className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm"
                     />
                     <span className="flex items-center text-sm text-gray-600">
-                      mmHg
+                      {t('biomarkerTracker.bloodPressureUnit')}
                     </span>
                   </div>
                   <input
@@ -204,7 +226,7 @@ const Biomarkers = () => {
                           : 'text-orange-600'
                       }`}
                     >
-                      Target: &lt;130/80 mmHg
+                      {t('biomarkerTracker.bloodPressureTarget')}
                     </p>
                   )}
                 </div>
@@ -213,7 +235,7 @@ const Biomarkers = () => {
               {/* Weight & BMI */}
               <div className="p-4 bg-green-50 rounded-lg border border-green-200">
                 <h3 className="font-medium text-green-800 mb-3">
-                  Weight & BMI
+                  {t('biomarkerTracker.weightBmiTitle')}
                 </h3>
                 <div className="space-y-2">
                   <div className="flex gap-2">
@@ -224,11 +246,11 @@ const Biomarkers = () => {
                       onChange={e =>
                         handleBiomarkerChange('weight', e.target.value)
                       }
-                      placeholder="70"
+                      placeholder={t('biomarkerTracker.weightPlaceholder')}
                       className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm"
                     />
                     <span className="flex items-center text-sm text-gray-600">
-                      kg
+                      {t('biomarkerTracker.weightUnit')}
                     </span>
                   </div>
                   <div className="flex gap-2">
@@ -238,11 +260,11 @@ const Biomarkers = () => {
                       onChange={e =>
                         handleBiomarkerChange('height', e.target.value)
                       }
-                      placeholder="170"
+                      placeholder={t('biomarkerTracker.heightPlaceholder')}
                       className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm"
                     />
                     <span className="flex items-center text-sm text-gray-600">
-                      cm
+                      {t('biomarkerTracker.heightUnit')}
                     </span>
                   </div>
                   <input
@@ -255,11 +277,11 @@ const Biomarkers = () => {
                   />
                   {biomarkers.bmi && (
                     <div className="text-xs">
-                      <span className="font-medium">BMI: {biomarkers.bmi}</span>
+                      <span className="font-medium">
+                        {t('biomarkerTracker.bmiLabel')}: {biomarkers.bmi}
+                      </span>
                       <span
-                        className={`ml-2 ${
-                          getBMICategory(biomarkers.bmi).color
-                        }`}
+                        className={`ml-2 ${getBMICategory(biomarkers.bmi).color}`}
                       >
                         ({getBMICategory(biomarkers.bmi).category})
                       </span>
@@ -271,7 +293,7 @@ const Biomarkers = () => {
               {/* Cholesterol */}
               <div className="p-4 bg-yellow-50 rounded-lg border border-yellow-200">
                 <h3 className="font-medium text-yellow-800 mb-3">
-                  Cholesterol Profile
+                  {t('biomarkerTracker.cholesterolProfileTitle')}
                 </h3>
                 <div className="space-y-2">
                   <div className="grid grid-cols-3 gap-1">
@@ -284,7 +306,9 @@ const Biomarkers = () => {
                           e.target.value
                         )
                       }
-                      placeholder="Total"
+                      placeholder={t(
+                        'biomarkerTracker.cholesterolPlaceholderTotal'
+                      )}
                       className="px-2 py-1 border border-gray-300 rounded text-xs"
                     />
                     <input
@@ -293,7 +317,9 @@ const Biomarkers = () => {
                       onChange={e =>
                         handleBiomarkerChange('hdlCholesterol', e.target.value)
                       }
-                      placeholder="HDL"
+                      placeholder={t(
+                        'biomarkerTracker.cholesterolPlaceholderHDL'
+                      )}
                       className="px-2 py-1 border border-gray-300 rounded text-xs"
                     />
                     <input
@@ -302,7 +328,9 @@ const Biomarkers = () => {
                       onChange={e =>
                         handleBiomarkerChange('ldlCholesterol', e.target.value)
                       }
-                      placeholder="LDL"
+                      placeholder={t(
+                        'biomarkerTracker.cholesterolPlaceholderLDL'
+                      )}
                       className="px-2 py-1 border border-gray-300 rounded text-xs"
                     />
                   </div>
@@ -313,11 +341,13 @@ const Biomarkers = () => {
                       onChange={e =>
                         handleBiomarkerChange('triglycerides', e.target.value)
                       }
-                      placeholder="Triglycerides"
+                      placeholder={t(
+                        'biomarkerTracker.cholesterolPlaceholderTriglycerides'
+                      )}
                       className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm"
                     />
                     <span className="flex items-center text-sm text-gray-600">
-                      mg/dL
+                      {t('biomarkerTracker.cholesterolUnit')}
                     </span>
                   </div>
                   <input
@@ -329,7 +359,7 @@ const Biomarkers = () => {
                     className="w-full px-3 py-2 border border-gray-300 rounded text-sm"
                   />
                   <p className="text-xs text-gray-600">
-                    Targets: LDL &lt;100, HDL &gt;40♂/50♀, TG &lt;150
+                    {t('biomarkerTracker.cholesterolTargets')}
                   </p>
                 </div>
               </div>
@@ -337,7 +367,7 @@ const Biomarkers = () => {
               {/* Kidney Function */}
               <div className="p-4 bg-purple-50 rounded-lg border border-purple-200">
                 <h3 className="font-medium text-purple-800 mb-3">
-                  Kidney Function
+                  {t('biomarkerTracker.kidneyFunctionTitle')}
                 </h3>
                 <div className="space-y-2">
                   <div className="flex gap-2">
@@ -348,11 +378,11 @@ const Biomarkers = () => {
                       onChange={e =>
                         handleBiomarkerChange('creatinine', e.target.value)
                       }
-                      placeholder="1.0"
+                      placeholder={t('biomarkerTracker.creatininePlaceholder')}
                       className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm"
                     />
                     <span className="flex items-center text-sm text-gray-600">
-                      mg/dL
+                      {t('biomarkerTracker.creatinineUnit')}
                     </span>
                   </div>
                   <input
@@ -363,19 +393,23 @@ const Biomarkers = () => {
                     }
                     className="w-full px-3 py-2 border border-gray-300 rounded text-sm"
                   />
-
                   <div className="flex gap-2">
                     <input
                       type="number"
                       value={biomarkers.microalbumin}
                       onChange={e =>
-                        handleBiomarkerChange('microalbumin', e.target.value)
+                        handleBiomarkerChange(
+                          'biomarkerTracker.microalbumin',
+                          e.target.value
+                        )
                       }
-                      placeholder="Microalbumin"
+                      placeholder={t(
+                        'biomarkerTracker.microalbuminPlaceholder'
+                      )}
                       className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm"
                     />
                     <span className="flex items-center text-sm text-gray-600">
-                      mg/g
+                      {t('biomarkerTracker.microalbuminUnit')}
                     </span>
                   </div>
                 </div>
@@ -384,12 +418,12 @@ const Biomarkers = () => {
               {/* Screening Exams */}
               <div className="p-4 bg-indigo-50 rounded-lg border border-indigo-200">
                 <h3 className="font-medium text-indigo-800 mb-3">
-                  Screening Exams
+                  {t('biomarkerTracker.screeningExamsTitle')}
                 </h3>
                 <div className="space-y-2">
                   <div>
                     <label className="block text-xs font-medium text-gray-700 mb-1">
-                      Last Eye Exam
+                      {t('biomarkerTracker.lastEyeExamLabel')}
                     </label>
                     <input
                       type="date"
@@ -402,7 +436,7 @@ const Biomarkers = () => {
                   </div>
                   <div>
                     <label className="block text-xs font-medium text-gray-700 mb-1">
-                      Last Foot Exam
+                      {t('biomarkerTracker.lastFootExamLabel')}
                     </label>
                     <input
                       type="date"
@@ -414,7 +448,7 @@ const Biomarkers = () => {
                     />
                   </div>
                   <p className="text-xs text-gray-600">
-                    Annual eye & foot exams recommended
+                    {t('biomarkerTracker.screeningExamsNote')}
                   </p>
                 </div>
               </div>
@@ -423,27 +457,37 @@ const Biomarkers = () => {
             {/* Biomarkers Summary */}
             <div className="mt-6 p-4 bg-muted rounded-lg">
               <h3 className="font-medium text-foreground mb-3">
-                Quick Summary
+                {t('biomarkerTracker.quickSummaryTitle')}
               </h3>
+
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                {/* HbA1c */}
                 <div className="text-center">
-                  <div className="font-medium text-foreground">HbA1c</div>
+                  <div className="font-medium text-foreground">
+                    {t('biomarkerTracker.hba1cLabel')}
+                  </div>
                   <div
                     className={`font-bold ${
                       biomarkers.hba1c
                         ? parseFloat(biomarkers.hba1c) < 7
                           ? 'text-green-600'
                           : parseFloat(biomarkers.hba1c) < 8
-                          ? 'text-orange-600'
-                          : 'text-red-600'
+                            ? 'text-orange-600'
+                            : 'text-red-600'
                         : 'text-gray-400'
                     }`}
                   >
-                    {biomarkers.hba1c ? `${biomarkers.hba1c}%` : 'Not set'}
+                    {biomarkers.hba1c
+                      ? `${biomarkers.hba1c}%`
+                      : t('biomarkerTracker.notSet')}
                   </div>
                 </div>
+
+                {/* BP */}
                 <div className="text-center">
-                  <div className="font-medium text-foreground">BP</div>
+                  <div className="font-medium text-foreground">
+                    {t('biomarkerTracker.bpLabel')}
+                  </div>
                   <div
                     className={`font-bold ${
                       biomarkers.systolicBP && biomarkers.diastolicBP
@@ -456,11 +500,15 @@ const Biomarkers = () => {
                   >
                     {biomarkers.systolicBP && biomarkers.diastolicBP
                       ? `${biomarkers.systolicBP}/${biomarkers.diastolicBP}`
-                      : 'Not set'}
+                      : t('biomarkerTracker.notSet')}
                   </div>
                 </div>
+
+                {/* BMI */}
                 <div className="text-center">
-                  <div className="font-medium text-foreground">BMI</div>
+                  <div className="font-medium text-foreground">
+                    {t('biomarkerTracker.bmiLabel')}
+                  </div>
                   <div
                     className={`font-bold ${
                       biomarkers.bmi
@@ -468,11 +516,15 @@ const Biomarkers = () => {
                         : 'text-gray-400'
                     }`}
                   >
-                    {biomarkers.bmi || 'Not set'}
+                    {biomarkers.bmi || t('notSet')}
                   </div>
                 </div>
+
+                {/* LDL */}
                 <div className="text-center">
-                  <div className="font-medium text-foreground">LDL</div>
+                  <div className="font-medium text-foreground">
+                    {t('biomarkerTracker.ldlLabel')}
+                  </div>
                   <div
                     className={`font-bold ${
                       biomarkers.ldlCholesterol
@@ -484,7 +536,7 @@ const Biomarkers = () => {
                   >
                     {biomarkers.ldlCholesterol
                       ? `${biomarkers.ldlCholesterol} mg/dL`
-                      : 'Not set'}
+                      : t('biomarkerTracker.notSet')}
                   </div>
                 </div>
               </div>
@@ -496,20 +548,20 @@ const Biomarkers = () => {
             <div className="flex items-center mb-4">
               <Brain className="text-purple-500 mr-2" size={24} />
               <h2 className="text-xl text-foreground font-semibold">
-                AI Prediction Engine
+                {t('biomarkerTracker.aiPredictionEngineTitle')}
               </h2>
             </div>
 
             {prediction && (
               <div className="bg-muted rounded-lg p-4">
                 <p className="text-sm text-muted-foreground mb-2">
-                  Next 30-minute prediction:
+                  {t('biomarkerTracker.nextPredictionLabel')}
                 </p>
                 <p className="text-2xl font-bold text-purple-600">
-                  {prediction} mg/dL
+                  {t('biomarkerTracker.predictionUnit', { value: prediction })}
                 </p>
                 <p className="text-xs text-foreground mt-1">
-                  Based on time-series analysis + rule-based factors
+                  {t('biomarkerTracker.predictionNote')}
                 </p>
               </div>
             )}
@@ -521,7 +573,7 @@ const Biomarkers = () => {
               <div className="flex items-center mb-4">
                 <FileText className="text-blue-500 mr-2" size={24} />
                 <h2 className="text-xl font-semibold text-foreground">
-                  Doctor's Recommendations
+                  {t('biomarkerTracker.doctorsRecommendations')}
                 </h2>
               </div>
 
@@ -529,7 +581,7 @@ const Biomarkers = () => {
                 {doctorNotes.recommendations && (
                   <div className="p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500">
                     <h3 className="font-medium text-blue-800 mb-2">
-                      Treatment Recommendations
+                      {t('biomarkerTracker.treatmentRecommendations')}
                     </h3>
                     <p className="text-sm text-blue-700">
                       {doctorNotes.recommendations}
@@ -540,7 +592,7 @@ const Biomarkers = () => {
                 {doctorNotes.specialInstructions && (
                   <div className="p-4 bg-amber-50 rounded-lg border-l-4 border-amber-500">
                     <h3 className="font-medium text-amber-800 mb-2">
-                      Special Instructions
+                      {t('biomarkerTracker.specialInstructions')}
                     </h3>
                     <p className="text-sm text-amber-700">
                       {doctorNotes.specialInstructions}
@@ -552,7 +604,7 @@ const Biomarkers = () => {
                   <div className="p-3 bg-green-50 rounded-lg border border-green-200">
                     <div className="flex items-center text-green-800">
                       <span className="font-medium text-sm">
-                        Next Appointment:{' '}
+                        {t('biomarkerTracker.nextAppointment')}{' '}
                       </span>
                       <span className="ml-2 text-sm">
                         {new Date(doctorNotes.followUpDate).toLocaleDateString(
@@ -580,7 +632,7 @@ const Biomarkers = () => {
               <div className="flex items-center mb-4">
                 <Activity className="text-green-500 mr-2" size={24} />
                 <h2 className="text-xl font-semibold text-foreground">
-                  Real-Time Blood Glucose
+                  {t('biomarkerTracker.realTimeBloodGlucose')}
                 </h2>
               </div>
 
@@ -645,7 +697,7 @@ const Biomarkers = () => {
                       dataKey="glucose"
                       stroke="hsl(var(--primary))"
                       strokeWidth={2}
-                      dot={(props) => {
+                      dot={props => {
                         const { payload, cx, cy } = props;
                         return (
                           <circle
@@ -674,14 +726,12 @@ const Biomarkers = () => {
               <div className="flex items-center justify-between mt-4 text-sm text-gray-600">
                 <span className="flex items-center text-foreground">
                   <div className="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
-                  Actual readings
+                  {t('biomarkerTracker.glucoseLegend.actualReadings')}
                 </span>
+
                 <span className="flex items-center text-foreground">
-                  <div
-                    className="w-3 h-3 bg-purple-500 rounded-full
- mr-2"
-                  ></div>
-                  AI predictions
+                  <div className="w-3 h-3 bg-purple-500 rounded-full mr-2"></div>
+                  {t('biomarkerTracker.glucoseLegend.aiPredictions')}
                 </span>
               </div>
             </div>
@@ -691,13 +741,13 @@ const Biomarkers = () => {
               <div className="flex items-center mb-4">
                 <Bell className="text-red-500 mr-2" size={24} />
                 <h2 className="text-xl font-semibold text-foreground">
-                  Alerts System
+                  {t('biomarkerTracker.alertsSystem.title')}
                 </h2>
               </div>
 
               {alerts.length === 0 ? (
                 <p className="text-gray-500 text-center py-4">
-                  No active alerts
+                  {t('biomarkerTracker.alertsSystem.noAlerts')}
                 </p>
               ) : (
                 <div className="space-y-3">
@@ -721,12 +771,14 @@ const Biomarkers = () => {
                         />
                         <span className="ml-2 font-medium text-gray-800">
                           {alert.type === 'hypo'
-                            ? 'Hypoglycemia Alert'
-                            : 'Hyperglycemia Alert'}
+                            ? t('biomarkerTracker.alertsSystem.hypoAlert')
+                            : t('biomarkerTracker.alertsSystem.hyperAlert')}
                         </span>
                       </div>
                       <p className="text-sm text-gray-600 mt-1">
-                        {alert.message}
+                        {t('biomarkerTracker.alertsSystem.alertMessage', {
+                          message: alert.message,
+                        })}
                       </p>
                     </div>
                   ))}
@@ -739,19 +791,23 @@ const Biomarkers = () => {
               <div className="flex items-center mb-4">
                 <Database className="text-gray-500 mr-2" size={24} />
                 <h2 className="text-xl font-semibold text-foreground">
-                  Historical Database
+                  {t('biomarkerTracker.historicalDatabase.title')}
                 </h2>
               </div>
 
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div className="bg-muted rounded-lg p-3">
-                  <p className="text-muted-foreground">Total Readings</p>
+                  <p className="text-muted-foreground">
+                    {t('biomarkerTracker.historicalDatabase.totalReadings')}
+                  </p>
                   <p className="text-xl font-bold text-foreground">
                     {glucoseData.length}
                   </p>
                 </div>
                 <div className="bg-muted rounded-lg p-3">
-                  <p className="text-muted-foreground">Data Points Today</p>
+                  <p className="text-muted-foreground">
+                    {t('biomarkerTracker.historicalDatabase.dataPointsToday')}
+                  </p>
                   <p className="text-xl font-bold text-foreground">
                     {glucoseData.filter(d => !d.predicted).length}
                   </p>
