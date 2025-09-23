@@ -52,8 +52,12 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onTabChange }) => {
       bg-muted text-foreground`}
     >
       {/* Native Header */}
-      <NativeHeader userName={userName}  visible={predictiveVisible}
-        setVisible={setPredictiveVisible} />
+      <NativeHeader
+        userName={userName}
+        glucoseValue={glucoseValue}
+        visible={predictiveVisible}
+        setVisible={setPredictiveVisible}
+      />
 
       {/* Main Content */}
       <div className="space-y-4 sm:space-y-6 pb-5">
