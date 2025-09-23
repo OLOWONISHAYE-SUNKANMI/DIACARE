@@ -23,12 +23,14 @@ import {
   FileText,
   Share2,
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const DiabetesMonitoringApp = () => {
   const [activeTab, setActiveTab] = useState('monitoring');
   const [currentGlucose, setCurrentGlucose] = useState(120);
   const [insulin, setInsulin] = useState(0);
   const [carbs, setCarbs] = useState(0);
+  const { t } = useTranslation();
   const [activity, setActivity] = useState(0);
   const [alertSettings, setAlertSettings] = useState({
     lowThreshold: 70,
@@ -98,25 +100,25 @@ const DiabetesMonitoringApp = () => {
   });
   const [specialNotes, setSpecialNotes] = useState({
     breakfast: {
-      range1: 'Treat hypoglycemia first. When corrected give this dose.',
+      range1: t('insulinDosage.mealGuidance.breakfast.range1'),
       range2: '',
       range3: '',
       range4: '',
-      range5: 'Check for ketones',
+      range5: t('insulinDosage.mealGuidance.breakfast.range5'),
     },
     lunch: {
-      range1: 'Treat hypoglycemia first. When corrected give this dose.',
+      range1: t('insulinDosage.mealGuidance.lunch.range1'),
       range2: '',
       range3: '',
       range4: '',
-      range5: 'Check for ketones',
+      range5: t('insulinDosage.mealGuidance.lunch.range5'),
     },
     supper: {
-      range1: 'Treat hypoglycemia first. When corrected give this dose.',
+      range1: t('insulinDosage.mealGuidance.supper.range1'),
       range2: '',
       range3: '',
       range4: '',
-      range5: 'Check for ketones',
+      range5: t('insulinDosage.mealGuidance.supper.range5'),
     },
   });
   const [patientName, setPatientName] = useState('');
@@ -205,28 +207,28 @@ const DiabetesMonitoringApp = () => {
   };
 
   // Glucose unit conversion functions
-  const getGlucoseRanges = unit => {
+  const getGlucoseRanges = (unit, t) => {
     if (unit === 'mg/dL') {
       return {
-        range1: '70 or less',
-        range2: '72 - 144',
-        range3: '145 - 216',
-        range4: '217 - 306',
-        range5: '307 or more',
-        snackBreakfast: '72 or more',
-        snackLunch: '72 or more',
-        snackSupper: '108 or more',
+        range1: t('insulinDosage.glucoseRanges.mgdl.range1'), // 70 or less
+        range2: t('insulinDosage.glucoseRanges.mgdl.range2'), // 72 - 144
+        range3: t('insulinDosage.glucoseRanges.mgdl.range3'), // 145 - 216
+        range4: t('insulinDosage.glucoseRanges.mgdl.range4'), // 217 - 306
+        range5: t('insulinDosage.glucoseRanges.mgdl.range5'), // 307 or more
+        snackBreakfast: t('insulinDosage.glucoseRanges.mgdl.snackBreakfast'), // 72 or more
+        snackLunch: t('insulinDosage.glucoseRanges.mgdl.snackLunch'), // 72 or more
+        snackSupper: t('insulinDosage.glucoseRanges.mgdl.snackSupper'), // 108 or more
       };
     } else {
       return {
-        range1: '3.9 or less',
-        range2: '4.0 - 8.0',
-        range3: '8.1 - 12.0',
-        range4: '12.1 - 17.0',
-        range5: '17.1 or more',
-        snackBreakfast: '4.0 or more',
-        snackLunch: '4.0 or more',
-        snackSupper: '6.0 or more',
+        range1: t('insulinDosage.glucoseRanges.mmol.range1'), // 3.9 or less
+        range2: t('insulinDosage.glucoseRanges.mmol.range2'), // 4.0 - 8.0
+        range3: t('insulinDosage.glucoseRanges.mmol.range3'), // 8.1 - 12.0
+        range4: t('insulinDosage.glucoseRanges.mmol.range4'), // 12.1 - 17.0
+        range5: t('insulinDosage.glucoseRanges.mmol.range5'), // 17.1 or more
+        snackBreakfast: t('insulinDosage.glucoseRanges.mmol.snackBreakfast'), // 4.0 or more
+        snackLunch: t('insulinDosage.glucoseRanges.mmol.snackLunch'), // 4.0 or more
+        snackSupper: t('insulinDosage.glucoseRanges.mmol.snackSupper'), // 6.0 or more
       };
     }
   };
@@ -259,93 +261,89 @@ const DiabetesMonitoringApp = () => {
   };
 
   const shareWithDoctor = () => {
-    const ranges = getGlucoseRanges(glucoseUnit);
-    const patientDisplayName = patientName || 'Patient';
+    const ranges = getGlucoseRanges(glucoseUnit, t);
+    const patientDisplayName =
+      patientName || t('insulinDosage.share.patientFallback');
 
     const shareText = `
-🏥 INSULIN DOSE SHEET
-Patient: ${patientDisplayName}
-Date: ${new Date().toLocaleDateString()}
-Units: ${glucoseUnit}
+🏥 ${t('insulinDosage.share.title')}
+${t('insulinDosage.share.patient')}: ${patientDisplayName}
+${t('insulinDosage.share.date')}: ${new Date().toLocaleDateString()}
+${t('insulinDosage.share.units')}: ${glucoseUnit}
 
-=== BREAKFAST ===
-${ranges.range1}: ${insulinDoses.breakfast?.range1 || 'Not set'} units
-${ranges.range2}: ${insulinDoses.breakfast?.range2 || 'Not set'} units
-${ranges.range3}: ${insulinDoses.breakfast?.range3 || 'Not set'} units
-${ranges.range4}: ${insulinDoses.breakfast?.range4 || 'Not set'} units
-${ranges.range5}: ${insulinDoses.breakfast?.range5 || 'Not set'} units
-Snack: ${insulinDoses.breakfast?.snack || 'Not set'} units
+=== ${t('insulinDosage.share.breakfast')} ===
+${ranges.range1}: ${insulinDoses.breakfast?.range1 || t('share.notSet')} ${t('insulinDosage.share.unitsLabel')}
+${ranges.range2}: ${insulinDoses.breakfast?.range2 || t('share.notSet')} ${t('insulinDosage.share.unitsLabel')}
+${ranges.range3}: ${insulinDoses.breakfast?.range3 || t('share.notSet')} ${t('insulinDosage.share.unitsLabel')}
+${ranges.range4}: ${insulinDoses.breakfast?.range4 || t('share.notSet')} ${t('insulinDosage.share.unitsLabel')}
+${ranges.range5}: ${insulinDoses.breakfast?.range5 || t('share.notSet')} ${t('insulinDosage.share.unitsLabel')}
+${t('share.snack')}: ${insulinDoses.breakfast?.snack || t('share.notSet')} ${t('insulinDosage.share.unitsLabel')}
 
-=== LUNCH ===
-${ranges.range1}: ${insulinDoses.lunch?.range1 || 'Not set'} units
-${ranges.range2}: ${insulinDoses.lunch?.range2 || 'Not set'} units
-${ranges.range3}: ${insulinDoses.lunch?.range3 || 'Not set'} units
-${ranges.range4}: ${insulinDoses.lunch?.range4 || 'Not set'} units
-${ranges.range5}: ${insulinDoses.lunch?.range5 || 'Not set'} units
-Snack: ${insulinDoses.lunch?.snack || 'Not set'} units
+=== ${t('share.lunch')} ===
+${ranges.range1}: ${insulinDoses.lunch?.range1 || t('insulinDosage.share.notSet')} ${t('insulinDosage.share.unitsLabel')}
+${ranges.range2}: ${insulinDoses.lunch?.range2 || t('insulinDosage.share.notSet')} ${t('insulinDosage.share.unitsLabel')}
+${ranges.range3}: ${insulinDoses.lunch?.range3 || t('insulinDosage.share.notSet')} ${t('insulinDosage.share.unitsLabel')}
+${ranges.range4}: ${insulinDoses.lunch?.range4 || t('insulinDosage.share.notSet')} ${t('insulinDosage.share.unitsLabel')}
+${ranges.range5}: ${insulinDoses.lunch?.range5 || t('insulinDosage.share.notSet')} ${t('insulinDosage.share.unitsLabel')}
+${t('insulinDosage.share.snack')}: ${insulinDoses.lunch?.snack || t('insulinDosage.share.notSet')} ${t('insulinDosage.share.unitsLabel')}
 
-=== SUPPER ===
-${ranges.range1}: ${insulinDoses.supper?.range1 || 'Not set'} units
-${ranges.range2}: ${insulinDoses.supper?.range2 || 'Not set'} units
-${ranges.range3}: ${insulinDoses.supper?.range3 || 'Not set'} units
-${ranges.range4}: ${insulinDoses.supper?.range4 || 'Not set'} units
-${ranges.range5}: ${insulinDoses.supper?.range5 || 'Not set'} units
-Snack: ${insulinDoses.supper?.snack || 'Not set'} units
+=== ${t('share.supper')} ===
+${ranges.range1}: ${insulinDoses.supper?.range1 || t('insulinDosage.share.notSet')} ${t('insulinDosage.share.unitsLabel')}
+${ranges.range2}: ${insulinDoses.supper?.range2 || t('insulinDosage.share.notSet')} ${t('insulinDosage.share.unitsLabel')}
+${ranges.range3}: ${insulinDoses.supper?.range3 || t('insulinDosage.share.notSet')} ${t('insulinDosage.share.unitsLabel')}
+${ranges.range4}: ${insulinDoses.supper?.range4 || t('insulinDosage.share.notSet')} ${t('insulinDosage.share.unitsLabel')}
+${ranges.range5}: ${insulinDoses.supper?.range5 || t('insulinDosage.share.notSet')} ${t('insulinDosage.share.unitsLabel')}
+${t('insulinDosage.share.snack')}: ${insulinDoses.supper?.snack || t('insulinDosage.share.notSet')} ${t('insulinDosage.share.unitsLabel')}
 
-=== BEDTIME ===
-Basal insulin: ${insulinDoses.bedtime || 'Not set'} units
+=== ${t('insulinDosage.share.bedtime')} ===
+${t('insulinDosage.share.basalInsulin')}: ${insulinDoses.bedtime || t('insulinDosage.share.notSet')} ${t('insulinDosage.share.unitsLabel')}
 
-🩺 HEALTHCARE PROVIDER
-Doctor: ${doctorInfo.name || 'Not specified'}
-Date: ${doctorInfo.date || 'Not specified'}
+🩺 ${t('insulinDosage.share.healthcareProvider')}
+${t('insulinDosage.share.doctor')}: ${doctorInfo.name || t('insulinDosage.share.notSpecified')}
+${t('insulinDosage.share.date')}: ${doctorInfo.date || t('insulinDosage.share.notSpecified')}
 
-📝 DOCTOR'S NOTES
+📝 ${t('insulinDosage.share.doctorNotes')}
 ${
   doctorNotes.recommendations
-    ? 'Recommendations: ' + doctorNotes.recommendations + '\n'
+    ? `${t('insulinDosage.share.recommendations')}: ${doctorNotes.recommendations}\n`
     : ''
 }${
       doctorNotes.specialInstructions
-        ? 'Special Instructions: ' + doctorNotes.specialInstructions + '\n'
+        ? `${t('insulinDosage.share.specialInstructions')}: ${doctorNotes.specialInstructions}\n`
         : ''
     }${
       doctorNotes.followUpDate
-        ? 'Next Appointment: ' +
-          new Date(doctorNotes.followUpDate).toLocaleDateString()
+        ? `${t('insulinDosage.share.nextAppointment')}: ${new Date(
+            doctorNotes.followUpDate
+          ).toLocaleDateString()}`
         : ''
     }
 
-Generated from Diabetes Management System
+${t('insulinDosage.share.generatedFrom')}
 `.trim();
 
     if (navigator.share) {
       navigator.share({
-        title: `Insulin Dose Sheet - ${patientDisplayName}`,
+        title: `${t('insulinDosage.share.title')} - ${patientDisplayName}`,
         text: shareText,
       });
     } else if (navigator.clipboard) {
       navigator.clipboard.writeText(shareText).then(() => {
-        alert(
-          '✅ Insulin dose sheet copied to clipboard!\n\nYou can now paste it in:\n• Email to your doctor\n• WhatsApp/SMS message\n• Medical app or portal'
-        );
+        alert(t('share.copySuccess'));
       });
     } else {
-      // Fallback - create downloadable file
       const blob = new Blob([shareText], { type: 'text/plain' });
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = `insulin-dose-sheet-${patientDisplayName.replace(
-        /\s+/g,
-        '-'
-      )}.txt`;
+      link.download = `insulin-dose-sheet-${patientDisplayName.replace(/\s+/g, '-')}.txt`;
       link.click();
     }
   };
 
   // Insulin Dose Sheet Component
   const InsulinDoseSheet = () => {
-    const ranges = getGlucoseRanges(glucoseUnit);
+    const ranges = getGlucoseRanges(glucoseUnit, t);
 
     const MealSection = ({
       mealName,
@@ -360,15 +358,15 @@ Generated from Diabetes Management System
         </div>
 
         <div className="text-sm mb-2 flex items-center gap-2">
-          Sliding scale for clear rapid-acting insulin (
+          {t('insulinDosage.slidingScale.insulinText')} (
           <input
             type="text"
             value={penColors[mealKey] || ''}
             onChange={e => handlePenColorChange(mealKey, e.target.value)}
             className="border border-border bg-background focus:ring focus:ring-accent focus:border-0 px-1 py-0.5 w-20 text-center"
-            placeholder="type"
+            placeholder={t('insulinDosage.slidingScale.typePlaceholder')}
           />
-          ) pen colour
+          ) {t('insulinDosage.slidingScale.penColour')}
           <input
             type="text"
             value={penColors[mealKey + '_color'] || ''}
@@ -376,7 +374,9 @@ Generated from Diabetes Management System
               handlePenColorChange(mealKey + '_color', e.target.value)
             }
             className="border  border-border bg-background focus:ring focus:ring-accent focus:border-0 px-1 py-0.5 w-20 text-center"
-            placeholder="color"
+            placeholder={t(
+              'insulinDosage.insulinDosage.slidingScale.colorPlaceholder'
+            )}
           />
         </div>
 
@@ -384,13 +384,13 @@ Generated from Diabetes Management System
           <thead>
             <tr className="bg-[hsl(var(--muted))]">
               <th className="border border-[hsl(var(--border))] px-3 py-2 text-left font-bold">
-                Blood sugar ({glucoseUnit})
+                {t('insulinDosage.insulinTable.bloodSugar')} ({glucoseUnit})
               </th>
               <th className="border border-[hsl(var(--border))] px-3 py-2 text-left font-bold">
-                Units
+                {t('insulinDosage.insulinTable.units')}
               </th>
               <th className="border border-[hsl(var(--border))] px-3 py-2 text-left font-bold">
-                Special notes
+                {t('insulinDosage.insulinTable.specialNotes')}
               </th>
             </tr>
           </thead>
@@ -407,7 +407,7 @@ Generated from Diabetes Management System
                     handleInsulinDoseChange(mealKey, 'range1', e.target.value)
                   }
                   className="w-full border-0 bg-transparent text-center"
-                  placeholder="units"
+                  placeholder={t('insulinDosage.insulinTable.unitsPlaceholder')}
                 />
               </td>
               <td className="border border-[hsl(var(--border))] px-3 py-2">
@@ -418,7 +418,9 @@ Generated from Diabetes Management System
                   }
                   className="w-full border-0 bg-transparent resize-none text-sm"
                   rows={2}
-                  placeholder="Add special instructions..."
+                  placeholder={t(
+                    'insulinDosage.insulinTable.specialNotesPlaceholder'
+                  )}
                 />
               </td>
             </tr>
@@ -435,7 +437,7 @@ Generated from Diabetes Management System
                     handleInsulinDoseChange(mealKey, 'range2', e.target.value)
                   }
                   className="w-full border-0 bg-transparent text-center"
-                  placeholder="units"
+                  placeholder={t('insulinDosage.insulinTable.unitsPlaceholder')}
                 />
               </td>
               <td className="border border-[hsl(var(--border))] px-3 py-2">
@@ -446,7 +448,9 @@ Generated from Diabetes Management System
                   }
                   className="w-full border-0 bg-transparent resize-none text-sm"
                   rows={2}
-                  placeholder="Add special instructions..."
+                  placeholder={t(
+                    'insulinDosage.insulinTable.specialNotesPlaceholder'
+                  )}
                 />
               </td>
             </tr>
@@ -463,7 +467,7 @@ Generated from Diabetes Management System
                     handleInsulinDoseChange(mealKey, 'range3', e.target.value)
                   }
                   className="w-full border-0 bg-transparent text-center"
-                  placeholder="units"
+                  placeholder={t('insulinDosage.insulinTable.unitsPlaceholder')}
                 />
               </td>
               <td className="border border-[hsl(var(--border))] px-3 py-2">
@@ -474,7 +478,9 @@ Generated from Diabetes Management System
                   }
                   className="w-full border-0 bg-transparent resize-none text-sm"
                   rows={2}
-                  placeholder="Add special instructions..."
+                  placeholder={t(
+                    'insulinDosage.insulinTable.specialNotesPlaceholder'
+                  )}
                 />
               </td>
             </tr>
@@ -491,7 +497,7 @@ Generated from Diabetes Management System
                     handleInsulinDoseChange(mealKey, 'range4', e.target.value)
                   }
                   className="w-full border-0 bg-transparent text-center"
-                  placeholder="units"
+                  placeholder={t('insulinDosage.insulinTable.unitsPlaceholder')}
                 />
               </td>
               <td className="border border-[hsl(var(--border))] px-3 py-2">
@@ -502,7 +508,9 @@ Generated from Diabetes Management System
                   }
                   className="w-full border-0 bg-transparent resize-none text-sm"
                   rows={2}
-                  placeholder="Add special instructions..."
+                  placeholder={t(
+                    'insulinDosage.insulinTable.specialNotesPlaceholder'
+                  )}
                 />
               </td>
             </tr>
@@ -519,7 +527,7 @@ Generated from Diabetes Management System
                     handleInsulinDoseChange(mealKey, 'range5', e.target.value)
                   }
                   className="w-full border-0 bg-transparent text-center"
-                  placeholder="units"
+                  placeholder={t('insulinDosage.insulinTable.unitsPlaceholder')}
                 />
               </td>
               <td className="border border-[hsl(var(--border))] px-3 py-2">
@@ -530,7 +538,9 @@ Generated from Diabetes Management System
                   }
                   className="w-full border-0 bg-transparent resize-none text-sm"
                   rows={2}
-                  placeholder="Add special instructions..."
+                  placeholder={t(
+                    'insulinDosage.insulinTable.specialNotesPlaceholder'
+                  )}
                 />
               </td>
             </tr>
@@ -538,19 +548,22 @@ Generated from Diabetes Management System
         </table>
 
         <div className="bg-[hsl(var(--background))] text-[hsl(var(--foreground))] px-3 py-1 inline-block font-bold mb-2">
-          Snack
+          {t('insulinDosage.snackSection.title')}
         </div>
+
         <div className="text-sm mb-2">
-          Fixed dose clear rapid-acting insulin ( ______ ) pen colour _______
+          {t('insulinDosage.snackSection.fixedDoseText')} ( ______ ){' '}
+          {t('insulinDosage.snackSection.penColour')}
         </div>
+
         <table className="w-full border-collapse border border-[hsl(var(--border))] mb-4 max-w-md">
           <thead>
             <tr className="bg-[hsl(var(--muted))]">
               <th className="border border-[hsl(var(--border))] px-3 py-2 text-left font-bold">
-                Blood sugar ({glucoseUnit})
+                {t('insulinDosage.snackSection.bloodSugar')} ({glucoseUnit})
               </th>
               <th className="border border-[hsl(var(--border))] px-3 py-2 text-left font-bold">
-                Units
+                {t('insulinDosage.snackSection.units')}
               </th>
             </tr>
           </thead>
@@ -560,8 +573,8 @@ Generated from Diabetes Management System
                 {mealKey === 'breakfast'
                   ? ranges.snackBreakfast
                   : mealKey === 'lunch'
-                  ? ranges.snackLunch
-                  : ranges.snackSupper}
+                    ? ranges.snackLunch
+                    : ranges.snackSupper}
               </td>
               <td className="border border-[hsl(var(--border))] px-3 py-2">
                 <input
@@ -571,7 +584,7 @@ Generated from Diabetes Management System
                     handleInsulinDoseChange(mealKey, 'snack', e.target.value)
                   }
                   className="w-full border-0 bg-transparent text-center"
-                  placeholder="units"
+                  placeholder={t('insulinDosage.snackSection.unitsPlaceholder')}
                 />
               </td>
             </tr>
@@ -586,27 +599,33 @@ Generated from Diabetes Management System
         <div className="mb-6 border-b pb-4">
           <div className="flex justify-between items-start mb-4">
             <div className="flex-1">
-              <h2 className="text-2xl font-bold mb-1">Insulin Dose Sheet</h2>
+              <h2 className="text-2xl font-bold mb-1">
+                {t('insulinDosage.insulinSheet.title')}
+              </h2>
               <h3 className="text-lg font-semibold text-foreground mb-3">
-                Rapid-acting insulin
+                {t('insulinDosage.insulinSheet.rapidActing')}
               </h3>
 
               <div className="mb-3">
                 <label className="block text-sm font-medium text-foreground mb-1">
-                  Patient Name
+                  {t('insulinDosage.insulinSheet.patientName')}
                 </label>
                 <input
                   type="text"
                   value={patientName}
                   onChange={e => setPatientName(e.target.value)}
                   className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-foreground bg-background "
-                  placeholder="Enter patient name"
+                  placeholder={t(
+                    'insulinDosage.insulinSheet.patientNamePlaceholder'
+                  )}
                 />
               </div>
             </div>
             <div className="text-right">
               <div className="mb-2">
-                <span className="text-sm font-medium mr-2">Glucose Units:</span>
+                <span className="text-sm font-medium mr-2">
+                  {t('insulinDosage.insulinSheet.glucoseUnits')}
+                </span>
                 <button
                   onClick={() => setGlucoseUnit('mg/dL')}
                   className={`px-4 py-2 rounded-lg font-medium transition-colors ${
@@ -628,17 +647,21 @@ Generated from Diabetes Management System
                   mmol/L
                 </button>
               </div>
-              <p className="text-xs text-gray-500">Click to switch units</p>
+              <p className="text-xs text-gray-500">
+                {t('insulinDosage.insulinSheet.switchUnits')}
+              </p>
             </div>
           </div>
           <p className="text-sm text-foreground">
-            For blood glucose measurements in {glucoseUnit}
+            {t('insulinDosage.insulinSheet.measurements', {
+              unit: glucoseUnit,
+            })}{' '}
           </p>
         </div>
 
         {/* Meal Sections */}
         <MealSection
-          mealName="Breakfast"
+          mealName={t('insulinDosage.meals.breakfast')}
           mealKey="breakfast"
           ranges={ranges}
           insulinDoses={insulinDoses}
@@ -646,7 +669,7 @@ Generated from Diabetes Management System
         />
 
         <MealSection
-          mealName="Lunch"
+          mealName={t('insulinDosage.meals.lunch')}
           mealKey="lunch"
           ranges={ranges}
           insulinDoses={insulinDoses}
@@ -654,7 +677,7 @@ Generated from Diabetes Management System
         />
 
         <MealSection
-          mealName="Supper"
+          mealName={t('insulinDosage.meals.supper')}
           mealKey="supper"
           ranges={ranges}
           insulinDoses={insulinDoses}
@@ -664,18 +687,18 @@ Generated from Diabetes Management System
         {/* Bedtime */}
         <div className="mb-6">
           <div className="bg-background text-foreground px-3 py-1 inline-block font-bold mb-2">
-            Bedtime
+            {t('insulinDosage.meals.bedtime')}
           </div>
           <div className="text-sm mb-2 flex items-center gap-2">
-            Fixed dose clear basal-acting insulin (
+            {t('insulinDosage.insulin.fixedDoseClear')} (
             <input
               type="text"
               value={penColors.bedtime || ''}
               onChange={e => handlePenColorChange('bedtime', e.target.value)}
               className="border border-border bg-background focus:ring focus:ring-accent focus:border-0 px-1 py-0.5 w-20 text-center"
-              placeholder="type"
+              placeholder={t('placeholders.type')}
             />
-            ) pen colour
+            ) {t('insulinDosage.insulin.penColour')}
             <input
               type="text"
               value={penColors.bedtime_color || ''}
@@ -683,7 +706,7 @@ Generated from Diabetes Management System
                 handlePenColorChange('bedtime_color', e.target.value)
               }
               className="border border-border bg-background focus:ring focus:ring-accent focus:border-0 px-1 py-0.5 w-20 text-center"
-              placeholder="color"
+              placeholder={t('insulinDosage.placeholders.color')}
             />
           </div>
 
@@ -691,7 +714,7 @@ Generated from Diabetes Management System
             <thead>
               <tr className="bg-muted">
                 <th className="border border-gray-400 px-3 py-2 text-left font-bold">
-                  Units
+                  {t('insulinDosage.units.label')}
                 </th>
               </tr>
             </thead>
@@ -708,7 +731,7 @@ Generated from Diabetes Management System
                       }))
                     }
                     className="w-full border-0 bg-transparent text-center"
-                    placeholder="units"
+                    placeholder={t('insulinDosage.placeholders.units')}
                   />
                 </td>
               </tr>
@@ -721,7 +744,7 @@ Generated from Diabetes Management System
           <div className="flex items-center mb-4">
             <FileText className="text-foreground mr-2" size={24} />
             <h3 className="text-xl font-bold text-foreground">
-              Doctor's Notes & Recommendations
+              {t('insulinDosage.notes.doctorsNotes')}
             </h3>
           </div>
 
@@ -730,7 +753,7 @@ Generated from Diabetes Management System
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-semibold text-foreground mb-2">
-                  General Notes
+                  {t('insulinDosage.notes.generalNotes')}
                 </label>
                 <textarea
                   value={doctorNotes.generalNotes || ''}
@@ -740,14 +763,14 @@ Generated from Diabetes Management System
                       generalNotes: e.target.value,
                     }))
                   }
-                  placeholder="Patient's current condition, general observations..."
+                  placeholder={t('insulinDosage.notes.patientCondition')}
                   className="w-full h-24 px-3 py-2 border border-gray bg-background text0foreground rounded-lg focus:ring-2 focus:ring-accent focus:border-accent resize-none"
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-semibold text-foreground mb-2">
-                  Clinical Observations
+                  {t('insulinDosage.notes.clinicalObservations')}
                 </label>
                 <textarea
                   value={doctorNotes.observations || ''}
@@ -757,14 +780,14 @@ Generated from Diabetes Management System
                       observations: e.target.value,
                     }))
                   }
-                  placeholder="Blood glucose patterns, HbA1c levels, symptoms observed..."
+                  placeholder={t('insulinDosage.notes.bloodGlucosePatterns')}
                   className="w-full h-24 px-3 py-2 border border-gray bg-background text0foreground rounded-lg focus:ring-2 focus:ring-accent focus:border-accent resize-none"
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-semibold text-foreground mb-2">
-                  Emergency Contact Instructions
+                  {t('insulinDosage.notes.emergencyContact')}
                 </label>
                 <textarea
                   value={doctorNotes.emergencyContact || ''}
@@ -774,8 +797,10 @@ Generated from Diabetes Management System
                       emergencyContact: e.target.value,
                     }))
                   }
-                  placeholder="When to call emergency services, doctor contact info..."
-                  className="w-full h-24 px-3 py-2 border border-gray bg-background text0foreground rounded-lg focus:ring-2 focus:ring-accent focus:border-accent resize-none"
+                  placeholder={t(
+                    'insulinDosage.notes.emergencyContactPlaceholder'
+                  )}
+                  className="w-full h-24 px-3 py-2 border border-gray bg-background text-foreground rounded-lg focus:ring-2 focus:ring-accent focus:border-accent resize-none"
                 />
               </div>
             </div>
@@ -784,7 +809,7 @@ Generated from Diabetes Management System
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-semibold text-foreground mb-2">
-                  Treatment Recommendations
+                  {t('insulinDosage.notes.treatmentRecommendations')}
                 </label>
                 <textarea
                   value={doctorNotes.recommendations || ''}
@@ -794,14 +819,16 @@ Generated from Diabetes Management System
                       recommendations: e.target.value,
                     }))
                   }
-                  placeholder="Dietary recommendations, exercise guidelines, medication adjustments..."
-                  className="w-full h-24 px-3 py-2 border border-gray bg-background text0foreground rounded-lg focus:ring-2 focus:ring-accent focus:border-accent resize-none"
+                  placeholder={t(
+                    'insulinDosage.notes.treatmentRecommendationsPlaceholder'
+                  )}
+                  className="w-full h-24 px-3 py-2 border border-gray bg-background text-foreground rounded-lg focus:ring-2 focus:ring-accent focus:border-accent resize-none"
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-semibold text-foreground mb-2">
-                  Special Instructions
+                  {t('insulinDosage.notes.specialInstructions')}
                 </label>
                 <textarea
                   value={doctorNotes.specialInstructions || ''}
@@ -811,14 +838,16 @@ Generated from Diabetes Management System
                       specialInstructions: e.target.value,
                     }))
                   }
-                  placeholder="Sick day management, travel instructions, special situations..."
-                  className="w-full h-24 px-3 py-2 border border-gray bg-background text0foreground rounded-lg focus:ring-2 focus:ring-accent focus:border-accent resize-none"
+                  placeholder={t(
+                    'insulinDosage.notes.specialInstructionsPlaceholder'
+                  )}
+                  className="w-full h-24 px-3 py-2 border border-gray bg-background text-foreground rounded-lg focus:ring-2 focus:ring-accent focus:border-accent resize-none"
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-semibold text-foreground mb-2">
-                  Next Follow-up Appointment
+                  {t('insulinDosage.notes.followUpAppointment')}
                 </label>
                 <input
                   type="date"
@@ -838,29 +867,33 @@ Generated from Diabetes Management System
           {/* Quick Notes Section */}
           <div className="mt-6 p-4 bg-background rounded-lg border border-gray-200">
             <h4 className="font-semibold text-gray-800 mb-3">
-              Quick Reference Guidelines
+              {t('insulinDosage.quickReference.title')}
             </h4>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
               <div className="p-3 bg-red-50 rounded border-l-4 border-red-400">
                 <div className="font-medium text-red-800">
-                  Hypoglycemia Signs
+                  {t('insulinDosage.quickReference.hypoTitle')}
                 </div>
                 <div className="text-red-600 text-xs mt-1">
-                  Sweating, shaking, confusion, rapid heartbeat
+                  {t('insulinDosage.quickReference.hypoSigns')}
                 </div>
               </div>
+
               <div className="p-3 bg-orange-50 rounded border-l-4 border-orange-400">
                 <div className="font-medium text-orange-800">
-                  Hyperglycemia Signs
+                  {t('insulinDosage.quickReference.hyperTitle')}
                 </div>
                 <div className="text-orange-600 text-xs mt-1">
-                  Excessive thirst, frequent urination, fatigue
+                  {t('insulinDosage.quickReference.hyperSigns')}
                 </div>
               </div>
+
               <div className="p-3 bg-blue-50 rounded border-l-4 border-blue-400">
-                <div className="font-medium text-blue-800">Ketone Testing</div>
+                <div className="font-medium text-blue-800">
+                  {t('insulinDosage.quickReference.ketoneTitle')}
+                </div>
                 <div className="text-blue-600 text-xs mt-1">
-                  Test when blood sugar {'>'} 250 mg/dL (13.9 mmol/L)
+                  {t('insulinDosage.quickReference.ketoneInstruction')}
                 </div>
               </div>
             </div>
@@ -870,32 +903,30 @@ Generated from Diabetes Management System
         {/* Footer */}
         <div className="border-t pt-4">
           <div className="text-sm mb-4">
-            Parents/caregivers have received training to adjust the insulin.
-            They are skilled in changing insulin dosages according to the
-            patient's needs.
+            {t('insulinDosage.caregiverTraining.message')}
           </div>
 
           <table className="w-full border-collapse border border-gray-400 mb-4">
             <thead>
               <tr className="bg-muted">
                 <th className="border border-gray-400 px-3 py-2 text-left font-bold">
-                  Health care professional
+                  {t('insulinDosage.doctorSection.healthProfessional')}
                 </th>
                 <th className="border border-gray-400 px-3 py-2 text-left font-bold">
-                  Name in print letters
+                  {t('insulinDosage.doctorSection.nameInPrint')}
                 </th>
                 <th className="border border-gray-400 px-3 py-2 text-left font-bold">
-                  Signature
+                  {t('insulinDosage.doctorSection.signature')}
                 </th>
                 <th className="border border-gray-400 px-3 py-2 text-left font-bold">
-                  Date DD/MM/YYYY
+                  {t('insulinDosage.doctorSection.dateFormat')}
                 </th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td className="border border-gray-400 px-3 py-2 h-12">
-                  Doctor
+                  {t('insulinDosage.doctorSection.doctor')}
                 </td>
                 <td className="border border-gray-400 px-3 py-2">
                   <input
@@ -905,7 +936,7 @@ Generated from Diabetes Management System
                       setDoctorInfo(prev => ({ ...prev, name: e.target.value }))
                     }
                     className="w-full border-0 bg-transparent"
-                    placeholder="Enter name"
+                    placeholder={t('insulinDosage.doctorSection.enterName')}
                   />
                 </td>
                 <td className="border border-gray-400 px-3 py-2">
@@ -919,9 +950,10 @@ Generated from Diabetes Management System
                       }))
                     }
                     className="w-full border-0 bg-transparent"
-                    placeholder="Signature"
+                    placeholder={t('insulinDosage.doctorSection.signature')}
                   />
                 </td>
+
                 <td className="border border-gray-400 px-3 py-2">
                   <input
                     type="date"
@@ -937,7 +969,7 @@ Generated from Diabetes Management System
           </table>
 
           <div className="text-sm font-medium text-center bg-muted text-foreground p-3 rounded border">
-            Keep this sheet accessible at all times - For medical reference only
+            {t('insulinDosage.doctorSection.keepSheetAccessible')}
           </div>
 
           {/* Save and Print Options */}
@@ -947,8 +979,9 @@ Generated from Diabetes Management System
               className="px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition-colors flex items-center gap-2"
             >
               <FileText size={16} />
-              Print Sheet
+              {t('insulinDosage.doctorSection.printSheet')}
             </button>
+
             <button
               onClick={() => {
                 const data = {
@@ -973,23 +1006,23 @@ Generated from Diabetes Management System
               className="px-6 py-2 bg-green-500 hover:bg-green-600 text-white font-medium rounded-lg transition-colors flex items-center gap-2"
             >
               <Database size={16} />
-              Save Data
+              {t('insulinDosage.doctorSection.saveData')}
             </button>
+
             <button
               onClick={shareWithDoctor}
               className="px-6 py-2 bg-purple-500 hover:bg-purple-600 text-white font-medium rounded-lg transition-colors flex items-center gap-2"
             >
               <Share2 size={16} />
-              Share with Doctor
+              {t('insulinDosage.doctorSection.shareWithDoctor')}
             </button>
           </div>
 
           {/* Share Instructions */}
           <div className="mt-4 p-3 bg-purple-50 rounded-lg border border-purple-200">
             <p className="text-sm text-purple-700 text-center">
-              💡 <strong>Share with Doctor:</strong> Copies your insulin doses
-              and notes to clipboard, then paste in email, WhatsApp, or text
-              message to your healthcare provider.
+              💡 <strong>{t('insulinDosage.shareInfo.title')}</strong>{' '}
+              {t('insulinDosage.shareInfo.description')}
             </p>
           </div>
         </div>
@@ -1003,10 +1036,10 @@ Generated from Diabetes Management System
         {/* Header */}
         <div className="bg-background rounded-xl shadow-lg p-6 mb-6">
           <h1 className="text-3xl font-bold text-foreground mb-2">
-            Diabetes Management System
+            {t('insulinDosage.dashboard.title')}
           </h1>
           <p className="text-muted-foreground">
-            Real-time glucose monitoring with AI-powered predictions
+            {t('insulinDosage.dashboard.subtitle')}
           </p>
 
           {/* Tab Navigation */}
@@ -1020,7 +1053,7 @@ Generated from Diabetes Management System
               }`}
             >
               <Activity className="inline mr-2" size={20} />
-              Monitoring
+              {t('insulinDosage.dashboard.tabs.monitoring')}
             </button>
             <button
               onClick={() => setActiveTab('dosage')}
@@ -1031,7 +1064,7 @@ Generated from Diabetes Management System
               }`}
             >
               <FileText className="inline mr-2" size={20} />
-              Insulin Dose Sheet
+              {t('insulinDosage.dashboard.tabs.dosage')}
             </button>
           </div>
         </div>
@@ -1046,14 +1079,14 @@ Generated from Diabetes Management System
                 <div className="flex  items-center mb-4">
                   <Droplets className="text-blue-500 mr-2" size={24} />
                   <h2 className="text-xl text-foreground font-semibold">
-                    Patient Manual Input
+                    {t('insulinDosage.patient.manualInput')}
                   </h2>
                 </div>
 
                 <div className="space-y-4">
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-1">
-                      Current Glucose (mg/dL)
+                      {t('insulinDosage.patient.currentGlucose')}
                     </label>
                     <input
                       type="number"
@@ -1066,7 +1099,7 @@ Generated from Diabetes Management System
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-1">
                       <Syringe className="inline mr-1" size={16} />
-                      Insulin (units)
+                      {t('insulinDosage.patient.insulinUnits')}
                     </label>
                     <input
                       type="number"
@@ -1079,7 +1112,7 @@ Generated from Diabetes Management System
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-1">
                       <Utensils className="inline mr-1" size={16} />
-                      Carbs (grams)
+                      {t('insulinDosage.patient.carbsGrams')}
                     </label>
                     <input
                       type="number"
@@ -1092,7 +1125,7 @@ Generated from Diabetes Management System
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-1">
                       <Activity className="inline mr-1" size={16} />
-                      Activity (minutes)
+                      {t('insulinDosage.patient.activityMinutes')}
                     </label>
                     <input
                       type="number"
@@ -1106,7 +1139,7 @@ Generated from Diabetes Management System
                     onClick={addGlucoseReading}
                     className="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg transition-colors"
                   >
-                    Add Reading & Generate Prediction
+                    {t('insulinDosage.patient.addReadingGeneratePrediction')}
                   </button>
                 </div>
               </div>
@@ -1115,13 +1148,15 @@ Generated from Diabetes Management System
               <div className="bg-background rounded-xl shadow-lg p-6">
                 <div className="flex text-foreground items-center mb-4">
                   <Settings className="text-orange-500 mr-2" size={24} />
-                  <h2 className="text-xl font-semibold">Alert Settings</h2>
+                  <h2 className="text-xl font-semibold">
+                    {t('insulinDosage.alerts.title')}
+                  </h2>
                 </div>
 
                 <div className="space-y-4">
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-1">
-                      Low Threshold (mg/dL)
+                      {t('insulinDosage.alerts.lowThreshold')}
                     </label>
                     <input
                       type="number"
@@ -1138,7 +1173,7 @@ Generated from Diabetes Management System
 
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-1">
-                      High Threshold (mg/dL)
+                      {t('insulinDosage.alerts.highThreshold')}
                     </label>
                     <input
                       type="number"
@@ -1160,20 +1195,20 @@ Generated from Diabetes Management System
                 <div className="flex items-center mb-4">
                   <Brain className="text-purple-500 mr-2" size={24} />
                   <h2 className="text-xl text-foreground font-semibold">
-                    AI Prediction Engine
+                    {t('insulinDosage.aiPrediction.title')}
                   </h2>
                 </div>
 
                 {prediction && (
                   <div className="bg-purple-50 rounded-lg p-4">
                     <p className="text-sm text-gray-600 mb-2">
-                      Next 30-minute prediction:
+                      {t('insulinDosage.aiPrediction.nextPrediction')}
                     </p>
                     <p className="text-2xl font-bold text-purple-600">
                       {prediction} mg/dL
                     </p>
                     <p className="text-xs text-gray-500 mt-1">
-                      Based on time-series analysis + rule-based factors
+                      {t('insulinDosage.aiPrediction.basedOn')}
                     </p>
                   </div>
                 )}
@@ -1194,7 +1229,7 @@ Generated from Diabetes Management System
                     {doctorNotes.recommendations && (
                       <div className="p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500">
                         <h3 className="font-medium text-blue-800 mb-2">
-                          Treatment Recommendations
+                          {t('insulinDosage.doctorNotes.recommendations')}
                         </h3>
                         <p className="text-sm text-blue-700">
                           {doctorNotes.recommendations}
@@ -1205,7 +1240,7 @@ Generated from Diabetes Management System
                     {doctorNotes.specialInstructions && (
                       <div className="p-4 bg-amber-50 rounded-lg border-l-4 border-amber-500">
                         <h3 className="font-medium text-amber-800 mb-2">
-                          Special Instructions
+                          {t('insulinDosage.doctorNotes.specialInstructions')}
                         </h3>
                         <p className="text-sm text-amber-700">
                           {doctorNotes.specialInstructions}
@@ -1217,7 +1252,7 @@ Generated from Diabetes Management System
                       <div className="p-3 bg-green-50 rounded-lg border border-green-200">
                         <div className="flex items-center text-green-800">
                           <span className="font-medium text-sm">
-                            Next Appointment:{' '}
+                            {t('insulinDosage.doctorNotes.nextAppointment')}
                           </span>
                           <span className="ml-2 text-sm">
                             {new Date(
@@ -1244,12 +1279,11 @@ Generated from Diabetes Management System
                 <div className="flex items-center mb-4">
                   <Activity className="text-green-500 mr-2" size={24} />
                   <h2 className="text-xl font-semibold">
-                    Real-Time Blood Glucose
+                    {t('insulinDosage.monitoring.realTimeGlucose')}
                   </h2>
                 </div>
 
                 <div className="h-64 text-foreground">
-                 
                   <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={glucoseData}>
                       {/* Grid */}
@@ -1310,7 +1344,7 @@ Generated from Diabetes Management System
                         dataKey="glucose"
                         stroke="hsl(var(--primary))"
                         strokeWidth={2}
-                        dot={(props) => {
+                        dot={props => {
                           const { payload, cx, cy } = props;
                           return (
                             <circle
@@ -1339,11 +1373,11 @@ Generated from Diabetes Management System
                 <div className="flex items-center justify-between mt-4 text-sm text-gray-600">
                   <span className="flex items-center text-foreground">
                     <div className="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
-                    Actual readings
+                    {t('insulinDosage.monitoring.actualReadings')}
                   </span>
                   <span className="flex items-center text-foreground">
                     <div className="w-3 h-3 bg-purple-500 rounded-full mr-2"></div>
-                    AI predictions
+                    {t('insulinDosage.monitoring.aiPredictions')}
                   </span>
                 </div>
               </div>
@@ -1353,13 +1387,13 @@ Generated from Diabetes Management System
                 <div className="flex items-center mb-4">
                   <Bell className="text-red-500 mr-2" size={24} />
                   <h2 className="text-xl text-foreground font-semibold">
-                    Alerts System
+                    {t('insulinDosage.alertsSystem.title')}
                   </h2>
                 </div>
 
                 {alerts.length === 0 ? (
                   <p className="text-muted-foreground text-center py-4">
-                    No active alerts
+                    {t('insulinDosage.alertsSystem.noActiveAlerts')}
                   </p>
                 ) : (
                   <div className="space-y-3">
@@ -1401,19 +1435,23 @@ Generated from Diabetes Management System
                 <div className="flex items-center mb-4">
                   <Database className="text-gray-500 mr-2" size={24} />
                   <h2 className="text-xl font-semibold text-foreground">
-                    Historical Database
+                    {t('insulinDosage.historicalDatabase.title')}
                   </h2>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div className="bg-muted rounded-lg p-3">
-                    <p className="text-foreground">Total Readings</p>
+                    <p className="text-foreground">
+                      {t('insulinDosage.historicalDatabase.totalReadings')}
+                    </p>
                     <p className="text-xl font-bold text-muted-foreground">
                       {glucoseData.length}
                     </p>
                   </div>
                   <div className="bg-muted rounded-lg p-3">
-                    <p className="text-foreground">Data Points Today</p>
+                    <p className="text-foreground">
+                      {t('insulinDosage.historicalDatabase.dataPointsToday')}
+                    </p>
                     <p className="text-xl font-bold text-muted-foreground">
                       {glucoseData.filter(d => !d.predicted).length}
                     </p>

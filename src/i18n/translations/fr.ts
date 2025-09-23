@@ -2,7 +2,8 @@ export const fr = {
   // App general
   appName: 'Klukoo',
   appDescription: '',
-  appSlogan: 'La première application intelligente en Afrique qui aide les patients diabétiques à mieux vivre, mieux anticiper et mieux réagir.',
+  appSlogan:
+    'La première application intelligente en Afrique qui aide les patients diabétiques à mieux vivre, mieux anticiper et mieux réagir.',
 
   // Navigation
   nav: {
@@ -13,7 +14,7 @@ export const fr = {
     chat: 'Chat',
     assistant: 'Assistant',
     journal: 'Carnet',
-    blog: 'Journal',
+    blog: 'Blog',
     family: 'Famille',
     profile: 'Profil',
     reminders: 'Rappels',
@@ -94,6 +95,10 @@ export const fr = {
     average: 'Moyenne',
     highest: 'élevé',
     inRange: 'Dans la plage',
+    glucose: 'Glucose',
+    meals: 'Repas',
+    medications: 'Médicaments',
+    activities: 'Activités',
   },
 
   // Doses Screen
@@ -777,6 +782,10 @@ export const fr = {
 
   Actions: {
     actions: 'Actions Rapides',
+    addMeal: 'Ajouter un repas',
+    addMedication: 'Ajouter un médicament',
+    addActivity: 'Ajouter une activité',
+    reminders: 'Ajouter des rappels',
     actionsPopover: {
       bloodSugar: {
         increment: 'Ajouter Glycémie',
@@ -3603,6 +3612,17 @@ Le non-respect de cette charte peut entraîner une suspension temporaire ou déf
         description: '{{food}} - {{carbs}}g de glucides estimés',
       },
     },
+    mealModal: {
+      title: '🍽 Journal des Repas',
+      barcodeScan: 'Scanner code-barres',
+      photoAI: 'Photo + IA',
+      manualEntry: 'ou saisie manuelle',
+      foodNameLabel: "Nom de l'aliment",
+      foodNamePlaceholder: 'Ex: Pomme, Riz, Salade...',
+      carbsLabel: 'Glucides (g) - optionnel',
+      carbsPlaceholder: 'Ex: 25',
+      addButton: 'Ajouter',
+    },
   },
 
   adminTabs: {
@@ -5166,6 +5186,336 @@ Le non-respect de cette charte peut entraîner une suspension temporaire ou déf
   app: {
     status: {
       offline: '📡 Mode hors ligne - Certaines fonctionnalités sont limitées',
+    },
+  },
+
+  insulinDosage: {
+    title: "Dosage d'insuline",
+    mealGuidance: {
+      breakfast: {
+        range1:
+          "Traitez d'abord l'hypoglycémie. Une fois corrigée, administrez cette dose.",
+        range5: 'Vérifiez les cétones',
+      },
+      lunch: {
+        range1:
+          "Traitez d'abord l'hypoglycémie. Une fois corrigée, administrez cette dose.",
+        range5: 'Vérifiez les cétones',
+      },
+      supper: {
+        range1:
+          "Traitez d'abord l'hypoglycémie. Une fois corrigée, administrez cette dose.",
+        range5: 'Vérifiez les cétones',
+      },
+    },
+    glucoseRanges: {
+      mgdl: {
+        range1: '70 ou moins',
+        range2: '72 - 144',
+        range3: '145 - 216',
+        range4: '217 - 306',
+        range5: '307 ou plus',
+        snackBreakfast: '72 ou plus',
+        snackLunch: '72 ou plus',
+        snackSupper: '108 ou plus',
+      },
+      mmol: {
+        range1: '3,9 ou moins',
+        range2: '4,0 - 8,0',
+        range3: '8,1 - 12,0',
+        range4: '12,1 - 17,0',
+        range5: '17,1 ou plus',
+        snackBreakfast: '4,0 ou plus',
+        snackLunch: '4,0 ou plus',
+        snackSupper: '6,0 ou plus',
+      },
+    },
+    share: {
+      title: "FEUILLE DE DOSE D'INSULINE",
+      patient: 'Patient',
+      patientFallback: 'Patient',
+      date: 'Date',
+      units: 'Unités',
+      unitsLabel: 'unités',
+      breakfast: 'PETIT DÉJEUNER',
+      lunch: 'DÉJEUNER',
+      supper: 'DÎNER',
+      bedtime: 'COUCHER',
+      basalInsulin: 'Insuline basale',
+      snack: 'Collation',
+      notSet: 'Non défini',
+      healthcareProvider: 'PROFESSIONNEL DE SANTÉ',
+      doctor: 'Médecin',
+      notSpecified: 'Non spécifié',
+      doctorNotes: 'NOTES DU MÉDECIN',
+      recommendations: 'Recommandations',
+      specialInstructions: 'Instructions spéciales',
+      nextAppointment: 'Prochain rendez-vous',
+      generatedFrom: 'Généré par le système de gestion du diabète',
+      copySuccess:
+        "✅ Feuille de dose d'insuline copiée dans le presse-papiers !\n\nVous pouvez maintenant la coller dans :\n• Email à votre médecin\n• Message WhatsApp/SMS\n• Application ou portail médical",
+    },
+    slidingScale: {
+      insulinText: "Échelle mobile pour l'insuline à action rapide",
+      penColour: 'couleur du stylo',
+      typePlaceholder: 'type',
+      colorPlaceholder: 'couleur',
+    },
+    insulinTable: {
+      bloodSugar: 'Glycémie',
+      units: 'Unités',
+      specialNotes: 'Notes spéciales',
+      unitsPlaceholder: 'unités',
+      specialNotesPlaceholder: 'Ajouter des instructions spéciales...',
+    },
+    snackSection: {
+      title: 'Collation',
+      fixedDoseText: "Dose fixe d'insuline à action rapide claire",
+      penColour: 'couleur du stylo _______',
+      bloodSugar: 'Glycémie',
+      units: 'Unités',
+      unitsPlaceholder: 'unités',
+    },
+    insulinSheet: {
+      title: "Feuille de dose d'insuline",
+      rapidActing: 'Insuline à action rapide',
+      patientName: 'Nom du patient',
+      patientNamePlaceholder: 'Entrez le nom du patient',
+      glucoseUnits: 'Unités de glycémie :',
+      switchUnits: 'Cliquez pour changer les unités',
+      measurements: 'Pour les mesures de glycémie en {{unit}}',
+    },
+    meals: {
+      breakfast: 'Petit-déjeuner',
+      lunch: 'Déjeuner',
+      supper: 'Dîner',
+      bedtime: 'Au coucher',
+    },
+    insulin: {
+      fixedDoseClear: "Dose fixe d'insuline basale claire",
+      penColour: 'couleur du stylo',
+    },
+    placeholders: {
+      type: 'type',
+      color: 'couleur',
+      units: 'unités',
+    },
+    units: {
+      label: 'Unités',
+    },
+    notes: {
+      doctorsNotes: 'Notes et recommandations du médecin',
+      patientCondition: 'État actuel du patient, observations générales...',
+      generalNotes: 'Notes générales',
+      bloodGlucosePatterns:
+        "Profils de glycémie, taux d'HbA1c, symptômes observés...",
+      clinicalObservations: 'Observations cliniques',
+      emergencyContact: "Instructions de contact d'urgence",
+      emergencyContactPlaceholder:
+        "Quand appeler les services d'urgence, coordonnées du médecin...",
+      treatmentRecommendations: 'Recommandations de traitement',
+      treatmentRecommendationsPlaceholder:
+        "Recommandations alimentaires, directives d'exercice, ajustements de médication...",
+      specialInstructions: 'Instructions spéciales',
+      specialInstructionsPlaceholder:
+        'Gestion des jours de maladie, instructions de voyage, situations particulières...',
+      followUpAppointment: 'Prochain rendez-vous de suivi',
+    },
+    quickReference: {
+      title: 'Directives de référence rapide',
+      hypoTitle: "Signes d'hypoglycémie",
+      hypoSigns:
+        'Transpiration, tremblements, confusion, rythme cardiaque rapide',
+      hyperTitle: "Signes d'hyperglycémie",
+      hyperSigns: 'Soif excessive, mictions fréquentes, fatigue',
+      ketoneTitle: 'Test des cétones',
+      ketoneInstruction: 'Testez lorsque la glycémie > 250 mg/dL (13,9 mmol/L)',
+    },
+    caregiverTraining: {
+      message:
+        "Les parents/soignants ont reçu une formation pour ajuster l'insuline. Ils sont qualifiés pour modifier les doses d'insuline en fonction des besoins du patient.",
+    },
+    doctorSection: {
+      healthProfessional: 'Professionnel de santé',
+      nameInPrint: 'Nom en lettres majuscules',
+      signature: 'Signature',
+      dateFormat: 'Date JJ/MM/AAAA',
+      doctor: 'Médecin',
+      enterName: 'Entrez le nom',
+      keepSheetAccessible:
+        'Gardez cette fiche accessible en tout temps - Référence médicale uniquement',
+      printSheet: 'Imprimer la fiche',
+      saveData: 'Enregistrer les données',
+      shareWithDoctor: 'Partager avec le médecin',
+    },
+    shareInfo: {
+      title: 'Partager avec le médecin :',
+      description:
+        "Copie vos doses d'insuline et vos notes dans le presse-papiers, puis collez-les dans un e-mail, WhatsApp ou message texte à votre professionnel de santé.",
+    },
+    dashboard: {
+      title: 'Système de gestion du diabète',
+      subtitle:
+        "Surveillance de la glycémie en temps réel avec prédictions basées sur l'IA",
+      tabs: {
+        monitoring: 'Surveillance',
+        dosage: "Feuille de doses d'insuline",
+      },
+    },
+    patient: {
+      manualInput: 'Saisie manuelle du patient',
+      currentGlucose: 'Glycémie actuelle (mg/dL)',
+      insulinUnits: 'Insuline (unités)',
+      carbsGrams: 'Glucides (grammes)',
+      activityMinutes: 'Activité (minutes)',
+      addReadingGeneratePrediction:
+        'Ajouter une lecture et générer une prédiction',
+    },
+    alerts: {
+      title: "Paramètres d'alerte",
+      lowThreshold: 'Seuil bas (mg/dL)',
+      highThreshold: 'Seuil haut (mg/dL)',
+    },
+    aiPrediction: {
+      title: 'Moteur de Prédiction IA',
+      nextPrediction: 'Prédiction pour les 30 prochaines minutes :',
+      basedOn:
+        "Basé sur l'analyse des séries temporelles et des facteurs à base de règles",
+    },
+    doctorNotes: {
+      recommendations: 'Recommandations de traitement',
+      specialInstructions: 'Instructions spéciales',
+      nextAppointment: 'Prochain rendez-vous :',
+    },
+    monitoring: {
+      realTimeGlucose: 'Glycémie en temps réel',
+      actualReadings: 'Lectures réelles',
+      aiPredictions: 'Prédictions IA',
+    },
+    alertsSystem: {
+      title: "Système d'alertes",
+      noActiveAlerts: 'Aucune alerte active',
+    },
+    historicalDatabase: {
+      title: 'Base de données historique',
+      totalReadings: 'Lectures totales',
+      dataPointsToday: "Points de données aujourd'hui",
+    },
+  },
+
+  biomarkerTracker: {
+    title: 'Suivi des biomarqueurs',
+    bmi: {
+      notSet: 'Non défini',
+      underweight: 'Insuffisance pondérale',
+      normal: 'Normal',
+      overweight: 'Surpoids',
+      obese: 'Obèse',
+    },
+    doctorNotes: {
+      recommendations:
+        'Continuez le traitement médicamenteux et le régime actuel.',
+      specialInstructions: 'Surveillez la glycémie avant le coucher.',
+    },
+    alerts: {
+      hypo: 'Le glucose est tombé en dessous de 70 mg/dL',
+      hyper: 'Le glucose a dépassé 180 mg/dL',
+    },
+    hba1cTitle: 'HbA1c (Hémoglobine glyquée)',
+    hba1cPlaceholder: '7,5',
+    hba1cUnit: '%',
+    hba1cTarget: 'Cible : <7 % pour la plupart des adultes',
+    bloodPressureTitle: 'Pression artérielle',
+    bloodPressureSystolicPlaceholder: '120',
+    bloodPressureDiastolicPlaceholder: '80',
+    bloodPressureUnit: 'mmHg',
+    bloodPressureTarget: 'Cible : <130/80 mmHg',
+    weightBmiTitle: 'Poids et IMC',
+    weightPlaceholder: '70',
+    weightUnit: 'kg',
+    heightPlaceholder: '170',
+    heightUnit: 'cm',
+    bmiLabel: 'IMC',
+    cholesterolProfileTitle: 'Profil lipidique',
+    cholesterolPlaceholderTotal: 'Total',
+    cholesterolPlaceholderHDL: 'HDL',
+    cholesterolPlaceholderLDL: 'LDL',
+    cholesterolPlaceholderTriglycerides: 'Triglycérides',
+    cholesterolUnit: 'mg/dL',
+    cholesterolTargets: 'Cibles : LDL <100, HDL >40♂/50♀, TG <150',
+    kidneyFunctionTitle: 'Fonction rénale',
+    creatininePlaceholder: '1,0',
+    creatinineUnit: 'mg/dL',
+    microalbuminPlaceholder: 'Microalbumine',
+    microalbuminUnit: 'mg/g',
+    screeningExamsTitle: 'Examens de dépistage',
+    lastEyeExamLabel: 'Dernier examen des yeux',
+    lastFootExamLabel: 'Dernier examen des pieds',
+    screeningExamsNote: 'Examens annuels des yeux et des pieds recommandés',
+    quickSummaryTitle: 'Résumé rapide',
+    hba1cLabel: 'HbA1c',
+    bpLabel: 'TA',
+    ldlLabel: 'LDL',
+    notSet: 'Non défini',
+    aiPredictionEngineTitle: 'Moteur de Prédiction IA',
+    nextPredictionLabel: 'Prédiction pour les 30 prochaines minutes :',
+    predictionUnit: '{{value}} mg/dL',
+    predictionNote:
+      "Basé sur l'analyse des séries temporelles + facteurs basés sur des règles",
+    doctorsRecommendations: 'Recommandations du médecin',
+    treatmentRecommendations: 'Recommandations de traitement',
+    specialInstructions: 'Instructions spéciales',
+    nextAppointment: 'Prochain rendez-vous :',
+    realTimeBloodGlucose: 'Glycémie en temps réel',
+    glucoseLegend: {
+      actualReadings: 'Mesures réelles',
+      aiPredictions: 'Prédictions IA',
+    },
+    alertsSystem: {
+      title: "Système d'alertes",
+      noAlerts: 'Aucune alerte active',
+      hypoAlert: 'Alerte hypoglycémie',
+      hyperAlert: 'Alerte hyperglycémie',
+      alertMessage: '{{message}}',
+    },
+    historicalDatabase: {
+      title: 'Base de données historique',
+      totalReadings: 'Lectures totales',
+      dataPointsToday: "Points de données aujourd'hui",
+    },
+  },
+
+  predictiveAlertScreenFixes: {
+    predictiveAlert: {
+      title: 'Alerte Prédictive !',
+      risk: "Risque d'hypoglycémie (prob={{probability}}%)",
+      forecast:
+        'Prévision : la glycémie pourrait descendre à {{bg}} mg/dL dans {{minutes}} min',
+      suggestion: 'Suggestion : Recontrôlez la glycémie dans {{minutes}} min',
+    },
+    currentBG: {
+      label: 'Glycémie Actuelle',
+      value: '{{value}} {{unit}}',
+    },
+    enterFood: {
+      title: 'Entrer un aliment',
+      food: {
+        name: '{{name}}',
+        carbs: '{{amount}}g de glucides',
+      },
+      insulin: {
+        name: '{{type}}',
+        dose: '{{units}} unités',
+      },
+    },
+    activityCard: {
+      title: 'Activité',
+      description: '{{intensity}} {{duration}} min',
+    },
+    predictiveAlerts: {
+      title: 'Alertes IA Prédictives',
+      status: 'Statut : {{state}}',
+      forecast: 'Prévision à 30 min : {{trend}} ({{change}})',
     },
   },
 };
