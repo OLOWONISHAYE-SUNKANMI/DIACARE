@@ -68,12 +68,9 @@ const Index = () => {
       performanceOptimizer.getPerformanceMetrics().networkCondition;
     BundlePreloader.preloadByNetworkCondition(networkCondition.effectiveType);
 
-    const cleanupInterval = setInterval(
-      () => {
-        performanceOptimizer.clearExpiredCache();
-      },
-      5 * 60 * 1000
-    );
+    const cleanupInterval = setInterval(() => {
+      performanceOptimizer.clearExpiredCache();
+    }, 5 * 60 * 1000);
 
     return () => clearInterval(cleanupInterval);
   }, [user, performanceOptimizer]);
@@ -107,7 +104,7 @@ const Index = () => {
       case 'biomarker':
         return <Biomarkers />;
       case 'predictive':
-        return <PredictiveAlertScreen />;
+        return <PredictiveAlertScreen values={glucoseValue} />;
       case 'health-pro':
         return <HealthProfessionalScreen />;
       case 'admin':
