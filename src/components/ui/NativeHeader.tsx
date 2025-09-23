@@ -4,15 +4,19 @@ import { useThemeStore } from '@/store/useThemeStore';
 import PredictiveCard from './PredictiveCard';
 import { useState } from 'react';
 
-
 interface NativeHeaderProps {
   userName?: string;
   visible?: boolean;
+  glucoseValue?: string | number;
   setVisible?: (v: boolean) => void;
 }
 
-
-const NativeHeader: React.FC<NativeHeaderProps> = ({ userName, visible = true, setVisible }) => {
+const NativeHeader: React.FC<NativeHeaderProps> = ({
+  userName,
+  glucoseValue,
+  visible = true,
+  setVisible,
+}) => {
   const [predictiveVisible, setPredictiveVisible] = useState<boolean>(true);
   const currentTime = new Date().toLocaleTimeString('fr-FR', {
     hour: '2-digit',
@@ -95,8 +99,9 @@ const NativeHeader: React.FC<NativeHeaderProps> = ({ userName, visible = true, s
         </div>
       </div>
       {/* predictive  */}
-       <PredictiveCard
-        cancelable= {true}
+      <PredictiveCard
+        cancelable={true}
+        values={glucoseValue}
         visible={predictiveVisible}
         setVisible={setPredictiveVisible}
       />
