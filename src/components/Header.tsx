@@ -42,7 +42,7 @@ const Header: React.FC<HeaderProps> = ({
     { id: 'home', label: t('nav.home'), icon: Home, color: 'blue' },
     { id: 'charts', label: t('nav.charts'), icon: BarChart3, color: 'orange' },
     { id: 'journal', label: t('nav.journal'), icon: FileText, color: 'coral' },
-    { id: 'predictive', label: AI predictive, icon: Brain, color: 'orange' },
+    { id: 'predictive', label: 'AI predictive', icon: Brain, color: 'orange' },
     {
       id: 'consultation-request',
       label: t('nav.teleconsultation'),
@@ -54,17 +54,7 @@ const Header: React.FC<HeaderProps> = ({
     { id: 'blog', label: t('nav.blog'), icon: BookOpen, color: 'orange' },
     { id: 'profile', label: t('nav.profile'), icon: User, color: 'blue' },
   ];
-  const tabs = [
-    { id: "home", label: t("nav.home"), icon: Home, color: "teal" },
-    { id: "charts", label: t("nav.charts"), icon: BarChart3, color: "orange" },
-    { id: "journal", label: t("nav.journal"), icon: FileText, color: "coral" },
-    { id: "predictive", label: "AI alert", icon: Brain, color: "orange" },
-    { id: "consultation-request", label: t("nav.teleconsultation"), icon: Stethoscope, color: "teal" },
-    { id: "family", label: t("nav.family"), icon: Users, color: "green" },
-    { id: "chat", label: t("nav.chat"), icon: MessageCircle, color: "coral" },
-    { id: "blog", label: t("nav.blog"), icon: BookOpen, color: "orange" },
-    { id: "profile", label: t("nav.profile"), icon: User, color: "teal" },
-  ];
+
   return (
     <header
       className={`w-full border-b pt-safe-area-inset-top relative z-50 transition-colors ${
