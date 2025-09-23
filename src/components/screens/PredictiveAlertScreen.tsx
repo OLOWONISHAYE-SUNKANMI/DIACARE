@@ -1,14 +1,23 @@
 import { AlertTriangle, Activity, Utensils, Syringe } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
 
-export default function PredictiveAlertScreen() {
+
+
+
+  
+
+import PredictiveCard from '../ui/PredictiveCard';
+    import { useTranslation } from 'react-i18next';
+
+export default function PredictiveAlertScreen({ values }: any) {
   const { t } = useTranslation();
+
   return (
     <div className="min-h-screen bg-muted text-foreground p-4 space-y-4">
       {/* Header */}
       <h1 className="text-lg font-semibold text-center">Kluko</h1>
 
       {/* Predictive Alert Card */}
+
       <div className="rounded-xl p-4 bg-destructive text-destructive-foreground space-y-2">
         <div className="flex items-center gap-2 font-bold text-lg">
           <AlertTriangle className="w-5 h-5" />
@@ -31,6 +40,7 @@ export default function PredictiveAlertScreen() {
           })}
         </p>
       </div>
+
 
       {/* Current BG */}
       <div className="rounded-xl bg-card text-card-foreground p-4 text-center space-y-1">
@@ -111,10 +121,11 @@ export default function PredictiveAlertScreen() {
         <div className="flex items-center gap-2 text-sm">
           <span className="w-2 h-2 rounded-full bg-primary"></span>
           <span>
-            {t('predictiveAlertScreenFixes.predictiveAlerts.forecast', {
-              trend: 'Stable',
-              change: '↓ 2 mg/dL',
-            })}
+
+
+            Next 30 min forecast: Stable (
+            <span className="text-muted-foreground">↓ 2 mg/dL</span>)
+
           </span>
         </div>
       </div>
