@@ -65,9 +65,7 @@ export default function PredictiveAlertScreen({ values }: any) {
           <div className="flex-1 rounded-lg border border-border p-3 text-center space-y-1">
             <Utensils className="w-5 h-5 mx-auto text-muted-foreground" />
             <p className="text-sm font-semibold">
-              {t('predictiveAlertScreenFixes.enterFood.food.name', {
-                name: 'Rice',
-              })}
+              {t('predictiveAlertScreenFixes.enterFood.food.name')}
             </p>
             <p className="text-xs text-muted-foreground">
               {t('predictiveAlertScreenFixes.enterFood.food.carbs', {
@@ -79,9 +77,7 @@ export default function PredictiveAlertScreen({ values }: any) {
           <div className="flex-1 rounded-lg border border-border p-3 text-center space-y-1">
             <Syringe className="w-5 h-5 mx-auto text-muted-foreground" />
             <p className="text-sm font-semibold">
-              {t('predictiveAlertScreenFixes.enterFood.insulin.name', {
-                type: 'Rapid',
-              })}
+              {t('predictiveAlertScreenFixes.enterFood.insulin.name')}
             </p>
             <p className="text-xs text-muted-foreground">
               {t('predictiveAlertScreenFixes.enterFood.insulin.dose', {
@@ -121,7 +117,7 @@ export default function PredictiveAlertScreen({ values }: any) {
         <div className="flex items-center gap-2 text-sm">
           <span className="w-2 h-2 rounded-full bg-primary"></span>
           <span>
-            Next 30 min forecast: Stable (
+            {t('predictiveAlertScreenFixes.nextForecast.label')} (
             <span className="text-muted-foreground">↓ 2 mg/dL</span>)
             {t('predictiveAlertScreenFixes.predictiveAlerts.forecast', {
               trend: 'Stable',
