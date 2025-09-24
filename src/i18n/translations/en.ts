@@ -897,6 +897,9 @@ export const en = {
     title: 'Continuous AI Analysis',
     message:
       'The system continuously analyzes your data to detect risk patterns',
+    buttons: {
+      enter: 'Enter',
+    },
   },
 
   mission: {
@@ -2822,8 +2825,9 @@ Failure to comply with this charter may result in temporary or permanent suspens
     },
     reminder: {
       delete_confirmation: 'Are you sure you want to delete this reminder?',
-      upcoming: 'Upcoming reminders ({time})',
-      today: 'Today ({count})',
+      upcoming: 'Upcoming reminders ',
+      today: 'Today ',
+      markDone: 'Done',
     },
   },
 
@@ -3147,6 +3151,10 @@ Failure to comply with this charter may result in temporary or permanent suspens
     },
     reminderType: 'Reminder Type',
     title: 'Title',
+    reminder: {
+      new: 'New Reminder',
+      edit: 'Edit Reminder',
+    },
   },
 
   injectionInsulinModal: {
@@ -5434,22 +5442,78 @@ Failure to comply with this charter may result in temporary or permanent suspens
     enterFood: {
       title: 'Enter Food',
       food: {
-        name: '{{name}}',
+        name: 'Rice',
         carbs: '{{amount}}g carbs',
       },
       insulin: {
-        name: '{{type}}',
+        name: 'Rapid',
         dose: '{{units}} units',
       },
     },
     activityCard: {
       title: 'Activity',
-      description: '{{intensity}} {{duration}} min',
+      description: 'Yes Moderate 30 min',
     },
     predictiveAlerts: {
       title: 'Predictive AI Alerts',
       status: 'Status: {{state}}',
       forecast: 'Next 30 min forecast: {{trend}} ({{change}})',
+    },
+    nextForecast: {
+      label: 'Next 30 min forecast: Stable (',
+      change: '↓ 2 mg/dL',
+    },
+  },
+
+  predictiveCard: {
+    predictiveAlert: {
+      title: 'Predictive Alert!',
+      dismissAria: 'Dismiss alert',
+      loading: 'Loading...',
+    },
+    aiSummary: {
+      error: 'Error getting summary.',
+    },
+  },
+
+  useReminders: {
+    toast: {
+      errorTitle: 'Error',
+      remindersLoadError: 'Failed to load reminders',
+      reminderCreatedTitle: '✅ Reminder Created',
+      reminderScheduled: '{{title}} has been scheduled',
+      reminderCreateError: 'Unable to create reminder',
+      reminderUpdatedTitle: '✅ Reminder Updated',
+      reminderUpdatedDescription: 'Changes have been saved',
+      reminderUpdateErrorDescription: 'Unable to update reminder',
+      reminderDeletedTitle: '🗑️ Reminder deleted',
+      reminderDeletedDescription: 'The reminder has been deleted',
+      reminderDeleteErrorDescription: 'Unable to delete the reminder',
+      reminderActionTitle: '{{emoji}} Reminder {{status}}',
+      reminderActionDescription: '{{notes, default=Action saved}}',
+      reminderActionErrorDescription: 'Unable to save action',
+      reminderStatus: {
+        completed: 'completed',
+        snoozed: 'snoozed',
+        missed: 'marked missed',
+      },
+    },
+    typeMap: {
+      insulin: {
+        name: 'Insulin',
+      },
+      medication: {
+        name: 'Medication',
+      },
+      glucose_test: {
+        name: 'Glucose Test',
+      },
+      meal: {
+        name: 'Meal',
+      },
+      activity: {
+        name: 'Activity',
+      },
     },
   },
 };
