@@ -30,7 +30,7 @@ interface PredictiveAlertsProps {
 const PredictiveAlerts: React.FC<PredictiveAlertsProps> = ({
   className = '',
   glucoseValue,
-  onTabChange
+  onTabChange,
 }) => {
   console.log('glucoseValue', glucoseValue);
   const { t } = useTranslation();
@@ -178,8 +178,8 @@ const PredictiveAlerts: React.FC<PredictiveAlertsProps> = ({
   console.log(glucoseStats);
 
   const handleViewMore = () => {
- onTabChange?.('predictive');
-  }
+    onTabChange?.('predictive');
+  };
 
   // --- End dynamic stats logic ---
 
@@ -237,9 +237,9 @@ const PredictiveAlerts: React.FC<PredictiveAlertsProps> = ({
               </p>
             </div>
           </div>
-          <button
-          onClick={handleViewMore}
-          >View more </button>
+          <Button onClick={handleViewMore} variant="default">
+            Enter{' '}
+          </Button>
         </CardContent>
       </Card>
     </div>

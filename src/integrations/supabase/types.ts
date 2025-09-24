@@ -1504,6 +1504,7 @@ export type Database = {
       }
       profiles: {
         Row: {
+          access_code: string | null
           created_at: string
           first_name: string | null
           id: string
@@ -1516,6 +1517,7 @@ export type Database = {
           verified: boolean | null
         }
         Insert: {
+          access_code?: string | null
           created_at?: string
           first_name?: string | null
           id?: string
@@ -1528,6 +1530,7 @@ export type Database = {
           verified?: boolean | null
         }
         Update: {
+          access_code?: string | null
           created_at?: string
           first_name?: string | null
           id?: string
