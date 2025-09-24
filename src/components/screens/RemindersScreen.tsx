@@ -35,8 +35,24 @@ const ReminderCard: React.FC<ReminderCardProps> = ({
   const getDaysString = (locale: 'en' | 'fr' = 'fr') => {
     const dayNames =
       locale === 'fr'
-        ? ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim']
-        : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+        ? [
+            t('createReminderModal.days.1.short'),
+            t('createReminderModal.days.2.short'),
+            t('createReminderModal.days.3.short'),
+            t('createReminderModal.days.4.short'),
+            t('createReminderModal.days.5.short'),
+            t('createReminderModal.days.6.short'),
+            t('createReminderModal.days.7.short'),
+          ]
+        : [
+            t('createReminderModal.days.1.short'),
+            t('createReminderModal.days.2.short'),
+            t('createReminderModal.days.3.short'),
+            t('createReminderModal.days.4.short'),
+            t('createReminderModal.days.5.short'),
+            t('createReminderModal.days.6.short'),
+            t('createReminderModal.days.7.short'),
+          ];
 
     if (reminder.days_of_week.length === 7)
       return locale === 'fr' ? 'Tous les jours' : 'Every day';
@@ -90,7 +106,7 @@ const ReminderCard: React.FC<ReminderCardProps> = ({
             {isUpcoming() && (
               <Badge variant="secondary" className="animate-pulse">
                 <Clock className="w-3 h-3 mr-1" />
-                {t('status.upcoming')} {/* Use your i18n key */}
+                {t('remindersScreen.status.upcoming')} {/* Use your i18n key */}
               </Badge>
             )}
             <Switch
@@ -136,7 +152,7 @@ const ReminderCard: React.FC<ReminderCardProps> = ({
                 className="flex-1"
               >
                 <CheckCircle className="w-4 h-4 mr-1" />
-                Fait
+                {t('remindersScreen.reminder.markDone')}
               </Button>
               <Button
                 size="sm"
@@ -350,7 +366,7 @@ export const RemindersScreen: React.FC = () => {
                         }
                         className="w-full sm:w-auto"
                       >
-                        Fait
+                        {t('remindersScreen.reminder.markDone')}
                       </Button>
                     </div>
                   </div>

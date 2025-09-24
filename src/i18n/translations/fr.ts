@@ -889,6 +889,9 @@ export const fr = {
     title: 'Analyse IA Continue',
     message:
       'Le système analyse vos données en continu pour détecter les patterns à risque',
+    buttons: {
+      enter: 'Entrer',
+    },
   },
 
   mission: {
@@ -2862,8 +2865,9 @@ Le non-respect de cette charte peut entraîner une suspension temporaire ou déf
     },
     reminder: {
       delete_confirmation: 'Êtes-vous sûr de vouloir supprimer ce rappel ?',
-      upcoming: 'Rappels à venir ({time})',
-      today: "Aujourd'hui ({count})",
+      upcoming: 'Rappels à venir ',
+      today: "Aujourd'hui",
+      markDone: 'Fait',
     },
   },
 
@@ -3190,6 +3194,10 @@ Le non-respect de cette charte peut entraîner une suspension temporaire ou déf
     },
     reminderType: 'Type de rappel',
     title: 'Titre',
+    reminder: {
+      new: 'Nouveau rappel',
+      edit: 'Modifier le rappel',
+    },
   },
 
   injectionInsulinModal: {
@@ -5500,22 +5508,78 @@ Le non-respect de cette charte peut entraîner une suspension temporaire ou déf
     enterFood: {
       title: 'Entrer un aliment',
       food: {
-        name: '{{name}}',
+        name: 'Riz',
         carbs: '{{amount}}g de glucides',
       },
       insulin: {
-        name: '{{type}}',
+        name: 'Rapide',
         dose: '{{units}} unités',
       },
     },
     activityCard: {
       title: 'Activité',
-      description: '{{intensity}} {{duration}} min',
+      description: 'Oui Modéré 30 min',
     },
     predictiveAlerts: {
       title: 'Alertes IA Prédictives',
       status: 'Statut : {{state}}',
       forecast: 'Prévision à 30 min : {{trend}} ({{change}})',
+    },
+    nextForecast: {
+      label: 'Prévision des 30 prochaines min : Stable (',
+      change: '↓ 2 mg/dL',
+    },
+  },
+
+  predictiveCard: {
+    predictiveAlert: {
+      title: 'Alerte Prédictive !',
+      dismissAria: 'Fermer l’alerte',
+      loading: 'Chargement...',
+    },
+    aiSummary: {
+      error: 'Erreur lors de la récupération du résumé.',
+    },
+  },
+
+  useReminders: {
+    toast: {
+      errorTitle: 'Erreur',
+      remindersLoadError: 'Impossible de charger les rappels',
+      reminderCreatedTitle: '✅ Rappel créé',
+      reminderScheduled: '{{title}} a été programmé',
+      reminderCreateError: 'Impossible de créer le rappel',
+      reminderUpdatedTitle: '✅ Rappel mis à jour',
+      reminderUpdatedDescription: 'Les modifications ont été sauvegardées',
+      reminderUpdateErrorDescription: 'Impossible de modifier le rappel',
+      reminderDeletedTitle: '🗑️ Rappel supprimé',
+      reminderDeletedDescription: 'Le rappel a été supprimé',
+      reminderDeleteErrorDescription: 'Impossible de supprimer le rappel',
+      reminderActionTitle: '{{emoji}} Rappel {{status}}',
+      reminderActionDescription: '{{notes, default=Action enregistrée}}',
+      reminderActionErrorDescription: "Impossible d'enregistrer l'action",
+      reminderStatus: {
+        completed: 'complété',
+        snoozed: 'reporté',
+        missed: 'marqué manqué',
+      },
+    },
+    typeMap: {
+      insulin: {
+        name: 'Insuline',
+      },
+      medication: {
+        name: 'Médicament',
+      },
+      glucose_test: {
+        name: 'Test glycémie',
+      },
+      meal: {
+        name: 'Repas',
+      },
+      activity: {
+        name: 'Activité',
+      },
     },
   },
 };
