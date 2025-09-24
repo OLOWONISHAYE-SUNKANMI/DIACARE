@@ -1,36 +1,24 @@
 import { AlertTriangle, Activity, Utensils, Syringe } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
 
-export default function PredictiveAlertScreen() {
+import { useTranslation } from 'react-i18next';
+import PredictiveCard from '../ui/PredictiveCard';
+
+export default function PredictiveAlertScreen({ values }: any) {
   const { t } = useTranslation();
+
   return (
     <div className="min-h-screen bg-muted text-foreground p-4 space-y-4">
       {/* Header */}
       <h1 className="text-lg font-semibold text-center">Kluko</h1>
 
       {/* Predictive Alert Card */}
-      <div className="rounded-xl p-4 bg-destructive text-destructive-foreground space-y-2">
-        <div className="flex items-center gap-2 font-bold text-lg">
-          <AlertTriangle className="w-5 h-5" />
-          <span>{t('predictiveAlertScreenFixes.predictiveAlert.title')}</span>
-        </div>
-        <p className="text-sm">
-          {t('predictiveAlertScreenFixes.predictiveAlert.risk', {
-            probability: 78,
-          })}
-        </p>
-        <p className="text-sm">
-          {t('predictiveAlertScreenFixes.predictiveAlert.forecast', {
-            bg: 62,
-            minutes: 25,
-          })}
-        </p>
-        <p className="text-sm font-medium">
-          {t('predictiveAlertScreenFixes.predictiveAlert.suggestion', {
-            minutes: 10,
-          })}
-        </p>
-      </div>
+
+      <PredictiveCard
+        values={values}
+        cancelable={false}
+        visible={true}
+        setVisible={null}
+      />
 
       {/* Current BG */}
       <div className="rounded-xl bg-card text-card-foreground p-4 text-center space-y-1">
@@ -47,7 +35,9 @@ export default function PredictiveAlertScreen() {
 
       {/* Enter Food */}
       <div className="rounded-xl bg-card text-card-foreground p-4 space-y-3">
-        <p className="text-sm font-medium">{t('enterFood.title')}</p>
+        <p className="text-sm font-medium">
+          {t('predictiveAlertScreenFixes.enterFood.title')}
+        </p>
         <div className="flex gap-3">
           <div className="flex-1 rounded-lg border border-border p-3 text-center space-y-1">
             <Utensils className="w-5 h-5 mx-auto text-muted-foreground" />
@@ -87,10 +77,7 @@ export default function PredictiveAlertScreen() {
         <div className="flex items-center gap-2">
           <Activity className="w-5 h-5 text-primary" />
           <span className="text-sm">
-            {t('predictiveAlertScreenFixes.activityCard.description', {
-              intensity: 'Yes Moderate',
-              duration: 30,
-            })}
+            {t('predictiveAlertScreenFixes.activityCard.description')}
           </span>
         </div>
       </div>
@@ -111,10 +98,10 @@ export default function PredictiveAlertScreen() {
         <div className="flex items-center gap-2 text-sm">
           <span className="w-2 h-2 rounded-full bg-primary"></span>
           <span>
-            {t('predictiveAlertScreenFixes.predictiveAlerts.forecast', {
-              trend: 'Stable',
-              change: '↓ 2 mg/dL',
-            })}
+            {t('predictiveAlertScreenFixes.nextForecast.label')}{' '}
+            <span className="text-muted-foreground">
+              {t('predictiveAlertScreenFixes.nextForecast.change')}
+            </span>
           </span>
         </div>
       </div>
