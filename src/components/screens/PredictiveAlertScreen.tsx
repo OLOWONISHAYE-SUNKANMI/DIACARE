@@ -9,7 +9,7 @@ export default function PredictiveAlertScreen({ values }: any) {
   return (
     <div className="min-h-screen bg-muted text-foreground p-4 space-y-4">
       {/* Header */}
-      <h1 className="text-lg font-semibold text-center">Kluko</h1>
+      <h1 className="text-lg font-semibold text-center">Klukoo</h1>
 
       {/* Predictive Alert Card */}
 
