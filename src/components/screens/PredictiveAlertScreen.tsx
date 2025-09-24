@@ -1,7 +1,7 @@
 import { AlertTriangle, Activity, Utensils, Syringe } from 'lucide-react';
 
-import { useTranslation } from 'react-i18next';
 import PredictiveCard from '../ui/PredictiveCard';
+import { useTranslation } from 'react-i18next';
 
 export default function PredictiveAlertScreen({ values }: any) {
   const { t } = useTranslation();
@@ -19,6 +19,29 @@ export default function PredictiveAlertScreen({ values }: any) {
         visible={true}
         setVisible={null}
       />
+
+      <div className="rounded-xl p-4 bg-destructive text-destructive-foreground space-y-2">
+        <div className="flex items-center gap-2 font-bold text-lg">
+          <AlertTriangle className="w-5 h-5" />
+          <span>{t('predictiveAlertScreenFixes.predictiveAlert.title')}</span>
+        </div>
+        <p className="text-sm">
+          {t('predictiveAlertScreenFixes.predictiveAlert.risk', {
+            probability: 78,
+          })}
+        </p>
+        <p className="text-sm">
+          {t('predictiveAlertScreenFixes.predictiveAlert.forecast', {
+            bg: 62,
+            minutes: 25,
+          })}
+        </p>
+        <p className="text-sm font-medium">
+          {t('predictiveAlertScreenFixes.predictiveAlert.suggestion', {
+            minutes: 10,
+          })}
+        </p>
+      </div>
 
       {/* Current BG */}
       <div className="rounded-xl bg-card text-card-foreground p-4 text-center space-y-1">
@@ -98,10 +121,12 @@ export default function PredictiveAlertScreen({ values }: any) {
         <div className="flex items-center gap-2 text-sm">
           <span className="w-2 h-2 rounded-full bg-primary"></span>
           <span>
-            {t('predictiveAlertScreenFixes.nextForecast.label')}{' '}
-            <span className="text-muted-foreground">
-              {t('predictiveAlertScreenFixes.nextForecast.change')}
-            </span>
+            Next 30 min forecast: Stable (
+            <span className="text-muted-foreground">↓ 2 mg/dL</span>)
+            {t('predictiveAlertScreenFixes.predictiveAlerts.forecast', {
+              trend: 'Stable',
+              change: '↓ 2 mg/dL',
+            })}
           </span>
         </div>
       </div>
