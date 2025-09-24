@@ -897,6 +897,9 @@ export const en = {
     title: 'Continuous AI Analysis',
     message:
       'The system continuously analyzes your data to detect risk patterns',
+    buttons: {
+      enter: 'Enter',
+    },
   },
 
   mission: {
@@ -2822,8 +2825,9 @@ Failure to comply with this charter may result in temporary or permanent suspens
     },
     reminder: {
       delete_confirmation: 'Are you sure you want to delete this reminder?',
-      upcoming: 'Upcoming reminders ({time})',
-      today: 'Today ({count})',
+      upcoming: 'Upcoming reminders ',
+      today: 'Today ',
+      markDone: 'Done',
     },
   },
 
@@ -3147,6 +3151,10 @@ Failure to comply with this charter may result in temporary or permanent suspens
     },
     reminderType: 'Reminder Type',
     title: 'Title',
+    reminder: {
+      new: 'New Reminder',
+      edit: 'Edit Reminder',
+    },
   },
 
   injectionInsulinModal: {
@@ -3567,6 +3575,17 @@ Failure to comply with this charter may result in temporary or permanent suspens
         title: 'Analysis complete',
         description: '{{food}} - {{carbs}}g of estimated carbs',
       },
+    },
+    mealModal: {
+      title: '🍽 Meal Journal',
+      barcodeScan: 'Scan barcode',
+      photoAI: 'Photo + AI',
+      manualEntry: 'or manual entry',
+      foodNameLabel: 'Food name',
+      foodNamePlaceholder: 'e.g. Apple, Rice, Salad...',
+      carbsLabel: 'Carbohydrates (g) - optional',
+      carbsPlaceholder: 'e.g. 25',
+      addButton: 'Add',
     },
   },
 
@@ -5119,6 +5138,382 @@ Failure to comply with this charter may result in temporary or permanent suspens
   app: {
     status: {
       offline: '📡 Offline Mode - Some features are limited',
+    },
+  },
+
+  insulinDosage: {
+    title: 'Insulin Dosage',
+    mealGuidance: {
+      breakfast: {
+        range1: 'Treat hypoglycemia first. When corrected give this dose.',
+        range5: 'Check for ketones',
+      },
+      lunch: {
+        range1: 'Treat hypoglycemia first. When corrected give this dose.',
+        range5: 'Check for ketones',
+      },
+      supper: {
+        range1: 'Treat hypoglycemia first. When corrected give this dose.',
+        range5: 'Check for ketones',
+      },
+    },
+    glucoseRanges: {
+      mgdl: {
+        range1: '70 or less',
+        range2: '72 - 144',
+        range3: '145 - 216',
+        range4: '217 - 306',
+        range5: '307 or more',
+        snackBreakfast: '72 or more',
+        snackLunch: '72 or more',
+        snackSupper: '108 or more',
+      },
+      mmol: {
+        range1: '3.9 or less',
+        range2: '4.0 - 8.0',
+        range3: '8.1 - 12.0',
+        range4: '12.1 - 17.0',
+        range5: '17.1 or more',
+        snackBreakfast: '4.0 or more',
+        snackLunch: '4.0 or more',
+        snackSupper: '6.0 or more',
+      },
+    },
+    share: {
+      title: 'INSULIN DOSE SHEET',
+      patient: 'Patient',
+      patientFallback: 'Patient',
+      date: 'Date',
+      units: 'Units',
+      unitsLabel: 'units',
+      breakfast: 'BREAKFAST',
+      lunch: 'LUNCH',
+      supper: 'SUPPER',
+      bedtime: 'BEDTIME',
+      basalInsulin: 'Basal insulin',
+      snack: 'Snack',
+      notSet: 'Not set',
+      healthcareProvider: 'HEALTHCARE PROVIDER',
+      doctor: 'Doctor',
+      notSpecified: 'Not specified',
+      doctorNotes: "DOCTOR'S NOTES",
+      recommendations: 'Recommendations',
+      specialInstructions: 'Special Instructions',
+      nextAppointment: 'Next Appointment',
+      generatedFrom: 'Generated from Diabetes Management System',
+      copySuccess:
+        '✅ Insulin dose sheet copied to clipboard!\n\nYou can now paste it in:\n• Email to your doctor\n• WhatsApp/SMS message\n• Medical app or portal',
+    },
+    slidingScale: {
+      insulinText: 'Sliding scale for clear rapid-acting insulin',
+      penColour: 'pen colour',
+      typePlaceholder: 'type',
+      colorPlaceholder: 'color',
+    },
+    insulinTable: {
+      bloodSugar: 'Blood sugar',
+      units: 'Units',
+      specialNotes: 'Special notes',
+      unitsPlaceholder: 'units',
+      specialNotesPlaceholder: 'Add special instructions...',
+    },
+    snackSection: {
+      title: 'Snack',
+      fixedDoseText: 'Fixed dose clear rapid-acting insulin',
+      penColour: 'pen colour _______',
+      bloodSugar: 'Blood sugar',
+      units: 'Units',
+      unitsPlaceholder: 'units',
+    },
+    insulinSheet: {
+      title: 'Insulin Dose Sheet',
+      rapidActing: 'Rapid-acting insulin',
+      patientName: 'Patient Name',
+      patientNamePlaceholder: 'Enter patient name',
+      glucoseUnits: 'Glucose Units:',
+      switchUnits: 'Click to switch units',
+      measurements: 'For blood glucose measurements in {{unit}}',
+    },
+    meals: {
+      breakfast: 'Breakfast',
+      lunch: 'Lunch',
+      supper: 'Supper',
+      bedtime: 'Bedtime',
+    },
+    insulin: {
+      fixedDoseClear: 'Fixed dose clear basal-acting insulin',
+      penColour: 'pen colour',
+    },
+    placeholders: {
+      type: 'type',
+      color: 'color',
+      units: 'units',
+    },
+    units: {
+      label: 'Units',
+    },
+    notes: {
+      doctorsNotes: "Doctor's Notes & Recommendations",
+      patientCondition: "Patient's current condition, general observations...",
+      generalNotes: 'General Notes',
+      bloodGlucosePatterns:
+        'Blood glucose patterns, HbA1c levels, symptoms observed...',
+      clinicalObservations: 'Clinical Observations',
+      emergencyContact: 'Emergency Contact Instructions',
+      emergencyContactPlaceholder:
+        'When to call emergency services, doctor contact info...',
+      treatmentRecommendations: 'Treatment Recommendations',
+      treatmentRecommendationsPlaceholder:
+        'Dietary recommendations, exercise guidelines, medication adjustments...',
+      specialInstructions: 'Special Instructions',
+      specialInstructionsPlaceholder:
+        'Sick day management, travel instructions, special situations...',
+      followUpAppointment: 'Next Follow-up Appointment',
+    },
+    quickReference: {
+      title: 'Quick Reference Guidelines',
+      hypoTitle: 'Hypoglycemia Signs',
+      hypoSigns: 'Sweating, shaking, confusion, rapid heartbeat',
+      hyperTitle: 'Hyperglycemia Signs',
+      hyperSigns: 'Excessive thirst, frequent urination, fatigue',
+      ketoneTitle: 'Ketone Testing',
+      ketoneInstruction: 'Test when blood sugar > 250 mg/dL (13.9 mmol/L)',
+    },
+    caregiverTraining: {
+      message:
+        "Parents/caregivers have received training to adjust the insulin. They are skilled in changing insulin dosages according to the patient's needs.",
+    },
+    doctorSection: {
+      healthProfessional: 'Health care professional',
+      nameInPrint: 'Name in print letters',
+      signature: 'Signature',
+      dateFormat: 'Date DD/MM/YYYY',
+      doctor: 'Doctor',
+      enterName: 'Enter name',
+      keepSheetAccessible:
+        'Keep this sheet accessible at all times - For medical reference only',
+      printSheet: 'Print Sheet',
+      saveData: 'Save Data',
+      shareWithDoctor: 'Share with Doctor',
+    },
+    shareInfo: {
+      title: 'Share with Doctor:',
+      description:
+        'Copies your insulin doses and notes to clipboard, then paste in email, WhatsApp, or text message to your healthcare provider.',
+    },
+    dashboard: {
+      title: 'Diabetes Management System',
+      subtitle: 'Real-time glucose monitoring with AI-powered predictions',
+      tabs: {
+        monitoring: 'Monitoring',
+        dosage: 'Insulin Dose Sheet',
+      },
+    },
+    patient: {
+      manualInput: 'Patient Manual Input',
+      currentGlucose: 'Current Glucose (mg/dL)',
+      insulinUnits: 'Insulin (units)',
+      carbsGrams: 'Carbs (grams)',
+      activityMinutes: 'Activity (minutes)',
+      addReadingGeneratePrediction: 'Add Reading & Generate Prediction',
+    },
+    alerts: {
+      title: 'Alert Settings',
+      lowThreshold: 'Low Threshold (mg/dL)',
+      highThreshold: 'High Threshold (mg/dL)',
+    },
+    aiPrediction: {
+      title: 'AI Prediction Engine',
+      nextPrediction: 'Next 30-minute prediction:',
+      basedOn: 'Based on time-series analysis + rule-based factors',
+    },
+    doctorNotes: {
+      recommendations: 'Treatment Recommendations',
+      specialInstructions: 'Special Instructions',
+      nextAppointment: 'Next Appointment:',
+    },
+    monitoring: {
+      realTimeGlucose: 'Real-Time Blood Glucose',
+      actualReadings: 'Actual readings',
+      aiPredictions: 'AI predictions',
+    },
+    alertsSystem: {
+      title: 'Alerts System',
+      noActiveAlerts: 'No active alerts',
+    },
+    historicalDatabase: {
+      title: 'Historical Database',
+      totalReadings: 'Total Readings',
+      dataPointsToday: 'Data Points Today',
+    },
+  },
+
+  biomarkerTracker: {
+    title: 'Biomarker tracker',
+    bmi: {
+      notSet: 'Not set',
+      underweight: 'Underweight',
+      normal: 'Normal',
+      overweight: 'Overweight',
+      obese: 'Obese',
+    },
+    doctorNotes: {
+      recommendations: 'Continue current medication and diet.',
+      specialInstructions: 'Monitor glucose before bedtime.',
+    },
+    alerts: {
+      hypo: 'Glucose dropped below {{threshold}} mg/dL',
+      hyper: 'Glucose exceeded {{threshold}} mg/dL',
+    },
+    hba1cTitle: 'HbA1c (Glycated Hemoglobin)',
+    hba1cPlaceholder: '7.5',
+    hba1cUnit: '%',
+    hba1cTarget: 'Target: <7% for most adults',
+    bloodPressureTitle: 'Blood Pressure',
+    bloodPressureSystolicPlaceholder: '120',
+    bloodPressureDiastolicPlaceholder: '80',
+    bloodPressureUnit: 'mmHg',
+    bloodPressureTarget: 'Target: <130/80 mmHg',
+    weightBmiTitle: 'Weight & BMI',
+    weightPlaceholder: '70',
+    weightUnit: 'kg',
+    heightPlaceholder: '170',
+    heightUnit: 'cm',
+    bmiLabel: 'BMI',
+    cholesterolProfileTitle: 'Cholesterol Profile',
+    cholesterolPlaceholderTotal: 'Total',
+    cholesterolPlaceholderHDL: 'HDL',
+    cholesterolPlaceholderLDL: 'LDL',
+    cholesterolPlaceholderTriglycerides: 'Triglycerides',
+    cholesterolUnit: 'mg/dL',
+    cholesterolTargets: 'Targets: LDL <100, HDL >40♂/50♀, TG <150',
+    kidneyFunctionTitle: 'Kidney Function',
+    creatininePlaceholder: '1.0',
+    creatinineUnit: 'mg/dL',
+    microalbuminPlaceholder: 'Microalbumin',
+    microalbuminUnit: 'mg/g',
+    screeningExamsTitle: 'Screening Exams',
+    lastEyeExamLabel: 'Last Eye Exam',
+    lastFootExamLabel: 'Last Foot Exam',
+    screeningExamsNote: 'Annual eye & foot exams recommended',
+    quickSummaryTitle: 'Quick Summary',
+    hba1cLabel: 'HbA1c',
+    bpLabel: 'BP',
+    ldlLabel: 'LDL',
+    notSet: 'Not set',
+    aiPredictionEngineTitle: 'AI Prediction Engine',
+    nextPredictionLabel: 'Next 30-minute prediction:',
+    predictionUnit: '{{value}} mg/dL',
+    predictionNote: 'Based on time-series analysis + rule-based factors',
+    doctorsRecommendations: "Doctor's Recommendations",
+    treatmentRecommendations: 'Treatment Recommendations',
+    specialInstructions: 'Special Instructions',
+    nextAppointment: 'Next Appointment:',
+    realTimeBloodGlucose: 'Real-Time Blood Glucose',
+    glucoseLegend: {
+      actualReadings: 'Actual readings',
+      aiPredictions: 'AI predictions',
+    },
+    alertsSystem: {
+      title: 'Alerts System',
+      noAlerts: 'No active alerts',
+      hypoAlert: 'Hypoglycemia Alert',
+      hyperAlert: 'Hyperglycemia Alert',
+      alertMessage: '{{message}}',
+    },
+    historicalDatabase: {
+      title: 'Historical Database',
+      totalReadings: 'Total Readings',
+      dataPointsToday: 'Data Points Today',
+    },
+  },
+
+  predictiveAlertScreenFixes: {
+    predictiveAlert: {
+      title: 'Predictive Alert!',
+      risk: 'Risk of Hypoglycemia (prob={{probability}}%)',
+      forecast: 'Forecast: BG may drop to {{bg}} mg/dL in {{minutes}} min',
+      suggestion: 'Suggestion: Re-check BG in {{minutes}} min',
+    },
+    currentBG: {
+      label: 'Current BG',
+      value: '{{value}} {{unit}}',
+    },
+    enterFood: {
+      title: 'Enter Food',
+      food: {
+        name: 'Rice',
+        carbs: '{{amount}}g carbs',
+      },
+      insulin: {
+        name: 'Rapid',
+        dose: '{{units}} units',
+      },
+    },
+    activityCard: {
+      title: 'Activity',
+      description: 'Yes Moderate 30 min',
+    },
+    predictiveAlerts: {
+      title: 'Predictive AI Alerts',
+      status: 'Status: {{state}}',
+      forecast: 'Next 30 min forecast: {{trend}} ({{change}})',
+    },
+    nextForecast: {
+      label: 'Next 30 min forecast: Stable (',
+      change: '↓ 2 mg/dL',
+    },
+  },
+
+  predictiveCard: {
+    predictiveAlert: {
+      title: 'Predictive Alert!',
+      dismissAria: 'Dismiss alert',
+      loading: 'Loading...',
+    },
+    aiSummary: {
+      error: 'Error getting summary.',
+    },
+  },
+
+  useReminders: {
+    toast: {
+      errorTitle: 'Error',
+      remindersLoadError: 'Failed to load reminders',
+      reminderCreatedTitle: '✅ Reminder Created',
+      reminderScheduled: '{{title}} has been scheduled',
+      reminderCreateError: 'Unable to create reminder',
+      reminderUpdatedTitle: '✅ Reminder Updated',
+      reminderUpdatedDescription: 'Changes have been saved',
+      reminderUpdateErrorDescription: 'Unable to update reminder',
+      reminderDeletedTitle: '🗑️ Reminder deleted',
+      reminderDeletedDescription: 'The reminder has been deleted',
+      reminderDeleteErrorDescription: 'Unable to delete the reminder',
+      reminderActionTitle: '{{emoji}} Reminder {{status}}',
+      reminderActionDescription: '{{notes, default=Action saved}}',
+      reminderActionErrorDescription: 'Unable to save action',
+      reminderStatus: {
+        completed: 'completed',
+        snoozed: 'snoozed',
+        missed: 'marked missed',
+      },
+    },
+    typeMap: {
+      insulin: {
+        name: 'Insulin',
+      },
+      medication: {
+        name: 'Medication',
+      },
+      glucose_test: {
+        name: 'Glucose Test',
+      },
+      meal: {
+        name: 'Meal',
+      },
+      activity: {
+        name: 'Activity',
+      },
     },
   },
 };
