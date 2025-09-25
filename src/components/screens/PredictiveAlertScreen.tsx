@@ -20,29 +20,6 @@ export default function PredictiveAlertScreen({ values }: any) {
         setVisible={null}
       />
 
-      <div className="rounded-xl p-4 bg-destructive text-destructive-foreground space-y-2">
-        <div className="flex items-center gap-2 font-bold text-lg">
-          <AlertTriangle className="w-5 h-5" />
-          <span>{t('predictiveAlertScreenFixes.predictiveAlert.title')}</span>
-        </div>
-        <p className="text-sm">
-          {t('predictiveAlertScreenFixes.predictiveAlert.risk', {
-            probability: 78,
-          })}
-        </p>
-        <p className="text-sm">
-          {t('predictiveAlertScreenFixes.predictiveAlert.forecast', {
-            bg: 62,
-            minutes: 25,
-          })}
-        </p>
-        <p className="text-sm font-medium">
-          {t('predictiveAlertScreenFixes.predictiveAlert.suggestion', {
-            minutes: 10,
-          })}
-        </p>
-      </div>
-
       {/* Current BG */}
       <div className="rounded-xl bg-card text-card-foreground p-4 text-center space-y-1">
         <p className="text-sm font-medium">
