@@ -9,7 +9,7 @@
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",
-    "gen:types": "supabase gen types typescript --project-id bcvjqyjlnqosnpvzixmr --schema public > src/integrations/supabase/types.ts"
+    "gen:types": "\"%USERPROFILE%\\scoop\\shims\\supabase.exe\" gen types typescript --project-id bcvjqyjlnqosnpvzixmr --schema public > src/integrations/supabase/types.ts"
   },
   "dependencies": {
     "@capacitor/camera": "^7.0.2",
