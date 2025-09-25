@@ -8,6 +8,7 @@ type PredictiveCardProps = {
   visible: boolean;
   values?: string | number;
   setVisible: (v: boolean) => void;
+  onTabChange?: (tab: string) => void;
 };
 
 const PredictiveCard: React.FC<PredictiveCardProps> = ({
@@ -15,6 +16,7 @@ const PredictiveCard: React.FC<PredictiveCardProps> = ({
   visible,
   setVisible,
   values,
+  onTabChange
 }) => {
   const [summary, setSummary] = useState('');
   const [value, setValue] = useState<string | number>('');
@@ -50,16 +52,7 @@ const PredictiveCard: React.FC<PredictiveCardProps> = ({
           <div className="flex gap-2 items-center">
             <AlertTriangle className="w-5 h-5" />
             <span>{t('predictiveCard.predictiveAlert.title')}</span>
-          </div>
-          {cancelable && (
-            <button
-              onClick={() => setVisible(false)}
-              className="p-1 rounded hover:bg-destructive-foreground/10 active:bg-destructive-foreground/20 transition-colors"
-              aria-label={t('predictiveCard.predictiveAlert.dismissAria')}
-            >
-              <X className="w-4 h-4" />
-            </button>
-          )}
+       
         </div>
 
         {loading && (
@@ -68,6 +61,34 @@ const PredictiveCard: React.FC<PredictiveCardProps> = ({
           </p>
         )}
         {summary && <p className="text-sm">{summary}</p>}
+           </div>
+          {cancelable && (
+          <div className="flex gap-3 justify-center ">
+  {/* Dismiss button */} 
+  <button
+    onClick={() => setVisible(false)}
+    className="px-9 py-2 rounded-lg bg-red-50 text-red-600 font-medium 
+               hover:bg-red-100 active:bg-red-200 
+               transition-colors shadow-sm"
+    aria-label={t('predictiveCard.predictiveAlert.dismissAria')}
+  >
+    Dismiss
+  </button>
+
+  {/* More Info button */}
+  <button
+    onClick={() => onTabChange?.('predictive')}
+    className="px-9 py-2 rounded-lg border border-gray-300 
+               text-gray-700 font-medium 
+               hover:bg-gray-100 active:bg-gray-200 
+               transition-colors shadow-sm"
+    aria-label={t('predictiveCard.predictiveAlert.moreInfoAria')}
+  >
+    More Info
+  </button>
+</div>
+
+          )}
       </div>
     </div>
   );
