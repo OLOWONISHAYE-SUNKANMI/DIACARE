@@ -8,6 +8,7 @@ import {
   ModalFooter,
   ModalCloseButton,
 } from '@chakra-ui/react';
+
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import {
@@ -21,6 +22,7 @@ import { Slider } from '@/components/ui/slider';
 import { Card, CardContent } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { useTranslation } from 'react-i18next';
+import { useActivities } from '@/contexts/ActivityContext';
 
 interface ActivityModalProps {
   isOpen: boolean;
@@ -29,6 +31,7 @@ interface ActivityModalProps {
 
 const ActivityModal = ({ isOpen, onClose }: ActivityModalProps) => {
   const { t } = useTranslation();
+  const { addActivity } = useActivities(); // ✅ use context
   const [activityType, setActivityType] = useState('');
   const [duration, setDuration] = useState([30]);
   const [intensity, setIntensity] = useState([2]);
@@ -78,11 +81,16 @@ const ActivityModal = ({ isOpen, onClose }: ActivityModalProps) => {
     t('activityModal.intensity_moderate'),
     t('activityModal.intensity_intense'),
   ];
+  const intensityValues: ('low' | 'moderate' | 'high')[] = [
+    'low',
+    'moderate',
+    'high',
+  ];
   const intensityMultipliers = [0.7, 1, 1.5];
 
   const selectedActivity = activityOptions.find(a => a.value === activityType);
 
-  // Calculate estimated calories burned (using average 70kg person)
+  // Calories estimation
   const calculateCalories = () => {
     if (!selectedActivity) return 0;
     const weight = 70; // kg
@@ -94,7 +102,7 @@ const ActivityModal = ({ isOpen, onClose }: ActivityModalProps) => {
 
   const estimatedCalories = calculateCalories();
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!activityType) {
       toast({
         title: t('activityModal.activity_type_error_title'),
@@ -104,21 +112,38 @@ const ActivityModal = ({ isOpen, onClose }: ActivityModalProps) => {
       return;
     }
 
-    const activityName = selectedActivity?.label || activityType;
-    toast({
-      title: t('activityModal.activity_saved_title'),
-      description: t('activityModal.activity_saved_description', {
-        activityName,
-        duration: duration[0],
-        intensity: intensityLabels[intensity[0] - 1],
-      }),
-    });
+    try {
+      await addActivity({
+        activity_name: selectedActivity?.label || activityType,
+        activity_type: activityType,
+        duration_minutes: duration[0],
+        intensity: intensityValues[intensity[0] - 1],
+        calories_per_minute: selectedActivity?.metBase ?? 3.5,
+        activity_time: new Date().toISOString(),
+      });
 
-    // Reset form
-    setActivityType('');
-    setDuration([30]);
-    setIntensity([2]);
-    onClose();
+      toast({
+        title: t('activityModal.activity_saved_title'),
+        description: t('activityModal.activity_saved_description', {
+          activityName: selectedActivity?.label || activityType,
+          duration: duration[0],
+          intensity: intensityLabels[intensity[0] - 1],
+        }),
+      });
+
+      // Reset form
+      setActivityType('');
+      setDuration([30]);
+      setIntensity([2]);
+      onClose();
+    } catch (err) {
+      console.error('Error saving activity:', err);
+      toast({
+        title: 'Error',
+        description: 'Failed to save activity.',
+        variant: 'destructive',
+      });
+    }
   };
 
   return (
@@ -138,16 +163,13 @@ const ActivityModal = ({ isOpen, onClose }: ActivityModalProps) => {
             {/* Activity Type */}
             <div className="space-y-2">
               <Label>{t('activityModal.activity_type_label')}</Label>
-              <Select>
+              <Select value={activityType} onValueChange={setActivityType}>
                 <SelectTrigger>
                   <SelectValue
                     placeholder={t('activityModal.activity_type_placeholder')}
                   />
                 </SelectTrigger>
-                <SelectContent
-                  position="popper"
-                  className="z-[1500]" // make sure it's above Chakra's modal overlay
-                >
+                <SelectContent position="popper" className="z-[1500]">
                   {activityOptions.map(option => (
                     <SelectItem key={option.value} value={option.value}>
                       <div className="flex items-center space-x-2">
