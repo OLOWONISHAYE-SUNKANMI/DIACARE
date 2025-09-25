@@ -96,7 +96,7 @@ export const fr = {
     highest: 'élevé',
     inRange: 'Dans la plage',
     glucose: 'Glucose',
-    meals: 'Repas',
+    meals: 'Glucides Des Repas',
     medications: 'Médicaments',
     activities: 'Activités',
   },
