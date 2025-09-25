@@ -11,6 +11,7 @@ import {
   PieChart,
   Pie,
   Cell,
+  ReferenceLine,
 } from 'recharts';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { useMeals } from '@/contexts/MealContext';
@@ -21,9 +22,14 @@ import { useTranslation } from 'react-i18next';
 import { Clock, Target, Activity, Droplet, BarChart3 } from 'lucide-react';
 
 // Helpers
-const formatDay = (iso: string) => {
-  const d = new Date(iso);
-  return d.toLocaleDateString([], { weekday: 'short' });
+// Add this helper above your component
+const formatDay = (dateString: string) => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-US', {
+    weekday: 'short',
+    month: 'short',
+    year: 'numeric',
+  });
 };
 
 const formatTime = (iso: string) => {
@@ -64,7 +70,7 @@ const ChartsScreen = () => {
     meals.reduce((acc: any, m) => {
       const day = new Date(m.meal_time).toDateString();
       acc[day] = acc[day] || { day, carbs: 0 };
-      acc[day].carbs += m.carbs_per_100g || 0;
+      acc[day].carbs += m.total_carbs || 0;
       return acc;
     }, {})
   );
@@ -100,6 +106,20 @@ const ChartsScreen = () => {
       : 0;
     return { day, percent };
   });
+
+  const CustomTooltip = ({ active, payload, label }: any) => {
+    if (active && payload && payload.length) {
+      const med = payload[0].payload; // full medication object
+      return (
+        <div className="bg-white border rounded p-2 shadow">
+          <p className="font-semibold">{med.medication_name}</p>
+          <p>Dose: {med.dose}</p>
+          <p className="text-gray-500 text-sm">{formatDay(label)}</p>
+        </div>
+      );
+    }
+    return null;
+  };
 
   return (
     <div className="flex-1 p-4 space-y-6 pb-24 animate-fade-in">
@@ -145,7 +165,7 @@ const ChartsScreen = () => {
       {/* Grid of main charts */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Blood Glucose Line */}
-        <Card>
+        {/* <Card>
           <CardHeader>
             <CardTitle>{t('charts.glucose')}</CardTitle>
           </CardHeader>
@@ -163,6 +183,35 @@ const ChartsScreen = () => {
                   strokeWidth={2}
                   dot
                 />
+              </LineChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card> */}
+        {/* Blood Glucose Line */}
+        <Card>
+          <CardHeader>
+            <CardTitle>{t('charts.glucose')}</CardTitle>
+          </CardHeader>
+          <CardContent className="h-72">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={glucoseData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="time" />
+                <YAxis domain={[0, 'dataMax + 20']} />{' '}
+                {/* start at 0, scale dynamically */}
+                <Tooltip />
+                {/* Main glucose line */}
+                <Line
+                  type="monotone"
+                  dataKey="value"
+                  stroke="#10b981"
+                  strokeWidth={2}
+                  dot
+                />
+                {/* Threshold lines (just colored, no labels) */}
+                <ReferenceLine y={70} stroke="green" strokeDasharray="5 5" />
+                <ReferenceLine y={140} stroke="orange" strokeDasharray="5 5" />
+                <ReferenceLine y={200} stroke="red" strokeDasharray="5 5" />
               </LineChart>
             </ResponsiveContainer>
           </CardContent>
@@ -197,7 +246,7 @@ const ChartsScreen = () => {
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="medication_time" tickFormatter={formatDay} />
                 <YAxis />
-                <Tooltip />
+                <Tooltip content={<CustomTooltip />} />{' '}
                 <Bar dataKey="dose" fill="#8b5cf6" />
               </BarChart>
             </ResponsiveContainer>
