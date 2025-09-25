@@ -31,7 +31,7 @@ export const fr = {
     target: 'Dans la cible',
     slightlyHigh: 'Légèrement élevé',
     high: 'Élevé',
-    normal: 'Normal',
+    normal: 'Normale',
     meal: 'Repas',
     activity: 'Activité',
     medication: 'Médicament',
@@ -326,7 +326,7 @@ export const fr = {
   // Glucose
   glucose: {
     level: 'Niveau de glycémie',
-    normal: 'Normal',
+    normal: 'Normale',
     low: 'Bas',
     high: 'Élevé',
     addReading: 'Ajouter une mesure',
@@ -879,6 +879,7 @@ export const fr = {
 
   Alerts: {
     title: 'Alertes Prédictives IA',
+    total: 'Totale',
     urgent: 'Urgentes',
     monitor: 'À surveiller',
     good: 'Tout va bien !',
@@ -890,14 +891,14 @@ export const fr = {
     message:
       'Le système analyse vos données en continu pour détecter les patterns à risque',
     buttons: {
-      enter: 'Entrer',
+      enter: 'Vérifier mes prédictions',
     },
   },
 
   mission: {
-    title: 'La mission de Klukoo',
+    title: 'Mission',
     message:
-      'Notre mission est de vous aider à mieux comprendre et gérer votre diabète avec des outils adaptés à votre réalité.',
+      'Klukoo surveille votre diabète, prédisant les risques d hypo et d hyper avant quils ne surviennent.',
   },
 
   analysis: {
