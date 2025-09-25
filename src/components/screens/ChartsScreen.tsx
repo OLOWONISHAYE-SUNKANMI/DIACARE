@@ -66,14 +66,18 @@ const ChartsScreen = () => {
     : 0;
 
   // Meals grouped by day (total carbs)
-  const mealsByDay = Object.values(
-    meals.reduce((acc: any, m) => {
-      const day = new Date(m.meal_time).toDateString();
-      acc[day] = acc[day] || { day, carbs: 0 };
-      acc[day].carbs += m.total_carbs || 0;
-      return acc;
-    }, {})
-  );
+  const mealsChartData = meals.map(m => ({
+    name: `${m.meal_name} (${new Date(m.meal_time).toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+    })})`,
+    carbs: m.total_carbs,
+    date: new Date(m.meal_time).toLocaleDateString([], {
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric',
+    }),
+  }));
 
   //  Activities summary by type
   const activitySummary = Object.values(
@@ -165,29 +169,6 @@ const ChartsScreen = () => {
       {/* Grid of main charts */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Blood Glucose Line */}
-        {/* <Card>
-          <CardHeader>
-            <CardTitle>{t('charts.glucose')}</CardTitle>
-          </CardHeader>
-          <CardContent className="h-72">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={glucoseData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="time" />
-                <YAxis domain={[50, 250]} />
-                <Tooltip />
-                <Line
-                  type="monotone"
-                  dataKey="value"
-                  stroke="#10b981"
-                  strokeWidth={2}
-                  dot
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card> */}
-        {/* Blood Glucose Line */}
         <Card>
           <CardHeader>
             <CardTitle>{t('charts.glucose')}</CardTitle>
@@ -198,7 +179,7 @@ const ChartsScreen = () => {
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="time" />
                 <YAxis domain={[0, 'dataMax + 20']} />{' '}
-                {/* start at 0, scale dynamically */}
+                {/* start at 0, auto scale up */}
                 <Tooltip />
                 {/* Main glucose line */}
                 <Line
@@ -208,10 +189,25 @@ const ChartsScreen = () => {
                   strokeWidth={2}
                   dot
                 />
-                {/* Threshold lines (just colored, no labels) */}
-                <ReferenceLine y={70} stroke="green" strokeDasharray="5 5" />
-                <ReferenceLine y={140} stroke="orange" strokeDasharray="5 5" />
-                <ReferenceLine y={200} stroke="red" strokeDasharray="5 5" />
+                {/* Threshold lines */}
+                <ReferenceLine
+                  y={70}
+                  stroke="green"
+                  strokeDasharray="5 5"
+                  label="Low"
+                />
+                <ReferenceLine
+                  y={140}
+                  stroke="orange"
+                  strokeDasharray="5 5"
+                  label="Medium"
+                />
+                <ReferenceLine
+                  y={200}
+                  stroke="red"
+                  strokeDasharray="5 5"
+                  label="High"
+                />
               </LineChart>
             </ResponsiveContainer>
           </CardContent>
@@ -224,9 +220,9 @@ const ChartsScreen = () => {
           </CardHeader>
           <CardContent className="h-72">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={mealsByDay}>
+              <BarChart data={mealsChartData /* or mealsByDay */}>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="day" />
+                <XAxis dataKey="name" />
                 <YAxis />
                 <Tooltip />
                 <Bar dataKey="carbs" fill="#3b82f6" />
