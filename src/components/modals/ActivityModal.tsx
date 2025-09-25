@@ -62,12 +62,12 @@ const ActivityModal = ({ isOpen, onClose }: ActivityModalProps) => {
       emoji: '💃',
       metBase: 5,
     },
-    {
-      value: 'weightlifting',
-      label: t('activityModal.activity_weightlifting'),
-      emoji: '🏋️',
-      metBase: 4,
-    },
+    // {
+    //   value: 'weightlifting',
+    //   label: t('activityModal.activity_weightlifting'),
+    //   emoji: '🏋️',
+    //   metBase: 4,
+    // },
     {
       value: 'swimming',
       label: t('activityModal.activity_swimming'),
