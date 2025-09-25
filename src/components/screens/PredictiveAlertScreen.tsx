@@ -2,17 +2,66 @@ import { AlertTriangle, Activity, Utensils, Syringe } from 'lucide-react';
 
 import PredictiveCard from '../ui/PredictiveCard';
 import { useTranslation } from 'react-i18next';
+import NativeHeader from '../ui/NativeHeader';
+import GlucoseWidget from '../ui/GlucoseWidget';
+import { useGlucose } from '@/contexts/GlucoseContext';
+import { useMeals } from '@/contexts/MealContext';
+import { useMedications } from '@/contexts/MedicationContext';
+import { useActivities } from '@/contexts/ActivityContext';
+import { useEffect, useState } from 'react';
 
 export default function PredictiveAlertScreen({ values }: any) {
   const { t } = useTranslation();
+  const { getLatestReading, getTrend } = useGlucose();
+  const [loading, setLoading] = useState(false);
+  const [forecast, setForecast] = useState(null);
+  const { meals } = useMeals();
+  const { medications } = useMedications();
+  const { activities } = useActivities();
 
+  const duration_minutes =
+    activities.length > 0 ? activities[0].duration_minutes : null;
+
+  const dose_unit = medications.length > 0 ? medications[0].dose_unit : null;
+  console.log(dose_unit);
+
+  const totalCarbs = meals.reduce((sum, meal) => sum + meal.total_carbs, 0);
+  console.log(totalCarbs);
+
+  const latestReading = getLatestReading();
+  const currentGlucose = latestReading?.value || 126;
+
+  useEffect(() => {
+    fetchForecast();
+  }, []);
+
+  console.log(forecast);
+
+  const fetchForecast = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('http://localhost:8000/forecast', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          currentGlucose: currentGlucose,
+        }),
+      });
+
+      const data = await res.json();
+      setForecast(data.forecast);
+    } catch (error) {
+      console.error('Error fetching prediction:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <div className="min-h-screen bg-muted text-foreground p-4 space-y-4">
       {/* Header */}
       <h1 className="text-lg font-semibold text-center">Klukoo</h1>
 
       {/* Predictive Alert Card */}
-
       <PredictiveCard
         values={values}
         cancelable={false}
@@ -27,7 +76,7 @@ export default function PredictiveAlertScreen({ values }: any) {
         </p>
         <p className="text-4xl font-bold">
           {t('predictiveAlertScreenFixes.currentBG.value', {
-            value: 135,
+            value: currentGlucose,
             unit: 'mg/dL',
           })}
         </p>
@@ -46,7 +95,7 @@ export default function PredictiveAlertScreen({ values }: any) {
             </p>
             <p className="text-xs text-muted-foreground">
               {t('predictiveAlertScreenFixes.enterFood.food.carbs', {
-                amount: 40,
+                amount: totalCarbs,
               })}
             </p>
           </div>
@@ -58,7 +107,7 @@ export default function PredictiveAlertScreen({ values }: any) {
             </p>
             <p className="text-xs text-muted-foreground">
               {t('predictiveAlertScreenFixes.enterFood.insulin.dose', {
-                units: 5,
+                units: dose_unit,
               })}
             </p>
           </div>
@@ -73,7 +122,9 @@ export default function PredictiveAlertScreen({ values }: any) {
         <div className="flex items-center gap-2">
           <Activity className="w-5 h-5 text-primary" />
           <span className="text-sm">
-            {t('predictiveAlertScreenFixes.activityCard.description')}
+            {t('predictiveAlertScreenFixes.activityCard.description', {
+              duration: duration_minutes,
+            })}
           </span>
         </div>
       </div>
@@ -94,12 +145,12 @@ export default function PredictiveAlertScreen({ values }: any) {
         <div className="flex items-center gap-2 text-sm">
           <span className="w-2 h-2 rounded-full bg-primary"></span>
           <span>
-            {t('predictiveAlertScreenFixes.nextForecast.label')} (
-            <span className="text-muted-foreground">↓ 2 mg/dL</span>)
-            {t('predictiveAlertScreenFixes.predictiveAlerts.forecast', {
-              trend: 'Stable',
-              change: '↓ 2 mg/dL',
-            })}
+            {t('predictiveAlertScreenFixes.nextForecast.label')}
+            {loading ? (
+              <span className="text-muted-foreground">loading...</span>
+            ) : (
+              <span>{forecast}</span>
+            )}
           </span>
         </div>
       </div>

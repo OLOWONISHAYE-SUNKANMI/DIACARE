@@ -74,7 +74,7 @@ export const en = {
 
     // Sections
     glucose: 'Blood Glucose',
-    meals: 'Meals',
+    meals: 'Meals Carbs',
     activities: 'Activities',
     medications: 'Medications',
 
@@ -887,6 +887,7 @@ export const en = {
 
   Alerts: {
     title: 'AI Predictive Alerts',
+    total: 'Total',
     urgent: 'Urgent',
     monitor: 'To monitor',
     good: 'All good!',
@@ -898,14 +899,14 @@ export const en = {
     message:
       'The system continuously analyzes your data to detect risk patterns',
     buttons: {
-      enter: 'Enter',
+      enter: 'Check My Predictions',
     },
   },
 
   mission: {
-    title: 'The Mission of Klukoo',
+    title: 'Mission',
     message:
-      'Our mission is to help you better understand and manage your diabetes with tools adapted to your reality.',
+      'Klukoo watches over your diabetes, predicting hypo and hyper risks before they happen.',
   },
 
   analysis: {

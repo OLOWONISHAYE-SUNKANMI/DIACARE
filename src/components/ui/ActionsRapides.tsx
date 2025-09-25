@@ -77,12 +77,33 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
     setGlucoseLoading(false);
     setIsGlucoseModalOpen(false);
   };
-  const handleMealSubmit = (e: React.FormEvent) => {
+
+  const handleMealSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Meal:', { foodName, carbs });
-    setFoodName('');
-    setCarbs('');
-    setIsMealModalOpen(false);
+
+    if (!foodName || !carbs) return;
+
+    try {
+      await addMeal({
+        meal_name: foodName,
+        total_carbs: parseFloat(carbs),
+        meal_time: new Date(),
+      });
+
+      toast({ title: t('Actions.mealSaved') });
+
+      // reset form
+      setFoodName('');
+      setCarbs('');
+      setIsMealModalOpen(false);
+    } catch (err) {
+      console.error('Error saving meal:', err);
+      toast({
+        title: 'Error',
+        description: 'Failed to save meal.',
+        variant: 'destructive',
+      });
+    }
   };
 
   const handleRappelsClick = () => {
@@ -287,46 +308,6 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
               </ModalBody>
             </ModalContent>
           </Modal>
-          {/* <MealModal
-            isOpen={isMealModalOpen}
-            onClose={() => setIsMealModalOpen(false)}
-          /> */}
-          {/* <Modal
-            isOpen={isMealModalOpen}
-            onClose={() => setIsMealModalOpen(false)}
-            isCentered
-          >
-            <ModalOverlay />
-            <ModalContent className={`${bgCard} ${textCard}`}>
-              <ModalHeader>🍽️ {t('Actions.addMeal')}</ModalHeader>
-              <ModalCloseButton />
-              <ModalBody>
-                <form onSubmit={handleMealSubmit} className="space-y-4 py-6">
-                  <Input
-                    placeholder={t('Actions.mealName')}
-                    value={mealName}
-                    onChange={e => setMealName(e.target.value)}
-                  />
-                  <Input
-                    type="number"
-                    placeholder={t('Actions.mealCarbs')}
-                    value={mealCarbs}
-                    onChange={e => setMealCarbs(e.target.value)}
-                  />
-                  <Input
-                    placeholder={t('Actions.notes')}
-                    value={mealNotes}
-                    onChange={e => setMealNotes(e.target.value)}
-                  />
-                  <Button type="submit" className="w-full">
-                    {t('Actions.button')}
-                  </Button>
-                </form>
-              </ModalBody>
-            </ModalContent>
-          </Modal> */}
-
-          {/* Medications */}
           <button
             className={`flex flex-col items-center p-3 sm:p-4 rounded-xl transition-colors active:scale-95 ${
               darkMode ? bgButtonDark : bgButtonLight
