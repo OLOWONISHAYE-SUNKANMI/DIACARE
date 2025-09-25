@@ -13,22 +13,8 @@ export interface MealEntry {
   id: string;
   user_id: string;
   meal_name: string;
-  meal_type: string;
-  portion_grams?: number;
-  carbs_per_100g?: number;
-  total_carbs?: number;
-  calories_per_100g?: number;
-  total_calories?: number;
-  sugar_per_100g?: number;
-  total_sugar?: number;
-  protein_per_100g?: number;
-  total_protein?: number;
-  fat_per_100g?: number;
-  total_fat?: number;
-  fiber_per_100g?: number;
-  total_fiber?: number;
+  total_carbs: number;
   meal_time: string;
-  notes?: string;
   created_at: string;
   updated_at: string;
 }
@@ -37,10 +23,8 @@ interface MealContextType {
   meals: MealEntry[];
   addMeal: (meal: {
     meal_name: string;
-    meal_type: string;
-    carbs_per_100g?: number;
-    portion_grams?: number;
-    notes?: string;
+    total_carbs: number;
+    meal_time?: Date;
   }) => Promise<void>;
   loading: boolean;
 }
@@ -54,7 +38,7 @@ export const MealProvider: React.FC<{ children: ReactNode }> = ({
   const [meals, setMeals] = useState<MealEntry[]>([]);
   const [loading, setLoading] = useState(false);
 
-  // fetch meals on mount
+  // Fetch meals on mount
   useEffect(() => {
     const fetchMeals = async () => {
       if (!user) return;
@@ -78,20 +62,16 @@ export const MealProvider: React.FC<{ children: ReactNode }> = ({
     fetchMeals();
   }, [user]);
 
-  // add new meal
+  // Add new meal
   const addMeal = useCallback(
     async ({
       meal_name,
-      meal_type,
-      carbs_per_100g,
-      portion_grams,
-      notes,
+      total_carbs,
+      meal_time,
     }: {
       meal_name: string;
-      meal_type: string;
-      carbs_per_100g?: number;
-      portion_grams?: number;
-      notes?: string;
+      total_carbs: number;
+      meal_time?: Date;
     }) => {
       if (!user) throw new Error('No user logged in');
 
@@ -100,11 +80,10 @@ export const MealProvider: React.FC<{ children: ReactNode }> = ({
         .insert({
           user_id: user.id,
           meal_name,
-          meal_type,
-          carbs_per_100g: carbs_per_100g ?? null,
-          portion_grams: portion_grams ?? null,
-          meal_time: new Date().toISOString(),
-          notes: notes ?? null,
+          total_carbs,
+          meal_time: meal_time
+            ? meal_time.toISOString()
+            : new Date().toISOString(),
         })
         .select()
         .single();

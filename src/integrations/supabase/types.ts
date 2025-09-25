@@ -14,60 +14,6 @@ export type Database = {
   }
   public: {
     Tables: {
-      activity_entries: {
-        Row: {
-          activity_name: string
-          activity_time: string
-          activity_type: string
-          calories_per_minute: number | null
-          created_at: string
-          distance_km: number | null
-          duration_minutes: number
-          heart_rate_avg: number | null
-          id: string
-          intensity: string
-          notes: string | null
-          steps_count: number | null
-          total_calories_burned: number | null
-          updated_at: string
-          user_id: string
-        }
-        Insert: {
-          activity_name: string
-          activity_time?: string
-          activity_type: string
-          calories_per_minute?: number | null
-          created_at?: string
-          distance_km?: number | null
-          duration_minutes: number
-          heart_rate_avg?: number | null
-          id?: string
-          intensity: string
-          notes?: string | null
-          steps_count?: number | null
-          total_calories_burned?: number | null
-          updated_at?: string
-          user_id: string
-        }
-        Update: {
-          activity_name?: string
-          activity_time?: string
-          activity_type?: string
-          calories_per_minute?: number | null
-          created_at?: string
-          distance_km?: number | null
-          duration_minutes?: number
-          heart_rate_avg?: number | null
-          id?: string
-          intensity?: string
-          notes?: string | null
-          steps_count?: number | null
-          total_calories_burned?: number | null
-          updated_at?: string
-          user_id?: string
-        }
-        Relationships: []
-      }
       admin_notifications: {
         Row: {
           created_at: string
@@ -179,6 +125,33 @@ export type Database = {
         }
         Relationships: []
       }
+      blood_pressure: {
+        Row: {
+          created_at: string
+          diastolic: number | null
+          id: string
+          recorded_date: string | null
+          systolicFN: number | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          diastolic?: number | null
+          id?: string
+          recorded_date?: string | null
+          systolicFN?: number | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          diastolic?: number | null
+          id?: string
+          recorded_date?: string | null
+          systolicFN?: number | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       challenge_participants: {
         Row: {
           challenge_id: string | null
@@ -254,6 +227,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      cholesterol_profile: {
+        Row: {
+          created_at: string
+          hdl: number | null
+          id: string
+          ldl: number | null
+          recorded_date: string | null
+          total_cholesterol: number | null
+          triglycerides: number | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          hdl?: number | null
+          id?: string
+          ldl?: number | null
+          recorded_date?: string | null
+          total_cholesterol?: number | null
+          triglycerides?: number | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          hdl?: number | null
+          id?: string
+          ldl?: number | null
+          recorded_date?: string | null
+          total_cholesterol?: number | null
+          triglycerides?: number | null
+          user_id?: string | null
+        }
+        Relationships: []
       }
       community_challenges: {
         Row: {
@@ -631,79 +637,6 @@ export type Database = {
         }
         Relationships: []
       }
-      family_activity_logs: {
-        Row: {
-          action: string
-          actor_name: string
-          family_membership_id: string | null
-          id: string
-          time: string
-        }
-        Insert: {
-          action: string
-          actor_name: string
-          family_membership_id?: string | null
-          id?: string
-          time?: string
-        }
-        Update: {
-          action?: string
-          actor_name?: string
-          family_membership_id?: string | null
-          id?: string
-          time?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "family_activity_logs_family_membership_id_fkey"
-            columns: ["family_membership_id"]
-            isOneToOne: false
-            referencedRelation: "family_memberships"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      family_memberships: {
-        Row: {
-          created_at: string
-          id: string
-          patient_id: string | null
-          permission: string
-          role: string
-          status: string | null
-          updated_at: string
-          user_id: string | null
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          patient_id?: string | null
-          permission: string
-          role: string
-          status?: string | null
-          updated_at?: string
-          user_id?: string | null
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          patient_id?: string | null
-          permission?: string
-          role?: string
-          status?: string | null
-          updated_at?: string
-          user_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "family_memberships_patient_id_fkey"
-            columns: ["patient_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       glucose_readings: {
         Row: {
           context: string
@@ -734,6 +667,30 @@ export type Database = {
           updated_at?: string
           user_id?: string
           value?: number
+        }
+        Relationships: []
+      }
+      hemoglobin_tracker: {
+        Row: {
+          created_at: string
+          id: string
+          percentage: number | null
+          recorded_data: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          percentage?: number | null
+          recorded_data?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          percentage?: number | null
+          recorded_data?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -776,73 +733,58 @@ export type Database = {
         }
         Relationships: []
       }
+      kidney_function: {
+        Row: {
+          created_at: string
+          creatinine: number | null
+          id: string
+          microalbumin: number | null
+          recorded_date: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          creatinine?: number | null
+          id?: string
+          microalbumin?: number | null
+          recorded_date?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          creatinine?: number | null
+          id?: string
+          microalbumin?: number | null
+          recorded_date?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       meal_entries: {
         Row: {
-          calories_per_100g: number | null
-          carbs_per_100g: number
           created_at: string
-          fat_per_100g: number | null
-          fiber_per_100g: number | null
           id: string
           meal_name: string
           meal_time: string
-          meal_type: string
-          notes: string | null
-          portion_grams: number
-          protein_per_100g: number | null
-          sugar_per_100g: number | null
-          total_calories: number | null
-          total_carbs: number | null
-          total_fat: number | null
-          total_fiber: number | null
-          total_protein: number | null
-          total_sugar: number | null
+          total_carbs: number
           updated_at: string
           user_id: string
         }
         Insert: {
-          calories_per_100g?: number | null
-          carbs_per_100g?: number
           created_at?: string
-          fat_per_100g?: number | null
-          fiber_per_100g?: number | null
           id?: string
           meal_name: string
           meal_time?: string
-          meal_type: string
-          notes?: string | null
-          portion_grams?: number
-          protein_per_100g?: number | null
-          sugar_per_100g?: number | null
-          total_calories?: number | null
-          total_carbs?: number | null
-          total_fat?: number | null
-          total_fiber?: number | null
-          total_protein?: number | null
-          total_sugar?: number | null
+          total_carbs?: number
           updated_at?: string
           user_id: string
         }
         Update: {
-          calories_per_100g?: number | null
-          carbs_per_100g?: number
           created_at?: string
-          fat_per_100g?: number | null
-          fiber_per_100g?: number | null
           id?: string
           meal_name?: string
           meal_time?: string
-          meal_type?: string
-          notes?: string | null
-          portion_grams?: number
-          protein_per_100g?: number | null
-          sugar_per_100g?: number | null
-          total_calories?: number | null
-          total_carbs?: number | null
-          total_fat?: number | null
-          total_fiber?: number | null
-          total_protein?: number | null
-          total_sugar?: number | null
+          total_carbs?: number
           updated_at?: string
           user_id?: string
         }
@@ -852,33 +794,36 @@ export type Database = {
         Row: {
           created_at: string
           dose: number
-          dose_unit: string | null
+          dose_unit: string
           id: string
+          injection_done: boolean
+          injection_site: string | null
           medication_name: string
           medication_time: string
-          notes: string | null
           updated_at: string
           user_id: string
         }
         Insert: {
           created_at?: string
           dose: number
-          dose_unit?: string | null
+          dose_unit: string
           id?: string
+          injection_done?: boolean
+          injection_site?: string | null
           medication_name: string
-          medication_time?: string
-          notes?: string | null
+          medication_time: string
           updated_at?: string
           user_id: string
         }
         Update: {
           created_at?: string
           dose?: number
-          dose_unit?: string | null
+          dose_unit?: string
           id?: string
+          injection_done?: boolean
+          injection_site?: string | null
           medication_name?: string
           medication_time?: string
-          notes?: string | null
           updated_at?: string
           user_id?: string
         }
@@ -1007,41 +952,6 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
-      }
-      patient_access_codes: {
-        Row: {
-          access_code: string
-          created_at: string
-          id: string
-          is_active: boolean
-          patient_id: string | null
-          updated_at: string
-        }
-        Insert: {
-          access_code: string
-          created_at?: string
-          id?: string
-          is_active?: boolean
-          patient_id?: string | null
-          updated_at?: string
-        }
-        Update: {
-          access_code?: string
-          created_at?: string
-          id?: string
-          is_active?: boolean
-          patient_id?: string | null
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "patient_access_codes_patient_id_fkey"
-            columns: ["patient_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
       }
       patient_access_permissions: {
         Row: {
@@ -1624,6 +1534,30 @@ export type Database = {
         }
         Relationships: []
       }
+      screening_exams: {
+        Row: {
+          created_at: string
+          id: string
+          last_eye_exam: string | null
+          last_foot_exam: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          last_eye_exam?: string | null
+          last_foot_exam?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          last_eye_exam?: string | null
+          last_foot_exam?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       session_participants: {
         Row: {
           attended: boolean | null
@@ -1833,6 +1767,60 @@ export type Database = {
           status?: string | null
           stripe_payment_intent_id?: string | null
           updated_at?: string
+        }
+        Relationships: []
+      }
+      user_activities: {
+        Row: {
+          activity_name: string
+          activity_time: string
+          activity_type: string
+          calories_per_minute: number
+          created_at: string
+          distance_km: number | null
+          duration_minutes: number
+          heart_rate_avg: number | null
+          id: string
+          intensity: string
+          notes: string | null
+          steps_count: number | null
+          total_calories_burned: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          activity_name: string
+          activity_time?: string
+          activity_type: string
+          calories_per_minute?: number
+          created_at?: string
+          distance_km?: number | null
+          duration_minutes: number
+          heart_rate_avg?: number | null
+          id?: string
+          intensity: string
+          notes?: string | null
+          steps_count?: number | null
+          total_calories_burned?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          activity_name?: string
+          activity_time?: string
+          activity_type?: string
+          calories_per_minute?: number
+          created_at?: string
+          distance_km?: number | null
+          duration_minutes?: number
+          heart_rate_avg?: number | null
+          id?: string
+          intensity?: string
+          notes?: string | null
+          steps_count?: number | null
+          total_calories_burned?: number | null
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -2104,6 +2092,33 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      weight_ibm: {
+        Row: {
+          created_at: string
+          height_cm: number | null
+          id: string
+          recorded_date: string | null
+          user_id: string | null
+          weight_kg: number | null
+        }
+        Insert: {
+          created_at?: string
+          height_cm?: number | null
+          id?: string
+          recorded_date?: string | null
+          user_id?: string | null
+          weight_kg?: number | null
+        }
+        Update: {
+          created_at?: string
+          height_cm?: number | null
+          id?: string
+          recorded_date?: string | null
+          user_id?: string | null
+          weight_kg?: number | null
+        }
+        Relationships: []
       }
     }
     Views: {

@@ -15,9 +15,9 @@ export interface ActivityEntry {
   activity_name: string;
   activity_type: string;
   duration_minutes: number;
-  intensity?: string;
+  intensity: 'low' | 'moderate' | 'high';
   calories_per_minute?: number;
-  total_calories_burned?: number;
+  total_calories_burned?: number; // generated column
   distance_km?: number;
   steps_count?: number;
   heart_rate_avg?: number;
@@ -33,7 +33,12 @@ interface ActivityContextType {
     activity_name: string;
     activity_type: string;
     duration_minutes: number;
-    intensity?: string;
+    intensity: 'low' | 'moderate' | 'high';
+    calories_per_minute?: number;
+    distance_km?: number;
+    steps_count?: number;
+    heart_rate_avg?: number;
+    activity_time?: string;
     notes?: string;
   }) => Promise<void>;
   loading: boolean;
@@ -50,14 +55,14 @@ export const ActivityProvider: React.FC<{ children: ReactNode }> = ({
   const [activities, setActivities] = useState<ActivityEntry[]>([]);
   const [loading, setLoading] = useState(false);
 
-  // 🔹 Fetch activities on mount
+  // Fetch activities
   useEffect(() => {
     const fetchActivities = async () => {
       if (!user) return;
       setLoading(true);
 
       const { data, error } = await supabase
-        .from('activity_entries')
+        .from('user_activities')
         .select('*')
         .eq('user_id', user.id)
         .order('activity_time', { ascending: false });
@@ -74,40 +79,59 @@ export const ActivityProvider: React.FC<{ children: ReactNode }> = ({
     fetchActivities();
   }, [user]);
 
-  // 🔹 Add activity
+  // Add new activity
   const addActivity = useCallback(
     async ({
       activity_name,
       activity_type,
       duration_minutes,
       intensity,
+      calories_per_minute,
+      distance_km,
+      steps_count,
+      heart_rate_avg,
+      activity_time,
       notes,
     }: {
       activity_name: string;
       activity_type: string;
       duration_minutes: number;
-      intensity?: string;
+      intensity: 'low' | 'moderate' | 'high';
+      calories_per_minute?: number;
+      distance_km?: number;
+      steps_count?: number;
+      heart_rate_avg?: number;
+      activity_time?: string;
       notes?: string;
     }) => {
       if (!user) throw new Error('No user logged in');
 
       const { data, error } = await supabase
-        .from('activity_entries')
+        .from('user_activities') // ✅ new table
         .insert({
           user_id: user.id,
           activity_name,
           activity_type,
           duration_minutes,
-          intensity: intensity ?? null,
-          activity_time: new Date().toISOString(),
+          intensity,
+          calories_per_minute: calories_per_minute ?? undefined,
+          distance_km: distance_km ?? undefined,
+          steps_count: steps_count ?? undefined,
+          heart_rate_avg: heart_rate_avg ?? undefined,
+          activity_time: activity_time ?? new Date().toISOString(),
           notes: notes ?? null,
         })
         .select()
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error inserting activity:', error);
+        throw error;
+      }
 
-      setActivities(prev => [data as ActivityEntry, ...prev]);
+      if (data) {
+        setActivities(prev => [data as ActivityEntry, ...prev]);
+      }
     },
     [user]
   );
