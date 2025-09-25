@@ -203,7 +203,7 @@ const PredictiveAlerts: React.FC<PredictiveAlertsProps> = ({
               <div className="text-2xl font-extrabold">
                 {glucoseStats.total}
               </div>
-              <div className="text-sm opacity-90">Total</div>
+              <div className="text-sm opacity-90">{t('Alerts.total')}</div>
             </div>
             <div>
               <div className="text-2xl font-extrabold text-danger">
@@ -224,7 +224,7 @@ const PredictiveAlerts: React.FC<PredictiveAlertsProps> = ({
       {/* Alerts */}
 
       {/* AI Analysis Summary */}
-      <Card className="bg-accent text-foreground">
+      <Card className="bg-[#dffffb] text-foreground">
         <CardContent className="p-4 flex justify-between items-center ">
           <div className="flex items-center space-x-3">
             <Brain className="w-6 h-6 text-accent-foreground" />
@@ -237,7 +237,7 @@ const PredictiveAlerts: React.FC<PredictiveAlertsProps> = ({
               </p>
             </div>
           </div>
-          <Button onClick={handleViewMore} variant="default">
+          <Button onClick={handleViewMore} variant="default" className='bg-[#ff7223] hover:bg-[#c74700]'>
             {t('analyze.buttons.enter')}
           </Button>
         </CardContent>
