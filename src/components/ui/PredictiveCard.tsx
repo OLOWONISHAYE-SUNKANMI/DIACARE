@@ -1,6 +1,7 @@
 import { getAISummary } from '@/utils/AISummarize';
 import { AlertTriangle, X } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 type PredictiveCardProps = {
   cancelable?: boolean;
@@ -18,6 +19,7 @@ const PredictiveCard: React.FC<PredictiveCardProps> = ({
   const [summary, setSummary] = useState('');
   const [value, setValue] = useState<string | number>('');
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (values !== undefined) {
@@ -32,8 +34,8 @@ const PredictiveCard: React.FC<PredictiveCardProps> = ({
       getAISummary(values)
         .then(result => setSummary(result))
         .catch(error => {
-          setSummary('Error getting summary.');
-          console.error('Error getting summary:', error);
+          setSummary(t('predictiveCard.aiSummary.error')); // ✅ Interpolated
+          console.error('predictiveCard.aiSummary.error', error);
         })
         .finally(() => setLoading(false));
     }
@@ -45,21 +47,26 @@ const PredictiveCard: React.FC<PredictiveCardProps> = ({
     <div className="relative">
       <div className="rounded-xl p-4 bg-destructive text-destructive-foreground space-y-2">
         <div className="flex items-center gap-2 font-bold text-lg w-full justify-between">
-          <div className="flex gap-2 items-center ">
+          <div className="flex gap-2 items-center">
             <AlertTriangle className="w-5 h-5" />
-            <span>Predictive Alert!</span>
+            <span>{t('predictiveCard.predictiveAlert.title')}</span>
           </div>
           {cancelable && (
             <button
               onClick={() => setVisible(false)}
               className="p-1 rounded hover:bg-destructive-foreground/10 active:bg-destructive-foreground/20 transition-colors"
-              aria-label="Dismiss alert"
+              aria-label={t('predictiveCard.predictiveAlert.dismissAria')}
             >
               <X className="w-4 h-4" />
             </button>
           )}
         </div>
-        {loading && <p className="text-sm">Loading...</p>}
+
+        {loading && (
+          <p className="text-sm">
+            {t('predictiveCard.predictiveAlert.loading')}
+          </p>
+        )}
         {summary && <p className="text-sm">{summary}</p>}
       </div>
     </div>

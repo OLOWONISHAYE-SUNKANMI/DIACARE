@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useTranslation } from 'react-i18next';
 
 export interface Reminder {
   id: string;
@@ -32,6 +33,7 @@ export interface ReminderLog {
 }
 
 export function useReminders() {
+  const { t } = useTranslation();
   const [reminders, setReminders] = useState<Reminder[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -54,8 +56,8 @@ export function useReminders() {
     } catch (err: any) {
       setError(err.message);
       toast({
-        title: 'Erreur',
-        description: 'Impossible de charger les rappels',
+        title: t('useReminders.toast.errorTitle'),
+        description: t('useReminders.toast.remindersLoadError'),
         variant: 'destructive',
       });
     } finally {
@@ -82,15 +84,17 @@ export function useReminders() {
       // Refetch from backend to ensure UI is always in sync
       await fetchReminders();
       toast({
-        title: '✅ Rappel créé',
-        description: `${reminderData.title} a été programmé`,
+        title: t('useReminders.toast.reminderCreatedTitle'),
+        description: t('useReminders.toast.reminderScheduled', {
+          title: reminderData.title,
+        }),
       });
 
       return data as Reminder;
     } catch (err: any) {
       toast({
-        title: 'Erreur',
-        description: 'Impossible de créer le rappel',
+        title: t('useReminders.toast.errorTitle'),
+        description: t('useReminders.toast.reminderCreateError'),
         variant: 'destructive',
       });
       throw err;
@@ -113,15 +117,15 @@ export function useReminders() {
         prev.map(r => (r.id === id ? (data as Reminder) : r))
       );
       toast({
-        title: '✅ Rappel mis à jour',
-        description: 'Les modifications ont été sauvegardées',
+        title: t('useReminders.toast.reminderUpdatedTitle'),
+        description: t('useReminders.toast.reminderUpdatedDescription'),
       });
 
       return data as Reminder;
     } catch (err: any) {
       toast({
-        title: 'Erreur',
-        description: 'Impossible de modifier le rappel',
+        title: t('useReminders.toast.reminderUpdateErrorTitle'),
+        description: t('useReminders.toast.reminderUpdateErrorDescription'),
         variant: 'destructive',
       });
       throw err;
@@ -140,13 +144,13 @@ export function useReminders() {
 
       setReminders(prev => prev.filter(r => r.id !== id));
       toast({
-        title: '🗑️ Rappel supprimé',
-        description: 'Le rappel a été supprimé',
+        title: t('useReminders.toast.reminderDeletedTitle'),
+        description: t('useReminders.toast.reminderDeletedDescription'),
       });
     } catch (err: any) {
       toast({
-        title: 'Erreur',
-        description: 'Impossible de supprimer le rappel',
+        title: t('useReminders.toast.reminderDeleteErrorTitle'),
+        description: t('useReminders.toast.reminderDeleteErrorDescription'),
         variant: 'destructive',
       });
     }
@@ -181,19 +185,16 @@ export function useReminders() {
       };
 
       toast({
-        title: `${actionEmoji[actionType]} Rappel ${
-          actionType === 'completed'
-            ? 'complété'
-            : actionType === 'snoozed'
-            ? 'reporté'
-            : 'marqué manqué'
-        }`,
-        description: notes || 'Action enregistrée',
+        title: t('useReminders.toast.reminderActionTitle', {
+          emoji: actionEmoji[actionType],
+          status: t(`useReminders.toast.reminderStatus.${actionType}`),
+        }),
+        description: notes || t('useReminders.toast.reminderActionDescription'),
       });
     } catch (err: any) {
       toast({
-        title: 'Erreur',
-        description: "Impossible d'enregistrer l'action",
+        title: t('useReminders.toast.reminderActionErrorTitle'),
+        description: t('useReminders.toast.reminderActionErrorDescription'),
         variant: 'destructive',
       });
     }
@@ -230,27 +231,27 @@ export function useReminders() {
       insulin: {
         icon: '💉',
         color: 'text-blue-600 bg-blue-50',
-        name: 'Insuline',
+        name: t('useReminders.typeMap.insulin.name'),
       },
       medication: {
         icon: '💊',
         color: 'text-green-600 bg-green-50',
-        name: 'Médicament',
+        name: t('useReminders.typeMap.medication.name'),
       },
       glucose_test: {
         icon: '🩸',
         color: 'text-red-600 bg-red-50',
-        name: 'Test glycémie',
+        name: t('useReminders.typeMap.glucose_test.name'),
       },
       meal: {
         icon: '🍽️',
         color: 'text-orange-600 bg-orange-50',
-        name: 'Repas',
+        name: t('useReminders.typeMap.meal.name'),
       },
       activity: {
         icon: '🏃',
         color: 'text-purple-600 bg-purple-50',
-        name: 'Activité',
+        name: t('useReminders.typeMap.activity.name'),
       },
     };
     return typeMap[type];

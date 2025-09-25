@@ -225,7 +225,7 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
             <ModalOverlay />
             <ModalContent className="rounded-2xl p-2">
               <ModalHeader className="font-semibold text-lg flex items-center gap-2">
-                🍽 Journal des Repas
+                {t('actionsRapides.mealModal.title')}
               </ModalHeader>
               <ModalCloseButton />
 
@@ -239,7 +239,9 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
                       onClick={() => setIsBarcodeModalOpen(true)}
                     >
                       <span className="text-xl mb-1">📱</span>
-                      <span className="text-xs">Scanner code-barres</span>
+                      <span className="text-xs">
+                        {t('actionsRapides.mealModal.barcodeScan')}
+                      </span>
                     </Button>
 
                     <Button
@@ -248,7 +250,9 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
                       onClick={() => setIsPhotoModalOpen(true)}
                     >
                       <span className="text-xl mb-1">📸</span>
-                      <span className="text-xs">Photo + IA</span>
+                      <span className="text-xs">
+                        {t('actionsRapides.mealModal.photoAI')}
+                      </span>
                     </Button>
                   </div>
 
@@ -259,7 +263,7 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
                     </div>
                     <div className="relative flex justify-center text-xs uppercase">
                       <span className=" px-2 text-muted-foreground">
-                        ou saisie manuelle
+                        {t('actionsRapides.mealModal.manualEntry')}
                       </span>
                     </div>
                   </div>
@@ -267,10 +271,14 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
                   {/* Form */}
                   <form onSubmit={handleMealSubmit} className="space-y-3">
                     <div>
-                      <Label htmlFor="foodName">Nom de l&apos;aliment</Label>
+                      <Label htmlFor="foodName">
+                        {t('actionsRapides.mealModal.foodNameLabel')}
+                      </Label>
                       <Input
                         id="foodName"
-                        placeholder="Ex: Pomme, Riz, Salade..."
+                        placeholder={t(
+                          'actionsRapides.mealModal.foodNamePlaceholder'
+                        )}
                         value={foodName}
                         onChange={e => setFoodName(e.target.value)}
                         className="mt-1"
@@ -278,18 +286,22 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
                       />
                     </div>
                     <div>
-                      <Label htmlFor="carbs">Glucides (g) - optionnel</Label>
+                      <Label htmlFor="carbs">
+                        {t('actionsRapides.mealModal.carbsLabel')}
+                      </Label>
                       <Input
                         id="carbs"
                         type="number"
-                        placeholder="Ex: 25"
+                        placeholder={t(
+                          'actionsRapides.mealModal.carbsPlaceholder'
+                        )}
                         value={carbs}
                         onChange={e => setCarbs(e.target.value)}
                         className="mt-1"
                       />
                     </div>
                     <Button type="submit" className="w-full">
-                      Ajouter
+                      {t('actionsRapides.mealModal.addButton')}
                     </Button>
                   </form>
                 </div>
@@ -357,7 +369,7 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
               💉
             </div>
             <span className={`text-xs sm:text-sm font-medium ${textButton}`}>
-              Insulin Dosage
+              {t('insulinDosage.title')}
             </span>
           </button>
           <button
@@ -370,7 +382,7 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
               🩺
             </div>
             <span className={`text-xs sm:text-sm font-medium ${textButton}`}>
-              Biomarker tracker
+              {t('biomarkerTracker.title')}
             </span>
           </button>
         </div>
