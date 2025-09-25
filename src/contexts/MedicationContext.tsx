@@ -9,30 +9,38 @@ import React, {
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 
+// ---------------------
+// Types
+// ---------------------
 export interface MedicationEntry {
   id: string;
   user_id: string;
   medication_name: string;
   dose: number;
-  dose_unit?: string;
+  dose_unit: string;
   medication_time: string;
-  notes?: string;
+  injection_site?: string | null;
+  injection_done: boolean;
   created_at: string;
   updated_at: string;
 }
 
 interface MedicationContextType {
   medications: MedicationEntry[];
-  addMedication: (entry: {
+  addMedication: (med: {
     medication_name: string;
     dose: number;
-    dose_unit?: string;
-    medication_time?: string; // allow custom time if backfilling
-    notes?: string;
+    dose_unit: string;
+    medication_time: string; // ISO string
+    injection_site?: string;
+    injection_done?: boolean;
   }) => Promise<void>;
   loading: boolean;
 }
 
+// ---------------------
+// Context
+// ---------------------
 const MedicationContext = createContext<MedicationContextType | undefined>(
   undefined
 );
@@ -44,7 +52,7 @@ export const MedicationProvider: React.FC<{ children: ReactNode }> = ({
   const [medications, setMedications] = useState<MedicationEntry[]>([]);
   const [loading, setLoading] = useState(false);
 
-  // 🔹 Fetch medications on mount
+  // Fetch meds on mount
   useEffect(() => {
     const fetchMedications = async () => {
       if (!user) return;
@@ -68,20 +76,22 @@ export const MedicationProvider: React.FC<{ children: ReactNode }> = ({
     fetchMedications();
   }, [user]);
 
-  // 🔹 Add new medication
+  // Add new medication
   const addMedication = useCallback(
     async ({
       medication_name,
       dose,
       dose_unit,
       medication_time,
-      notes,
+      injection_site,
+      injection_done = false,
     }: {
       medication_name: string;
       dose: number;
-      dose_unit?: string;
-      medication_time?: string;
-      notes?: string;
+      dose_unit: string;
+      medication_time: string;
+      injection_site?: string;
+      injection_done?: boolean;
     }) => {
       if (!user) throw new Error('No user logged in');
 
@@ -91,9 +101,10 @@ export const MedicationProvider: React.FC<{ children: ReactNode }> = ({
           user_id: user.id,
           medication_name,
           dose,
-          dose_unit: dose_unit ?? 'units', // default
-          medication_time: medication_time ?? new Date().toISOString(),
-          notes: notes ?? null,
+          dose_unit,
+          medication_time,
+          injection_site: injection_site ?? null,
+          injection_done,
         })
         .select()
         .single();
@@ -112,6 +123,7 @@ export const MedicationProvider: React.FC<{ children: ReactNode }> = ({
   );
 };
 
+// Hook
 export const useMedications = () => {
   const context = useContext(MedicationContext);
   if (!context) {
