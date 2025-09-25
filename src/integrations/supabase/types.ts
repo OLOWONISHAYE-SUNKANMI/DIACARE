@@ -639,24 +639,28 @@ export type Database = {
       };
       glucose_readings: {
         Row: {
-          context: string;
           created_at: string;
+          dose_units: number;
           id: string;
+          injection_site: string | null;
+          injection_time: string;
+          insulin_brand: string | null;
+          insulin_type: string;
           notes: string | null;
-          timestamp: string;
           updated_at: string;
           user_id: string;
-          value: number;
         };
         Insert: {
-          context?: string;
           created_at?: string;
+          dose_units: number;
           id?: string;
+          injection_site?: string | null;
+          injection_time?: string;
+          insulin_brand?: string | null;
+          insulin_type: string;
           notes?: string | null;
-          timestamp?: string;
           updated_at?: string;
           user_id: string;
-          value: number;
         };
         Update: {
           context?: string;
@@ -697,27 +701,19 @@ export type Database = {
       insulin_injections: {
         Row: {
           created_at: string;
-          dose_units: number;
+          creatinine: number | null;
           id: string;
-          injection_site: string | null;
-          injection_time: string;
-          insulin_brand: string | null;
-          insulin_type: string;
-          notes: string | null;
-          updated_at: string;
-          user_id: string;
+          microalbumin: number | null;
+          recorded_date: string | null;
+          user_id: string | null;
         };
         Insert: {
           created_at?: string;
-          dose_units: number;
+          creatinine?: number | null;
           id?: string;
-          injection_site?: string | null;
-          injection_time?: string;
-          insulin_brand?: string | null;
-          insulin_type: string;
-          notes?: string | null;
-          updated_at?: string;
-          user_id: string;
+          microalbumin?: number | null;
+          recorded_date?: string | null;
+          user_id?: string | null;
         };
         Update: {
           created_at?: string;
