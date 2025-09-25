@@ -12,7 +12,7 @@ import { useAuth } from '@/contexts/AuthContext';
 export interface HbA1cReading {
   id: string;
   percentage: number | string;
-  recorded_data: string;
+  recorded_data: Date;
 }
 
 interface HbA1cContextType {
@@ -27,46 +27,54 @@ const HbA1cContext = createContext<HbA1cContextType | undefined>(undefined);
 export const HbA1cProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const { user } = useAuth();
   const [readings, setReadings] = useState<HbA1cReading[]>([]);
   const [loadingHba1c, setLoadingHba1c] = useState(false);
 
-  useEffect(() => {
-    const fetchReadings = async () => {
-      if (!user) return;
-      setLoadingHba1c(true);
-      const { data, error } = await supabase
-        .from('hemoglobin_tracker')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('recorded_data', { ascending: false });
-      if (error) {
-        console.error('Error fetching HbA1c readings:', error);
-      } else if (data) {
-        setReadings(data);
-      }
-      setLoadingHba1c(false);
-    };
-    fetchReadings();
-  }, [user]);
+  // useEffect(() => {
+  //   const fetchReadings = async () => {
+  //     if (!auth.uid) return;
+  //     setLoadingHba1c(true);
+  //     const { data, error } = await supabase
+  //       .from('hemoglobin_tracker')
+  //       .select('*')
+  //       .eq('user_id', auth.uid)
+  //       .order('recorded_data', { ascending: false });
+  //     if (error) {
+  //       console.error('Error fetching HbA1c readings:', error);
+  //     } else if (data) {
+  //       setReadings(data);
+  //     }
+  //     setLoadingHba1c(false);
+  //   };
+  //   fetchReadings();
+  // }, [auth.uid]);
 
-  const addReading = useCallback(
-    async (reading: Omit<HbA1cReading, 'id'>) => {
-      if (!user) throw new Error('No user logged in');
-      const { data, error } = await supabase
-        .from('hemoglobin_tracker')
-        .insert({
-          user_id: user.id,
-          percentage: reading.percentage,
-          recorded_data: reading.recorded_data,
-        })
-        .select()
-        .single();
-      if (error) throw error;
-      setReadings(prev => [data as HbA1cReading, ...prev]);
-    },
-    [user]
-  );
+  const addReading = useCallback(async (reading: Omit<HbA1cReading, 'id'>) => {
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
+
+    if (userError) throw userError;
+    if (!user) throw new Error('No user logged in');
+
+    console.log('Supabase user:', user);
+    console.log('User ID being inserted:', user.id);
+    console.log('Reading data:', reading);
+
+    const { data, error } = await supabase
+      .from('hemoglobin_tracker')
+      .insert({
+        user_id: user.id,
+        percentage: reading.percentage,
+        recorded_data: reading.recorded_data,
+      })
+      .select()
+      .single();
+    if (error) throw error;
+
+    setReadings(prev => [data as HbA1cReading, ...prev]);
+  }, []);
 
   const getLatestHba1cReading = useCallback(() => {
     return readings[0] || null;
@@ -78,7 +86,7 @@ export const HbA1cProvider: React.FC<{ children: ReactNode }> = ({
         readings,
         addReading,
         getLatestHba1cReading,
-        loadingHba1c,
+        loadingHba1c: false,
       }}
     >
       {children}

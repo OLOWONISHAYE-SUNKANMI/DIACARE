@@ -11,6 +11,32 @@ const port = process.env.PORT || 8000;
 app.use(cors());
 app.use(express.json());
 
+app.post('/forecast', async (req, res) => {
+  const { currentGlucose } = req.body;
+
+  const prompt = `
+   Given the past glucose readings: ${currentGlucose},
+   predict the 30 minutes forecast in this format
+   Stable ( (↓ mg/dL)Next 30 min forecast: Stable (↓ mg/dL).
+   Respond with the just number beside the arrow mg/dL.
+  `;
+
+  try {
+    const completion = await openai.chat.completions.create({
+      model: 'gpt-3.5-turbo',
+      messages: [{ role: 'user', content: prompt }],
+      temperature: 0.2,
+      max_tokens: 300,
+    });
+
+    const forecast = completion.choices[0].message.content;
+    res.json({ forecast: forecast });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'forecast failed' });
+  }
+});
+
 app.post('/predict', async (req, res) => {
   const { glucoseHistory } = req.body;
 

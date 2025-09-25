@@ -22,6 +22,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
 import { useTranslation } from 'react-i18next';
+import { useMedications } from '@/contexts/MedicationContext';
 
 interface MedicationModalProps {
   isOpen: boolean;
@@ -30,13 +31,14 @@ interface MedicationModalProps {
 
 const MedicationModal = ({ isOpen, onClose }: MedicationModalProps) => {
   const { t } = useTranslation();
-  console.log('MedicationModal render - isOpen:', isOpen);
+  const { toast } = useToast();
+  const { addMedication } = useMedications();
+
   const [medicationType, setMedicationType] = useState('');
   const [dose, setDose] = useState('');
   const [time, setTime] = useState('');
   const [injectionSite, setInjectionSite] = useState('');
   const [injectionDone, setInjectionDone] = useState(false);
-  const { toast } = useToast();
 
   const medicationOptions = [
     {
@@ -87,12 +89,9 @@ const MedicationModal = ({ isOpen, onClose }: MedicationModalProps) => {
   const selectedMedication = medicationOptions.find(
     m => m.value === medicationType
   );
-  const isInsulin =
-    medicationType === 'lantus' ||
-    medicationType === 'humalog' ||
-    medicationType === 'novorapid';
+  const isInsulin = ['lantus', 'humalog', 'novorapid'].includes(medicationType);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!medicationType || !dose || !time) {
       toast({
         title: t('medicationModal.toast.error'),
@@ -111,11 +110,30 @@ const MedicationModal = ({ isOpen, onClose }: MedicationModalProps) => {
       return;
     }
 
-    const medicationName = selectedMedication?.label || medicationType;
+    // 🕒 combine today's date with selected time
+    const now = new Date();
+    const [hours, minutes] = time.split(':').map(Number);
+    const medicationDateTime = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+      hours,
+      minutes
+    ).toISOString();
+
+    await addMedication({
+      medication_name: selectedMedication?.label || medicationType,
+      dose: parseFloat(dose),
+      dose_unit: selectedMedication?.unit || 'mg',
+      medication_time: medicationDateTime, // ✅ store correct datetime
+      injection_site: isInsulin ? injectionSite : null,
+      injection_done: isInsulin ? injectionDone : null,
+    });
+
     toast({
       title: t('medicationModal.toast.medicationSaved'),
       description: t('medicationModal.toast.medicationSavedDescription', {
-        medicationName,
+        medicationName: selectedMedication?.label || medicationType,
         dose,
         unit: selectedMedication?.unit,
       }),
@@ -151,7 +169,6 @@ const MedicationModal = ({ isOpen, onClose }: MedicationModalProps) => {
                   placeholder={t('medicationModal.medication.typePlaceholder')}
                 />
               </SelectTrigger>
-              {/* force portal so it escapes Chakra Modal's clipping */}
               <SelectContent position="popper" className="z-[1500]">
                 {medicationOptions.map(option => (
                   <SelectItem key={option.value} value={option.value}>
