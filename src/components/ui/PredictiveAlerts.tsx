@@ -238,7 +238,7 @@ const PredictiveAlerts: React.FC<PredictiveAlertsProps> = ({
             </div>
           </div>
           <Button onClick={handleViewMore} variant="default">
-            Enter{' '}
+            {t('analyze.buttons.enter')}
           </Button>
         </CardContent>
       </Card>

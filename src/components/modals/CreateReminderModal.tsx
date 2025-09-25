@@ -193,7 +193,10 @@ export const CreateReminderModal: React.FC<CreateReminderModalProps> = ({
       <ModalOverlay />
       <ModalContent>
         <ModalHeader display="flex" alignItems="center" gap={2}>
-          ⏰ {editingReminder ? 'Modifier le rappel' : 'Nouveau rappel'}
+          ⏰{' '}
+          {editingReminder
+            ? t('createReminderModal.reminder.edit')
+            : t('createReminderModal.reminder.new')}
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
@@ -290,7 +293,7 @@ export const CreateReminderModal: React.FC<CreateReminderModalProps> = ({
                   <FormControl>
                     <FormLabel>{t('createReminderModal.form.unit')}</FormLabel>
                     <Select
-                      placeholder={t('form.unit')}
+                      placeholder={t('createReminderModal.form.unit')}
                       value={formData.dose_unit}
                       onChange={e =>
                         setFormData(prev => ({
