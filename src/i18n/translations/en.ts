@@ -74,7 +74,7 @@ export const en = {
 
     // Sections
     glucose: 'Blood Glucose',
-    meals: 'Meals',
+    meals: 'Meals Carbs',
     activities: 'Activities',
     medications: 'Medications',
 
