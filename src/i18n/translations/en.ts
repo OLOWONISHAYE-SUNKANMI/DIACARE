@@ -5472,8 +5472,10 @@ Failure to comply with this charter may result in temporary or permanent suspens
   predictiveCard: {
     predictiveAlert: {
       title: 'Predictive Alert!',
-      dismissAria: 'Dismiss alert',
+      dismissAria: 'Dismiss',
       loading: 'Loading...',
+      moreInfo: 'More info',
+
     },
     aiSummary: {
       error: 'Error getting summary.',
