@@ -11,46 +11,56 @@ const port = process.env.PORT || 8000;
 app.use(cors());
 app.use(express.json());
 
-// app.post('/summarize', async (req, res) => {
-//   try {
-//     const { values } = req.body;
+app.post('/forecast', async (req, res) => {
+  const { currentGlucose } = req.body;
 
-//     if (!values) {
-//       return res.status(400).json({ message: 'No values provided' });
-//     }
+  const prompt = `
+   Given the past glucose readings: ${currentGlucose},
+   predict the 30 minutes forecast in this format
+   Stable ( (↓ mg/dL)Next 30 min forecast: Stable (↓ mg/dL).
+   Respond with the just number beside the arrow mg/dL.
+  `;
 
-//     const prompt = `You are a professional health detailed summary expert. Given the following health data, which contain blood sugar level and glucose level: ${JSON.stringify(
-//       values
-//     )}, provide a very short detailed summary with each item on a new line in this format
-//     """
-//     Risk of Hypoglycemia (probability %)
-//     Forcast: BG may drop to the **[exact mg/dl]** in the [exact time].
-//     Suggestions: Re-check in [exact time[], and take the exact medication.
-//     """
+  try {
+    const completion = await openai.chat.completions.create({
+      model: 'gpt-3.5-turbo',
+      messages: [{ role: 'user', content: prompt }],
+      temperature: 0.2,
+      max_tokens: 300,
+    });
 
-//     NOTE: Format each section of the summary on a new line exactly as requested, and do not provide anything other than the required  format.
-//     `;
+    const forecast = completion.choices[0].message.content;
+    res.json({ forecast: forecast });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'forecast failed' });
+  }
+});
 
-//     const chat = await openai.chat.completions.create({
-//       model: 'gpt-3.5-turbo',
-//       messages: [{ role: 'user', content: prompt }],
-//       temperature: 0.7,
-//       max_tokens: 300,
-//     });
+app.post('/predict', async (req, res) => {
+  const { glucoseHistory } = req.body;
 
-//     const summary = chat.choices[0].message.content;
+  const prompt = `
+   Given the past glucose readings: ${glucoseHistory},
+   predict the user sugar level for the next 30 minutes.
+   Respond with just the number of mg/dL.
+  `;
 
-//     res.json({ summary });
-//   } catch (error) {
-//     console.error(
-//       'Error something went wrong generating the summary',
-//       error.message
-//     );
-//     res
-//       .status(500)
-//       .json({ error: error.message, message: 'Error generating summary' });
-//   }
-// });
+  try {
+    const completion = await openai.chat.completions.create({
+      model: 'gpt-3.5-turbo',
+      messages: [{ role: 'user', content: prompt }],
+      temperature: 0.2,
+      max_tokens: 300,
+    });
+
+    const prediction = completion.choices[0].message.content;
+    res.json({ prediction: prediction });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Prediction failed' });
+  }
+});
 
 app.post('/summarize', async (req, res) => {
   try {
