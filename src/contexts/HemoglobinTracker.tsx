@@ -8,6 +8,7 @@ import React, {
 } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { toast } from 'sonner';
 
 export interface HbA1cReading {
   id: string;
@@ -32,24 +33,34 @@ export const HbA1cProvider: React.FC<{ children: ReactNode }> = ({
 
   // useEffect(() => {
   //   const fetchReadings = async () => {
-  //     if (!auth.uid) return;
   //     setLoadingHba1c(true);
+
+  //     const {
+  //       data: { user },
+  //     } = await supabase.auth.getUser();
+  //     if (!user) return;
+
   //     const { data, error } = await supabase
   //       .from('hemoglobin_tracker')
   //       .select('*')
-  //       .eq('user_id', auth.uid)
-  //       .order('recorded_data', { ascending: false });
+  //       .eq('user_id', user.id)
+  //       .order('recorded_date', { ascending: false });
+
   //     if (error) {
-  //       console.error('Error fetching HbA1c readings:', error);
+  //       console.error('Error fetching kidney_function readings:', error);
   //     } else if (data) {
   //       setReadings(data);
+  //       console.log(data);
   //     }
+
   //     setLoadingHba1c(false);
   //   };
+
   //   fetchReadings();
-  // }, [auth.uid]);
+  // }, []);
 
   const addReading = useCallback(async (reading: Omit<HbA1cReading, 'id'>) => {
+    setLoadingHba1c(true);
     const {
       data: { user },
       error: userError,
@@ -57,10 +68,6 @@ export const HbA1cProvider: React.FC<{ children: ReactNode }> = ({
 
     if (userError) throw userError;
     if (!user) throw new Error('No user logged in');
-
-    console.log('Supabase user:', user);
-    console.log('User ID being inserted:', user.id);
-    console.log('Reading data:', reading);
 
     const { data, error } = await supabase
       .from('hemoglobin_tracker')
@@ -71,7 +78,10 @@ export const HbA1cProvider: React.FC<{ children: ReactNode }> = ({
       })
       .select()
       .single();
-    if (error) throw error;
+
+    if (error) toast.error(error.message);
+    else toast.success('Hemoglobin reading saved successfully');
+    setLoadingHba1c(false);
 
     setReadings(prev => [data as HbA1cReading, ...prev]);
   }, []);
@@ -86,7 +96,7 @@ export const HbA1cProvider: React.FC<{ children: ReactNode }> = ({
         readings,
         addReading,
         getLatestHba1cReading,
-        loadingHba1c: false,
+        loadingHba1c,
       }}
     >
       {children}

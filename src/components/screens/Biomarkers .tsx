@@ -64,6 +64,14 @@ const Biomarkers = () => {
     lastFootExam: new Date(),
   });
 
+  useEffect(() => {
+    // Load saved values from local storage
+    const savedBiomarkers = localStorage.getItem('biomarkers');
+    if (savedBiomarkers) {
+      setBiomarkers(JSON.parse(savedBiomarkers));
+    }
+  }, []);
+
   const handleBiomarkerChange = (field, value) => {
     setBiomarkers(prev => {
       const updated = { ...prev, [field]: value };
@@ -75,6 +83,8 @@ const Biomarkers = () => {
         updated.bmi = w && h ? (w / (h * h)).toFixed(1) : '';
       }
 
+      // Save the updated values to local localStorage
+      localStorage.setItem('biomarkers', JSON.stringify(updated));
       return updated;
     });
   };
@@ -185,6 +195,10 @@ const Biomarkers = () => {
     loadingScreeningExam,
   } = useScreeningExam();
   const latestScreeningExam = getLatestScreeningExamReading();
+
+  // Display the H1bc value in the card if user has entered a value
+  const h1bcValue = biomarkers.hba1c;
+  const h1bcValueDate = biomarkers.hba1cDate;
   return (
     <div className="p-6 bg-muted">
       {showBiomarkers ? (
@@ -228,7 +242,7 @@ const Biomarkers = () => {
                     <input
                       type="number"
                       step="0.1"
-                      value={biomarkers.hba1c}
+                      value={h1bcValue}
                       onChange={e =>
                         handleBiomarkerChange('hba1c', e.target.value)
                       }
@@ -357,7 +371,9 @@ const Biomarkers = () => {
                     className="flex items-center gap-1 text-sm bg-green-300 text-green-500 rounded-sm px-3 py-1"
                   >
                     <Plus className="w-5 h-5 text-green-500" />
-                    <span className="text-sm text-green-500">Save</span>
+                    <span className="text-sm text-green-500">
+                      {loadingWeightIbm ? 'Saving...' : 'Save'}
+                    </span>
                   </button>
                 </div>
                 <div className="space-y-2">
@@ -435,7 +451,9 @@ const Biomarkers = () => {
                     className="flex items-center gap-1 text-sm bg-yellow-300 text-yellow-500 rounded-sm px-3 py-1"
                   >
                     <Plus className="w-5 h-5 text-yellow-500" />
-                    <span className="text-sm text-yellow-500">Save</span>
+                    <span className="text-sm text-yellow-500">
+                      {loadingCholesterol ? 'Saving...' : 'Save'}
+                    </span>
                   </button>
                 </div>
 
@@ -526,7 +544,9 @@ const Biomarkers = () => {
                     className="flex items-center gap-1 text-sm bg-purple-300 text-purple-500 rounded-sm px-3 py-1"
                   >
                     <Plus className="w-5 h-5 text-purple-500" />
-                    <span className="text-sm text-purple-500">Save</span>
+                    <span className="text-sm text-purple-500">
+                      {loadingKidneyFunction ? 'Saving...' : 'Save'}
+                    </span>
                   </button>
                 </div>
                 <div className="space-y-2">
@@ -548,7 +568,8 @@ const Biomarkers = () => {
                   <div className="flex gap-2">
                     <input
                       type="number"
-                      value={biomarkers.microalbumin}
+                      step="0.1"
+                      value={biomarkers.creatinine}
                       onChange={e =>
                         handleBiomarkerChange(
                           'biomarkerTracker.microalbumin',
@@ -566,9 +587,7 @@ const Biomarkers = () => {
                   </div>
                   <input
                     type="date"
-                    value={
-                      biomarkers.creatinineDate?.toISOString().split('T')[0]
-                    }
+                    value={biomarkers.creatinineDate}
                     onChange={e =>
                       handleBiomarkerChange('creatinineDate', e.target.value)
                     }
@@ -594,7 +613,9 @@ const Biomarkers = () => {
                     className="flex items-center gap-1 text-sm bg-indigo-300 text-indigo-500 rounded-sm px-3 py-1"
                   >
                     <Plus className="w-5 h-5 text-indigo-500" />
-                    <span className="text-sm text-indigo-500">Save</span>
+                    <span className="text-sm text-indigo-500">
+                      {loadingScreeningExam ? 'Saving...' : 'Save'}
+                    </span>
                   </button>
                 </div>
 
