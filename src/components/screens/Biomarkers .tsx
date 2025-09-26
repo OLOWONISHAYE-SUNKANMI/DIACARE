@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Activity,
   Brain,
@@ -6,6 +6,7 @@ import {
   Bell,
   AlertTriangle,
   Database,
+  Plus,
 } from 'lucide-react';
 import {
   ResponsiveContainer,
@@ -19,6 +20,13 @@ import {
   ReferenceLine,
 } from 'recharts';
 import { useTranslation } from 'react-i18next';
+import { useGlucose } from '@/contexts/GlucoseContext';
+import { useHbA1c } from '@/contexts/HemoglobinTracker';
+import { useBloodPressure } from '@/contexts/BloodPressure';
+import { useWeightIbm } from '@/contexts/WeightIbmContext';
+import { useCholesterolProfile } from '@/contexts/CholeterolProfileContext';
+import { useKidneyFunction } from '@/contexts/KidneyFunctionContext';
+import { useScreeningExam } from '@/contexts/ScreeningExamsContext';
 
 // ✅ Placeholder component for InsulinDoseSheet (replace with your actual one)
 const InsulinDoseSheet = () => (
@@ -29,27 +37,31 @@ const InsulinDoseSheet = () => (
 
 const Biomarkers = () => {
   const { t } = useTranslation();
+  const [prediction, setPrediction] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const { getLatestReading } = useGlucose();
+
   // ✅ Example biomarker state
   const [biomarkers, setBiomarkers] = useState({
     hba1c: '',
-    hba1cDate: '',
+    hba1cDate: new Date(),
     systolicBP: '',
     diastolicBP: '',
-    bpDate: '',
+    bpDate: new Date(),
     weight: '',
     height: '',
-    weightDate: '',
+    weightDate: new Date(),
     bmi: '',
     totalCholesterol: '',
     hdlCholesterol: '',
     ldlCholesterol: '',
     triglycerides: '',
-    cholesterolDate: '',
+    cholesterolDate: new Date(),
     creatinine: '',
-    creatinineDate: '',
+    creatinineDate: new Date(),
     microalbumin: '',
-    lastEyeExam: '',
-    lastFootExam: '',
+    lastEyeExam: new Date(),
+    lastFootExam: new Date(),
   });
 
   const handleBiomarkerChange = (field, value) => {
@@ -92,8 +104,6 @@ const Biomarkers = () => {
     return { category: t('biomarkerTracker.bmi.obese'), color: 'text-red-600' };
   };
 
-  // ✅ Dummy prediction + notes
-  const prediction = 140;
   const doctorNotes = {
     recommendations: t('biomarkerTracker.doctorNotes.recommendations'),
     specialInstructions: t('biomarkerTracker.doctorNotes.specialInstructions'),
@@ -101,12 +111,7 @@ const Biomarkers = () => {
   };
 
   // ✅ Example glucose data
-  const glucoseData = [
-    { time: '08:00', glucose: 110 },
-    { time: '10:00', glucose: 150 },
-    { time: '12:00', glucose: 130, predicted: true },
-    { time: '14:00', glucose: 160 },
-  ];
+  const glucoseData = [{ time: '08:00', glucose: getLatestReading().value }];
 
   const alertSettings = { lowThreshold: 70, highThreshold: 180 };
   const alerts = [
@@ -116,6 +121,70 @@ const Biomarkers = () => {
 
   const showBiomarkers = true;
 
+  useEffect(() => {
+    fetchPrediction();
+  }, []);
+
+  const fetchPrediction = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('http://localhost:8000/predict', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          glucoseHistory: glucoseData.map(d => d.glucose).join(','),
+        }),
+      });
+
+      const data = await res.json();
+      setPrediction(data.prediction);
+    } catch (error) {
+      console.error('Error fetching prediction:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // HbA1cCard implementation
+  const { readings, addReading, getLatestHba1cReading, loadingHba1c } =
+    useHbA1c();
+
+  const latest = getLatestHba1cReading();
+
+  // Blood pressure card implementation
+  const { addBloodReading, getLatestBloodReading, loadingBlood } =
+    useBloodPressure();
+
+  const latestData = getLatestBloodReading();
+
+  // Weight & BMI card implementation
+  const { addWeightIbmReading, getLatestWeightIbmReading, loadingWeightIbm } =
+    useWeightIbm();
+  const latestWeight = getLatestWeightIbmReading();
+
+  // Cholesterol card implementation
+  const {
+    addCholesterolReading,
+    getLatestCholesterolReading,
+    loadingCholesterol,
+  } = useCholesterolProfile();
+  const latestCholesterol = getLatestCholesterolReading();
+
+  // Kidney Function card implementation
+  const {
+    addKidneyFunctionReading,
+    getLatestKidneyFunctionReading,
+    loadingKidneyFunction,
+  } = useKidneyFunction();
+  const latestKidneyFunction = getLatestKidneyFunctionReading();
+
+  // Screening Exams card implementation
+  const {
+    addScreeningExamReading,
+    getLatestScreeningExamReading,
+    loadingScreeningExam,
+  } = useScreeningExam();
+  const latestScreeningExam = getLatestScreeningExamReading();
   return (
     <div className="p-6 bg-muted">
       {showBiomarkers ? (
@@ -132,9 +201,28 @@ const Biomarkers = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* HbA1c */}
               <div className="p-4 bg-red-50 rounded-lg border border-red-200">
-                <h3 className="font-medium text-red-800 mb-3">
-                  {t('biomarkerTracker.hba1cTitle')}
-                </h3>
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="font-medium text-red-800 mb-3">
+                    {t('biomarkerTracker.hba1cTitle')}
+                  </h3>
+
+                  <button
+                    type="submit"
+                    onClick={() =>
+                      addReading({
+                        percentage: biomarkers.hba1c,
+                        recorded_data: biomarkers.hba1cDate, // Changed to Date
+                      })
+                    }
+                    className="flex items-center gap-1 text-sm bg-red-300 text-red-500 rounded-sm px-3 py-1"
+                  >
+                    <Plus className="w-5 h-5 text-red-500" />
+                    <span className="text-sm text-red-500">
+                      {loadingHba1c ? 'Saving...' : 'Save'}
+                    </span>
+                  </button>
+                </div>
+
                 <div className="space-y-2">
                   <div className="flex gap-2">
                     <input
@@ -165,8 +253,8 @@ const Biomarkers = () => {
                         parseFloat(biomarkers.hba1c) < 7
                           ? 'text-green-600'
                           : parseFloat(biomarkers.hba1c) < 8
-                            ? 'text-orange-600'
-                            : 'text-red-600'
+                          ? 'text-orange-600'
+                          : 'text-red-600'
                       }`}
                     >
                       {t('biomarkerTracker.hba1cTarget')}
@@ -177,9 +265,28 @@ const Biomarkers = () => {
 
               {/* Blood Pressure */}
               <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
-                <h3 className="font-medium text-blue-800 mb-3">
-                  {t('biomarkerTracker.bloodPressureTitle')}
-                </h3>
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="font-medium text-blue-800 mb-3">
+                    {t('biomarkerTracker.bloodPressureTitle')}
+                  </h3>
+                  <button
+                    type="submit"
+                    onClick={() =>
+                      addBloodReading({
+                        systolic: biomarkers.systolicBP,
+                        diastolic: biomarkers.diastolicBP,
+                        recorded_date: biomarkers.bpDate,
+                      })
+                    }
+                    className="flex items-center gap-1 text-sm bg-blue-300 text-blue-500 rounded-sm px-3 py-1"
+                  >
+                    <Plus className="w-5 h-5 text-blue-500" />
+                    <span className="text-sm text-blue-500">
+                      {loadingBlood ? 'Saving..' : 'Save'}
+                    </span>
+                  </button>
+                </div>
+
                 <div className="space-y-2">
                   <div className="flex gap-2">
                     <input
@@ -234,9 +341,25 @@ const Biomarkers = () => {
 
               {/* Weight & BMI */}
               <div className="p-4 bg-green-50 rounded-lg border border-green-200">
-                <h3 className="font-medium text-green-800 mb-3">
-                  {t('biomarkerTracker.weightBmiTitle')}
-                </h3>
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="font-medium text-green-800 mb-3">
+                    {t('biomarkerTracker.weightBmiTitle')}
+                  </h3>
+                  <button
+                    type="submit"
+                    onClick={() =>
+                      addWeightIbmReading({
+                        weight_kg: biomarkers.weight,
+                        height_cm: biomarkers.height,
+                        recorded_date: biomarkers.weightDate,
+                      })
+                    }
+                    className="flex items-center gap-1 text-sm bg-green-300 text-green-500 rounded-sm px-3 py-1"
+                  >
+                    <Plus className="w-5 h-5 text-green-500" />
+                    <span className="text-sm text-green-500">Save</span>
+                  </button>
+                </div>
                 <div className="space-y-2">
                   <div className="flex gap-2">
                     <input
@@ -281,7 +404,9 @@ const Biomarkers = () => {
                         {t('biomarkerTracker.bmiLabel')}: {biomarkers.bmi}
                       </span>
                       <span
-                        className={`ml-2 ${getBMICategory(biomarkers.bmi).color}`}
+                        className={`ml-2 ${
+                          getBMICategory(biomarkers.bmi).color
+                        }`}
                       >
                         ({getBMICategory(biomarkers.bmi).category})
                       </span>
@@ -292,9 +417,28 @@ const Biomarkers = () => {
 
               {/* Cholesterol */}
               <div className="p-4 bg-yellow-50 rounded-lg border border-yellow-200">
-                <h3 className="font-medium text-yellow-800 mb-3">
-                  {t('biomarkerTracker.cholesterolProfileTitle')}
-                </h3>
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="font-medium text-yellow-800 mb-3">
+                    {t('biomarkerTracker.cholesterolProfileTitle')}
+                  </h3>
+                  <button
+                    type="submit"
+                    onClick={() =>
+                      addCholesterolReading({
+                        total_cholesterol: biomarkers.totalCholesterol,
+                        hdl: biomarkers.hdlCholesterol,
+                        ldl: biomarkers.ldlCholesterol,
+                        triglycerides: biomarkers.triglycerides,
+                        recorded_date: biomarkers.cholesterolDate,
+                      })
+                    }
+                    className="flex items-center gap-1 text-sm bg-yellow-300 text-yellow-500 rounded-sm px-3 py-1"
+                  >
+                    <Plus className="w-5 h-5 text-yellow-500" />
+                    <span className="text-sm text-yellow-500">Save</span>
+                  </button>
+                </div>
+
                 <div className="space-y-2">
                   <div className="grid grid-cols-3 gap-1">
                     <input
@@ -366,9 +510,25 @@ const Biomarkers = () => {
 
               {/* Kidney Function */}
               <div className="p-4 bg-purple-50 rounded-lg border border-purple-200">
-                <h3 className="font-medium text-purple-800 mb-3">
-                  {t('biomarkerTracker.kidneyFunctionTitle')}
-                </h3>
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="font-medium text-purple-800 mb-3">
+                    {t('biomarkerTracker.kidneyFunctionTitle')}
+                  </h3>
+                  <button
+                    type="submit"
+                    onClick={() =>
+                      addKidneyFunctionReading({
+                        creatinine: biomarkers.creatinine,
+                        microalbumin: biomarkers.microalbumin,
+                        recorded_date: biomarkers.creatinineDate,
+                      })
+                    }
+                    className="flex items-center gap-1 text-sm bg-purple-300 text-purple-500 rounded-sm px-3 py-1"
+                  >
+                    <Plus className="w-5 h-5 text-purple-500" />
+                    <span className="text-sm text-purple-500">Save</span>
+                  </button>
+                </div>
                 <div className="space-y-2">
                   <div className="flex gap-2">
                     <input
@@ -385,14 +545,6 @@ const Biomarkers = () => {
                       {t('biomarkerTracker.creatinineUnit')}
                     </span>
                   </div>
-                  <input
-                    type="date"
-                    value={biomarkers.creatinineDate}
-                    onChange={e =>
-                      handleBiomarkerChange('creatinineDate', e.target.value)
-                    }
-                    className="w-full px-3 py-2 border border-gray-300 rounded text-sm"
-                  />
                   <div className="flex gap-2">
                     <input
                       type="number"
@@ -412,14 +564,40 @@ const Biomarkers = () => {
                       {t('biomarkerTracker.microalbuminUnit')}
                     </span>
                   </div>
+                  <input
+                    type="date"
+                    value={
+                      biomarkers.creatinineDate?.toISOString().split('T')[0]
+                    }
+                    onChange={e =>
+                      handleBiomarkerChange('creatinineDate', e.target.value)
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded text-sm"
+                  />
                 </div>
               </div>
 
               {/* Screening Exams */}
               <div className="p-4 bg-indigo-50 rounded-lg border border-indigo-200">
-                <h3 className="font-medium text-indigo-800 mb-3">
-                  {t('biomarkerTracker.screeningExamsTitle')}
-                </h3>
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="font-medium text-indigo-800 mb-3">
+                    {t('biomarkerTracker.screeningExamsTitle')}
+                  </h3>
+                  <button
+                    type="submit"
+                    onClick={() =>
+                      addScreeningExamReading({
+                        last_eye_exam: biomarkers.lastEyeExam,
+                        last_foot_exam: biomarkers.lastFootExam,
+                      })
+                    }
+                    className="flex items-center gap-1 text-sm bg-indigo-300 text-indigo-500 rounded-sm px-3 py-1"
+                  >
+                    <Plus className="w-5 h-5 text-indigo-500" />
+                    <span className="text-sm text-indigo-500">Save</span>
+                  </button>
+                </div>
+
                 <div className="space-y-2">
                   <div>
                     <label className="block text-xs font-medium text-gray-700 mb-1">
@@ -472,8 +650,8 @@ const Biomarkers = () => {
                         ? parseFloat(biomarkers.hba1c) < 7
                           ? 'text-green-600'
                           : parseFloat(biomarkers.hba1c) < 8
-                            ? 'text-orange-600'
-                            : 'text-red-600'
+                          ? 'text-orange-600'
+                          : 'text-red-600'
                         : 'text-gray-400'
                     }`}
                   >
@@ -552,18 +730,24 @@ const Biomarkers = () => {
               </h2>
             </div>
 
-            {prediction && (
-              <div className="bg-muted rounded-lg p-4">
-                <p className="text-sm text-muted-foreground mb-2">
-                  {t('biomarkerTracker.nextPredictionLabel')}
-                </p>
-                <p className="text-2xl font-bold text-purple-600">
-                  {t('biomarkerTracker.predictionUnit', { value: prediction })}
-                </p>
-                <p className="text-xs text-foreground mt-1">
-                  {t('biomarkerTracker.predictionNote')}
-                </p>
-              </div>
+            {loading ? (
+              <p className="text-gray-500">Laoding prediction...</p>
+            ) : (
+              prediction && (
+                <div className="bg-muted rounded-lg p-4">
+                  <p className="text-sm text-muted-foreground mb-2">
+                    {t('biomarkerTracker.nextPredictionLabel')}
+                  </p>
+                  <p className="text-2xl font-bold text-purple-600">
+                    {t('biomarkerTracker.predictionUnit', {
+                      value: prediction,
+                    })}
+                  </p>
+                  <p className="text-xs text-foreground mt-1">
+                    {t('biomarkerTracker.predictionNote')}
+                  </p>
+                </div>
+              )
             )}
           </div>
 
