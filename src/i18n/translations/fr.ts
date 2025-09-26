@@ -1661,6 +1661,9 @@ export const fr = {
     payment_method_bank: '• Virements bancaires locaux',
     payment_method_patient_code:
       '• Code patient généré automatiquement après paiement',
+    cancel: 'Annuler',
+    continue: 'Continuer',
+    localCurrency: 'Devise locale',
   },
 
   professionalCodeManager: {
@@ -2615,6 +2618,7 @@ Le non-respect de cette charte peut entraîner une suspension temporaire ou déf
       securePayment: 'Paiement sécurisé • Annulable à tout moment',
       support: 'Support technique inclus',
     },
+    localCurrency: 'Devise locale',
   },
 
   paymentSuccess: {
@@ -5581,6 +5585,39 @@ Le non-respect de cette charte peut entraîner une suspension temporaire ou déf
       activity: {
         name: 'Activité',
       },
+    },
+  },
+
+  paymentPlan: {
+    patientPlan: {
+      title: 'Klukoo Patient',
+      subtitle: 'Forfait patient complet avec consultations',
+      pricePerMonth: 'par mois',
+      features: {
+        allFeatures: 'Toutes les fonctionnalités',
+        consultationsPerMonth: '10 consultations par mois',
+        chat: 'Chat Klukoo',
+        news: 'Actualités Klukoo',
+        personalizedAlerts: 'Alertes personnalisées',
+        glucoseTracking: 'Suivi glycémie',
+      },
+      cta: 'Sélectionné',
+    },
+
+    familyPlan: {
+      title: 'Klukoo Famille',
+      subtitle: 'Forfait famille avec partage de données',
+      pricePerMonth: 'par mois',
+      features: {
+        allFeatures: 'Toutes les fonctionnalités',
+        consultationsPerMonth: '10 consultations par mois',
+        chat: 'Chat Klukoo',
+        news: 'Actualités Klukoo',
+        familySharing: 'Partage avec 3 membres de famille',
+        familyAlerts: 'Alertes familiales',
+        glucoseTracking: 'Suivi glycémie',
+      },
+      cta: 'Choisir ce plan',
     },
   },
 };
