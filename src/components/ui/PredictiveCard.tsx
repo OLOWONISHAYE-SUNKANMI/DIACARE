@@ -8,6 +8,7 @@ type PredictiveCardProps = {
   visible: boolean;
   values?: string | number;
   setVisible: (v: boolean) => void;
+  onTabChange?: (tab: string) => void;
 };
 
 const PredictiveCard: React.FC<PredictiveCardProps> = ({
@@ -15,6 +16,7 @@ const PredictiveCard: React.FC<PredictiveCardProps> = ({
   visible,
   setVisible,
   values,
+  onTabChange,
 }) => {
   const [summary, setSummary] = useState('');
   const [value, setValue] = useState<string | number>('');
@@ -32,45 +34,72 @@ const PredictiveCard: React.FC<PredictiveCardProps> = ({
       setSummary('');
       setLoading(true);
       getAISummary(values)
-        .then(result => setSummary(result))
-        .catch(error => {
-          setSummary(t('predictiveCard.aiSummary.error')); // ✅ Interpolated
+        .then((result) => setSummary(result))
+        .catch((error) => {
+          setSummary(t('predictiveCard.aiSummary.error'));
           console.error('predictiveCard.aiSummary.error', error);
         })
         .finally(() => setLoading(false));
     }
   }, [visible, values]);
 
-  if (!visible) return null;
+  if (!visible || !value) return null;
 
   return (
     <div className="relative">
-      {value && (
-        <div className="rounded-xl p-4 bg-destructive text-destructive-foreground space-y-2">
-          <div className="flex items-center gap-2 font-bold text-lg w-full justify-between">
-            <div className="flex gap-2 items-center">
-              <AlertTriangle className="w-5 h-5" />
-              <span>{t('predictiveCard.predictiveAlert.title')}</span>
-            </div>
-            {cancelable && (
-              <button
-                onClick={() => setVisible(false)}
-                className="p-1 rounded hover:bg-destructive-foreground/10 active:bg-destructive-foreground/20 transition-colors"
-                aria-label={t('predictiveCard.predictiveAlert.dismissAria')}
-              >
-                <X className="w-4 h-4" />
-              </button>
-            )}
+      <div className="rounded-xl p-4 bg-destructive text-destructive-foreground space-y-2">
+        {/* Header */}
+        <div className="flex items-center gap-2 font-bold text-lg w-full justify-between">
+          <div className="flex gap-2 items-center">
+            <AlertTriangle className="w-5 h-5" />
+            <span>{t('predictiveCard.predictiveAlert.title')}</span>
           </div>
 
-          {loading && (
-            <p className="text-sm">
-              {t('predictiveCard.predictiveAlert.loading')}
-            </p>
+          {cancelable && (
+            <button
+              onClick={() => setVisible(false)}
+              className="p-1 rounded hover:bg-destructive-foreground/10 active:bg-destructive-foreground/20 transition-colors"
+              aria-label={t('predictiveCard.predictiveAlert.dismissAria')}
+            >
+              <X className="w-4 h-4" />
+            </button>
           )}
-          {summary && <p className="text-sm">{summary}</p>}
         </div>
-      )}
+
+        {/* Content */}
+        {loading && (
+          <p className="text-sm">{t('predictiveCard.predictiveAlert.loading')}</p>
+        )}
+        {summary && <p className="text-sm">{summary}</p>}
+
+        {/* Footer buttons (optional) */}
+        {cancelable && (
+          <div className="flex gap-3 justify-center pt-2">
+            {/* Dismiss button */}
+            <button
+              onClick={() => setVisible(false)}
+              className="px-9 py-2 rounded-lg bg-red-50 text-red-600 font-medium 
+                         hover:bg-red-100 active:bg-red-200 
+                         transition-colors shadow-sm"
+              aria-label={t('predictiveCard.predictiveAlert.dismissAria')}
+            >
+              {t('predictiveCard.predictiveAlert.dismiss')}
+            </button>
+
+            {/* More Info button */}
+            <button
+              onClick={() => onTabChange?.('predictive')}
+              className="px-9 py-2 rounded-lg border border-gray-300 
+                         text-gray-700 font-medium 
+                         hover:bg-gray-100 active:bg-gray-200 
+                         transition-colors shadow-sm"
+              aria-label={t('predictiveCard.predictiveAlert.moreInfoAria')}
+            >
+              {t('predictiveCard.predictiveAlert.moreInfo')}
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
