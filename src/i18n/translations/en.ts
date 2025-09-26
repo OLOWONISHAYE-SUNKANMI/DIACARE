@@ -1655,6 +1655,8 @@ export const en = {
     payment_method_bank: '• Local bank transfers',
     payment_method_patient_code:
       '• Patient code automatically generated after payment',
+    cancel: 'Cancel',
+    continue: 'Continue',
   },
 
   professionalCodeManager: {
@@ -2578,6 +2580,7 @@ Failure to comply with this charter may result in temporary or permanent suspens
       securePayment: 'Secure payment • Cancel anytime',
       support: 'Technical support included',
     },
+    localCurrency: 'Local Currency',
   },
 
   paymentSuccess: {
@@ -5515,6 +5518,40 @@ Failure to comply with this charter may result in temporary or permanent suspens
       activity: {
         name: 'Activity',
       },
+    },
+  },
+
+  paymentPlan: {
+    patientPlan: {
+      title: 'Klukoo Patient',
+      subtitle: 'Complete patient plan with consultations',
+      pricePerMonth: 'per month',
+      features: {
+        allFeatures: 'All features',
+        consultationsPerMonth: '10 consultations per month',
+        chat: 'Klukoo Chat',
+        news: 'Klukoo News',
+        personalizedAlerts: 'Personalized alerts',
+        glucoseTracking: 'Glucose tracking',
+      },
+      cta: 'Select',
+    },
+
+    familyPlan: {
+      title: 'Klukoo Family',
+      subtitle: 'Family plan with data sharing',
+      pricePerMonth: 'per month',
+      features: {
+        allFeatures: 'All features',
+        consultationsPerMonth: '10 consultations per month',
+        chat: 'Klukoo Chat',
+        news: 'Klukoo News',
+        familySharing: 'Share with 3 family members',
+        familyAlerts: 'Family alerts',
+
+        glucoseTracking: 'Glucose tracking',
+      },
+      cta: 'Choose this plan',
     },
   },
 };
