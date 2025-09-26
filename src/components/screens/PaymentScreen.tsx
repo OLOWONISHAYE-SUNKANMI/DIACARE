@@ -17,6 +17,7 @@ import {
   Mail,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import LanguageToggle from '../ui/LanguageToggle';
 
 interface PaymentFormData {
   email: string;
@@ -109,20 +110,16 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
     setIsLoading(true);
 
     try {
-      // Mode test - simulation de paiement AfribaPay
       console.log(t('paymentScreen.payment.simulationLog'), afribaPaymentData);
 
-      // Simuler un délai de traitement de 2 secondes
       await new Promise(resolve => setTimeout(resolve, 2000));
 
-      // Simuler une réponse réussie
-      const simulatedSuccess = Math.random() > 0.1; // 90% de succès en test
+      const simulatedSuccess = Math.random() > 0.1;
 
       if (simulatedSuccess) {
         setPaymentStep('success');
         setTimeout(() => {
           localStorage.removeItem('selectedPlan');
-          // Rediriger vers payment-success avec le paramètre test_mode
           window.location.href = '/payment-success?test_mode=true';
         }, 1000);
       } else {
@@ -182,13 +179,16 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
   return (
     <div className="min-h-screen bg-background p-4">
       <div className="max-w-md mx-auto">
-        <div className="flex items-center mb-6">
+        <div className="flex items-center mb-6 justify-between">
           <Button variant="ghost" size="sm" onClick={onBack} className="mr-3">
             <ArrowLeft className="w-4 h-4" />
           </Button>
           <h1 className="text-xl font-semibold">
             {t('paymentScreen.payment.secure')}
           </h1>
+          <div>
+            <LanguageToggle />
+          </div>
         </div>
 
         <div className="text-center mb-8">
@@ -204,10 +204,10 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
               : `${((selectedPlan?.price_eur || 800) / 100).toFixed(0)}€`}
           </p>
           <p className="text-muted-foreground">
-            {t('paymentScreen.paymentScreen.payment.perMonth')}
+            {t('paymentScreen.payment.perMonth')}
           </p>
           <Badge className="mt-2 bg-medical-green/10 text-medical-green border-medical-green/20">
-            {t('paymentScreen.paymentScreen.payment.secure')}
+            {t('paymentScreen.payment.secure')}
           </Badge>
         </div>
 
@@ -295,7 +295,7 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
               </div>
               {currency.country !== 'Autre' && (
                 <div className="flex justify-between text-sm text-blue-600">
-                  <span>Devise locale</span>
+                  <span>{t('paymentScreen.localCurrency')}</span>
                   <span>
                     {currency.country} ({currency.currency})
                   </span>
@@ -345,17 +345,17 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
           <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
             <h4 className="font-semibold text-orange-700 mb-2 flex items-center">
               <Shield className="w-4 h-4 mr-2" />
-              {t('paymentScreen.paymentMethod.title')}
+              {t('paymentScreen.paymentMethods.title')}
             </h4>
             <div className="text-sm text-muted-foreground space-y-1">
-              <p>{t('paymentScreen.paymentMethod.orangeMoney')}</p>
-              <p>{t('paymentScreen.paymentMethod.mtnMoney')}</p>
-              <p>{t('paymentScreen.paymentMethod.wave')}</p>
-              <p>{t('paymentScreen.paymentMethod.djamo')}</p>
-              <p>{t('paymentScreen.paymentMethod.mpesa')}</p>
-              <p>{t('paymentScreen.paymentMethod.airtel')}</p>
-              <p>{t('paymentScreen.paymentMethod.visa')}</p>
-              <p>{t('paymentScreen.paymentMethod.bank')}</p>
+              <p>{t('paymentScreen.paymentMethods.orangeMoney')}</p>
+              <p>{t('paymentScreen.paymentMethods.mtnMoney')}</p>
+              <p>{t('paymentScreen.paymentMethods.wave')}</p>
+              <p>{t('paymentScreen.paymentMethods.djamo')}</p>
+              <p>{t('paymentScreen.paymentMethods.mpesa')}</p>
+              <p>{t('paymentScreen.paymentMethods.airtel')}</p>
+              <p>{t('paymentScreen.paymentMethods.visa')}</p>
+              <p>{t('paymentScreen.paymentMethods.bank')}</p>
             </div>
           </div>
 
