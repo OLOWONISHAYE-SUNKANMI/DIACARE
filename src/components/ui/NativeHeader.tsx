@@ -27,34 +27,9 @@ const NativeHeader: React.FC<NativeHeaderProps> = ({
   const isDark = theme === 'dark';
 
   return (
-    <div
-      className={`pt-8 sm:pt-12 pb-6 sm:pb-8 px-3 sm:px-4 transition-colors ${
-        isDark
-          ? 'bg-background' // darkmode gradient
-          : 'bg-medical-blue-dark'
-      }`}
-    >
-      {/* Status bar simulation */}
-      <div className="hidden xs:flex items-center justify-between text-foreground/90 text-xs sm:text-sm mb-4 sm:mb-6">
-        <div className="flex items-center gap-1">
-          <span>{currentTime}</span>
-        </div>
-        <div className="flex items-center gap-1">
-          <div className="flex gap-1">
-            <div className="w-1 h-2 sm:h-3 bg-foreground rounded-full"></div>
-            <div className="w-1 h-2 sm:h-3 bg-foreground rounded-full"></div>
-            <div className="w-1 h-2 sm:h-3 bg-foreground rounded-full"></div>
-            <div className="w-1 h-2 sm:h-3 bg-foreground/50 rounded-full"></div>
-          </div>
-          <span className="ml-1 text-xs">📶</span>
-          <span className="text-xs">🔋</span>
-        </div>
-      </div>
-
-      {/* Header principal */}
-<div className="flex  gap-4 sm:gap-6 items-center sm:items-start">
+<div className={`flex gap-4 sm:gap-6 items-start ${ isDark ? 'bg-background': 'bg-medical-blue-dark' }`}>
   {/* Profile / Logo Image */}
-  <div className="flex-shrink-0">
+  <div className="flex-shrink-0 self-end">
     <img
       src="https://res.cloudinary.com/depeqzb6z/image/upload/v1758561994/WhatsApp_Image_2025-09-22_%C3%A0_13.25.32_77c06853-removebg-preview_r2nkzm.png"
       alt="Profile"
@@ -66,7 +41,7 @@ const NativeHeader: React.FC<NativeHeaderProps> = ({
   <div className="w-full">
     {/* Title & Settings */}
     <div className="flex items-center justify-between mb-3 sm:mb-5">
-      <h1 className="text-lg sm:text-2xl font-bold text-white truncate">
+      <h1 className="text-lg sm:text-2xl font-bold text-white truncate md:mt-7">
         {t('nativeHeader.title')}
       </h1>
 
@@ -94,9 +69,6 @@ const NativeHeader: React.FC<NativeHeaderProps> = ({
   </div>
 </div>
 
-      {/* predictive  */}
-
-    </div>
   );
 };
 
