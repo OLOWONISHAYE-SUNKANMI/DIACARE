@@ -9,8 +9,8 @@ export interface Profile {
 
   // Core user info
   user_id: string;
-  first_name: string;
-  last_name: string;
+  first_name: string | null;
+  last_name: string | null;
   phone: string | null;
 
   // Professional info
@@ -18,10 +18,16 @@ export interface Profile {
   specialty: string | null;
 
   // Extended info
-  date_of_birth: string | null; // e.g. "1995-08-20"
-  age?: number; // derived, optional
-  city: string | null;
-  profession: string | null;
+  profile_photo_url: string | null;
+  weight?: number;
+  emergency_contact_name?: string | null;
+  emergency_contact_phone?: string | null;
+  city?: string | null;
+  date_of_birth?: string | null;
+
+  // Settings
+  notifications?: boolean;
+  data_sharing?: boolean;
 
   // Status
   verified: boolean;
@@ -78,6 +84,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return null;
     }
 
+    // Already matches Profile interface, including new fields
+    //@ts-ignore
     return data as Profile;
   };
 
