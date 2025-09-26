@@ -7,6 +7,7 @@ import React, {
   ReactNode,
 } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 export interface BloodPressureReading {
   id: string;
@@ -30,7 +31,7 @@ export const BloodPressureProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [readings, setReadings] = useState<BloodPressureReading[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loadingBlood, setLoadingBlood] = useState(false);
 
   // fetch readings on mount
   // useEffect(() => {
@@ -63,6 +64,7 @@ export const BloodPressureProvider: React.FC<{ children: ReactNode }> = ({
   // add new reading
   const addBloodReading = useCallback(
     async (reading: Omit<BloodPressureReading, 'id'>) => {
+      setLoadingBlood(true);
       const {
         data: { user },
         error: userError,
@@ -86,7 +88,10 @@ export const BloodPressureProvider: React.FC<{ children: ReactNode }> = ({
         .select()
         .single();
 
-      if (error) throw error;
+      if (error) toast.error(error.message);
+      else toast.success('Hemoglobin reading saved successfully');
+
+      setLoadingBlood(false);
 
       setReadings(prev => [data as BloodPressureReading, ...prev]);
     },
@@ -104,7 +109,7 @@ export const BloodPressureProvider: React.FC<{ children: ReactNode }> = ({
         readings,
         addBloodReading,
         getLatestBloodReading,
-        loadingBlood: false,
+        loadingBlood,
       }}
     >
       {children}

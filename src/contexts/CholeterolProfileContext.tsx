@@ -7,6 +7,7 @@ import React, {
   ReactNode,
 } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 export interface CholesterolProfileReading {
   id: string;
@@ -34,7 +35,7 @@ export const CholesterolProfileProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [readings, setReadings] = useState<CholesterolProfileReading[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loadingCholesterol, setLoadingCholesterol] = useState(false);
 
   // Fetch readings on mount
   // useEffect(() => {
@@ -67,6 +68,7 @@ export const CholesterolProfileProvider: React.FC<{ children: ReactNode }> = ({
   // Add new reading
   const addCholesterolReading = useCallback(
     async (reading: Omit<CholesterolProfileReading, 'id'>) => {
+      setLoadingCholesterol(true);
       const {
         data: { user },
         error: userError,
@@ -92,8 +94,10 @@ export const CholesterolProfileProvider: React.FC<{ children: ReactNode }> = ({
         .select()
         .single();
 
-      if (error) throw error;
+      if (error) toast.error(error.message);
+      else toast.success('Hemoglobin reading saved successfully');
 
+      setLoadingCholesterol(false);
       setReadings(prev => [data as CholesterolProfileReading, ...prev]);
     },
     []
@@ -110,7 +114,7 @@ export const CholesterolProfileProvider: React.FC<{ children: ReactNode }> = ({
         readings,
         addCholesterolReading,
         getLatestCholesterolReading,
-        loadingCholesterol: loading,
+        loadingCholesterol,
       }}
     >
       {children}
