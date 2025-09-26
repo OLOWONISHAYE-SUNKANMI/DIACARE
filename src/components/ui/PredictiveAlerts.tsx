@@ -20,6 +20,7 @@ import type { RiskAlert } from '@/utils/SimplifiedPredictiveAnalyzer';
 import { useTranslation } from 'react-i18next';
 import { useThemeStore } from '@/store/useThemeStore';
 import { toast } from 'sonner';
+import PredictiveCard from './PredictiveCard';
 
 interface PredictiveAlertsProps {
   onTabChange?: (tab: string) => void;
@@ -39,6 +40,7 @@ const PredictiveAlerts: React.FC<PredictiveAlertsProps> = ({
   const [loading, setLoading] = useState(true);
   const urgentRef = useRef(0);
   const prevGlucose = useRef<string | null>(null);
+  const [predictiveVisible, setPredictiveVisible] = useState<boolean>(true);
 
   useEffect(() => {
     setTimeout(() => {
@@ -221,6 +223,14 @@ const PredictiveAlerts: React.FC<PredictiveAlertsProps> = ({
         </CardContent>
       </Card>
 
+      {/* predictive  */}
+      <PredictiveCard
+        cancelable={true}
+        values={glucoseValue}
+        visible={predictiveVisible}
+        setVisible={setPredictiveVisible}
+        onTabChange={onTabChange}
+      />
       {/* Alerts */}
 
       {/* AI Analysis Summary */}
@@ -237,7 +247,11 @@ const PredictiveAlerts: React.FC<PredictiveAlertsProps> = ({
               </p>
             </div>
           </div>
-          <Button onClick={handleViewMore} variant="default" className='bg-[#ff7223] hover:bg-[#c74700]'>
+          <Button
+            onClick={handleViewMore}
+            variant="default"
+            className="bg-[#ff7223] hover:bg-[#c74700]"
+          >
             {t('analyze.buttons.enter')}
           </Button>
         </CardContent>
