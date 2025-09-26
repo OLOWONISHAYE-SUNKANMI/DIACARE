@@ -28,6 +28,7 @@ export interface Profile {
 }
 
 interface AuthContextType {
+  uid: any;
   user: User | null;
   session: Session | null;
   profile: Profile | null;
