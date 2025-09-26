@@ -83,15 +83,15 @@ const PredictiveCard: React.FC<PredictiveCardProps> = ({
                          transition-colors shadow-sm"
               aria-label={t('predictiveCard.predictiveAlert.dismissAria')}
             >
-              {t('predictiveCard.predictiveAlert.dismiss')}
+              {t('predictiveCard.predictiveAlert.dismissAria')}
             </button>
 
             {/* More Info button */}
             <button
               onClick={() => onTabChange?.('predictive')}
-              className="px-9 py-2 rounded-lg border border-gray-300 
-                         text-gray-700 font-medium 
-                         hover:bg-gray-100 active:bg-gray-200 
+              className="px-9 py-2 rounded-lg bg-[#289496]
+                         text-[#fff] font-medium 
+                         hover:bg-white active:bg-gray-200 hover:text-[#289496]
                          transition-colors shadow-sm"
               aria-label={t('predictiveCard.predictiveAlert.moreInfoAria')}
             >
