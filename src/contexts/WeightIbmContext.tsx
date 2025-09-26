@@ -7,6 +7,7 @@ import React, {
   ReactNode,
 } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 export interface WeightIbmReading {
   id: string;
@@ -30,7 +31,7 @@ export const WeightIbmProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [readings, setReadings] = useState<WeightIbmReading[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loadingWeightIbm, setLoadingWeightIbm] = useState(false);
 
   // Fetch readings on mount
   // useEffect(() => {
@@ -63,6 +64,7 @@ export const WeightIbmProvider: React.FC<{ children: ReactNode }> = ({
   // Add new reading
   const addWeightIbmReading = useCallback(
     async (reading: Omit<WeightIbmReading, 'id'>) => {
+      setLoadingWeightIbm(true);
       const {
         data: { user },
         error: userError,
@@ -86,8 +88,10 @@ export const WeightIbmProvider: React.FC<{ children: ReactNode }> = ({
         .select()
         .single();
 
-      if (error) throw error;
+      if (error) toast.error(error.message);
+      else toast.success('Hemoglobin reading saved successfully');
 
+      setLoadingWeightIbm(false);
       setReadings(prev => [data as WeightIbmReading, ...prev]);
     },
     []
@@ -104,7 +108,7 @@ export const WeightIbmProvider: React.FC<{ children: ReactNode }> = ({
         readings,
         addWeightIbmReading,
         getLatestWeightIbmReading,
-        loadingWeightIbm: loading,
+        loadingWeightIbm,
       }}
     >
       {children}
