@@ -7,6 +7,7 @@ import React, {
   ReactNode,
 } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 export interface KidneyFunctionReading {
   id: string;
@@ -32,39 +33,40 @@ export const KidneyFunctionProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [readings, setReadings] = useState<KidneyFunctionReading[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loadingKidneyFunction, setLoadingKidneyFunction] = useState(false);
 
   // Fetch readings on mount
   // useEffect(() => {
   //   const fetchReadings = async () => {
   //     setLoading(true);
-  //
+
   //     const {
   //       data: { user },
   //     } = await supabase.auth.getUser();
   //     if (!user) return;
-  //
+
   //     const { data, error } = await supabase
   //       .from('kidney_function')
   //       .select('*')
   //       .eq('user_id', user.id)
   //       .order('recorded_date', { ascending: false });
-  //
+
   //     if (error) {
   //       console.error('Error fetching kidney_function readings:', error);
   //     } else if (data) {
   //       setReadings(data);
   //     }
-  //
+
   //     setLoading(false);
   //   };
-  //
+
   //   fetchReadings();
   // }, []);
 
   // Add new reading
   const addKidneyFunctionReading = useCallback(
     async (reading: Omit<KidneyFunctionReading, 'id'>) => {
+      setLoadingKidneyFunction(true);
       const {
         data: { user },
         error: userError,
@@ -88,8 +90,10 @@ export const KidneyFunctionProvider: React.FC<{ children: ReactNode }> = ({
         .select()
         .single();
 
-      if (error) throw error;
+      if (error) toast.error(error.message);
+      else toast.success('Hemoglobin reading saved successfully');
 
+      setLoadingKidneyFunction(false);
       setReadings(prev => [data as KidneyFunctionReading, ...prev]);
     },
     []
@@ -106,7 +110,7 @@ export const KidneyFunctionProvider: React.FC<{ children: ReactNode }> = ({
         readings,
         addKidneyFunctionReading,
         getLatestKidneyFunctionReading,
-        loadingKidneyFunction: loading,
+        loadingKidneyFunction,
       }}
     >
       {children}
