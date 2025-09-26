@@ -56,16 +56,14 @@ export const EmergencyContactModal: React.FC<EmergencyContactModalProps> = ({
         <ModalOverlay />
         <ModalContent p={4}>
           <ModalHeader fontSize="lg" p={2}>
-            {t('profileScreen.emergencyContact')}
+            Emergency Contact
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody p={2}>
             <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-3">
               {/* Emergency Contact Name */}
               <div className="flex flex-col">
-                <label className="text-sm mb-1">
-                  {t('profileScreen.contactName')}
-                </label>
+                <label className="text-sm mb-1">Contact Name</label>
                 <Input
                   size="sm"
                   value={form.emergency_contact_name || ''}
@@ -85,9 +83,7 @@ export const EmergencyContactModal: React.FC<EmergencyContactModalProps> = ({
 
               {/* Emergency Contact Phone */}
               <div className="flex flex-col">
-                <label className="text-sm mb-1">
-                  {t('profileScreen.contactPhone')}
-                </label>
+                <label className="text-sm mb-1">Contact Phone</label>
                 <Input
                   size="sm"
                   value={form.emergency_contact_phone || ''}
