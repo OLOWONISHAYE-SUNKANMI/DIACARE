@@ -78,64 +78,64 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
   };
 
   // Configuration AfribaPay
-  const afribaPaymentData = React.useMemo(
-    () => ({
-      amount: convertedPrices?.amount || selectedPlan?.price_eur || 800, // 8€ par défaut
-      currency: currency.currency,
-      reference: `KLUKOO-${Date.now()}`,
-      description:
-        selectedPlan?.description ||
-        t('paymentScreen.subscription.defaultDescription'),
-      customer: {
-        email: formData.email,
-        phone: formData.phone_number,
-        name: formData.name,
-      },
-      callback_url: window.location.origin + '/payment-success',
-      return_url: window.location.origin + '/payment-success',
-    }),
-    [convertedPrices, selectedPlan, currency, formData]
-  );
+  // const afribaPaymentData = React.useMemo(
+  //   () => ({
+  //     amount: convertedPrices?.amount || selectedPlan?.price_eur || 800, // 8€ par défaut
+  //     currency: currency.currency,
+  //     reference: `KLUKOO-${Date.now()}`,
+  //     description:
+  //       selectedPlan?.description ||
+  //       t('paymentScreen.subscription.defaultDescription'),
+  //     customer: {
+  //       email: formData.email,
+  //       phone: formData.phone_number,
+  //       name: formData.name,
+  //     },
+  //     callback_url: window.location.origin + '/payment-success',
+  //     return_url: window.location.origin + '/payment-success',
+  //   }),
+  //   [convertedPrices, selectedPlan, currency, formData]
+  // );
 
-  const handleAfribaPayment = async () => {
-    if (!isFormValid || !selectedCountry) {
-      toast({
-        title: t('paymentScreen.toasts.missingInfo.title'),
-        description: t('paymentScreen.toasts.missingInfo.description'),
-        variant: 'destructive',
-      });
-      return;
-    }
+  // const handleAfribaPayment = async () => {
+  //   if (!isFormValid || !selectedCountry) {
+  //     toast({
+  //       title: t('paymentScreen.toasts.missingInfo.title'),
+  //       description: t('paymentScreen.toasts.missingInfo.description'),
+  //       variant: 'destructive',
+  //     });
+  //     return;
+  //   }
 
-    setIsLoading(true);
+  //   setIsLoading(true);
 
-    try {
-      console.log(t('paymentScreen.payment.simulationLog'), afribaPaymentData);
+  //   try {
+  //     console.log(t('paymentScreen.payment.simulationLog'), afribaPaymentData);
 
-      await new Promise(resolve => setTimeout(resolve, 2000));
+  //     await new Promise(resolve => setTimeout(resolve, 2000));
 
-      const simulatedSuccess = Math.random() > 0.1;
+  //     const simulatedSuccess = Math.random() > 0.1;
 
-      if (simulatedSuccess) {
-        setPaymentStep('success');
-        setTimeout(() => {
-          localStorage.removeItem('selectedPlan');
-          window.location.href = '/payment-success?test_mode=true';
-        }, 1000);
-      } else {
-        throw new Error(t('paymentScreen.payment.simulationError'));
-      }
-    } catch (error) {
-      console.error(t('paymentScreen.payment.simulationError'), error);
-      toast({
-        title: t('paymentScreen.payment.toastErrorTitle'),
-        description: t('paymentScreen.payment.toastErrorDescription'),
-        variant: 'destructive',
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  //     if (simulatedSuccess) {
+  //       setPaymentStep('success');
+  //       setTimeout(() => {
+  //         localStorage.removeItem('selectedPlan');
+  //         window.location.href = '/payment-success?test_mode=true';
+  //       }, 1000);
+  //     } else {
+  //       throw new Error(t('paymentScreen.payment.simulationError'));
+  //     }
+  //   } catch (error) {
+  //     console.error(t('paymentScreen.payment.simulationError'), error);
+  //     toast({
+  //       title: t('paymentScreen.payment.toastErrorTitle'),
+  //       description: t('paymentScreen.payment.toastErrorDescription'),
+  //       variant: 'destructive',
+  //     });
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   const handleInputChange = (field: keyof PaymentFormData, value: string) => {
     setFormData(prev => ({
@@ -183,10 +183,10 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
           <Button variant="ghost" size="sm" onClick={onBack} className="mr-3">
             <ArrowLeft className="w-4 h-4" />
           </Button>
-          <h1 className="text-xl font-semibold">
+          <h1 className="text-xl font-semibold text-center flex-1 ml-10">
             {t('paymentScreen.payment.secure')}
           </h1>
-          <div>
+          <div className='m-2'>
             <LanguageToggle />
           </div>
         </div>
@@ -232,7 +232,7 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
                 {t('paymentScreen.payment.fullNameLabel')}
               </Label>
               <div className="relative mt-1">
-                <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <User className="absolute left-3 top-7 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="name"
                   type="text"
@@ -249,7 +249,7 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
                 {t('paymentScreen.form.emailLabel')}
               </Label>
               <div className="relative mt-1">
-                <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Mail className="absolute left-3 top-7 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="email"
                   type="email"
@@ -266,7 +266,7 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
                 {t('paymentScreen.form.phoneLabel')}
               </Label>
               <div className="relative mt-1">
-                <Phone className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Phone className="absolute left-3 top-7 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="phone"
                   type="tel"
@@ -315,7 +315,7 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
             <div className="flex items-center space-x-2 text-sm">
               <Shield className="w-4 h-4 text-orange-500" />
               <span className="text-orange-600 font-medium">
-                {t('paymentScreen.payment.secureByAfribaPay')}
+                {t('paymentScreen.payment.secureByFlutterwave')}
               </span>
             </div>
           </CardContent>
@@ -323,7 +323,7 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
 
         <div className="space-y-4">
           <Button
-            onClick={handleAfribaPayment}
+            // onClick={}
             disabled={!isFormValid || !selectedCountry || isLoading}
             className={`w-full py-3 px-4 rounded-md font-medium transition-all duration-200 ${
               isFormValid
@@ -348,14 +348,13 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
               {t('paymentScreen.paymentMethods.title')}
             </h4>
             <div className="text-sm text-muted-foreground space-y-1">
-              <p>{t('paymentScreen.paymentMethods.orangeMoney')}</p>
-              <p>{t('paymentScreen.paymentMethods.mtnMoney')}</p>
-              <p>{t('paymentScreen.paymentMethods.wave')}</p>
-              <p>{t('paymentScreen.paymentMethods.djamo')}</p>
-              <p>{t('paymentScreen.paymentMethods.mpesa')}</p>
-              <p>{t('paymentScreen.paymentMethods.airtel')}</p>
-              <p>{t('paymentScreen.paymentMethods.visa')}</p>
-              <p>{t('paymentScreen.paymentMethods.bank')}</p>
+              <p>{t('paymentScreen.paymentMethods.mobileMoney')}</p>
+              <p>{t('paymentScreen.paymentMethods.cardPayments')}</p>
+              <p>{t('paymentScreen.paymentMethods.bankTransfers')}</p>
+              <p>{t('paymentScreen.paymentMethods.ussd')}</p>
+              <p>{t('paymentScreen.paymentMethods.barter')}</p>
+              <p>{t('paymentScreen.paymentMethods.paypal')}</p>
+           
             </div>
           </div>
 
