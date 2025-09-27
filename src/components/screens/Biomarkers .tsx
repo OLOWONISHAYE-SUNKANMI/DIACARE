@@ -743,7 +743,7 @@ const Biomarkers = () => {
           </div>
 
           {/* AI Prediction */}
-          <div className="bg-background rounded-xl shadow-lg p-6">
+          {/* <div className="bg-background rounded-xl shadow-lg p-6">
             <div className="flex items-center mb-4">
               <Brain className="text-purple-500 mr-2" size={24} />
               <h2 className="text-xl text-foreground font-semibold">
@@ -770,7 +770,7 @@ const Biomarkers = () => {
                 </div>
               )
             )}
-          </div>
+          </div> */}
 
           {/* Doctor's Recommendations Display */}
           {(doctorNotes.recommendations || doctorNotes.specialInstructions) && (
@@ -942,7 +942,7 @@ const Biomarkers = () => {
             </div>
 
             {/* Alerts System */}
-            <div className="bg-background rounded-xl shadow-lg p-6">
+            {/* <div className="bg-background rounded-xl shadow-lg p-6">
               <div className="flex items-center mb-4">
                 <Bell className="text-red-500 mr-2" size={24} />
                 <h2 className="text-xl font-semibold text-foreground">
@@ -989,7 +989,7 @@ const Biomarkers = () => {
                   ))}
                 </div>
               )}
-            </div>
+            </div> */}
 
             {/* Database Status */}
             <div className="bg-background rounded-xl shadow-lg p-6">
