@@ -1,3 +1,5 @@
+import { P } from "node_modules/framer-motion/dist/types.d-Cjd591yU";
+
 export const en = {
   // App general
   appName: 'Klukoo',
@@ -2541,17 +2543,17 @@ Failure to comply with this charter may result in temporary or permanent suspens
       },
     },
     payment: {
-      simulationLog: 'AfribaPay Payment Simulation:',
+      simulationLog: 'Flutterwave Payment Simulation:',
       simulationError: 'Payment failure simulation',
       toastErrorTitle: 'Payment Failed (Test)',
       toastErrorDescription: 'Payment failure simulation. Please retry.',
       secure: 'Secure Payment',
       perMonth: 'per month',
       infoTitle: 'Payment Information',
-      secureInfo: 'Secure payment via AfribaPay',
+      secureInfo: 'Secure payment via Flutterwave',
       fullNameLabel: 'Full Name *',
       fullNamePlaceholder: 'Your full name',
-      secureByAfribaPay: 'Secure payment by AfribaPay',
+      secureByFlutterwave: 'Secure payment by Flutterwave',
       processing: 'Processing...',
       pay: 'Pay {{amount}}',
     },
@@ -2567,14 +2569,13 @@ Failure to comply with this charter may result in temporary or permanent suspens
     },
     paymentMethods: {
       title: 'Accepted Payment Methods',
-      orangeMoney: '📱 Orange Money',
-      mtnMoney: '📱 MTN Money',
-      wave: '📱 Wave',
-      djamo: '📱 Djamo',
-      mpesa: '📱 M-Pesa',
-      airtel: '📱 Airtel Money',
-      visa: '💳 Visa & Mastercard',
-      bank: '🏦 Bank transfers & USSD',
+      mobileMoney: '📱 Mobile Money (MTN, Airtel, M-Pesa, etc.)',
+      cardPayments : '💳 Card Payments (Visa, Mastercard, Verve)',
+      bankTransfers: '🏦 Bank Transfers',
+      ussd: '🔢 USSD',
+      barter: '💲 Barter by Flutterwave',
+      paypal: '🌍 PayPal (via Flutterwave)'
+     
     },
     subscriptionInfo: {
       securePayment: 'Secure payment • Cancel anytime',
