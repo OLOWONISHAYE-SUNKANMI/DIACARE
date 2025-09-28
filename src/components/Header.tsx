@@ -12,6 +12,7 @@ import {
   Moon,
   Menu,
   Brain,
+  PillBottle,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import LanguageToggle from './ui/LanguageToggle';
@@ -44,14 +45,18 @@ const Header: React.FC<HeaderProps> = ({
     { id: 'journal', label: t('nav.journal'), icon: FileText, color: 'coral' },
     { id: 'predictive', label: 'AI predictive', icon: Brain, color: 'orange' },
     {
-      id: 'consultation-request',
-      label: t('nav.teleconsultation'),
-      icon: Stethoscope,
+      id: 'insulin',
+      label: 'insulin dosage',
+      icon: PillBottle,
       color: 'blue',
     },
-    { id: 'family', label: t('nav.family'), icon: Users, color: 'teal' },
-    { id: 'chat', label: t('nav.chat'), icon: MessageCircle, color: 'coral' },
-    { id: 'blog', label: t('nav.blog'), icon: BookOpen, color: 'orange' },
+    {
+      id: 'biomarker',
+      label: 'Biomarker Tracker',
+      icon: Stethoscope,
+      color: 'teal',
+    },
+   
     { id: 'profile', label: t('nav.profile'), icon: User, color: 'blue' },
   ];
 

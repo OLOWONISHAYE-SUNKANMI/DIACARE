@@ -9,6 +9,7 @@ import {
   Legend,
   ResponsiveContainer,
   ReferenceLine,
+  ReferenceArea,
 } from 'recharts';
 import {
   AlertTriangle,
@@ -24,6 +25,12 @@ import {
   Share2,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { useGlucose } from '@/contexts/GlucoseContext';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+
+
+
+
 
 const DiabetesMonitoringApp = () => {
   const [activeTab, setActiveTab] = useState('monitoring');
@@ -36,13 +43,25 @@ const DiabetesMonitoringApp = () => {
     lowThreshold: 70,
     highThreshold: 180,
   });
-  const [glucoseData, setGlucoseData] = useState([
-    { time: '08:00', glucose: 95, predicted: false },
-    { time: '08:30', glucose: 110, predicted: false },
-    { time: '09:00', glucose: 125, predicted: false },
-    { time: '09:30', glucose: 140, predicted: false },
-    { time: '10:00', glucose: 120, predicted: false },
-  ]);
+  const { readings: glucose } = useGlucose();
+  const disabled = true
+
+
+  const formatTime = (iso: string) => {
+  const d = new Date(iso);
+  return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+};
+      // Glucose data
+  const glucoseData = [...glucose]
+    .sort(
+      (a, b) =>
+        new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+    )
+    .map(r => ({
+      ...r,
+      time: formatTime(r.timestamp),
+    }));
+
   const [alerts, setAlerts] = useState([]);
   const [prediction, setPrediction] = useState(null);
 
@@ -123,6 +142,8 @@ const DiabetesMonitoringApp = () => {
   });
   const [patientName, setPatientName] = useState('');
 
+
+
   // Simulate AI prediction engine
   const generatePrediction = (glucose, insulin, carbs, activity) => {
     let predictedGlucose = glucose;
@@ -198,7 +219,6 @@ const DiabetesMonitoringApp = () => {
       predicted: true,
     };
 
-    setGlucoseData(prev => [...prev.slice(-9), newReading, predictionReading]);
 
     // Reset inputs
     setInsulin(0);
@@ -360,6 +380,8 @@ ${t('insulinDosage.share.generatedFrom')}
         <div className="text-sm mb-2 flex items-center gap-2">
           {t('insulinDosage.slidingScale.insulinText')} (
           <input
+          disabled={disabled}
+
             type="text"
             value={penColors[mealKey] || ''}
             onChange={e => handlePenColorChange(mealKey, e.target.value)}
@@ -368,6 +390,8 @@ ${t('insulinDosage.share.generatedFrom')}
           />
           ) {t('insulinDosage.slidingScale.penColour')}
           <input
+          disabled={disabled}
+
             type="text"
             value={penColors[mealKey + '_color'] || ''}
             onChange={e =>
@@ -401,6 +425,8 @@ ${t('insulinDosage.share.generatedFrom')}
               </td>
               <td className="border border-[hsl(var(--border))] px-3 py-2">
                 <input
+          disabled={disabled}
+
                   type="number"
                   value={insulinDoses[mealKey]?.range1 || ''}
                   onChange={e =>
@@ -412,6 +438,8 @@ ${t('insulinDosage.share.generatedFrom')}
               </td>
               <td className="border border-[hsl(var(--border))] px-3 py-2">
                 <textarea
+          disabled={disabled}
+
                   value={specialNotes[mealKey]?.range1 || ''}
                   onChange={e =>
                     handleSpecialNoteChange(mealKey, 'range1', e.target.value)
@@ -431,6 +459,8 @@ ${t('insulinDosage.share.generatedFrom')}
               </td>
               <td className="border border-[hsl(var(--border))] px-3 py-2">
                 <input
+          disabled={disabled}
+
                   type="number"
                   value={insulinDoses[mealKey]?.range2 || ''}
                   onChange={e =>
@@ -442,6 +472,8 @@ ${t('insulinDosage.share.generatedFrom')}
               </td>
               <td className="border border-[hsl(var(--border))] px-3 py-2">
                 <textarea
+          disabled={disabled}
+
                   value={specialNotes[mealKey]?.range2 || ''}
                   onChange={e =>
                     handleSpecialNoteChange(mealKey, 'range2', e.target.value)
@@ -461,6 +493,8 @@ ${t('insulinDosage.share.generatedFrom')}
               </td>
               <td className="border border-[hsl(var(--border))] px-3 py-2">
                 <input
+          disabled={disabled}
+
                   type="number"
                   value={insulinDoses[mealKey]?.range3 || ''}
                   onChange={e =>
@@ -472,6 +506,8 @@ ${t('insulinDosage.share.generatedFrom')}
               </td>
               <td className="border border-[hsl(var(--border))] px-3 py-2">
                 <textarea
+          disabled={disabled}
+
                   value={specialNotes[mealKey]?.range3 || ''}
                   onChange={e =>
                     handleSpecialNoteChange(mealKey, 'range3', e.target.value)
@@ -491,6 +527,8 @@ ${t('insulinDosage.share.generatedFrom')}
               </td>
               <td className="border border-[hsl(var(--border))] px-3 py-2">
                 <input
+          disabled={disabled}
+
                   type="number"
                   value={insulinDoses[mealKey]?.range4 || ''}
                   onChange={e =>
@@ -502,6 +540,8 @@ ${t('insulinDosage.share.generatedFrom')}
               </td>
               <td className="border border-[hsl(var(--border))] px-3 py-2">
                 <textarea
+          disabled={disabled}
+
                   value={specialNotes[mealKey]?.range4 || ''}
                   onChange={e =>
                     handleSpecialNoteChange(mealKey, 'range4', e.target.value)
@@ -521,6 +561,8 @@ ${t('insulinDosage.share.generatedFrom')}
               </td>
               <td className="border border-[hsl(var(--border))] px-3 py-2">
                 <input
+          disabled={disabled}
+
                   type="number"
                   value={insulinDoses[mealKey]?.range5 || ''}
                   onChange={e =>
@@ -532,6 +574,8 @@ ${t('insulinDosage.share.generatedFrom')}
               </td>
               <td className="border border-[hsl(var(--border))] px-3 py-2">
                 <textarea
+          disabled={disabled}
+
                   value={specialNotes[mealKey]?.range5 || ''}
                   onChange={e =>
                     handleSpecialNoteChange(mealKey, 'range5', e.target.value)
@@ -578,6 +622,8 @@ ${t('insulinDosage.share.generatedFrom')}
               </td>
               <td className="border border-[hsl(var(--border))] px-3 py-2">
                 <input
+          disabled={disabled}
+
                   type="number"
                   value={insulinDoses[mealKey]?.snack || ''}
                   onChange={e =>
@@ -611,6 +657,8 @@ ${t('insulinDosage.share.generatedFrom')}
                   {t('insulinDosage.insulinSheet.patientName')}
                 </label>
                 <input
+          disabled={disabled}
+
                   type="text"
                   value={patientName}
                   onChange={e => setPatientName(e.target.value)}
@@ -692,6 +740,8 @@ ${t('insulinDosage.share.generatedFrom')}
           <div className="text-sm mb-2 flex items-center gap-2">
             {t('insulinDosage.insulin.fixedDoseClear')} (
             <input
+          disabled={disabled}
+
               type="text"
               value={penColors.bedtime || ''}
               onChange={e => handlePenColorChange('bedtime', e.target.value)}
@@ -700,6 +750,8 @@ ${t('insulinDosage.share.generatedFrom')}
             />
             ) {t('insulinDosage.insulin.penColour')}
             <input
+          disabled={disabled}
+
               type="text"
               value={penColors.bedtime_color || ''}
               onChange={e =>
@@ -722,6 +774,8 @@ ${t('insulinDosage.share.generatedFrom')}
               <tr>
                 <td className="border border-gray-400 px-3 py-2">
                   <input
+          disabled={disabled}
+
                     type="number"
                     value={insulinDoses.bedtime || ''}
                     onChange={e =>
@@ -756,6 +810,8 @@ ${t('insulinDosage.share.generatedFrom')}
                   {t('insulinDosage.notes.generalNotes')}
                 </label>
                 <textarea
+          disabled={disabled}
+
                   value={doctorNotes.generalNotes || ''}
                   onChange={e =>
                     setDoctorNotes(prev => ({
@@ -773,6 +829,8 @@ ${t('insulinDosage.share.generatedFrom')}
                   {t('insulinDosage.notes.clinicalObservations')}
                 </label>
                 <textarea
+          disabled={disabled}
+
                   value={doctorNotes.observations || ''}
                   onChange={e =>
                     setDoctorNotes(prev => ({
@@ -790,6 +848,8 @@ ${t('insulinDosage.share.generatedFrom')}
                   {t('insulinDosage.notes.emergencyContact')}
                 </label>
                 <textarea
+          disabled={disabled}
+
                   value={doctorNotes.emergencyContact || ''}
                   onChange={e =>
                     setDoctorNotes(prev => ({
@@ -812,6 +872,8 @@ ${t('insulinDosage.share.generatedFrom')}
                   {t('insulinDosage.notes.treatmentRecommendations')}
                 </label>
                 <textarea
+          disabled={disabled}
+
                   value={doctorNotes.recommendations || ''}
                   onChange={e =>
                     setDoctorNotes(prev => ({
@@ -831,6 +893,8 @@ ${t('insulinDosage.share.generatedFrom')}
                   {t('insulinDosage.notes.specialInstructions')}
                 </label>
                 <textarea
+          disabled={disabled}
+
                   value={doctorNotes.specialInstructions || ''}
                   onChange={e =>
                     setDoctorNotes(prev => ({
@@ -850,6 +914,8 @@ ${t('insulinDosage.share.generatedFrom')}
                   {t('insulinDosage.notes.followUpAppointment')}
                 </label>
                 <input
+          disabled={disabled}
+
                   type="date"
                   value={doctorNotes.followUpDate || ''}
                   onChange={e =>
@@ -930,6 +996,8 @@ ${t('insulinDosage.share.generatedFrom')}
                 </td>
                 <td className="border border-gray-400 px-3 py-2">
                   <input
+          disabled={disabled}
+
                     type="text"
                     value={doctorInfo.name || ''}
                     onChange={e =>
@@ -941,6 +1009,8 @@ ${t('insulinDosage.share.generatedFrom')}
                 </td>
                 <td className="border border-gray-400 px-3 py-2">
                   <input
+          disabled={disabled}
+
                     type="text"
                     value={doctorInfo.signature || ''}
                     onChange={e =>
@@ -956,6 +1026,8 @@ ${t('insulinDosage.share.generatedFrom')}
 
                 <td className="border border-gray-400 px-3 py-2">
                   <input
+          disabled={disabled}
+
                     type="date"
                     value={doctorInfo.date || ''}
                     onChange={e =>
@@ -1089,6 +1161,8 @@ ${t('insulinDosage.share.generatedFrom')}
                       {t('insulinDosage.patient.currentGlucose')}
                     </label>
                     <input
+          disabled={disabled}
+
                       type="number"
                       value={currentGlucose}
                       onChange={e => setCurrentGlucose(Number(e.target.value))}
@@ -1102,6 +1176,8 @@ ${t('insulinDosage.share.generatedFrom')}
                       {t('insulinDosage.patient.insulinUnits')}
                     </label>
                     <input
+          disabled={disabled}
+
                       type="number"
                       value={insulin}
                       onChange={e => setInsulin(Number(e.target.value))}
@@ -1115,6 +1191,8 @@ ${t('insulinDosage.share.generatedFrom')}
                       {t('insulinDosage.patient.carbsGrams')}
                     </label>
                     <input
+          disabled={disabled}
+
                       type="number"
                       value={carbs}
                       onChange={e => setCarbs(Number(e.target.value))}
@@ -1128,6 +1206,8 @@ ${t('insulinDosage.share.generatedFrom')}
                       {t('insulinDosage.patient.activityMinutes')}
                     </label>
                     <input
+          disabled={disabled}
+
                       type="number"
                       value={activity}
                       onChange={e => setActivity(Number(e.target.value))}
@@ -1159,6 +1239,8 @@ ${t('insulinDosage.share.generatedFrom')}
                       {t('insulinDosage.alerts.lowThreshold')}
                     </label>
                     <input
+          disabled={disabled}
+
                       type="number"
                       value={alertSettings.lowThreshold}
                       onChange={e =>
@@ -1176,6 +1258,8 @@ ${t('insulinDosage.share.generatedFrom')}
                       {t('insulinDosage.alerts.highThreshold')}
                     </label>
                     <input
+          disabled={disabled}
+
                       type="number"
                       value={alertSettings.highThreshold}
                       onChange={e =>
@@ -1275,112 +1359,62 @@ ${t('insulinDosage.share.generatedFrom')}
             {/* Main Display */}
             <div className="lg:col-span-2 space-y-6">
               {/* Real-Time Graph */}
-              <div className="bg-background rounded-xl shadow-lg p-6">
-                <div className="flex items-center mb-4">
-                  <Activity className="text-green-500 mr-2" size={24} />
-                  <h2 className="text-xl font-semibold">
-                    {t('insulinDosage.monitoring.realTimeGlucose')}
-                  </h2>
-                </div>
-
-                <div className="h-64 text-foreground">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={glucoseData}>
-                      {/* Grid */}
-                      <CartesianGrid
-                        stroke="hsl(var(--border))"
-                        strokeDasharray="3 3"
-                      />
-
-                      {/* Axes */}
-                      <XAxis
-                        dataKey="time"
-                        stroke="hsl(var(--muted-foreground))"
-                      />
-                      <YAxis
-                        domain={[50, 250]}
-                        stroke="hsl(var(--muted-foreground))"
-                      />
-
-                      {/* Tooltip + Legend */}
-                      <Tooltip
-                        contentStyle={{
-                          backgroundColor: 'hsl(var(--background))',
-                          border: '1px solid hsl(var(--border))',
-                          color: 'hsl(var(--foreground))',
-                        }}
-                        labelStyle={{ color: 'hsl(var(--foreground))' }}
-                        itemStyle={{ color: 'hsl(var(--foreground))' }}
-                      />
-                      <Legend
-                        wrapperStyle={{ color: 'hsl(var(--foreground))' }}
-                      />
-
-                      {/* Reference lines */}
-                      <ReferenceLine
-                        y={alertSettings.lowThreshold}
-                        stroke="hsl(var(--warning))"
-                        strokeDasharray="5 5"
-                        label={{
-                          value: 'Low',
-                          fill: 'hsl(var(--warning))',
-                          position: 'right',
-                        }}
-                      />
-                      <ReferenceLine
-                        y={alertSettings.highThreshold}
-                        stroke="hsl(var(--destructive))"
-                        strokeDasharray="5 5"
-                        label={{
-                          value: 'High',
-                          fill: 'hsl(var(--destructive))',
-                          position: 'right',
-                        }}
-                      />
-
-                      {/* Main line */}
-                      <Line
-                        type="monotone"
-                        dataKey="glucose"
-                        stroke="hsl(var(--primary))"
-                        strokeWidth={2}
-                        dot={props => {
-                          const { payload, cx, cy } = props;
-                          return (
-                            <circle
-                              cx={cx}
-                              cy={cy}
-                              r={4}
-                              fill={
-                                payload.predicted
-                                  ? 'hsl(var(--foreground))'
-                                  : 'hsl(var(--primary))'
-                              }
-                              stroke={
-                                payload.predicted
-                                  ? 'hsl(var(--accent))'
-                                  : 'hsl(var(--primary))'
-                              }
-                              strokeWidth={2}
-                            />
-                          );
-                        }}
-                      />
-                    </LineChart>
-                  </ResponsiveContainer>
-                </div>
-
-                <div className="flex items-center justify-between mt-4 text-sm text-gray-600">
-                  <span className="flex items-center text-foreground">
-                    <div className="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
-                    {t('insulinDosage.monitoring.actualReadings')}
-                  </span>
-                  <span className="flex items-center text-foreground">
-                    <div className="w-3 h-3 bg-purple-500 rounded-full mr-2"></div>
-                    {t('insulinDosage.monitoring.aiPredictions')}
-                  </span>
-                </div>
-              </div>
+                <Card>
+                       <CardHeader>
+                         <CardTitle>{t('charts.glucose')}</CardTitle>
+                       </CardHeader>
+                       <CardContent className="h-72">
+                         <ResponsiveContainer width="100%" height={300}>
+                           <LineChart data={glucoseData}>
+                             <CartesianGrid strokeDasharray="3 3" />
+                             <XAxis dataKey="time" />
+                             <YAxis domain={[0, 'dataMax + 20']} />
+                             <Tooltip />
+             
+                             {/* Target range shading */}
+                             <ReferenceArea
+                               y1={80}
+                               y2={180}
+                               strokeOpacity={0}
+                               fill="green"
+                               fillOpacity={0.1}
+                               label={{ value: 'Target Area' }}
+                             />
+             
+                             {/* Threshold lines */}
+                             <ReferenceLine
+                               y={70}
+                               stroke="purple"
+                               strokeDasharray="5 5"
+                               label={{
+                                 value: 'Low',
+                                 position: 'insideTopLeft',
+                                 fill: 'purple',
+                               }}
+                             />
+                             <ReferenceLine
+                               y={250}
+                               stroke="red"
+                               strokeDasharray="5 5"
+                               label={{
+                                 value: 'High',
+                                 position: 'insideTopLeft',
+                                 fill: 'red',
+                               }}
+                             />
+             
+                             {/* Main glucose line */}
+                             <Line
+                               type="monotone"
+                               dataKey="value"
+                               stroke="#10b981"
+                               strokeWidth={2}
+                               dot
+                             />
+                           </LineChart>
+                         </ResponsiveContainer>
+                       </CardContent>
+                     </Card>
 
               {/* Alerts System */}
               <div className="bg-background rounded-xl shadow-lg p-6">
