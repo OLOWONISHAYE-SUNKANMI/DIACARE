@@ -379,7 +379,7 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
             }`}
           >
             <div className="w-10 h-10 sm:w-12 sm:h-12 bg-red-500 rounded-full flex items-center justify-center mb-2">
-              <Stethoscope/>
+             🏥
             </div>
             <span className={`text-xs sm:text-sm font-medium ${textButton}`}>
               {t('nav.teleconsultation')}
@@ -392,7 +392,7 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
             }`}
           >
             <div className="w-10 h-10 sm:w-12 sm:h-12 bg-medical-green-light rounded-full flex items-center justify-center mb-2">
-              <Users/>
+              👨‍👩‍👧‍👦
             </div>
             <span className={`text-xs sm:text-sm font-medium ${textButton}`}>
               {t('nav.family')}
@@ -405,7 +405,7 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
             }`}
           >
             <div className="w-10 h-10 sm:w-12 sm:h-12 bg-accent rounded-full flex items-center justify-center mb-2">
-              <MessageCircle/>
+             💬
             </div>
             <span className={`text-xs sm:text-sm font-medium ${textButton}`}>
               {t('nav.chat')}
@@ -418,7 +418,7 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
             }`}
           >
             <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-600 rounded-full flex items-center justify-center mb-2">
-              <BookOpen/>
+              📖
             </div>
             <span className={`text-xs sm:text-sm font-medium ${textButton}`}>
               {t('nav.blog')}
