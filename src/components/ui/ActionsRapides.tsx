@@ -24,6 +24,7 @@ import AddGlucoseModal from '../modals/AddGlucoseModal';
 import BarcodeScanModal from '../modals/BarcodeScanModal';
 import PhotoUploadModal from '../modals/PhotoUploadModal';
 import PhotoAnalysisModal from '../modals/PhotoAnalysisModal';
+import { BookOpen, MessageCircle, Stethoscope, Users } from 'lucide-react';
 
 interface ActionsRapidesProps {
   onTabChange?: (tab: string) => void;
@@ -114,6 +115,18 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
   };
   const handleBiomarkerClick = () => {
     onTabChange?.('biomarker');
+  };
+  const handleTelehealth = () => {
+    onTabChange?.('consultation-request');
+  };
+  const handleFamily = () => {
+    onTabChange?.('family');
+  };
+  const handleChat = () => {
+    onTabChange?.('chat');
+  };
+  const handleBlog = () => {
+    onTabChange?.('blog');
   };
 
   // Utility for semantic colors
@@ -209,7 +222,7 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
             }`}
             onClick={() => setIsMealModalOpen(true)}
           >
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-accent rounded-full flex items-center justify-center mb-2">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-800 rounded-full flex items-center justify-center mb-2">
               🍽️
             </div>
             <span className={`text-xs sm:text-sm font-medium ${textButton}`}>
@@ -352,7 +365,7 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
               darkMode ? bgButtonDark : bgButtonLight
             }`}
           >
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-accent rounded-full flex items-center justify-center mb-2">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-medical-teal rounded-full flex items-center justify-center mb-2">
               ⏰
             </div>
             <span className={`text-xs sm:text-sm font-medium ${textButton}`}>
@@ -360,31 +373,58 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
             </span>
           </button>
           <button
-            onClick={handleInsulinClick}
+            onClick={handleTelehealth}
             className={`flex flex-col items-center p-3 sm:p-4 rounded-xl transition-colors active:scale-95 ${
               darkMode ? bgButtonDark : bgButtonLight
             }`}
           >
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-accent rounded-full flex items-center justify-center mb-2">
-              💉
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-red-500 rounded-full flex items-center justify-center mb-2">
+              <Stethoscope/>
             </div>
             <span className={`text-xs sm:text-sm font-medium ${textButton}`}>
-              {t('insulinDosage.title')}
+              {t('nav.teleconsultation')}
             </span>
           </button>
           <button
-            onClick={handleBiomarkerClick}
+            onClick={handleFamily}
+            className={`flex flex-col items-center p-3 sm:p-4 rounded-xl transition-colors active:scale-95 ${
+              darkMode ? bgButtonDark : bgButtonLight
+            }`}
+          >
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-medical-green-light rounded-full flex items-center justify-center mb-2">
+              <Users/>
+            </div>
+            <span className={`text-xs sm:text-sm font-medium ${textButton}`}>
+              {t('nav.family')}
+            </span>
+          </button>
+          <button
+            onClick={handleChat}
             className={`flex flex-col items-center p-3 sm:p-4 rounded-xl transition-colors active:scale-95 ${
               darkMode ? bgButtonDark : bgButtonLight
             }`}
           >
             <div className="w-10 h-10 sm:w-12 sm:h-12 bg-accent rounded-full flex items-center justify-center mb-2">
-              🩺
+              <MessageCircle/>
             </div>
             <span className={`text-xs sm:text-sm font-medium ${textButton}`}>
-              {t('biomarkerTracker.title')}
+              {t('nav.chat')}
             </span>
           </button>
+          <button
+            onClick={handleBlog}
+            className={`flex flex-col items-center p-3 sm:p-4 rounded-xl transition-colors active:scale-95 ${
+              darkMode ? bgButtonDark : bgButtonLight
+            }`}
+          >
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-600 rounded-full flex items-center justify-center mb-2">
+              <BookOpen/>
+            </div>
+            <span className={`text-xs sm:text-sm font-medium ${textButton}`}>
+              {t('nav.blog')}
+            </span>
+          </button>
+
         </div>
       </div>
       <BarcodeScanModal

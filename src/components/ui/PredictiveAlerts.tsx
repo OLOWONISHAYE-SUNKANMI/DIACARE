@@ -236,24 +236,29 @@ const PredictiveAlerts: React.FC<PredictiveAlertsProps> = ({
       {/* AI Analysis Summary */}
       <Card className="bg-[#dffffb] text-foreground">
         <CardContent className="p-4 flex justify-between items-center ">
-          <div className="flex items-center space-x-3">
-            <Brain className="w-6 h-6 text-accent-foreground" />
-            <div>
-              <h4 className="font-bold text-foreground">
-                {t('analyze.title')}
-              </h4>
-              <p className="text-sm text-foreground/80">
-                {t('analyze.message')}
-              </p>
+          <div className="flex flex-col md:flex-row sm:items-center justify-between gap-3 sm:gap-6 w-full ">
+            {/* Left: Icon + Text */}
+            <div className="flex items-start sm:items-center space-x-3">
+              <Brain className="w-6 h-6 text-accent-foreground flex-shrink-0" />
+              <div>
+                <h4 className="font-bold text-foreground">
+                  {t('analyze.title')}
+                </h4>
+                <p className="text-sm text-foreground/80">
+                  {t('analyze.message')}
+                </p>
+              </div>
             </div>
+
+            {/* Right: Button */}
+            <Button
+              onClick={handleViewMore}
+              variant="default"
+              className="bg-[#ff7223] hover:bg-[#c74700] w-full sm:w-auto"
+            >
+              {t('analyze.buttons.enter')}
+            </Button>
           </div>
-          <Button
-            onClick={handleViewMore}
-            variant="default"
-            className="bg-[#ff7223] hover:bg-[#c74700]"
-          >
-            {t('analyze.buttons.enter')}
-          </Button>
         </CardContent>
       </Card>
     </div>
