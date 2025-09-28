@@ -833,113 +833,7 @@ const Biomarkers = () => {
           {/* Main Display */}
           <div className="lg:col-span-2 space-y-6">
             {/* Real-Time Graph */}
-            <div className="bg-background rounded-xl shadow-lg p-6">
-              <div className="flex items-center mb-4">
-                <Activity className="text-green-500 mr-2" size={24} />
-                <h2 className="text-xl font-semibold text-foreground">
-                  {t('biomarkerTracker.realTimeBloodGlucose')}
-                </h2>
-              </div>
-
-              <div className="h-64">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={glucoseData}>
-                    {/* Grid */}
-                    <CartesianGrid
-                      stroke="hsl(var(--border))"
-                      strokeDasharray="3 3"
-                    />
-
-                    {/* Axes */}
-                    <XAxis
-                      dataKey="time"
-                      stroke="hsl(var(--muted-foreground))"
-                    />
-                    <YAxis
-                      domain={[50, 250]}
-                      stroke="hsl(var(--muted-foreground))"
-                    />
-
-                    {/* Tooltip & Legend */}
-                    <Tooltip
-                      contentStyle={{
-                        backgroundColor: 'hsl(var(--card))',
-                        border: '1px solid hsl(var(--border))',
-                        color: 'hsl(var(--foreground))',
-                      }}
-                      labelStyle={{ color: 'hsl(var(--foreground))' }}
-                      itemStyle={{ color: 'hsl(var(--foreground))' }}
-                    />
-                    <Legend
-                      wrapperStyle={{ color: 'hsl(var(--foreground))' }}
-                    />
-
-                    {/* Reference lines */}
-                    <ReferenceLine
-                      y={alertSettings.lowThreshold}
-                      stroke="hsl(var(--warning))"
-                      strokeDasharray="5 5"
-                      label={{
-                        value: 'Low',
-                        fill: 'hsl(var(--warning))',
-                        position: 'right',
-                      }}
-                    />
-                    <ReferenceLine
-                      y={alertSettings.highThreshold}
-                      stroke="hsl(var(--destructive))"
-                      strokeDasharray="5 5"
-                      label={{
-                        value: 'High',
-                        fill: 'hsl(var(--destructive))',
-                        position: 'right',
-                      }}
-                    />
-
-                    {/* Main line */}
-                    <Line
-                      type="monotone"
-                      dataKey="glucose"
-                      stroke="hsl(var(--primary))"
-                      strokeWidth={2}
-                      dot={props => {
-                        const { payload, cx, cy } = props;
-                        return (
-                          <circle
-                            cx={cx}
-                            cy={cy}
-                            r={4}
-                            fill={
-                              payload.predicted
-                                ? 'hsl(var(--foreground))'
-                                : 'hsl(var(--primary))'
-                            }
-                            stroke={
-                              payload.predicted
-                                ? 'hsl(var(--accent))'
-                                : 'hsl(var(--primary))'
-                            }
-                            strokeWidth={2}
-                          />
-                        );
-                      }}
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
-
-              <div className="flex items-center justify-between mt-4 text-sm text-gray-600">
-                <span className="flex items-center text-foreground">
-                  <div className="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
-                  {t('biomarkerTracker.glucoseLegend.actualReadings')}
-                </span>
-
-                <span className="flex items-center text-foreground">
-                  <div className="w-3 h-3 bg-purple-500 rounded-full mr-2"></div>
-                  {t('biomarkerTracker.glucoseLegend.aiPredictions')}
-                </span>
-              </div>
-            </div>
+           
 
             {/* Alerts System */}
             {/* <div className="bg-background rounded-xl shadow-lg p-6">
@@ -992,33 +886,7 @@ const Biomarkers = () => {
             </div> */}
 
             {/* Database Status */}
-            <div className="bg-background rounded-xl shadow-lg p-6">
-              <div className="flex items-center mb-4">
-                <Database className="text-gray-500 mr-2" size={24} />
-                <h2 className="text-xl font-semibold text-foreground">
-                  {t('biomarkerTracker.historicalDatabase.title')}
-                </h2>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4 text-sm">
-                <div className="bg-muted rounded-lg p-3">
-                  <p className="text-muted-foreground">
-                    {t('biomarkerTracker.historicalDatabase.totalReadings')}
-                  </p>
-                  <p className="text-xl font-bold text-foreground">
-                    {glucoseData.length}
-                  </p>
-                </div>
-                <div className="bg-muted rounded-lg p-3">
-                  <p className="text-muted-foreground">
-                    {t('biomarkerTracker.historicalDatabase.dataPointsToday')}
-                  </p>
-                  <p className="text-xl font-bold text-foreground">
-                    {glucoseData.filter(d => !d.predicted).length}
-                  </p>
-                </div>
-              </div>
-            </div>
+          
           </div>
         </div>
       ) : (

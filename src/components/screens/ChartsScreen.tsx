@@ -12,6 +12,7 @@ import {
   Pie,
   Cell,
   ReferenceLine,
+  ReferenceArea,
 } from 'recharts';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { useMeals } from '@/contexts/MealContext';
@@ -111,6 +112,12 @@ const ChartsScreen = () => {
     return { day, percent };
   });
 
+  const getBarColor = (value: number) => {
+    if (value < 30) return '#22c55e'; // green (low)
+    if (value <= 60) return '#eab308'; // yellow (moderate)
+    return '#ef4444'; // red (high)
+  };
+
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       const med = payload[0].payload; // full medication object
@@ -174,13 +181,45 @@ const ChartsScreen = () => {
             <CardTitle>{t('charts.glucose')}</CardTitle>
           </CardHeader>
           <CardContent className="h-72">
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer width="100%" height={300}>
               <LineChart data={glucoseData}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="time" />
-                <YAxis domain={[0, 'dataMax + 20']} />{' '}
-                {/* start at 0, auto scale up */}
+                <YAxis domain={[0, 'dataMax + 20']} />
                 <Tooltip />
+
+                {/* Target range shading */}
+                <ReferenceArea
+                  y1={80}
+                  y2={180}
+                  strokeOpacity={0}
+                  fill="green"
+                  fillOpacity={0.1}
+                  label={{ value: 'Target Area' }}
+                />
+
+                {/* Threshold lines */}
+                <ReferenceLine
+                  y={70}
+                  stroke="purple"
+                  strokeDasharray="5 5"
+                  label={{
+                    value: 'Low',
+                    position: 'insideTopLeft',
+                    fill: 'purple',
+                  }}
+                />
+                <ReferenceLine
+                  y={250}
+                  stroke="red"
+                  strokeDasharray="5 5"
+                  label={{
+                    value: 'High',
+                    position: 'insideTopLeft',
+                    fill: 'red',
+                  }}
+                />
+
                 {/* Main glucose line */}
                 <Line
                   type="monotone"
@@ -188,25 +227,6 @@ const ChartsScreen = () => {
                   stroke="#10b981"
                   strokeWidth={2}
                   dot
-                />
-                {/* Threshold lines */}
-                <ReferenceLine
-                  y={70}
-                  stroke="green"
-                  strokeDasharray="5 5"
-                  label="Low"
-                />
-                <ReferenceLine
-                  y={140}
-                  stroke="orange"
-                  strokeDasharray="5 5"
-                  label="Medium"
-                />
-                <ReferenceLine
-                  y={200}
-                  stroke="red"
-                  strokeDasharray="5 5"
-                  label="High"
                 />
               </LineChart>
             </ResponsiveContainer>
@@ -219,13 +239,33 @@ const ChartsScreen = () => {
             <CardTitle>{t('charts.meals')}</CardTitle>
           </CardHeader>
           <CardContent className="h-72">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={mealsChartData /* or mealsByDay */}>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={mealsChartData}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" />
-                <YAxis />
+                <YAxis
+                  label={{
+                    value: 'Carbohydrate (g)',
+                    angle: -90,
+                    position: 'insideLeft',
+                    style: { textAnchor: 'middle' },
+                  }}
+                />
+
                 <Tooltip />
-                <Bar dataKey="carbs" fill="#3b82f6" />
+
+                {/* Demarcation lines */}
+                <ReferenceLine y={30} stroke="#22c55e" strokeDasharray="4 4" />
+                <ReferenceLine y={60} stroke="#eab308" strokeDasharray="4 4" />
+
+                <Bar dataKey="carbs">
+                  {mealsChartData.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={getBarColor(entry.carbs)}
+                    />
+                  ))}
+                </Bar>
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
