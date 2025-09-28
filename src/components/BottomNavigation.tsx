@@ -9,6 +9,7 @@ import {
   MessageCircle,
   Stethoscope,
   Brain,
+  PillBottle,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
@@ -28,15 +29,17 @@ const BottomNavigation: React.FC<BottomNavigationProps> = ({
     { id: 'charts', label: t('nav.charts'), icon: BarChart3, color: 'orange' },
     { id: 'journal', label: t('nav.journal'), icon: FileText, color: 'coral' },
     { id: 'predictive', label: 'AI alert', icon: Brain, color: 'orange' },
-    {
-      id: 'consultation-request',
-      label: t('nav.teleconsultation'),
-      icon: Stethoscope,
-      color: 'teal',
-    },
-    { id: 'family', label: t('nav.family'), icon: Users, color: 'green' },
-    { id: 'chat', label: t('nav.chat'), icon: MessageCircle, color: 'coral' },
-    { id: 'blog', label: t('nav.blog'), icon: BookOpen, color: 'orange' },
+    // {
+    //   id: 'consultation-request',
+    //   label: t('nav.teleconsultation'),
+    //   icon: Stethoscope,
+    //   color: 'teal',
+    // },
+    // { id: 'family', label: t('nav.family'), icon: Users, color: 'green' },
+    // { id: 'chat', label: t('nav.chat'), icon: MessageCircle, color: 'coral' },
+    // { id: 'blog', label: t('nav.blog'), icon: BookOpen, color: 'orange' },
+    { id: 'insulin', label: 'insulin dosage', icon: PillBottle , color: 'orange' },
+    { id: 'biomarker', label: 'Biomarker Tracker', icon: Stethoscope, color: 'orange' },
     { id: 'profile', label: t('nav.profile'), icon: User, color: 'teal' },
   ];
 
