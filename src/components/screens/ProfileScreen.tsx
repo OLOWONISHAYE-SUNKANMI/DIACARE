@@ -197,9 +197,9 @@ const ProfileScreen = () => {
 
         <Card className="text-center p-3">
           <CardContent className="p-0">
-            <div className="text-2xl font-bold text-medical-teal">91%</div>
+            <div className="text-2xl font-bold text-medical-teal">5.7</div>
             <div className="text-xs text-muted-foreground">
-              {t('profileScreen.adherence')}
+              {t('profileScreen.height')}
             </div>
           </CardContent>
         </Card>
@@ -268,14 +268,14 @@ const ProfileScreen = () => {
           <CardHeader className="flex justify-between">
             <CardTitle className="text-lg flex items-center gap-2">
               <BookOpen className="w-5 h-5 text-medical-teal" />
-              {'User Guide'}
+              {'Diabetes Guide'}
             </CardTitle>
           </CardHeader>
         </div>
 
         <CardContent className="space-y-3">
           <p className="text-sm text-muted-foreground">
-            Download the user guide in your preferred language:
+            Download the Diabates guide in your preferred language:
           </p>
 
           <div className="flex gap-3">
@@ -364,7 +364,7 @@ const ProfileScreen = () => {
         <CardHeader>
           <CardTitle className="text-lg flex items-center gap-2">
             <Pill className="w-5 h-5 text-medical-teal" />
-            Current Treatment
+            Insulin Dosage
           </CardTitle>
         </CardHeader>
 
