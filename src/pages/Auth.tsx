@@ -38,6 +38,21 @@ import {
 } from 'lucide-react';
 import { useThemeStore } from '@/store/useThemeStore';
 import { Sun, Moon } from 'lucide-react';
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  RadioGroup,
+  Radio,
+  Stack,
+  FormControl,
+  FormLabel,
+  useDisclosure,
+} from '@chakra-ui/react';
 
 const AuthPage = () => {
   const {
@@ -67,6 +82,8 @@ const AuthPage = () => {
   const [legalModal, setLegalModal] = useState<'terms' | 'privacy' | null>(
     null
   );
+  const [jobModal, setJobModal] = useState(false);
+  const [role, setRole] = useState('');
 
   // Données des formulaires pour patient
   const [patientSignInData, setPatientSignInData] = useState({
@@ -83,6 +100,7 @@ const AuthPage = () => {
 
   // Données pour professionnel
   const [professionalCode, setProfessionalCode] = useState('');
+  const [patientCode, setpatientCode] = useState('');
 
   // Données pour famille
   const [familyData, setFamilyData] = useState({
@@ -429,6 +447,9 @@ const AuthPage = () => {
     }
   };
 
+  const handlePatientAccess = () => {
+    setJobModal(true);
+  };
   return (
     <div className="relative min-h-screen flex items-center justify-center p-4 bg-background">
       {/* Language Selector - Top Right */}
@@ -793,7 +814,7 @@ const AuthPage = () => {
                     {isLoading
                       ? t('auth.connecting')
                       : t('professionalLoginCard.loginButton')}
-                 </Button>
+                  </Button>
 
                   <div className="relative my-4">
                     <div className="absolute inset-0 flex items-center">
@@ -801,21 +822,89 @@ const AuthPage = () => {
                     </div>
                     <div className="relative flex justify-center text-xs uppercase">
                       <span className="bg-background px-2 text-muted-foreground">
-                        Mode Test
+                        Patient Access
                       </span>
                     </div>
                   </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="professional-code">patient code</Label>
+                    <Input
+                      id="professional-code"
+                      type="text"
+                      placeholder="patient access code "
+                      value={patientCode}
+                      onChange={e =>
+                        setpatientCode(e.target.value.toUpperCase())
+                      }
+                      className="text-center font-mono text-lg"
+                      maxLength={15}
+                      required
+                    />
+                    {/* <p className="text-xs text-muted-foreground text-center">
+                      Format: TYPE-PAYS-XXXX
+                    </p> */}
+                  </div>
 
                   <Button
-                    type="button"
-                    variant="outline"
+                    onClick={handlePatientAccess}
                     className="w-full"
-                    onClick={handleTestProfessionalAccess}
                     disabled={isLoading}
                   >
-                    🧪 {t('professionalLoginCard.testAccess')}
+                    {isLoading ? t('auth.connecting') : 'Login as patient'}
                   </Button>
                 </form>
+                <Modal
+                  isOpen={jobModal}
+                  onClose={() => {
+                    setJobModal(false);
+                    setRole('');
+                  }}
+                  isCentered
+                >
+                  <ModalOverlay />
+                  <ModalContent>
+                    <ModalHeader>Login as </ModalHeader>
+                    <ModalCloseButton />
+
+                    <ModalBody>
+                      {/* Roles */}
+                      <FormControl>
+                        <FormLabel>Select Your Role</FormLabel>
+                        <RadioGroup onChange={setRole} value={role}>
+                          <Stack direction="column" spacing={2}>
+                            <Radio value="Endocrinologist">
+                              Endocrinologist
+                            </Radio>
+                            <Radio value="Diabetologist">Diabetologist</Radio>
+                            <Radio value="General Practitioner">
+                              General Practitioner
+                            </Radio>
+                            <Radio value="Diabetes Nurse">Diabetes Nurse</Radio>
+                            <Radio value="Psychologist">Psychologist</Radio>
+                            <Radio value="Nutritionist">Nutritionist</Radio>
+                          </Stack>
+                        </RadioGroup>
+                      </FormControl>
+                    </ModalBody>
+
+                    <ModalFooter>
+                      <Button
+                        variant="ghost"
+                        mr={3}
+                        onClick={() => setJobModal(false)}
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        // colorScheme="teal"
+                        // onClick={handleLogin}
+                        isDisabled={!role}
+                      >
+                        Login
+                      </Button>
+                    </ModalFooter>
+                  </ModalContent>
+                </Modal>
 
                 <Separator className="my-4" />
 
