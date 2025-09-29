@@ -159,6 +159,9 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
   };
   const handleFlutterPayment = useFlutterwave(config);
 
+ 
+
+
   const handleInputChange = (field: keyof PaymentFormData, value: string) => {
     setFormData(prev => ({
       ...prev,
@@ -344,7 +347,7 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
         </Card>
 
         <div className="space-y-4">
-          {/* <Button
+          <Button
             // onClick={}
             disabled={!isFormValid || !selectedCountry || isLoading}
             className={`w-full py-3 px-4 rounded-md font-medium transition-all duration-200 ${
