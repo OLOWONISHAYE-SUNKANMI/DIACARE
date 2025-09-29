@@ -15,6 +15,8 @@ import {
   Scale,
   Camera,
   Pencil,
+  Plus,
+  BookOpen,
 } from 'lucide-react';
 import { Profile, useAuth } from '@/contexts/AuthContext';
 import { useTranslation } from 'react-i18next';
@@ -31,6 +33,7 @@ import { EditProfileModal } from '../modals/EditProfileModal';
 import { useThemeStore } from '@/store/useThemeStore';
 import { EmergencyContactModal } from '../modals/EmergencyContactModal';
 import { useMedications } from '@/contexts/MedicationContext';
+import { AddEmergencyContactModal } from '../modals/AddEmergencyContactModal';
 
 const ProfileScreen = () => {
   const { t } = useTranslation();
@@ -52,6 +55,11 @@ const ProfileScreen = () => {
     emergency_contact_name: profile?.emergency_contact_name || '',
     emergency_contact_phone: profile?.emergency_contact_phone || '',
   });
+  const [addContact, setAddConntact] = useState({
+    emergency_contact_name: '',
+    emergency_contact_phone: '',
+  });
+
   const { medications, loading: medsLoading } = useMedications();
 
   const { theme, toggleTheme } = useThemeStore();
@@ -255,6 +263,58 @@ const ProfileScreen = () => {
         </CardContent>
       </Card>
 
+      <Card className="border-l-4 border-l-medical-teal">
+        <div className="flex justify-between items-center w-full">
+          <CardHeader className="flex justify-between">
+            <CardTitle className="text-lg flex items-center gap-2">
+              <BookOpen className="w-5 h-5 text-medical-teal" />
+              {'User Guide'}
+            </CardTitle>
+          </CardHeader>
+        </div>
+
+        <CardContent className="space-y-3">
+          <p className="text-sm text-muted-foreground">
+            Download the user guide in your preferred language:
+          </p>
+
+          <div className="flex gap-3">
+            {/* French PDF */}
+            <Button
+              variant="secondary"
+              asChild
+              // className="bg-medical-teal hover:bg-medical-teal/90 text-white"
+            >
+              <a
+                href="/pdfs/Guide du Diabète.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                download
+                
+              >
+                 Download (FR)
+              </a>
+            </Button>
+
+            {/* English PDF */}
+            <Button
+              variant="secondary"
+              asChild
+              // className="bg-medical-green  hover:bg-medical-green/90 text-white"
+            >
+              <a
+                href="/pdfs/Diabetes Guide.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                download
+              >
+             Download (EN)
+              </a>
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Équipe Médicale */}
       {/* <Card className="border-l-4 border-l-medical-teal">
         <CardHeader>
@@ -348,7 +408,7 @@ const ProfileScreen = () => {
           </CardHeader>
 
           {/* Right side: edit icon */}
-          <CardHeader className="ml-auto mt-1">
+          <CardHeader className="ml-auto mt-1 flex gap-2 flex-row items-center ">
             <EmergencyContactModal
               form={emergencyForm}
               loading={false}
@@ -372,6 +432,34 @@ const ProfileScreen = () => {
                 return !error;
               }}
               trigger={<Pencil className="w-4 h-4 cursor-pointer" />}
+            />
+            <AddEmergencyContactModal
+              form={addContact}
+              loading={false}
+              handleChange={(field, value) =>
+                setAddConntact(prev => ({ ...prev, [field]: value }))
+              }
+              handleUpdateProfile={async e => {
+                e.preventDefault();
+                // const { error } = await updateProfile({
+                //   emergency_contact_name: addContact.emergency_contact_name,
+                //   emergency_contact_phone: addContact.emergency_contact_phone,
+                // });
+                
+
+                // if (!error) {
+                  toast.success('Profile updated successfully');
+                // } else {
+                //   toast.error('Failed to update profile');
+                // }
+                setAddConntact({
+                  emergency_contact_name: '',
+                  emergency_contact_phone: '',
+                });
+
+                return ;
+              }}
+              trigger={<Plus className="w-4 h-4 cursor-pointer" />}
             />
           </CardHeader>
         </div>

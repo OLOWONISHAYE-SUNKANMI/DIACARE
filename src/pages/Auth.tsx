@@ -793,7 +793,7 @@ const AuthPage = () => {
                     {isLoading
                       ? t('auth.connecting')
                       : t('professionalLoginCard.loginButton')}
-                  </Button>
+                 </Button>
 
                   <div className="relative my-4">
                     <div className="absolute inset-0 flex items-center">
