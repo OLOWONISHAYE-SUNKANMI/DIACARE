@@ -137,6 +137,9 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
   //   }
   // };
 
+ 
+
+
   const handleInputChange = (field: keyof PaymentFormData, value: string) => {
     setFormData(prev => ({
       ...prev,
@@ -323,7 +326,7 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
 
         <div className="space-y-4">
           <Button
-            // onClick={}
+            // onClick={handleFlutterwavePayment}
             disabled={!isFormValid || !selectedCountry || isLoading}
             className={`w-full py-3 px-4 rounded-md font-medium transition-all duration-200 ${
               isFormValid
