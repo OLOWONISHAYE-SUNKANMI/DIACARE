@@ -401,7 +401,7 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
               });
             }}
             disabled={!isFormValid || !selectedCountry || isLoading}
-            className={`w-full py-3 px-4 rounded-md font-medium transition-all duration-200 ${
+            className={`w-full outline-none  py-3 px-4 rounded-md font-medium transition-all duration-200 ${
               isFormValid
                 ? 'bg-medical-teal hover:bg-medical-teal/90 text-white'
                 : 'bg-muted text-muted-foreground cursor-not-allowed'
