@@ -139,7 +139,9 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
   // };
 
   const config = {
-    public_key: 'YOUR_FLUTTERWAVE_TEST_KEY', 
+    public_key:
+      import.meta.env.VITE_PUBLIC_FLW_PUBLIC_KEY || 'FLWPUBK_TEST-xxxxxxxxxx',
+
     tx_ref: Date.now().toString(),
     amount: convertedPrices
       ? convertedPrices.amount
@@ -158,9 +160,6 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
     },
   };
   const handleFlutterPayment = useFlutterwave(config);
-
- 
-
 
   const handleInputChange = (field: keyof PaymentFormData, value: string) => {
     setFormData(prev => ({
@@ -347,8 +346,8 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
         </Card>
 
         <div className="space-y-4">
-          <Button
-            // onClick={}
+          {/* <Button
+            // onClick={handleFlutterwavePayment}
             disabled={!isFormValid || !selectedCountry || isLoading}
             className={`w-full py-3 px-4 rounded-md font-medium transition-all duration-200 ${
               isFormValid
