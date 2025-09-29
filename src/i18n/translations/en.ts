@@ -466,7 +466,7 @@ export const en = {
     years: 'years',
     yearsWithDare: 'Years with Klukoo',
     glucoseMeasures: 'Blood sugar measurements',
-    adherence: 'Adherence',
+    height: 'Height',
     personalInfo: 'Personal Information',
     fullName: 'Full name',
     dateOfBirth: 'Date of birth',
