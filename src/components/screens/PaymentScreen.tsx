@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import LanguageToggle from '../ui/LanguageToggle';
+import { useFlutterwave, closePaymentModal } from 'flutterwave-react-v3';
 
 interface PaymentFormData {
   email: string;
@@ -137,6 +138,27 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
   //   }
   // };
 
+  const config = {
+    public_key: 'YOUR_FLUTTERWAVE_TEST_KEY', 
+    tx_ref: Date.now().toString(),
+    amount: convertedPrices
+      ? convertedPrices.amount
+      : (selectedPlan?.price_eur || 800) / 100,
+    currency: currency.currency || 'EUR',
+    payment_options: 'card,mobilemoney,ussd',
+    customer: {
+      email: formData.email,
+      phonenumber: formData.phone_number,
+      name: formData.name,
+    },
+    customizations: {
+      title: selectedPlan?.name || 'Klukoo Premium',
+      description: selectedPlan?.description || 'Subscription payment',
+      logo: '/logo.svg', // optional: add your logo
+    },
+  };
+  const handleFlutterPayment = useFlutterwave(config);
+
   const handleInputChange = (field: keyof PaymentFormData, value: string) => {
     setFormData(prev => ({
       ...prev,
@@ -186,7 +208,7 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
           <h1 className="text-xl font-semibold text-center flex-1 ml-10">
             {t('paymentScreen.payment.secure')}
           </h1>
-          <div className='m-2'>
+          <div className="m-2">
             <LanguageToggle />
           </div>
         </div>
@@ -322,7 +344,7 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
         </Card>
 
         <div className="space-y-4">
-          <Button
+          {/* <Button
             // onClick={}
             disabled={!isFormValid || !selectedCountry || isLoading}
             className={`w-full py-3 px-4 rounded-md font-medium transition-all duration-200 ${
@@ -340,6 +362,60 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
                 : t('paymentScreen.payment.pay', {
                     amount: `${((selectedPlan?.price_eur || 800) / 100).toFixed(0)}€`,
                   })}
+          </Button> */}
+          <Button
+            onClick={() => {
+              if (!isFormValid || !selectedCountry) {
+                toast({
+                  title: t('paymentScreen.toasts.missingInfo.title'),
+                  description: t(
+                    'paymentScreen.toasts.missingInfo.description'
+                  ),
+                  variant: 'destructive',
+                });
+                return;
+              }
+
+              handleFlutterPayment({
+                callback: response => {
+                  console.log('Flutterwave response:', response);
+                  if (response.status === 'successful') {
+                    setPaymentStep('success');
+                    onPaymentSuccess?.();
+                  } else {
+                    toast({
+                      title: t('paymentScreen.payment.toastErrorTitle'),
+                      description: t(
+                        'paymentScreen.payment.toastErrorDescription'
+                      ),
+                      variant: 'destructive',
+                    });
+                  }
+                  closePaymentModal(); // close modal programmatically
+                },
+                onClose: () => {
+                  console.log('Payment closed');
+                },
+              });
+            }}
+            disabled={!isFormValid || !selectedCountry || isLoading}
+            className={`w-full py-3 px-4 rounded-md font-medium transition-all duration-200 ${
+              isFormValid
+                ? 'bg-medical-teal hover:bg-medical-teal/90 text-white'
+                : 'bg-muted text-muted-foreground cursor-not-allowed'
+            }`}
+          >
+            {isLoading
+              ? t('paymentScreen.payment.processing')
+              : convertedPrices
+              ? t('paymentScreen.payment.pay', {
+                  amount: convertedPrices.formatted,
+                })
+              : t('paymentScreen.payment.pay', {
+                  amount: `${((selectedPlan?.price_eur || 800) / 100).toFixed(
+                    0
+                  )}€`,
+                })}
           </Button>
 
           <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
@@ -354,7 +430,6 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
               <p>{t('paymentScreen.paymentMethods.ussd')}</p>
               <p>{t('paymentScreen.paymentMethods.barter')}</p>
               <p>{t('paymentScreen.paymentMethods.paypal')}</p>
-           
             </div>
           </div>
 
