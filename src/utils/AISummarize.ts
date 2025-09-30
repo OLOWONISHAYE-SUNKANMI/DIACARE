@@ -1,5 +1,5 @@
 export async function getAISummary(values) {
-  const res = await fetch('http://localhost:8000/summarize', {
+  const res = await fetch('https://klukoo-ai.onrender.com/summarize', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ values }),

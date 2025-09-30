@@ -71,7 +71,7 @@ export default function PredictiveAlertScreen({ values }: any) {
   const fetchForecast = async () => {
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:8000/forecast', {
+      const res = await fetch('https://klukoo-ai.onrender.com/forecast', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
