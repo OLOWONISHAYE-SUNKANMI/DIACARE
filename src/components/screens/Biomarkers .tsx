@@ -138,7 +138,7 @@ const Biomarkers = () => {
   const fetchPrediction = async () => {
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:8000/predict', {
+      const res = await fetch('https://klukoo-ai.onrender.com/predict', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -833,7 +833,6 @@ const Biomarkers = () => {
           {/* Main Display */}
           <div className="lg:col-span-2 space-y-6">
             {/* Real-Time Graph */}
-           
 
             {/* Alerts System */}
             {/* <div className="bg-background rounded-xl shadow-lg p-6">
@@ -886,7 +885,6 @@ const Biomarkers = () => {
             </div> */}
 
             {/* Database Status */}
-          
           </div>
         </div>
       ) : (
