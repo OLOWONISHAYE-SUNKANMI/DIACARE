@@ -404,8 +404,8 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
               darkMode ? bgButtonDark : bgButtonLight
             }`}
           >
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-accent rounded-full flex items-center justify-center mb-2">
-             💬
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[#008000] rounded-full flex items-center justify-center mb-2">
+             📩
             </div>
             <span className={`text-xs sm:text-sm font-medium ${textButton}`}>
               {t('nav.chat')}
