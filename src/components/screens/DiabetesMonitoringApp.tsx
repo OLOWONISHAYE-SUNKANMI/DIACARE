@@ -27,12 +27,8 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useGlucose } from '@/contexts/GlucoseContext';
 
-
-
-
-
 const DiabetesMonitoringApp = () => {
-  const [activeTab, setActiveTab] = useState('monitoring');
+  const [activeTab, setActiveTab] = useState('dosage');
   const [currentGlucose, setCurrentGlucose] = useState(120);
   const [insulin, setInsulin] = useState(0);
   const [carbs, setCarbs] = useState(0);
@@ -43,15 +39,13 @@ const DiabetesMonitoringApp = () => {
     highThreshold: 180,
   });
   const { readings: glucose } = useGlucose();
-  const disabled = true
-
+  const disabled = true;
 
   const formatTime = (iso: string) => {
-  const d = new Date(iso);
-  return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-};
-      // Glucose data
- 
+    const d = new Date(iso);
+    return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  };
+  // Glucose data
 
   const [alerts, setAlerts] = useState([]);
   const [prediction, setPrediction] = useState(null);
@@ -133,13 +127,7 @@ const DiabetesMonitoringApp = () => {
   });
   const [patientName, setPatientName] = useState('');
 
-
-
-
-
   // Check for alerts
-
-
 
   // Glucose unit conversion functions
   const getGlucoseRanges = (unit, t) => {
@@ -207,44 +195,90 @@ ${t('insulinDosage.share.date')}: ${new Date().toLocaleDateString()}
 ${t('insulinDosage.share.units')}: ${glucoseUnit}
 
 === ${t('insulinDosage.share.breakfast')} ===
-${ranges.range1}: ${insulinDoses.breakfast?.range1 || t('share.notSet')} ${t('insulinDosage.share.unitsLabel')}
-${ranges.range2}: ${insulinDoses.breakfast?.range2 || t('share.notSet')} ${t('insulinDosage.share.unitsLabel')}
-${ranges.range3}: ${insulinDoses.breakfast?.range3 || t('share.notSet')} ${t('insulinDosage.share.unitsLabel')}
-${ranges.range4}: ${insulinDoses.breakfast?.range4 || t('share.notSet')} ${t('insulinDosage.share.unitsLabel')}
-${ranges.range5}: ${insulinDoses.breakfast?.range5 || t('share.notSet')} ${t('insulinDosage.share.unitsLabel')}
-${t('share.snack')}: ${insulinDoses.breakfast?.snack || t('share.notSet')} ${t('insulinDosage.share.unitsLabel')}
+${ranges.range1}: ${insulinDoses.breakfast?.range1 || t('share.notSet')} ${t(
+      'insulinDosage.share.unitsLabel'
+    )}
+${ranges.range2}: ${insulinDoses.breakfast?.range2 || t('share.notSet')} ${t(
+      'insulinDosage.share.unitsLabel'
+    )}
+${ranges.range3}: ${insulinDoses.breakfast?.range3 || t('share.notSet')} ${t(
+      'insulinDosage.share.unitsLabel'
+    )}
+${ranges.range4}: ${insulinDoses.breakfast?.range4 || t('share.notSet')} ${t(
+      'insulinDosage.share.unitsLabel'
+    )}
+${ranges.range5}: ${insulinDoses.breakfast?.range5 || t('share.notSet')} ${t(
+      'insulinDosage.share.unitsLabel'
+    )}
+${t('share.snack')}: ${insulinDoses.breakfast?.snack || t('share.notSet')} ${t(
+      'insulinDosage.share.unitsLabel'
+    )}
 
 === ${t('share.lunch')} ===
-${ranges.range1}: ${insulinDoses.lunch?.range1 || t('insulinDosage.share.notSet')} ${t('insulinDosage.share.unitsLabel')}
-${ranges.range2}: ${insulinDoses.lunch?.range2 || t('insulinDosage.share.notSet')} ${t('insulinDosage.share.unitsLabel')}
-${ranges.range3}: ${insulinDoses.lunch?.range3 || t('insulinDosage.share.notSet')} ${t('insulinDosage.share.unitsLabel')}
-${ranges.range4}: ${insulinDoses.lunch?.range4 || t('insulinDosage.share.notSet')} ${t('insulinDosage.share.unitsLabel')}
-${ranges.range5}: ${insulinDoses.lunch?.range5 || t('insulinDosage.share.notSet')} ${t('insulinDosage.share.unitsLabel')}
-${t('insulinDosage.share.snack')}: ${insulinDoses.lunch?.snack || t('insulinDosage.share.notSet')} ${t('insulinDosage.share.unitsLabel')}
+${ranges.range1}: ${
+      insulinDoses.lunch?.range1 || t('insulinDosage.share.notSet')
+    } ${t('insulinDosage.share.unitsLabel')}
+${ranges.range2}: ${
+      insulinDoses.lunch?.range2 || t('insulinDosage.share.notSet')
+    } ${t('insulinDosage.share.unitsLabel')}
+${ranges.range3}: ${
+      insulinDoses.lunch?.range3 || t('insulinDosage.share.notSet')
+    } ${t('insulinDosage.share.unitsLabel')}
+${ranges.range4}: ${
+      insulinDoses.lunch?.range4 || t('insulinDosage.share.notSet')
+    } ${t('insulinDosage.share.unitsLabel')}
+${ranges.range5}: ${
+      insulinDoses.lunch?.range5 || t('insulinDosage.share.notSet')
+    } ${t('insulinDosage.share.unitsLabel')}
+${t('insulinDosage.share.snack')}: ${
+      insulinDoses.lunch?.snack || t('insulinDosage.share.notSet')
+    } ${t('insulinDosage.share.unitsLabel')}
 
 === ${t('share.supper')} ===
-${ranges.range1}: ${insulinDoses.supper?.range1 || t('insulinDosage.share.notSet')} ${t('insulinDosage.share.unitsLabel')}
-${ranges.range2}: ${insulinDoses.supper?.range2 || t('insulinDosage.share.notSet')} ${t('insulinDosage.share.unitsLabel')}
-${ranges.range3}: ${insulinDoses.supper?.range3 || t('insulinDosage.share.notSet')} ${t('insulinDosage.share.unitsLabel')}
-${ranges.range4}: ${insulinDoses.supper?.range4 || t('insulinDosage.share.notSet')} ${t('insulinDosage.share.unitsLabel')}
-${ranges.range5}: ${insulinDoses.supper?.range5 || t('insulinDosage.share.notSet')} ${t('insulinDosage.share.unitsLabel')}
-${t('insulinDosage.share.snack')}: ${insulinDoses.supper?.snack || t('insulinDosage.share.notSet')} ${t('insulinDosage.share.unitsLabel')}
+${ranges.range1}: ${
+      insulinDoses.supper?.range1 || t('insulinDosage.share.notSet')
+    } ${t('insulinDosage.share.unitsLabel')}
+${ranges.range2}: ${
+      insulinDoses.supper?.range2 || t('insulinDosage.share.notSet')
+    } ${t('insulinDosage.share.unitsLabel')}
+${ranges.range3}: ${
+      insulinDoses.supper?.range3 || t('insulinDosage.share.notSet')
+    } ${t('insulinDosage.share.unitsLabel')}
+${ranges.range4}: ${
+      insulinDoses.supper?.range4 || t('insulinDosage.share.notSet')
+    } ${t('insulinDosage.share.unitsLabel')}
+${ranges.range5}: ${
+      insulinDoses.supper?.range5 || t('insulinDosage.share.notSet')
+    } ${t('insulinDosage.share.unitsLabel')}
+${t('insulinDosage.share.snack')}: ${
+      insulinDoses.supper?.snack || t('insulinDosage.share.notSet')
+    } ${t('insulinDosage.share.unitsLabel')}
 
 === ${t('insulinDosage.share.bedtime')} ===
-${t('insulinDosage.share.basalInsulin')}: ${insulinDoses.bedtime || t('insulinDosage.share.notSet')} ${t('insulinDosage.share.unitsLabel')}
+${t('insulinDosage.share.basalInsulin')}: ${
+      insulinDoses.bedtime || t('insulinDosage.share.notSet')
+    } ${t('insulinDosage.share.unitsLabel')}
 
 🩺 ${t('insulinDosage.share.healthcareProvider')}
-${t('insulinDosage.share.doctor')}: ${doctorInfo.name || t('insulinDosage.share.notSpecified')}
-${t('insulinDosage.share.date')}: ${doctorInfo.date || t('insulinDosage.share.notSpecified')}
+${t('insulinDosage.share.doctor')}: ${
+      doctorInfo.name || t('insulinDosage.share.notSpecified')
+    }
+${t('insulinDosage.share.date')}: ${
+      doctorInfo.date || t('insulinDosage.share.notSpecified')
+    }
 
 📝 ${t('insulinDosage.share.doctorNotes')}
 ${
   doctorNotes.recommendations
-    ? `${t('insulinDosage.share.recommendations')}: ${doctorNotes.recommendations}\n`
+    ? `${t('insulinDosage.share.recommendations')}: ${
+        doctorNotes.recommendations
+      }\n`
     : ''
 }${
       doctorNotes.specialInstructions
-        ? `${t('insulinDosage.share.specialInstructions')}: ${doctorNotes.specialInstructions}\n`
+        ? `${t('insulinDosage.share.specialInstructions')}: ${
+            doctorNotes.specialInstructions
+          }\n`
         : ''
     }${
       doctorNotes.followUpDate
@@ -271,7 +305,10 @@ ${t('insulinDosage.share.generatedFrom')}
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = `insulin-dose-sheet-${patientDisplayName.replace(/\s+/g, '-')}.txt`;
+      link.download = `insulin-dose-sheet-${patientDisplayName.replace(
+        /\s+/g,
+        '-'
+      )}.txt`;
       link.click();
     }
   };
@@ -295,8 +332,7 @@ ${t('insulinDosage.share.generatedFrom')}
         <div className="text-sm mb-2 flex items-center gap-2">
           {t('insulinDosage.slidingScale.insulinText')} (
           <input
-          disabled={disabled}
-
+            disabled={disabled}
             type="text"
             value={penColors[mealKey] || ''}
             onChange={e => handlePenColorChange(mealKey, e.target.value)}
@@ -305,8 +341,7 @@ ${t('insulinDosage.share.generatedFrom')}
           />
           ) {t('insulinDosage.slidingScale.penColour')}
           <input
-          disabled={disabled}
-
+            disabled={disabled}
             type="text"
             value={penColors[mealKey + '_color'] || ''}
             onChange={e =>
@@ -340,8 +375,7 @@ ${t('insulinDosage.share.generatedFrom')}
               </td>
               <td className="border border-[hsl(var(--border))] px-3 py-2">
                 <input
-          disabled={disabled}
-
+                  disabled={disabled}
                   type="number"
                   value={insulinDoses[mealKey]?.range1 || ''}
                   onChange={e =>
@@ -353,8 +387,7 @@ ${t('insulinDosage.share.generatedFrom')}
               </td>
               <td className="border border-[hsl(var(--border))] px-3 py-2">
                 <textarea
-          disabled={disabled}
-
+                  disabled={disabled}
                   value={specialNotes[mealKey]?.range1 || ''}
                   onChange={e =>
                     handleSpecialNoteChange(mealKey, 'range1', e.target.value)
@@ -374,8 +407,7 @@ ${t('insulinDosage.share.generatedFrom')}
               </td>
               <td className="border border-[hsl(var(--border))] px-3 py-2">
                 <input
-          disabled={disabled}
-
+                  disabled={disabled}
                   type="number"
                   value={insulinDoses[mealKey]?.range2 || ''}
                   onChange={e =>
@@ -387,8 +419,7 @@ ${t('insulinDosage.share.generatedFrom')}
               </td>
               <td className="border border-[hsl(var(--border))] px-3 py-2">
                 <textarea
-          disabled={disabled}
-
+                  disabled={disabled}
                   value={specialNotes[mealKey]?.range2 || ''}
                   onChange={e =>
                     handleSpecialNoteChange(mealKey, 'range2', e.target.value)
@@ -408,8 +439,7 @@ ${t('insulinDosage.share.generatedFrom')}
               </td>
               <td className="border border-[hsl(var(--border))] px-3 py-2">
                 <input
-          disabled={disabled}
-
+                  disabled={disabled}
                   type="number"
                   value={insulinDoses[mealKey]?.range3 || ''}
                   onChange={e =>
@@ -421,8 +451,7 @@ ${t('insulinDosage.share.generatedFrom')}
               </td>
               <td className="border border-[hsl(var(--border))] px-3 py-2">
                 <textarea
-          disabled={disabled}
-
+                  disabled={disabled}
                   value={specialNotes[mealKey]?.range3 || ''}
                   onChange={e =>
                     handleSpecialNoteChange(mealKey, 'range3', e.target.value)
@@ -442,8 +471,7 @@ ${t('insulinDosage.share.generatedFrom')}
               </td>
               <td className="border border-[hsl(var(--border))] px-3 py-2">
                 <input
-          disabled={disabled}
-
+                  disabled={disabled}
                   type="number"
                   value={insulinDoses[mealKey]?.range4 || ''}
                   onChange={e =>
@@ -455,8 +483,7 @@ ${t('insulinDosage.share.generatedFrom')}
               </td>
               <td className="border border-[hsl(var(--border))] px-3 py-2">
                 <textarea
-          disabled={disabled}
-
+                  disabled={disabled}
                   value={specialNotes[mealKey]?.range4 || ''}
                   onChange={e =>
                     handleSpecialNoteChange(mealKey, 'range4', e.target.value)
@@ -476,8 +503,7 @@ ${t('insulinDosage.share.generatedFrom')}
               </td>
               <td className="border border-[hsl(var(--border))] px-3 py-2">
                 <input
-          disabled={disabled}
-
+                  disabled={disabled}
                   type="number"
                   value={insulinDoses[mealKey]?.range5 || ''}
                   onChange={e =>
@@ -489,8 +515,7 @@ ${t('insulinDosage.share.generatedFrom')}
               </td>
               <td className="border border-[hsl(var(--border))] px-3 py-2">
                 <textarea
-          disabled={disabled}
-
+                  disabled={disabled}
                   value={specialNotes[mealKey]?.range5 || ''}
                   onChange={e =>
                     handleSpecialNoteChange(mealKey, 'range5', e.target.value)
@@ -532,13 +557,12 @@ ${t('insulinDosage.share.generatedFrom')}
                 {mealKey === 'breakfast'
                   ? ranges.snackBreakfast
                   : mealKey === 'lunch'
-                    ? ranges.snackLunch
-                    : ranges.snackSupper}
+                  ? ranges.snackLunch
+                  : ranges.snackSupper}
               </td>
               <td className="border border-[hsl(var(--border))] px-3 py-2">
                 <input
-          disabled={disabled}
-
+                  disabled={disabled}
                   type="number"
                   value={insulinDoses[mealKey]?.snack || ''}
                   onChange={e =>
@@ -572,8 +596,7 @@ ${t('insulinDosage.share.generatedFrom')}
                   {t('insulinDosage.insulinSheet.patientName')}
                 </label>
                 <input
-          disabled={disabled}
-
+                  disabled={disabled}
                   type="text"
                   value={patientName}
                   onChange={e => setPatientName(e.target.value)}
@@ -655,8 +678,7 @@ ${t('insulinDosage.share.generatedFrom')}
           <div className="text-sm mb-2 flex items-center gap-2">
             {t('insulinDosage.insulin.fixedDoseClear')} (
             <input
-          disabled={disabled}
-
+              disabled={disabled}
               type="text"
               value={penColors.bedtime || ''}
               onChange={e => handlePenColorChange('bedtime', e.target.value)}
@@ -665,8 +687,7 @@ ${t('insulinDosage.share.generatedFrom')}
             />
             ) {t('insulinDosage.insulin.penColour')}
             <input
-          disabled={disabled}
-
+              disabled={disabled}
               type="text"
               value={penColors.bedtime_color || ''}
               onChange={e =>
@@ -689,8 +710,7 @@ ${t('insulinDosage.share.generatedFrom')}
               <tr>
                 <td className="border border-gray-400 px-3 py-2">
                   <input
-          disabled={disabled}
-
+                    disabled={disabled}
                     type="number"
                     value={insulinDoses.bedtime || ''}
                     onChange={e =>
@@ -725,8 +745,7 @@ ${t('insulinDosage.share.generatedFrom')}
                   {t('insulinDosage.notes.generalNotes')}
                 </label>
                 <textarea
-          disabled={disabled}
-
+                  disabled={disabled}
                   value={doctorNotes.generalNotes || ''}
                   onChange={e =>
                     setDoctorNotes(prev => ({
@@ -744,8 +763,7 @@ ${t('insulinDosage.share.generatedFrom')}
                   {t('insulinDosage.notes.clinicalObservations')}
                 </label>
                 <textarea
-          disabled={disabled}
-
+                  disabled={disabled}
                   value={doctorNotes.observations || ''}
                   onChange={e =>
                     setDoctorNotes(prev => ({
@@ -763,8 +781,7 @@ ${t('insulinDosage.share.generatedFrom')}
                   {t('insulinDosage.notes.emergencyContact')}
                 </label>
                 <textarea
-          disabled={disabled}
-
+                  disabled={disabled}
                   value={doctorNotes.emergencyContact || ''}
                   onChange={e =>
                     setDoctorNotes(prev => ({
@@ -787,8 +804,7 @@ ${t('insulinDosage.share.generatedFrom')}
                   {t('insulinDosage.notes.treatmentRecommendations')}
                 </label>
                 <textarea
-          disabled={disabled}
-
+                  disabled={disabled}
                   value={doctorNotes.recommendations || ''}
                   onChange={e =>
                     setDoctorNotes(prev => ({
@@ -808,8 +824,7 @@ ${t('insulinDosage.share.generatedFrom')}
                   {t('insulinDosage.notes.specialInstructions')}
                 </label>
                 <textarea
-          disabled={disabled}
-
+                  disabled={disabled}
                   value={doctorNotes.specialInstructions || ''}
                   onChange={e =>
                     setDoctorNotes(prev => ({
@@ -829,8 +844,7 @@ ${t('insulinDosage.share.generatedFrom')}
                   {t('insulinDosage.notes.followUpAppointment')}
                 </label>
                 <input
-          disabled={disabled}
-
+                  disabled={disabled}
                   type="date"
                   value={doctorNotes.followUpDate || ''}
                   onChange={e =>
@@ -911,8 +925,7 @@ ${t('insulinDosage.share.generatedFrom')}
                 </td>
                 <td className="border border-gray-400 px-3 py-2">
                   <input
-          disabled={disabled}
-
+                    disabled={disabled}
                     type="text"
                     value={doctorInfo.name || ''}
                     onChange={e =>
@@ -924,8 +937,7 @@ ${t('insulinDosage.share.generatedFrom')}
                 </td>
                 <td className="border border-gray-400 px-3 py-2">
                   <input
-          disabled={disabled}
-
+                    disabled={disabled}
                     type="text"
                     value={doctorInfo.signature || ''}
                     onChange={e =>
@@ -941,8 +953,7 @@ ${t('insulinDosage.share.generatedFrom')}
 
                 <td className="border border-gray-400 px-3 py-2">
                   <input
-          disabled={disabled}
-
+                    disabled={disabled}
                     type="date"
                     value={doctorInfo.date || ''}
                     onChange={e =>
@@ -1023,14 +1034,14 @@ ${t('insulinDosage.share.generatedFrom')}
         {/* Header */}
         <div className="bg-background rounded-xl shadow-lg p-6 mb-6">
           <h1 className="text-3xl font-bold text-foreground mb-2">
-            {t('insulinDosage.dashboard.title')}
+            Insulin Dose Sheet 
           </h1>
-          <p className="text-muted-foreground">
+          {/* <p className="text-muted-foreground">
             {t('insulinDosage.dashboard.subtitle')}
-          </p>
+          </p> */}
 
           {/* Tab Navigation */}
-          <div className="flex mt-4 border-b">
+          {/* <div className="flex mt-4 border-b">
             <button
               onClick={() => setActiveTab('monitoring')}
               className={`px-6 py-2 font-medium transition-colors ${
@@ -1053,15 +1064,10 @@ ${t('insulinDosage.share.generatedFrom')}
               <FileText className="inline mr-2" size={20} />
               {t('insulinDosage.dashboard.tabs.dosage')}
             </button>
-          </div>
+          </div> */}
         </div>
 
-        {/* Tab Content */}
-        {activeTab === 'monitoring' ? (
-<></>
-        ) : (
-          <InsulinDoseSheet />
-        )}
+        <InsulinDoseSheet />
       </div>
     </div>
   );
