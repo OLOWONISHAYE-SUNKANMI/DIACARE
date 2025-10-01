@@ -268,17 +268,36 @@ const ProfileScreen = () => {
           <CardHeader className="flex justify-between">
             <CardTitle className="text-lg flex items-center gap-2">
               <BookOpen className="w-5 h-5 text-medical-teal" />
-              {'Diabetes Guide'}
+              {t('booklet.downloadGuideTitle')}
             </CardTitle>
           </CardHeader>
         </div>
 
         <CardContent className="space-y-3">
           <p className="text-sm text-muted-foreground">
-            Download the Diabates guide in your preferred language:
+           {t('booklet.downloadGuideDescription')}
           </p>
 
           <div className="flex gap-3">
+
+
+              {/* English PDF */}
+            <Button
+              variant="secondary"
+              asChild
+              // className="bg-medical-green  hover:bg-medical-green/90 text-white"
+            >
+              <a
+                href="/pdfs/Diabetes Guide.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                download
+              >
+            {t('booklet.downloadEnglish')}
+              </a>
+            </Button>
+
+            
             {/* French PDF */}
             <Button
               variant="secondary"
@@ -292,31 +311,16 @@ const ProfileScreen = () => {
                 download
                 
               >
-                 Download (FR)
+                {t('booklet.downloadFrench')}
               </a>
             </Button>
 
-            {/* English PDF */}
-            <Button
-              variant="secondary"
-              asChild
-              // className="bg-medical-green  hover:bg-medical-green/90 text-white"
-            >
-              <a
-                href="/pdfs/Diabetes Guide.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                download
-              >
-             Download (EN)
-              </a>
-            </Button>
           </div>
         </CardContent>
       </Card>
 
       {/* Équipe Médicale */}
-      {/* <Card className="border-l-4 border-l-medical-teal">
+       <Card className="border-l-4 border-l-medical-teal">
         <CardHeader>
           <CardTitle className="text-lg flex items-center gap-2">
             <Users className="w-5 h-5 text-medical-teal" />
@@ -356,7 +360,7 @@ const ProfileScreen = () => {
             </div>
           </div>
         </CardContent>
-      </Card> */}
+      </Card>
 
       {/* Current treatment */}
       {/* Current Treatment */}
@@ -364,7 +368,7 @@ const ProfileScreen = () => {
         <CardHeader>
           <CardTitle className="text-lg flex items-center gap-2">
             <Pill className="w-5 h-5 text-medical-teal" />
-            Insulin Dosage
+           {t('profileScreen.currentTreatment')}
           </CardTitle>
         </CardHeader>
 
