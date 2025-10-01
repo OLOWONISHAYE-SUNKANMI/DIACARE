@@ -127,12 +127,32 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
               {/* Specialty */}
               <div className="flex flex-col">
                 <label className="text-sm mb-1">
-                  {t('profileScreenFixes.label_specialty')}
+                  Date of birth
                 </label>
                 <Input
                   size="sm"
-                  value={form.specialty || ''}
-                  onChange={e => handleChange('specialty', e.target.value)}
+                  value={form.dob || ''}
+                  onChange={e => handleChange('dob', e.target.value)}
+                  _focus={{
+                    borderColor: '#32948f',
+                    boxShadow: '0 0 0 1px #32948f',
+                  }}
+                  _focusVisible={{
+                    borderColor: '#32948f',
+                    boxShadow: '0 0 0 1px #32948f',
+                  }}
+                />
+              </div>
+              <div>
+
+              {/* Professional License */}
+             <label className="text-sm mb-1">
+                  Profession
+                </label>
+                <Input
+                  size="sm"
+                  value={form.profession || ''}
+                  onChange={e => handleChange('profession', e.target.value)}
                   _focus={{
                     borderColor: '#32948f',
                     boxShadow: '0 0 0 1px #32948f',
@@ -144,17 +164,15 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
                 />
               </div>
 
-              {/* Professional License */}
-              <div className="flex flex-col sm:col-span-2">
+              {/* Last Name */}
+              <div className="flex flex-col">
                 <label className="text-sm mb-1">
-                  {t('profileScreenFixes.label_professionalLicense')}
+                  City
                 </label>
                 <Input
                   size="sm"
-                  value={form.professional_license || ''}
-                  onChange={e =>
-                    handleChange('professional_license', e.target.value)
-                  }
+                  value={form.city || ''}
+                  onChange={e => handleChange('city', e.target.value)}
                   _focus={{
                     borderColor: '#32948f',
                     boxShadow: '0 0 0 1px #32948f',

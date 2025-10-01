@@ -69,7 +69,7 @@ const FamilyScreen = () => {
       </Card>
 
       {/* Emergency Contact */}
-      {/* <Card className="bg-red-50 border-red-200">
+      <Card className="bg-red-50 border-red-200">
         <CardContent className="p-4 flex items-center justify-between">
           <div>
             <div className="font-medium text-red-700">
@@ -83,7 +83,7 @@ const FamilyScreen = () => {
             <Phone className="w-4 h-4" />
           </Button>
         </CardContent>
-      </Card> */}
+      </Card>
     </div>
   );
 };
