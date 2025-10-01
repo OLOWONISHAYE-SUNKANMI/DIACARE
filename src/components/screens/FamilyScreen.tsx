@@ -21,8 +21,8 @@ const FamilyScreen = () => {
     if (!accessCode) return;
     navigator.clipboard.writeText(accessCode);
     toast({
-      title: 'Copied!',
-      description: 'The access code has been copied to your clipboard.',
+      title: t('toastMessage.copy'),
+      description: t('toastMessage.copyDescription'),
     });
   };
 
@@ -62,14 +62,14 @@ const FamilyScreen = () => {
               className="border-yellow-600 text-yellow-700 hover:bg-yellow-100"
               disabled={loading || !accessCode}
             >
-              Copy Code
+             {t('familyScreen.familySharingCode.copyButton')}
             </Button>
           </div>
         </CardContent>
       </Card>
 
       {/* Emergency Contact */}
-      {/* <Card className="bg-red-50 border-red-200">
+      <Card className="bg-red-50 border-red-200">
         <CardContent className="p-4 flex items-center justify-between">
           <div>
             <div className="font-medium text-red-700">
@@ -83,7 +83,7 @@ const FamilyScreen = () => {
             <Phone className="w-4 h-4" />
           </Button>
         </CardContent>
-      </Card> */}
+      </Card>
     </div>
   );
 };
