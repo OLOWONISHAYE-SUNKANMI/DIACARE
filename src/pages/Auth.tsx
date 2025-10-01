@@ -574,14 +574,14 @@ const AuthPage = () => {
                     <form onSubmit={handlePatientSignIn} className="space-y-4">
                       <div className="space-y-2">
                         <Label htmlFor="patient-signin-email">
-                          {t('auth.email')}
+                          Email or Phone number
                         </Label>
                         <div className="relative">
                           <Mail className="absolute left-3 top-7 h-4 w-4 text-muted-foreground" />
                           <Input
                             id="patient-signin-email"
-                            type="email"
-                            placeholder={t('auth.emailPlaceholder')}
+                            type="text"
+                            placeholder="Enter your email or phone number"
                             value={patientSignInData.email}
                             onChange={e =>
                               setPatientSignInData(prev => ({
@@ -718,6 +718,28 @@ const AuthPage = () => {
                               setPatientSignUpData(prev => ({
                                 ...prev,
                                 email: e.target.value,
+                              }))
+                            }
+                            className="pl-10"
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="patient-signup-email">
+                          phone number
+                        </Label>
+                        <div className="relative">
+                          <Mail className="absolute left-3 top-7 h-4 w-4 text-muted-foreground" />
+                          <Input
+                            id="patient-signup-email"
+                            type="number"
+                            placeholder="enter your phone number"
+                            value={patientSignUpData.email}
+                            onChange={e =>
+                              setPatientSignUpData(prev => ({
+                                ...prev,
+                                phoneNumber: e.target.value,
                               }))
                             }
                             className="pl-10"

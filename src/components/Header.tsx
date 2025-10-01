@@ -43,19 +43,19 @@ const Header: React.FC<HeaderProps> = ({
     { id: 'home', label: t('nav.home'), icon: Home, color: 'blue' },
     { id: 'charts', label: t('nav.charts'), icon: BarChart3, color: 'orange' },
     { id: 'journal', label: t('nav.journal'), icon: FileText, color: 'coral' },
-    { id: 'predictive', label: 'AI predictive', icon: Brain, color: 'orange' },
-    {
-      id: 'insulin',
-      label: 'insulin dosage',
-      icon: PillBottle,
-      color: 'blue',
-    },
-    {
-      id: 'biomarker',
-      label: 'Biomarker Tracker',
-      icon: Stethoscope,
-      color: 'teal',
-    },
+    { id: 'predictive', label: 'AI alert', icon: Brain, color: 'orange' },
+    // {
+    //   id: 'insulin',
+    //   label: 'insulin dosage',
+    //   icon: PillBottle,
+    //   color: 'blue',
+    // },
+    // {
+    //   id: 'biomarker',
+    //   label: 'Biomarker Tracker',
+    //   icon: Stethoscope,
+    //   color: 'teal',
+    // },
    
     { id: 'profile', label: t('nav.profile'), icon: User, color: 'blue' },
   ];
