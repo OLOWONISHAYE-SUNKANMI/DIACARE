@@ -40,6 +40,27 @@ const formatTime = (iso: string) => {
 
 const colors = ['#3b82f6', '#10b981', '#8b5cf6', '#f59e0b', '#ef4444'];
 
+// helpers (inside the same file)
+const renderLowLabel = (props: any) => {
+  const { viewBox } = props || {};
+  const { x = 0, y = 0 } = viewBox || {};
+  return (
+    <text x={x + 8} y={y - 6} fill="purple" fontSize={12}>
+      Low
+    </text>
+  );
+};
+
+const renderHighLabel = (props: any) => {
+  const { viewBox } = props || {};
+  const { x = 0, y = 0, width = 0 } = viewBox || {};
+  return (
+    <text x={x + width - 8} y={y - 6} fill="red" fontSize={12} textAnchor="end">
+      High
+    </text>
+  );
+};
+
 const ChartsScreen = () => {
   const { t } = useTranslation();
   const { meals } = useMeals();
@@ -55,8 +76,10 @@ const ChartsScreen = () => {
     )
     .map(r => ({
       ...r,
+      timestamp: r.timestamp,
       time: formatTime(r.timestamp),
-    }));
+    }))
+    .reverse();
 
   const glucoseValues = glucose.map(d => d.value);
   const avgGlucose =
@@ -184,9 +207,31 @@ const ChartsScreen = () => {
             <ResponsiveContainer width="100%" height={300}>
               <LineChart data={glucoseData}>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="time" />
+
+                {/* X Axis with month labels */}
+                <XAxis
+                  dataKey="timestamp" // use raw timestamp instead of "time"
+                  interval="preserveStartEnd"
+                  tickFormatter={t => {
+                    const date = new Date(t);
+                    return date.toLocaleString('en-US', { month: 'short' }); // e.g. "Oct"
+                  }}
+                />
+
                 <YAxis domain={[0, 'dataMax + 20']} />
-                <Tooltip />
+
+                {/* Tooltip with full date & time */}
+                <Tooltip
+                  labelFormatter={label => {
+                    const date = new Date(label);
+                    return date.toLocaleString('en-US', {
+                      month: 'short',
+                      day: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    });
+                  }}
+                />
 
                 {/* Target range shading */}
                 <ReferenceArea
@@ -242,7 +287,7 @@ const ChartsScreen = () => {
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={mealsChartData}>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
+                <XAxis dataKey="name" reversed />
                 <YAxis
                   label={{
                     value: 'Carbohydrate (g)',
@@ -280,7 +325,11 @@ const ChartsScreen = () => {
             <ResponsiveContainer>
               <BarChart data={medications}>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="medication_time" tickFormatter={formatDay} />
+                <XAxis
+                  dataKey="medication_time"
+                  tickFormatter={formatDay}
+                  reversed
+                />
                 <YAxis />
                 <Tooltip content={<CustomTooltip />} />{' '}
                 <Bar dataKey="dose" fill="#8b5cf6" />
