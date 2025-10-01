@@ -23,9 +23,9 @@ import {
   FileText,
   Share2,
   CheckCircle,
+  X,
 } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-
 
 import PredictiveCard from '../ui/PredictiveCard';
 import { useTranslation } from 'react-i18next';
@@ -36,7 +36,7 @@ import { useMeals } from '@/contexts/MealContext';
 import { useMedications } from '@/contexts/MedicationContext';
 import { useActivities } from '@/contexts/ActivityContext';
 import { useEffect, useState } from 'react';
-
+import { Button } from '../ui/button';
 
 type Alert = {
   type: 'hypo' | 'hyper' | 'stable';
@@ -81,19 +81,21 @@ export default function PredictiveAlertScreen({ values }: any) {
     highThreshold: 180,
   });
   const { readings: glucose } = useGlucose();
-  
+  // const { getLatestReading } = useGlucose();
+
   const [alerts, setAlerts] = useState([]);
   const [prediction, setPrediction] = useState(null);
-        const [doctorNotes, setDoctorNotes] = useState({
-        generalNotes: '',
-        observations: '',
-        recommendations: '',
-        specialInstructions: '',
-        followUpDate: '',
-        emergencyContact: '',
-      });
+  const [doctorNotes, setDoctorNotes] = useState({
+    generalNotes: '',
+    observations: '',
+    recommendations: '',
+    specialInstructions: '',
+    followUpDate: '',
+    emergencyContact: '',
+  });
 
-    // Add new glucose reading
+
+  // Add new glucose reading
   const addGlucoseReading = () => {
     const currentTime = new Date();
     const timeStr = currentTime.toLocaleTimeString('en-US', {
@@ -130,14 +132,13 @@ export default function PredictiveAlertScreen({ values }: any) {
       predicted: true,
     };
 
-
     // Reset inputs
     setInsulin(0);
     setCarbs(0);
     setActivity(0);
   };
 
-    const checkAlerts = predictedValue => {
+  const checkAlerts = predictedValue => {
     const newAlerts = [];
 
     if (predictedValue < alertSettings.lowThreshold) {
@@ -158,7 +159,7 @@ export default function PredictiveAlertScreen({ values }: any) {
 
     setAlerts(prev => [...newAlerts, ...prev.slice(0, 4)]);
   };
-    // Simulate AI prediction engine
+  // Simulate AI prediction engine
   const generatePrediction = (glucose, insulin, carbs, activity) => {
     let predictedGlucose = glucose;
 
@@ -209,7 +210,12 @@ export default function PredictiveAlertScreen({ values }: any) {
       setLoading(false);
     }
   };
-   const glucoseData = [...glucose]
+  const formatTime = (iso: string) => {
+  const d = new Date(iso);
+  return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+};
+  // Glucose data
+  const glucoseData = [...glucose]
     .sort(
       (a, b) =>
         new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
@@ -586,12 +592,23 @@ const PredictiveAlerts: React.FC = () => {
   // Function to parse time from string format like '15 min'
   const parseTotalMinutes = (time: string) => parseInt(time.split(' ')[0]);
 
+  const [visible, setVisible] = useState(true);
+
+  if (!visible) return null; // completely hide card when dismissed
+
   return (
-    <div className="space-y-3 p-4 bg-card rounded-xl ">
+    <div className="relative space-y-3 p-4 bg-card rounded-xl shadow">
       {alerts.map((alert, index) => (
         <DynamicAlert key={index} alert={alert} />
       ))}
-      
+      <div className="flex justify-center items-center ">
+        <Button
+          className="py-2 px-6 rounded-xl bg-accent text-foreground"
+          onClick={() => setVisible(false)}
+        >
+          Dissmiss{' '}
+        </Button>
+      </div>
     </div>
   );
 };
