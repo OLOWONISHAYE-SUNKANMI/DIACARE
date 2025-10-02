@@ -1,3 +1,4 @@
+import PredictiveAlertScreen from "@/components/screens/PredictiveAlertScreen";
 import { P } from "node_modules/framer-motion/dist/types.d-Cjd591yU";
 
 export const en = {
@@ -5442,6 +5443,10 @@ Failure to comply with this charter may result in temporary or permanent suspens
     },
   },
 
+  predictiveAlertHeader: {
+    title: 'Predictive Alert',
+  },
+  
   predictiveAlertScreenFixes: {
     predictiveAlert: {
       title: 'Predictive Alert!',
