@@ -1,3 +1,4 @@
+import PredictiveAlertScreen from "@/components/screens/PredictiveAlertScreen";
 import { P } from "node_modules/framer-motion/dist/types.d-Cjd591yU";
 
 export const en = {
@@ -478,7 +479,7 @@ export const en = {
     doctor: 'Attending physician • Diabetologist',
     followUpCenter: 'Follow-up center',
     consultant: 'Consulting endocrinologist',
-    currentTreatment: 'Current Treatment',
+    currentTreatment: 'Insulin Dosage',
     insulins: 'Insulins',
     keepCool: 'Stored cool (clay pot)',
     oralMedications: 'Oral medications',
@@ -498,6 +499,13 @@ export const en = {
     privacy: 'Privacy',
     signOut: 'Sign out',
     verified: '✓ Verified Profile',
+  },
+
+  booklet: {
+    downloadGuideTitle: 'Diabetes Guide',
+    downloadGuideDescription: 'Download the Diabates guide in your preferred language:',
+    downloadFrench: 'Download in French',
+    downloadEnglish: 'Download in English',   
   },
 
   // Chat Screen
@@ -1207,6 +1215,8 @@ export const en = {
   toastMessage: {
     title: 'New Entry',
     description: 'Feature coming soon',
+    copy: 'Copied!',
+    copyDescription: 'The access code has been copied to your clipboard.',
   },
 
   professionalLoginCard: {
@@ -5433,6 +5443,10 @@ Failure to comply with this charter may result in temporary or permanent suspens
     },
   },
 
+  predictiveAlertHeader: {
+    title: 'Predictive Alert',
+  },
+  
   predictiveAlertScreenFixes: {
     predictiveAlert: {
       title: 'Predictive Alert!',
