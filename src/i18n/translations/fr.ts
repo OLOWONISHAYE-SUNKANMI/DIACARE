@@ -794,6 +794,7 @@ export const fr = {
     addMeal: 'Ajouter un repas',
     addMedication: 'Ajouter un médicament',
     addActivity: 'Ajouter une activité',
+    glucoseSaved: 'Glycémie économisée',
     reminders: 'Ajouter des rappels',
     actionsPopover: {
       bloodSugar: {
