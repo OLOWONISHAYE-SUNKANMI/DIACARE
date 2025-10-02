@@ -1,12 +1,94 @@
 'use client';
 
 import { useEffect } from 'react';
-import { Share2, Users, Phone } from 'lucide-react';
+import {
+  Share2,
+  Users,
+  Phone,
+  CheckCircle,
+  AlertTriangle,
+  Eye,
+  Settings,
+  Clock,
+  UserPlus,
+} from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useFamily } from '@/contexts/FamilyContext';
 import { useToast } from '@/hooks/use-toast';
 import { useTranslation } from 'react-i18next';
+import { Avatar, AvatarFallback } from '../ui/avatar';
+import { Separator } from '../ui/separator';
+
+const familyMembers = [
+  {
+    id: 1,
+    name: 'Fatou Diop',
+    role: 'Épouse',
+    permission: 'Accès complet',
+    status: 'online',
+    avatar: 'F',
+    lastSeen: 'En ligne',
+    icon: CheckCircle,
+    color: 'text-green-500',
+    phone: '+221 77 987 65 43',
+  },
+  {
+    id: 2,
+    name: 'Dr. Mamadou Kane',
+    role: 'Médecin traitant',
+    permission: 'Urgences + Données',
+    status: 'emergency',
+    avatar: 'Dr',
+    lastSeen: 'Il y a 2h',
+    icon: AlertTriangle,
+    color: 'text-orange-500',
+    phone: '+221 33 825 14 52',
+  },
+  {
+    id: 3,
+    name: 'Ibrahim Diallo',
+    role: 'Fils',
+    permission: 'Lecture seule',
+    status: 'readonly',
+    avatar: 'I',
+    lastSeen: 'Il y a 1j',
+    icon: Eye,
+    color: 'text-blue-500',
+    phone: '+221 76 543 21 09',
+  },
+];
+
+const recentActivity = [
+  {
+    id: 1,
+    time: 'Il y a 10 min',
+    action: 'Fatou a consulté vos dernières glycémies',
+    type: 'view',
+    actor: 'Fatou',
+  },
+  {
+    id: 2,
+    time: 'Il y a 2h',
+    action: 'Dr. Kane a ajouté une note médicale',
+    type: 'medical',
+    actor: 'Dr. Kane',
+  },
+  {
+    id: 3,
+    time: 'Hier 19:30',
+    action: "Ibrahim a reçu une alerte d'injection manquée",
+    type: 'alert',
+    actor: 'Ibrahim',
+  },
+  {
+    id: 4,
+    time: 'Hier 15:00',
+    action: 'Fatou a confirmé votre injection de Humalog',
+    type: 'confirmation',
+    actor: 'Fatou',
+  },
+];
 
 const FamilyScreen = () => {
   const { t } = useTranslation();
@@ -67,6 +149,104 @@ const FamilyScreen = () => {
           </div>
         </CardContent>
       </Card>
+
+      <div className="grid grid-cols-3 gap-3">
+        <Card className="text-center p-3">
+          <CardContent className="p-0">
+            <div className="text-2xl font-bold text-medical-teal">∞</div>
+            <div className="text-xs text-muted-foreground">Care Partners</div>
+          </CardContent>
+        </Card>
+        <Card className="text-center p-3">
+          <CardContent className="p-0">
+            <div className="text-2xl font-bold text-medical-teal">47</div>
+            <div className="text-xs text-muted-foreground">Alertes</div>
+          </CardContent>
+        </Card>
+        <Card className="text-center p-3">
+          <CardContent className="p-0">
+            <div className="text-2xl font-bold text-medical-teal">12</div>
+            <div className="text-xs text-muted-foreground">Jours connectés</div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <Card className="border-l-4 border-l-medical-teal">
+        <CardHeader>
+          <CardTitle className="text-lg flex items-center gap-2">
+            <Users className="w-5 h-5 text-medical-teal" />
+            Membres de la Famille
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {familyMembers.map((member, index) => (
+            <div key={member.id}>
+              <div className="flex items-center gap-3">
+                <Avatar className="w-10 h-10">
+                  <AvatarFallback className="bg-medical-teal/10 text-medical-teal font-semibold">
+                    {member.avatar}
+                  </AvatarFallback>
+                </Avatar>
+
+                <div className="flex-1">
+                  <div className="flex items-center gap-2">
+                    <span className="font-medium text-foreground">
+                      {member.name}
+                    </span>
+                    <member.icon className={`w-4 h-4 ${member.color}`} />
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    {member.role} • {member.permission}
+                  </div>
+                  <div className="text-xs text-muted-foreground">
+                    {member.lastSeen}
+                  </div>
+                </div>
+
+                <Button size="sm" variant="outline">
+                  <Settings className="w-4 h-4" />
+                </Button>
+              </div>
+              {index < familyMembers.length - 1 && (
+                <Separator className="mt-4" />
+              )}
+            </div>
+          ))}
+        </CardContent>
+      </Card>
+
+      {/* Activité récente */}
+      <Card className="border-l-4 border-l-medical-teal">
+        <CardHeader>
+          <CardTitle className="text-lg flex items-center gap-2">
+            <Clock className="w-5 h-5 text-medical-teal" />
+            Activité Récente
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          {recentActivity.map((activity, index) => (
+            <div key={activity.id} className="flex items-start gap-3">
+              <div className="w-2 h-2 bg-medical-teal rounded-full mt-2 flex-shrink-0"></div>
+              <div className="flex-1">
+                <p className="text-sm text-foreground">{activity.action}</p>
+                <p className="text-xs text-muted-foreground">{activity.time}</p>
+              </div>
+            </div>
+          ))}
+        </CardContent>
+      </Card>
+
+      {/* Boutons Actions */}
+      <div className="space-y-3">
+        <Button className="w-full bg-medical-teal hover:bg-medical-teal/90">
+          <UserPlus className="w-4 h-4 mr-2" />
+          Inviter un Care Partner
+        </Button>
+        <Button variant="outline" className="w-full">
+          <Settings className="w-4 h-4 mr-2" />
+          Gérer les Permissions
+        </Button>
+      </div>
 
       {/* Emergency Contact */}
       <Card className="bg-red-50 border-red-200">
