@@ -95,7 +95,7 @@ export const fr = {
     average: 'Moyenne',
     highest: 'élevé',
     inRange: 'Dans la plage',
-    glucose: 'Glucose',
+    glucose: 'Glycémie',
     meals: 'Glucides Des Repas',
     medications: 'Médicaments',
     activities: 'Activités',
