@@ -1,3 +1,4 @@
+import PredictiveAlertScreen from "@/components/screens/PredictiveAlertScreen";
 import { P } from "node_modules/framer-motion/dist/types.d-Cjd591yU";
 
 export const en = {
@@ -20,6 +21,8 @@ export const en = {
     family: 'Family',
     profile: 'Profile',
     reminders: 'Reminders',
+    insulin: 'Insulin Dosage',
+    biomarker: 'Biomarker Tracker',
   },
 
   // Journal Screen
@@ -803,6 +806,9 @@ export const en = {
     addMedication: 'Add Medication',
     addActivity: 'Add Activity',
     reminders: 'Add Reminders',
+    glucoseSaved: 'Blood sugar saved',
+    mealSaved: 'Meal saved', 
+    medicationSaved: 'Medication saved',
     actionsPopover: {
       bloodSugar: {
         increment: 'Add Blood Sugar',
@@ -1166,6 +1172,7 @@ export const en = {
     },
 
     numOfPatients: {
+      patients: 'Care Partners',
       first: 'Alerts',
       second: 'Connected Days',
     },
@@ -5442,6 +5449,10 @@ Failure to comply with this charter may result in temporary or permanent suspens
     },
   },
 
+  predictiveAlertHeader: {
+    title: 'Predictive Alert',
+  },
+  
   predictiveAlertScreenFixes: {
     predictiveAlert: {
       title: 'Predictive Alert!',
