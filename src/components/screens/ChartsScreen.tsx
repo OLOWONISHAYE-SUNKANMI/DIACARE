@@ -171,7 +171,7 @@ const ChartsScreen = () => {
         {/* Blood Glucose Line */}
         <Card>
           <CardHeader>
-            <CardTitle>Blood Glucose with Diabetes Reference Ranges</CardTitle>
+            <CardTitle>{t('charts.glucose')}</CardTitle>
           </CardHeader>
           <CardContent className="h-80">
             <ResponsiveContainer width="100%" height={300}>
