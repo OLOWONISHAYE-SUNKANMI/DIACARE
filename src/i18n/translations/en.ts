@@ -804,6 +804,9 @@ export const en = {
     addMedication: 'Add Medication',
     addActivity: 'Add Activity',
     reminders: 'Add Reminders',
+    glucoseSaved: 'Blood sugar saved',
+    mealSaved: 'Meal saved', 
+    medicationSaved: 'Medication saved',
     actionsPopover: {
       bloodSugar: {
         increment: 'Add Blood Sugar',
