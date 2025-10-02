@@ -465,7 +465,7 @@ export const fr = {
     doctor: 'Médecin traitant • Diabétologue',
     followUpCenter: 'Établissement de suivi',
     consultant: 'Endocrinologue consultante',
-    currentTreatment: 'Traitement Actuel',
+    currentTreatment: 'Dosage de l insuline',
     insulins: 'Insulines',
     keepCool: 'Conservées au frais (canari en terre cuite)',
     oralMedications: 'Médicaments oraux',
@@ -502,6 +502,15 @@ export const fr = {
     messageSent: 'Message envoyé',
     messageShared: 'Votre message a été partagé avec la communauté Klukoo',
   },
+
+  // Booklet
+    booklet: {
+    downloadGuideTitle: 'Guide du diabète',
+    downloadGuideDescription: 'Téléchargez le guide Diabates dans votre langue préférée :',
+    downloadFrench: 'Télécharger en français',
+    downloadEnglish: 'Télécharger en anglais',   
+  },
+
 
   // Professional Access
   professionalAccess: {
@@ -1147,7 +1156,7 @@ export const fr = {
       title: 'Code de partage familial',
       subtitle:
         'Partagez ce code avec vos proches afin qu’ils puissent vous accompagner.',
-      button: 'Copier le code',
+      copyButton: 'Copier le code',
     },
     numOfPatients: {
       first: 'Alertes',
@@ -1198,6 +1207,8 @@ export const fr = {
   toastMessage: {
     title: 'Nouvelle entrée',
     description: 'Fonctionnalité disponible prochainement',
+    copy: 'Copié!',
+    copyDescription: 'Le code d accès a été copié dans votre presse-papiers.',
   },
 
   //professional login card
