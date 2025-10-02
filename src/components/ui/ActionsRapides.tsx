@@ -36,13 +36,13 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
   onTabChange,
   onGlucoseSubmit,
 }) => {
-  const { toast } = useToast();
   const { addReading } = useGlucose();
   const { t } = useTranslation();
   const { addMeal } = useMeals();
   const { addMedication } = useMedications();
   const { addActivity } = useActivities();
   const { darkMode } = useThemeStore();
+  const { toast } = useToast();
 
   // States
   const [isGlucoseModalOpen, setIsGlucoseModalOpen] = useState(false);
@@ -55,7 +55,7 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
   const [alertConfig, setAlertConfig] = useState({
     title: '',
     message: '',
-    variant: 'info' as 'info' | 'success' | 'warning' | 'error'
+    variant: 'info' as 'info' | 'success' | 'warning' | 'error',
   });
 
   const [glucoseValue, setGlucoseValue] = useState('');
@@ -65,7 +65,11 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
   const [carbs, setCarbs] = useState('');
 
   // Handlers
-  const showAlert = (title: string, message: string, variant: 'info' | 'success' | 'warning' | 'error' = 'info') => {
+  const showAlert = (
+    title: string,
+    message: string,
+    variant: 'info' | 'success' | 'warning' | 'error' = 'info'
+  ) => {
     setAlertConfig({ title, message, variant });
     setAlertVisible(true);
   };
@@ -86,6 +90,12 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
       `${glucoseValue} mg/dL`,
       'success'
     );
+    toast({
+      title: t('Actions.glucoseSaved'),
+      description: 'glucose added sucessfully ',
+      variant: 'success',
+    });
+
     setGlucoseValue('');
     setGlucoseNotes('');
     setGlucoseLoading(false);
@@ -153,13 +163,13 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
     <div className="px-3 sm:px-4">
       {/* Dynamic Alert */}
       <div className="mb-4">
-        <DynamicAlert
+        {/* <DynamicAlert
           isVisible={alertVisible}
           onDismiss={() => setAlertVisible(false)}
           title={alertConfig.title}
           message={alertConfig.message}
           variant={alertConfig.variant}
-        />
+        /> */}
       </div>
 
       <div
@@ -403,7 +413,7 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
             }`}
           >
             <div className="w-10 h-10 sm:w-12 sm:h-12 bg-red-500 rounded-full flex items-center justify-center mb-2">
-             🏥
+              🏥
             </div>
             <span className={`text-xs sm:text-sm font-medium ${textButton}`}>
               {t('nav.teleconsultation')}
@@ -429,7 +439,7 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
             }`}
           >
             <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[#008000] rounded-full flex items-center justify-center mb-2">
-             📩
+              📩
             </div>
             <span className={`text-xs sm:text-sm font-medium ${textButton}`}>
               {t('nav.chat')}
@@ -471,10 +481,9 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
               🩺
             </div>
             <span className={`text-xs sm:text-sm font-medium ${textButton}`}>
-              Biomarker Tracker 
+              Biomarker Tracker
             </span>
           </button>
-
         </div>
       </div>
       <BarcodeScanModal
