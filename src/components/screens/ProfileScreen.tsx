@@ -81,8 +81,9 @@ const ProfileScreen = () => {
       first_name: form.first_name,
       last_name: form.last_name,
       phone: form.phone,
-      specialty: form.specialty,
-      professional_license: form.professional_license,
+      dob: form.dob,
+      profession: form.professon,
+      city: form.city,
     });
 
     setLoading(false);
@@ -245,18 +246,34 @@ const ProfileScreen = () => {
             </div>
             <div>
               <span className="text-muted-foreground">
-                {t('profileScreenFixes.label_professionalLicense')}
+                Date of birth
               </span>
               <p className="font-medium">
-                {profile.professional_license || t('profileScreen.notSet')}
+               {profile.dob || t('profileScreen.notSet')}
               </p>
             </div>
             <div>
               <span className="text-muted-foreground">
-                {t('profileScreenFixes.label_specialty')}
+                Age
               </span>
               <p className="font-medium">
-                {profile.specialty || t('profileScreen.notSet')}
+                49 years old
+              </p>
+            </div>
+            <div>
+              <span className="text-muted-foreground">
+               City
+              </span>
+              <p className="font-medium">
+                {profile.city || t('profileScreen.notSet')}
+              </p>
+            </div>
+            <div>
+              <span className="text-muted-foreground">
+                profession
+              </span>
+              <p className="font-medium">
+                {profile.profession || t('profileScreen.notSet')}
               </p>
             </div>
           </div>
@@ -362,7 +379,7 @@ const ProfileScreen = () => {
         </CardContent>
       </Card>
 
-      {/* Current treatment */}
+     
       {/* Current Treatment */}
       <Card className="border-l-4 border-l-medical-teal">
         <CardHeader>

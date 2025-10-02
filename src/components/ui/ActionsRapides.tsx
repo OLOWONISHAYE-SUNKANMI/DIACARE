@@ -25,6 +25,7 @@ import BarcodeScanModal from '../modals/BarcodeScanModal';
 import PhotoUploadModal from '../modals/PhotoUploadModal';
 import PhotoAnalysisModal from '../modals/PhotoAnalysisModal';
 import { BookOpen, MessageCircle, Stethoscope, Users } from 'lucide-react';
+import DynamicAlert from './DynamicAlert';
 
 interface ActionsRapidesProps {
   onTabChange?: (tab: string) => void;
@@ -35,13 +36,13 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
   onTabChange,
   onGlucoseSubmit,
 }) => {
-  const { toast } = useToast();
   const { addReading } = useGlucose();
   const { t } = useTranslation();
   const { addMeal } = useMeals();
   const { addMedication } = useMedications();
   const { addActivity } = useActivities();
   const { darkMode } = useThemeStore();
+  const { toast } = useToast();
 
   // States
   const [isGlucoseModalOpen, setIsGlucoseModalOpen] = useState(false);
@@ -50,6 +51,12 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
   const [isActivityModalOpen, setIsActivityModalOpen] = useState(false);
   const [isBarcodeModalOpen, setIsBarcodeModalOpen] = useState(false);
   const [isPhotoModalOpen, setIsPhotoModalOpen] = useState(false);
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertConfig, setAlertConfig] = useState({
+    title: '',
+    message: '',
+    variant: 'info' as 'info' | 'success' | 'warning' | 'error',
+  });
 
   const [glucoseValue, setGlucoseValue] = useState('');
   const [glucoseNotes, setGlucoseNotes] = useState('');
@@ -58,6 +65,15 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
   const [carbs, setCarbs] = useState('');
 
   // Handlers
+  const showAlert = (
+    title: string,
+    message: string,
+    variant: 'info' | 'success' | 'warning' | 'error' = 'info'
+  ) => {
+    setAlertConfig({ title, message, variant });
+    setAlertVisible(true);
+  };
+
   const handleGlucoseSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!glucoseValue) return;
@@ -69,10 +85,17 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
       createdAt: new Date(),
     });
     onGlucoseSubmit?.(glucoseValue);
+    showAlert(
+      t('Actions.actionsPopover.saved'),
+      `${glucoseValue} mg/dL`,
+      'success'
+    );
     toast({
-      title: t('Actions.actionsPopover.saved'),
-      description: `${glucoseValue} mg/dL`,
+      title: t('Actions.glucoseSaved'),
+      description: 'glucose added sucessfully ',
+      variant: 'success',
     });
+
     setGlucoseValue('');
     setGlucoseNotes('');
     setGlucoseLoading(false);
@@ -138,6 +161,17 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
 
   return (
     <div className="px-3 sm:px-4">
+      {/* Dynamic Alert */}
+      <div className="mb-4">
+        {/* <DynamicAlert
+          isVisible={alertVisible}
+          onDismiss={() => setAlertVisible(false)}
+          title={alertConfig.title}
+          message={alertConfig.message}
+          variant={alertConfig.variant}
+        /> */}
+      </div>
+
       <div
         className={`rounded-xl p-4 sm:p-6 shadow-md transition-colors ${bgCard} ${textCard}`}
       >
@@ -379,7 +413,7 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
             }`}
           >
             <div className="w-10 h-10 sm:w-12 sm:h-12 bg-red-500 rounded-full flex items-center justify-center mb-2">
-             🏥
+              🏥
             </div>
             <span className={`text-xs sm:text-sm font-medium ${textButton}`}>
               {t('nav.teleconsultation')}
@@ -405,7 +439,7 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
             }`}
           >
             <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[#008000] rounded-full flex items-center justify-center mb-2">
-             📩
+              📩
             </div>
             <span className={`text-xs sm:text-sm font-medium ${textButton}`}>
               {t('nav.chat')}
@@ -424,7 +458,32 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
               {t('nav.blog')}
             </span>
           </button>
-
+          <button
+            onClick={handleInsulinClick}
+            className={`flex flex-col items-center p-3 sm:p-4 rounded-xl transition-colors active:scale-95 ${
+              darkMode ? bgButtonDark : bgButtonLight
+            }`}
+          >
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[#2ff993] rounded-full flex items-center justify-center mb-2">
+              💉
+            </div>
+            <span className={`text-xs sm:text-sm font-medium ${textButton}`}>
+              {t('nav.insulin')}
+            </span>
+          </button>
+          <button
+            onClick={handleBiomarkerClick}
+            className={`flex flex-col items-center p-3 sm:p-4 rounded-xl transition-colors active:scale-95 ${
+              darkMode ? bgButtonDark : bgButtonLight
+            }`}
+          >
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[#ffc94a] rounded-full flex items-center justify-center mb-2">
+              🩺
+            </div>
+            <span className={`text-xs sm:text-sm font-medium ${textButton}`}>
+             {t('nav.biomarker')}
+            </span>
+          </button>
         </div>
       </div>
       <BarcodeScanModal

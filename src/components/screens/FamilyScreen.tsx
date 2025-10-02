@@ -1,12 +1,27 @@
 'use client';
 
 import { useEffect } from 'react';
-import { Share2, Users, Phone } from 'lucide-react';
+import {
+  Share2,
+  Users,
+  Phone,
+  CheckCircle,
+  AlertTriangle,
+  Eye,
+  Settings,
+  Clock,
+  UserPlus,
+} from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useFamily } from '@/contexts/FamilyContext';
 import { useToast } from '@/hooks/use-toast';
 import { useTranslation } from 'react-i18next';
+import { Avatar, AvatarFallback } from '../ui/avatar';
+import { Separator } from '../ui/separator';
+
+
+
 
 const FamilyScreen = () => {
   const { t } = useTranslation();
@@ -25,6 +40,80 @@ const FamilyScreen = () => {
       description: t('toastMessage.copyDescription'),
     });
   };
+
+  const familyMembers = [
+  {
+    id: 1,
+    name: 'Fatou Diop',
+    role: t('familyScreen.familyMembers.patientOne.role'),
+    permission: t('familyScreen.familyMembers.patientOne.permission'),
+    status: 'online',
+    avatar: 'F',
+    lastSeen: t('familyScreen.familyMembers.patientOne.lastSeen'),
+    icon: CheckCircle,
+    color: 'text-green-500',
+    phone: '+221 77 987 65 43',
+  },
+  {
+    id: 2,
+    name: 'Dr. Mamadou Kane',
+    role: t('familyScreen.familyMembers.patientTwo.role'),
+    permission: t('familyScreen.familyMembers.patientTwo.permission'),
+    status: 'emergency',
+    avatar: 'Dr',
+    lastSeen: t('familyScreen.familyMembers.patientTwo.lastSeen'),
+    icon: AlertTriangle,
+    color: 'text-orange-500',
+    phone: '+221 33 825 14 52',
+  },
+  {
+    id: 3,
+    name: 'Ibrahim Diallo',
+    role: t('familyScreen.familyMembers.patientThree.role'),
+    permission: t('familyScreen.familyMembers.patientThree.permission'),
+    status: 'readonly',
+    avatar: 'I',
+    lastSeen: t('familyScreen.familyMembers.patientThree.lastSeen'),
+    icon: Eye,
+    color: 'text-blue-500',
+    phone: '+221 76 543 21 09',
+  },
+];
+
+
+
+
+const recentActivity = [
+  {
+    id: 1,
+    time: t('familyScreen.recentActivity.firstOne.time'),
+    action: t('familyScreen.recentActivity.firstOne.action'),
+    type: 'view',
+    actor: 'Fatou',
+  },
+  {
+    id: 2,
+    time: t('familyScreen.recentActivity.secondOne.time'),
+    action: t('familyScreen.recentActivity.secondOne.action'),
+    type: 'medical',
+    actor: 'Dr. Kane',
+  },
+  {
+    id: 3,
+    time: t('familyScreen.recentActivity.thirdOne.time'),
+    action: t('familyScreen.recentActivity.thirdOne.action'),
+    type: 'alert',
+    actor: 'Ibrahim',
+  },
+  {
+    id: 4,
+    time: t('familyScreen.recentActivity.fourthOne.time'),
+    action: t('familyScreen.recentActivity.fourthOne.action'),
+    type: 'confirmation',
+    actor: 'Fatou',
+  },
+];
+
 
   return (
     <div className="flex-1 p-4 space-y-6 pb-24 animate-fade-in">
@@ -67,6 +156,104 @@ const FamilyScreen = () => {
           </div>
         </CardContent>
       </Card>
+
+      <div className="grid grid-cols-3 gap-3">
+        <Card className="text-center p-3">
+          <CardContent className="p-0">
+            <div className="text-2xl font-bold text-medical-teal">∞</div>
+            <div className="text-xs text-muted-foreground">{t('familyScreen.numOfPatients.patients')}</div>
+          </CardContent>
+        </Card>
+        <Card className="text-center p-3">
+          <CardContent className="p-0">
+            <div className="text-2xl font-bold text-medical-teal">47</div>
+            <div className="text-xs text-muted-foreground">{t('familyScreen.numOfPatients.first')}</div>
+          </CardContent>
+        </Card>
+        <Card className="text-center p-3">
+          <CardContent className="p-0">
+            <div className="text-2xl font-bold text-medical-teal">12</div>
+            <div className="text-xs text-muted-foreground">{t('familyScreen.numOfPatients.second')}</div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <Card className="border-l-4 border-l-medical-teal">
+        <CardHeader>
+          <CardTitle className="text-lg flex items-center gap-2">
+            <Users className="w-5 h-5 text-medical-teal" />
+              {t('familyScreen.familyMembers.title')}
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {familyMembers.map((member, index) => (
+            <div key={member.id}>
+              <div className="flex items-center gap-3">
+                <Avatar className="w-10 h-10">
+                  <AvatarFallback className="bg-medical-teal/10 text-medical-teal font-semibold">
+                    {member.avatar}
+                  </AvatarFallback>
+                </Avatar>
+
+                <div className="flex-1">
+                  <div className="flex items-center gap-2">
+                    <span className="font-medium text-foreground">
+                      {member.name}
+                    </span>
+                    <member.icon className={`w-4 h-4 ${member.color}`} />
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    {member.role} • {member.permission}
+                  </div>
+                  <div className="text-xs text-muted-foreground">
+                    {member.lastSeen}
+                  </div>
+                </div>
+
+                <Button size="sm" variant="outline">
+                  <Settings className="w-4 h-4" />
+                </Button>
+              </div>
+              {index < familyMembers.length - 1 && (
+                <Separator className="mt-4" />
+              )}
+            </div>
+          ))}
+        </CardContent>
+      </Card>
+
+      {/* Activité récente */}
+      <Card className="border-l-4 border-l-medical-teal">
+        <CardHeader>
+          <CardTitle className="text-lg flex items-center gap-2">
+            <Clock className="w-5 h-5 text-medical-teal" />
+            {t('familyScreen.recentActivity.firstOne.title')}
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          {recentActivity.map((activity, index) => (
+            <div key={activity.id} className="flex items-start gap-3">
+              <div className="w-2 h-2 bg-medical-teal rounded-full mt-2 flex-shrink-0"></div>
+              <div className="flex-1">
+                <p className="text-sm text-foreground">{activity.action}</p>
+                <p className="text-xs text-muted-foreground">{activity.time}</p>
+              </div>
+            </div>
+          ))}
+        </CardContent>
+      </Card>
+
+      {/* Boutons Actions */}
+      <div className="space-y-3">
+        <Button className="w-full bg-medical-teal hover:bg-medical-teal/90">
+          <UserPlus className="w-4 h-4 mr-2" />
+        {t('familyScreen.button1')}
+        </Button>
+        <Button variant="outline" className="w-full">
+          <Settings className="w-4 h-4 mr-2" />
+            {t('familyScreen.button2')}
+        </Button>
+      </div>
 
       {/* Emergency Contact */}
       <Card className="bg-red-50 border-red-200">

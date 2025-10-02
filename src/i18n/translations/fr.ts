@@ -18,6 +18,8 @@ export const fr = {
     family: 'Famille',
     profile: 'Profil',
     reminders: 'Rappels',
+    insulin: 'Dose d Insuline',
+    biomarker: 'Outil de Suivi des Biomarqueurs',
   },
 
   // Journal Screen
@@ -95,7 +97,7 @@ export const fr = {
     average: 'Moyenne',
     highest: 'élevé',
     inRange: 'Dans la plage',
-    glucose: 'Glucose',
+    glucose: 'Glycémie',
     meals: 'Glucides Des Repas',
     medications: 'Médicaments',
     activities: 'Activités',
@@ -794,6 +796,7 @@ export const fr = {
     addMeal: 'Ajouter un repas',
     addMedication: 'Ajouter un médicament',
     addActivity: 'Ajouter une activité',
+    glucoseSaved: 'Glycémie économisée',
     reminders: 'Ajouter des rappels',
     actionsPopover: {
       bloodSugar: {
@@ -1159,6 +1162,7 @@ export const fr = {
       copyButton: 'Copier le code',
     },
     numOfPatients: {
+       patients: 'Partenaires de soins',
       first: 'Alertes',
       second: 'Jours connectés',
     },

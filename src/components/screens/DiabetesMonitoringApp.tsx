@@ -26,14 +26,9 @@ import {
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useGlucose } from '@/contexts/GlucoseContext';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-
-
-
-
 
 const DiabetesMonitoringApp = () => {
-  const [activeTab, setActiveTab] = useState('monitoring');
+  const [activeTab, setActiveTab] = useState('dosage');
   const [currentGlucose, setCurrentGlucose] = useState(120);
   const [insulin, setInsulin] = useState(0);
   const [carbs, setCarbs] = useState(0);
@@ -44,23 +39,13 @@ const DiabetesMonitoringApp = () => {
     highThreshold: 180,
   });
   const { readings: glucose } = useGlucose();
-  const disabled = true
-
+  const disabled = true;
 
   const formatTime = (iso: string) => {
-  const d = new Date(iso);
-  return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-};
-      // Glucose data
-  const glucoseData = [...glucose]
-    .sort(
-      (a, b) =>
-        new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
-    )
-    .map(r => ({
-      ...r,
-      time: formatTime(r.timestamp),
-    }));
+    const d = new Date(iso);
+    return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  };
+  // Glucose data
 
   const [alerts, setAlerts] = useState([]);
   const [prediction, setPrediction] = useState(null);
@@ -142,89 +127,7 @@ const DiabetesMonitoringApp = () => {
   });
   const [patientName, setPatientName] = useState('');
 
-
-
-  // Simulate AI prediction engine
-  const generatePrediction = (glucose, insulin, carbs, activity) => {
-    let predictedGlucose = glucose;
-
-    // Simple prediction logic (in reality, this would be a complex ML model)
-    if (carbs > 30) predictedGlucose += carbs * 1.5;
-    if (insulin > 0) predictedGlucose -= insulin * 8;
-    if (activity > 0) predictedGlucose -= activity * 2;
-
-    // Add some realistic variation
-    predictedGlucose += (Math.random() - 0.5) * 20;
-
-    return Math.max(50, Math.min(300, Math.round(predictedGlucose)));
-  };
-
   // Check for alerts
-  const checkAlerts = predictedValue => {
-    const newAlerts = [];
-
-    if (predictedValue < alertSettings.lowThreshold) {
-      newAlerts.push({
-        id: Date.now(),
-        type: 'hypo',
-        message: `Hypoglycemia predicted! Expected glucose: ${predictedValue} mg/dL`,
-        severity: 'high',
-      });
-    } else if (predictedValue > alertSettings.highThreshold) {
-      newAlerts.push({
-        id: Date.now() + 1,
-        type: 'hyper',
-        message: `Hyperglycemia predicted! Expected glucose: ${predictedValue} mg/dL`,
-        severity: 'medium',
-      });
-    }
-
-    setAlerts(prev => [...newAlerts, ...prev.slice(0, 4)]);
-  };
-
-  // Add new glucose reading
-  const addGlucoseReading = () => {
-    const currentTime = new Date();
-    const timeStr = currentTime.toLocaleTimeString('en-US', {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false,
-    });
-
-    const predictedValue = generatePrediction(
-      currentGlucose,
-      insulin,
-      carbs,
-      activity
-    );
-    setPrediction(predictedValue);
-    checkAlerts(predictedValue);
-
-    const newReading = {
-      time: timeStr,
-      glucose: currentGlucose,
-      predicted: false,
-    };
-
-    const predictionReading = {
-      time: new Date(currentTime.getTime() + 30 * 60000).toLocaleTimeString(
-        'en-US',
-        {
-          hour: '2-digit',
-          minute: '2-digit',
-          hour12: false,
-        }
-      ),
-      glucose: predictedValue,
-      predicted: true,
-    };
-
-
-    // Reset inputs
-    setInsulin(0);
-    setCarbs(0);
-    setActivity(0);
-  };
 
   // Glucose unit conversion functions
   const getGlucoseRanges = (unit, t) => {
@@ -292,44 +195,90 @@ ${t('insulinDosage.share.date')}: ${new Date().toLocaleDateString()}
 ${t('insulinDosage.share.units')}: ${glucoseUnit}
 
 === ${t('insulinDosage.share.breakfast')} ===
-${ranges.range1}: ${insulinDoses.breakfast?.range1 || t('share.notSet')} ${t('insulinDosage.share.unitsLabel')}
-${ranges.range2}: ${insulinDoses.breakfast?.range2 || t('share.notSet')} ${t('insulinDosage.share.unitsLabel')}
-${ranges.range3}: ${insulinDoses.breakfast?.range3 || t('share.notSet')} ${t('insulinDosage.share.unitsLabel')}
-${ranges.range4}: ${insulinDoses.breakfast?.range4 || t('share.notSet')} ${t('insulinDosage.share.unitsLabel')}
-${ranges.range5}: ${insulinDoses.breakfast?.range5 || t('share.notSet')} ${t('insulinDosage.share.unitsLabel')}
-${t('share.snack')}: ${insulinDoses.breakfast?.snack || t('share.notSet')} ${t('insulinDosage.share.unitsLabel')}
+${ranges.range1}: ${insulinDoses.breakfast?.range1 || t('share.notSet')} ${t(
+      'insulinDosage.share.unitsLabel'
+    )}
+${ranges.range2}: ${insulinDoses.breakfast?.range2 || t('share.notSet')} ${t(
+      'insulinDosage.share.unitsLabel'
+    )}
+${ranges.range3}: ${insulinDoses.breakfast?.range3 || t('share.notSet')} ${t(
+      'insulinDosage.share.unitsLabel'
+    )}
+${ranges.range4}: ${insulinDoses.breakfast?.range4 || t('share.notSet')} ${t(
+      'insulinDosage.share.unitsLabel'
+    )}
+${ranges.range5}: ${insulinDoses.breakfast?.range5 || t('share.notSet')} ${t(
+      'insulinDosage.share.unitsLabel'
+    )}
+${t('share.snack')}: ${insulinDoses.breakfast?.snack || t('share.notSet')} ${t(
+      'insulinDosage.share.unitsLabel'
+    )}
 
 === ${t('share.lunch')} ===
-${ranges.range1}: ${insulinDoses.lunch?.range1 || t('insulinDosage.share.notSet')} ${t('insulinDosage.share.unitsLabel')}
-${ranges.range2}: ${insulinDoses.lunch?.range2 || t('insulinDosage.share.notSet')} ${t('insulinDosage.share.unitsLabel')}
-${ranges.range3}: ${insulinDoses.lunch?.range3 || t('insulinDosage.share.notSet')} ${t('insulinDosage.share.unitsLabel')}
-${ranges.range4}: ${insulinDoses.lunch?.range4 || t('insulinDosage.share.notSet')} ${t('insulinDosage.share.unitsLabel')}
-${ranges.range5}: ${insulinDoses.lunch?.range5 || t('insulinDosage.share.notSet')} ${t('insulinDosage.share.unitsLabel')}
-${t('insulinDosage.share.snack')}: ${insulinDoses.lunch?.snack || t('insulinDosage.share.notSet')} ${t('insulinDosage.share.unitsLabel')}
+${ranges.range1}: ${
+      insulinDoses.lunch?.range1 || t('insulinDosage.share.notSet')
+    } ${t('insulinDosage.share.unitsLabel')}
+${ranges.range2}: ${
+      insulinDoses.lunch?.range2 || t('insulinDosage.share.notSet')
+    } ${t('insulinDosage.share.unitsLabel')}
+${ranges.range3}: ${
+      insulinDoses.lunch?.range3 || t('insulinDosage.share.notSet')
+    } ${t('insulinDosage.share.unitsLabel')}
+${ranges.range4}: ${
+      insulinDoses.lunch?.range4 || t('insulinDosage.share.notSet')
+    } ${t('insulinDosage.share.unitsLabel')}
+${ranges.range5}: ${
+      insulinDoses.lunch?.range5 || t('insulinDosage.share.notSet')
+    } ${t('insulinDosage.share.unitsLabel')}
+${t('insulinDosage.share.snack')}: ${
+      insulinDoses.lunch?.snack || t('insulinDosage.share.notSet')
+    } ${t('insulinDosage.share.unitsLabel')}
 
 === ${t('share.supper')} ===
-${ranges.range1}: ${insulinDoses.supper?.range1 || t('insulinDosage.share.notSet')} ${t('insulinDosage.share.unitsLabel')}
-${ranges.range2}: ${insulinDoses.supper?.range2 || t('insulinDosage.share.notSet')} ${t('insulinDosage.share.unitsLabel')}
-${ranges.range3}: ${insulinDoses.supper?.range3 || t('insulinDosage.share.notSet')} ${t('insulinDosage.share.unitsLabel')}
-${ranges.range4}: ${insulinDoses.supper?.range4 || t('insulinDosage.share.notSet')} ${t('insulinDosage.share.unitsLabel')}
-${ranges.range5}: ${insulinDoses.supper?.range5 || t('insulinDosage.share.notSet')} ${t('insulinDosage.share.unitsLabel')}
-${t('insulinDosage.share.snack')}: ${insulinDoses.supper?.snack || t('insulinDosage.share.notSet')} ${t('insulinDosage.share.unitsLabel')}
+${ranges.range1}: ${
+      insulinDoses.supper?.range1 || t('insulinDosage.share.notSet')
+    } ${t('insulinDosage.share.unitsLabel')}
+${ranges.range2}: ${
+      insulinDoses.supper?.range2 || t('insulinDosage.share.notSet')
+    } ${t('insulinDosage.share.unitsLabel')}
+${ranges.range3}: ${
+      insulinDoses.supper?.range3 || t('insulinDosage.share.notSet')
+    } ${t('insulinDosage.share.unitsLabel')}
+${ranges.range4}: ${
+      insulinDoses.supper?.range4 || t('insulinDosage.share.notSet')
+    } ${t('insulinDosage.share.unitsLabel')}
+${ranges.range5}: ${
+      insulinDoses.supper?.range5 || t('insulinDosage.share.notSet')
+    } ${t('insulinDosage.share.unitsLabel')}
+${t('insulinDosage.share.snack')}: ${
+      insulinDoses.supper?.snack || t('insulinDosage.share.notSet')
+    } ${t('insulinDosage.share.unitsLabel')}
 
 === ${t('insulinDosage.share.bedtime')} ===
-${t('insulinDosage.share.basalInsulin')}: ${insulinDoses.bedtime || t('insulinDosage.share.notSet')} ${t('insulinDosage.share.unitsLabel')}
+${t('insulinDosage.share.basalInsulin')}: ${
+      insulinDoses.bedtime || t('insulinDosage.share.notSet')
+    } ${t('insulinDosage.share.unitsLabel')}
 
 🩺 ${t('insulinDosage.share.healthcareProvider')}
-${t('insulinDosage.share.doctor')}: ${doctorInfo.name || t('insulinDosage.share.notSpecified')}
-${t('insulinDosage.share.date')}: ${doctorInfo.date || t('insulinDosage.share.notSpecified')}
+${t('insulinDosage.share.doctor')}: ${
+      doctorInfo.name || t('insulinDosage.share.notSpecified')
+    }
+${t('insulinDosage.share.date')}: ${
+      doctorInfo.date || t('insulinDosage.share.notSpecified')
+    }
 
 📝 ${t('insulinDosage.share.doctorNotes')}
 ${
   doctorNotes.recommendations
-    ? `${t('insulinDosage.share.recommendations')}: ${doctorNotes.recommendations}\n`
+    ? `${t('insulinDosage.share.recommendations')}: ${
+        doctorNotes.recommendations
+      }\n`
     : ''
 }${
       doctorNotes.specialInstructions
-        ? `${t('insulinDosage.share.specialInstructions')}: ${doctorNotes.specialInstructions}\n`
+        ? `${t('insulinDosage.share.specialInstructions')}: ${
+            doctorNotes.specialInstructions
+          }\n`
         : ''
     }${
       doctorNotes.followUpDate
@@ -356,7 +305,10 @@ ${t('insulinDosage.share.generatedFrom')}
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = `insulin-dose-sheet-${patientDisplayName.replace(/\s+/g, '-')}.txt`;
+      link.download = `insulin-dose-sheet-${patientDisplayName.replace(
+        /\s+/g,
+        '-'
+      )}.txt`;
       link.click();
     }
   };
@@ -380,8 +332,7 @@ ${t('insulinDosage.share.generatedFrom')}
         <div className="text-sm mb-2 flex items-center gap-2">
           {t('insulinDosage.slidingScale.insulinText')} (
           <input
-          disabled={disabled}
-
+            disabled={disabled}
             type="text"
             value={penColors[mealKey] || ''}
             onChange={e => handlePenColorChange(mealKey, e.target.value)}
@@ -390,8 +341,7 @@ ${t('insulinDosage.share.generatedFrom')}
           />
           ) {t('insulinDosage.slidingScale.penColour')}
           <input
-          disabled={disabled}
-
+            disabled={disabled}
             type="text"
             value={penColors[mealKey + '_color'] || ''}
             onChange={e =>
@@ -425,8 +375,7 @@ ${t('insulinDosage.share.generatedFrom')}
               </td>
               <td className="border border-[hsl(var(--border))] px-3 py-2">
                 <input
-          disabled={disabled}
-
+                  disabled={disabled}
                   type="number"
                   value={insulinDoses[mealKey]?.range1 || ''}
                   onChange={e =>
@@ -438,8 +387,7 @@ ${t('insulinDosage.share.generatedFrom')}
               </td>
               <td className="border border-[hsl(var(--border))] px-3 py-2">
                 <textarea
-          disabled={disabled}
-
+                  disabled={disabled}
                   value={specialNotes[mealKey]?.range1 || ''}
                   onChange={e =>
                     handleSpecialNoteChange(mealKey, 'range1', e.target.value)
@@ -459,8 +407,7 @@ ${t('insulinDosage.share.generatedFrom')}
               </td>
               <td className="border border-[hsl(var(--border))] px-3 py-2">
                 <input
-          disabled={disabled}
-
+                  disabled={disabled}
                   type="number"
                   value={insulinDoses[mealKey]?.range2 || ''}
                   onChange={e =>
@@ -472,8 +419,7 @@ ${t('insulinDosage.share.generatedFrom')}
               </td>
               <td className="border border-[hsl(var(--border))] px-3 py-2">
                 <textarea
-          disabled={disabled}
-
+                  disabled={disabled}
                   value={specialNotes[mealKey]?.range2 || ''}
                   onChange={e =>
                     handleSpecialNoteChange(mealKey, 'range2', e.target.value)
@@ -493,8 +439,7 @@ ${t('insulinDosage.share.generatedFrom')}
               </td>
               <td className="border border-[hsl(var(--border))] px-3 py-2">
                 <input
-          disabled={disabled}
-
+                  disabled={disabled}
                   type="number"
                   value={insulinDoses[mealKey]?.range3 || ''}
                   onChange={e =>
@@ -506,8 +451,7 @@ ${t('insulinDosage.share.generatedFrom')}
               </td>
               <td className="border border-[hsl(var(--border))] px-3 py-2">
                 <textarea
-          disabled={disabled}
-
+                  disabled={disabled}
                   value={specialNotes[mealKey]?.range3 || ''}
                   onChange={e =>
                     handleSpecialNoteChange(mealKey, 'range3', e.target.value)
@@ -527,8 +471,7 @@ ${t('insulinDosage.share.generatedFrom')}
               </td>
               <td className="border border-[hsl(var(--border))] px-3 py-2">
                 <input
-          disabled={disabled}
-
+                  disabled={disabled}
                   type="number"
                   value={insulinDoses[mealKey]?.range4 || ''}
                   onChange={e =>
@@ -540,8 +483,7 @@ ${t('insulinDosage.share.generatedFrom')}
               </td>
               <td className="border border-[hsl(var(--border))] px-3 py-2">
                 <textarea
-          disabled={disabled}
-
+                  disabled={disabled}
                   value={specialNotes[mealKey]?.range4 || ''}
                   onChange={e =>
                     handleSpecialNoteChange(mealKey, 'range4', e.target.value)
@@ -561,8 +503,7 @@ ${t('insulinDosage.share.generatedFrom')}
               </td>
               <td className="border border-[hsl(var(--border))] px-3 py-2">
                 <input
-          disabled={disabled}
-
+                  disabled={disabled}
                   type="number"
                   value={insulinDoses[mealKey]?.range5 || ''}
                   onChange={e =>
@@ -574,8 +515,7 @@ ${t('insulinDosage.share.generatedFrom')}
               </td>
               <td className="border border-[hsl(var(--border))] px-3 py-2">
                 <textarea
-          disabled={disabled}
-
+                  disabled={disabled}
                   value={specialNotes[mealKey]?.range5 || ''}
                   onChange={e =>
                     handleSpecialNoteChange(mealKey, 'range5', e.target.value)
@@ -617,13 +557,12 @@ ${t('insulinDosage.share.generatedFrom')}
                 {mealKey === 'breakfast'
                   ? ranges.snackBreakfast
                   : mealKey === 'lunch'
-                    ? ranges.snackLunch
-                    : ranges.snackSupper}
+                  ? ranges.snackLunch
+                  : ranges.snackSupper}
               </td>
               <td className="border border-[hsl(var(--border))] px-3 py-2">
                 <input
-          disabled={disabled}
-
+                  disabled={disabled}
                   type="number"
                   value={insulinDoses[mealKey]?.snack || ''}
                   onChange={e =>
@@ -657,8 +596,7 @@ ${t('insulinDosage.share.generatedFrom')}
                   {t('insulinDosage.insulinSheet.patientName')}
                 </label>
                 <input
-          disabled={disabled}
-
+                  disabled={disabled}
                   type="text"
                   value={patientName}
                   onChange={e => setPatientName(e.target.value)}
@@ -740,8 +678,7 @@ ${t('insulinDosage.share.generatedFrom')}
           <div className="text-sm mb-2 flex items-center gap-2">
             {t('insulinDosage.insulin.fixedDoseClear')} (
             <input
-          disabled={disabled}
-
+              disabled={disabled}
               type="text"
               value={penColors.bedtime || ''}
               onChange={e => handlePenColorChange('bedtime', e.target.value)}
@@ -750,8 +687,7 @@ ${t('insulinDosage.share.generatedFrom')}
             />
             ) {t('insulinDosage.insulin.penColour')}
             <input
-          disabled={disabled}
-
+              disabled={disabled}
               type="text"
               value={penColors.bedtime_color || ''}
               onChange={e =>
@@ -774,8 +710,7 @@ ${t('insulinDosage.share.generatedFrom')}
               <tr>
                 <td className="border border-gray-400 px-3 py-2">
                   <input
-          disabled={disabled}
-
+                    disabled={disabled}
                     type="number"
                     value={insulinDoses.bedtime || ''}
                     onChange={e =>
@@ -810,8 +745,7 @@ ${t('insulinDosage.share.generatedFrom')}
                   {t('insulinDosage.notes.generalNotes')}
                 </label>
                 <textarea
-          disabled={disabled}
-
+                  disabled={disabled}
                   value={doctorNotes.generalNotes || ''}
                   onChange={e =>
                     setDoctorNotes(prev => ({
@@ -829,8 +763,7 @@ ${t('insulinDosage.share.generatedFrom')}
                   {t('insulinDosage.notes.clinicalObservations')}
                 </label>
                 <textarea
-          disabled={disabled}
-
+                  disabled={disabled}
                   value={doctorNotes.observations || ''}
                   onChange={e =>
                     setDoctorNotes(prev => ({
@@ -848,8 +781,7 @@ ${t('insulinDosage.share.generatedFrom')}
                   {t('insulinDosage.notes.emergencyContact')}
                 </label>
                 <textarea
-          disabled={disabled}
-
+                  disabled={disabled}
                   value={doctorNotes.emergencyContact || ''}
                   onChange={e =>
                     setDoctorNotes(prev => ({
@@ -872,8 +804,7 @@ ${t('insulinDosage.share.generatedFrom')}
                   {t('insulinDosage.notes.treatmentRecommendations')}
                 </label>
                 <textarea
-          disabled={disabled}
-
+                  disabled={disabled}
                   value={doctorNotes.recommendations || ''}
                   onChange={e =>
                     setDoctorNotes(prev => ({
@@ -893,8 +824,7 @@ ${t('insulinDosage.share.generatedFrom')}
                   {t('insulinDosage.notes.specialInstructions')}
                 </label>
                 <textarea
-          disabled={disabled}
-
+                  disabled={disabled}
                   value={doctorNotes.specialInstructions || ''}
                   onChange={e =>
                     setDoctorNotes(prev => ({
@@ -914,8 +844,7 @@ ${t('insulinDosage.share.generatedFrom')}
                   {t('insulinDosage.notes.followUpAppointment')}
                 </label>
                 <input
-          disabled={disabled}
-
+                  disabled={disabled}
                   type="date"
                   value={doctorNotes.followUpDate || ''}
                   onChange={e =>
@@ -996,8 +925,7 @@ ${t('insulinDosage.share.generatedFrom')}
                 </td>
                 <td className="border border-gray-400 px-3 py-2">
                   <input
-          disabled={disabled}
-
+                    disabled={disabled}
                     type="text"
                     value={doctorInfo.name || ''}
                     onChange={e =>
@@ -1009,8 +937,7 @@ ${t('insulinDosage.share.generatedFrom')}
                 </td>
                 <td className="border border-gray-400 px-3 py-2">
                   <input
-          disabled={disabled}
-
+                    disabled={disabled}
                     type="text"
                     value={doctorInfo.signature || ''}
                     onChange={e =>
@@ -1026,8 +953,7 @@ ${t('insulinDosage.share.generatedFrom')}
 
                 <td className="border border-gray-400 px-3 py-2">
                   <input
-          disabled={disabled}
-
+                    disabled={disabled}
                     type="date"
                     value={doctorInfo.date || ''}
                     onChange={e =>
@@ -1108,14 +1034,14 @@ ${t('insulinDosage.share.generatedFrom')}
         {/* Header */}
         <div className="bg-background rounded-xl shadow-lg p-6 mb-6">
           <h1 className="text-3xl font-bold text-foreground mb-2">
-            {t('insulinDosage.dashboard.title')}
+            Insulin Dose Sheet 
           </h1>
-          <p className="text-muted-foreground">
+          {/* <p className="text-muted-foreground">
             {t('insulinDosage.dashboard.subtitle')}
-          </p>
+          </p> */}
 
           {/* Tab Navigation */}
-          <div className="flex mt-4 border-b">
+          {/* <div className="flex mt-4 border-b">
             <button
               onClick={() => setActiveTab('monitoring')}
               className={`px-6 py-2 font-medium transition-colors ${
@@ -1138,365 +1064,10 @@ ${t('insulinDosage.share.generatedFrom')}
               <FileText className="inline mr-2" size={20} />
               {t('insulinDosage.dashboard.tabs.dosage')}
             </button>
-          </div>
+          </div> */}
         </div>
 
-        {/* Tab Content */}
-        {activeTab === 'monitoring' ? (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Input Panel */}
-            <div className="lg:col-span-1 space-y-6">
-              {/* Manual Input */}
-              <div className="bg-background rounded-xl shadow-lg p-6">
-                <div className="flex  items-center mb-4">
-                  <Droplets className="text-blue-500 mr-2" size={24} />
-                  <h2 className="text-xl text-foreground font-semibold">
-                    {t('insulinDosage.patient.manualInput')}
-                  </h2>
-                </div>
-
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-foreground mb-1">
-                      {t('insulinDosage.patient.currentGlucose')}
-                    </label>
-                    <input
-          disabled={disabled}
-
-                      type="number"
-                      value={currentGlucose}
-                      onChange={e => setCurrentGlucose(Number(e.target.value))}
-                      className="w-full px-3 py-2 text-foreground bg-background border border-accent rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-foreground mb-1">
-                      <Syringe className="inline mr-1" size={16} />
-                      {t('insulinDosage.patient.insulinUnits')}
-                    </label>
-                    <input
-          disabled={disabled}
-
-                      type="number"
-                      value={insulin}
-                      onChange={e => setInsulin(Number(e.target.value))}
-                      className="w-full px-3 py-2 text-foreground bg-background border border-accent rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-foreground mb-1">
-                      <Utensils className="inline mr-1" size={16} />
-                      {t('insulinDosage.patient.carbsGrams')}
-                    </label>
-                    <input
-          disabled={disabled}
-
-                      type="number"
-                      value={carbs}
-                      onChange={e => setCarbs(Number(e.target.value))}
-                      className="w-full px-3 py-2 text-foreground bg-background border border-accent rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-foreground mb-1">
-                      <Activity className="inline mr-1" size={16} />
-                      {t('insulinDosage.patient.activityMinutes')}
-                    </label>
-                    <input
-          disabled={disabled}
-
-                      type="number"
-                      value={activity}
-                      onChange={e => setActivity(Number(e.target.value))}
-                      className="w-full px-3 py-2 text-foreground bg-background border border-accent rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
-                    />
-                  </div>
-
-                  <button
-                    onClick={addGlucoseReading}
-                    className="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg transition-colors"
-                  >
-                    {t('insulinDosage.patient.addReadingGeneratePrediction')}
-                  </button>
-                </div>
-              </div>
-
-              {/* Alert Settings */}
-              <div className="bg-background rounded-xl shadow-lg p-6">
-                <div className="flex text-foreground items-center mb-4">
-                  <Settings className="text-orange-500 mr-2" size={24} />
-                  <h2 className="text-xl font-semibold">
-                    {t('insulinDosage.alerts.title')}
-                  </h2>
-                </div>
-
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-foreground mb-1">
-                      {t('insulinDosage.alerts.lowThreshold')}
-                    </label>
-                    <input
-          disabled={disabled}
-
-                      type="number"
-                      value={alertSettings.lowThreshold}
-                      onChange={e =>
-                        setAlertSettings(prev => ({
-                          ...prev,
-                          lowThreshold: Number(e.target.value),
-                        }))
-                      }
-                      className="w-full px-3 py-2 text-foreground bg-background border border-accent rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-foreground mb-1">
-                      {t('insulinDosage.alerts.highThreshold')}
-                    </label>
-                    <input
-          disabled={disabled}
-
-                      type="number"
-                      value={alertSettings.highThreshold}
-                      onChange={e =>
-                        setAlertSettings(prev => ({
-                          ...prev,
-                          highThreshold: Number(e.target.value),
-                        }))
-                      }
-                      className="w-full px-3 py-2 text-foreground bg-background border border-accent rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* AI Prediction */}
-              <div className="bg-background rounded-xl shadow-lg p-6">
-                <div className="flex items-center mb-4">
-                  <Brain className="text-purple-500 mr-2" size={24} />
-                  <h2 className="text-xl text-foreground font-semibold">
-                    {t('insulinDosage.aiPrediction.title')}
-                  </h2>
-                </div>
-
-                {prediction && (
-                  <div className="bg-purple-50 rounded-lg p-4">
-                    <p className="text-sm text-gray-600 mb-2">
-                      {t('insulinDosage.aiPrediction.nextPrediction')}
-                    </p>
-                    <p className="text-2xl font-bold text-purple-600">
-                      {prediction} mg/dL
-                    </p>
-                    <p className="text-xs text-gray-500 mt-1">
-                      {t('insulinDosage.aiPrediction.basedOn')}
-                    </p>
-                  </div>
-                )}
-              </div>
-
-              {/* Doctor's Recommendations Display */}
-              {(doctorNotes.recommendations ||
-                doctorNotes.specialInstructions) && (
-                <div className="bg-white rounded-xl shadow-lg p-6">
-                  <div className="flex items-center mb-4">
-                    <FileText className="text-blue-500 mr-2" size={24} />
-                    <h2 className="text-xl font-semibold">
-                      Doctor's Recommendations
-                    </h2>
-                  </div>
-
-                  <div className="space-y-4">
-                    {doctorNotes.recommendations && (
-                      <div className="p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500">
-                        <h3 className="font-medium text-blue-800 mb-2">
-                          {t('insulinDosage.doctorNotes.recommendations')}
-                        </h3>
-                        <p className="text-sm text-blue-700">
-                          {doctorNotes.recommendations}
-                        </p>
-                      </div>
-                    )}
-
-                    {doctorNotes.specialInstructions && (
-                      <div className="p-4 bg-amber-50 rounded-lg border-l-4 border-amber-500">
-                        <h3 className="font-medium text-amber-800 mb-2">
-                          {t('insulinDosage.doctorNotes.specialInstructions')}
-                        </h3>
-                        <p className="text-sm text-amber-700">
-                          {doctorNotes.specialInstructions}
-                        </p>
-                      </div>
-                    )}
-
-                    {doctorNotes.followUpDate && (
-                      <div className="p-3 bg-green-50 rounded-lg border border-green-200">
-                        <div className="flex items-center text-green-800">
-                          <span className="font-medium text-sm">
-                            {t('insulinDosage.doctorNotes.nextAppointment')}
-                          </span>
-                          <span className="ml-2 text-sm">
-                            {new Date(
-                              doctorNotes.followUpDate
-                            ).toLocaleDateString('en-US', {
-                              weekday: 'long',
-                              year: 'numeric',
-                              month: 'long',
-                              day: 'numeric',
-                            })}
-                          </span>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Main Display */}
-            <div className="lg:col-span-2 space-y-6">
-              {/* Real-Time Graph */}
-                <Card>
-                       <CardHeader>
-                         <CardTitle>{t('charts.glucose')}</CardTitle>
-                       </CardHeader>
-                       <CardContent className="h-72">
-                         <ResponsiveContainer width="100%" height={300}>
-                           <LineChart data={glucoseData}>
-                             <CartesianGrid strokeDasharray="3 3" />
-                             <XAxis dataKey="time" />
-                             <YAxis domain={[0, 'dataMax + 20']} />
-                             <Tooltip />
-             
-                             {/* Target range shading */}
-                             <ReferenceArea
-                               y1={80}
-                               y2={180}
-                               strokeOpacity={0}
-                               fill="green"
-                               fillOpacity={0.1}
-                               label={{ value: 'Target Area' }}
-                             />
-             
-                             {/* Threshold lines */}
-                             <ReferenceLine
-                               y={70}
-                               stroke="purple"
-                               strokeDasharray="5 5"
-                               label={{
-                                 value: 'Low',
-                                 position: 'insideTopLeft',
-                                 fill: 'purple',
-                               }}
-                             />
-                             <ReferenceLine
-                               y={250}
-                               stroke="red"
-                               strokeDasharray="5 5"
-                               label={{
-                                 value: 'High',
-                                 position: 'insideTopLeft',
-                                 fill: 'red',
-                               }}
-                             />
-             
-                             {/* Main glucose line */}
-                             <Line
-                               type="monotone"
-                               dataKey="value"
-                               stroke="#10b981"
-                               strokeWidth={2}
-                               dot
-                             />
-                           </LineChart>
-                         </ResponsiveContainer>
-                       </CardContent>
-                     </Card>
-
-              {/* Alerts System */}
-              <div className="bg-background rounded-xl shadow-lg p-6">
-                <div className="flex items-center mb-4">
-                  <Bell className="text-red-500 mr-2" size={24} />
-                  <h2 className="text-xl text-foreground font-semibold">
-                    {t('insulinDosage.alertsSystem.title')}
-                  </h2>
-                </div>
-
-                {alerts.length === 0 ? (
-                  <p className="text-muted-foreground text-center py-4">
-                    {t('insulinDosage.alertsSystem.noActiveAlerts')}
-                  </p>
-                ) : (
-                  <div className="space-y-3">
-                    {alerts.map(alert => (
-                      <div
-                        key={alert.id}
-                        className={`p-4 rounded-lg border-l-4 ${
-                          alert.type === 'hypo'
-                            ? 'bg-red-50 border-red-500'
-                            : 'bg-orange-50 border-orange-500'
-                        }`}
-                      >
-                        <div className="flex items-center">
-                          <AlertTriangle
-                            className={
-                              alert.type === 'hypo'
-                                ? 'text-red-500'
-                                : 'text-orange-500'
-                            }
-                            size={20}
-                          />
-                          <span className="ml-2 font-medium text-gray-800">
-                            {alert.type === 'hypo'
-                              ? 'Hypoglycemia Alert'
-                              : 'Hyperglycemia Alert'}
-                          </span>
-                        </div>
-                        <p className="text-sm text-gray-600 mt-1">
-                          {alert.message}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* Database Status */}
-              <div className="bg-background rounded-xl shadow-lg p-6">
-                <div className="flex items-center mb-4">
-                  <Database className="text-gray-500 mr-2" size={24} />
-                  <h2 className="text-xl font-semibold text-foreground">
-                    {t('insulinDosage.historicalDatabase.title')}
-                  </h2>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div className="bg-muted rounded-lg p-3">
-                    <p className="text-foreground">
-                      {t('insulinDosage.historicalDatabase.totalReadings')}
-                    </p>
-                    <p className="text-xl font-bold text-muted-foreground">
-                      {glucoseData.length}
-                    </p>
-                  </div>
-                  <div className="bg-muted rounded-lg p-3">
-                    <p className="text-foreground">
-                      {t('insulinDosage.historicalDatabase.dataPointsToday')}
-                    </p>
-                    <p className="text-xl font-bold text-muted-foreground">
-                      {glucoseData.filter(d => !d.predicted).length}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        ) : (
-          <InsulinDoseSheet />
-        )}
+        <InsulinDoseSheet />
       </div>
     </div>
   );

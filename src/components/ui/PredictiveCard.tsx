@@ -34,8 +34,8 @@ const PredictiveCard: React.FC<PredictiveCardProps> = ({
       setSummary('');
       setLoading(true);
       getAISummary(values)
-        .then((result) => setSummary(result))
-        .catch((error) => {
+        .then(result => setSummary(result))
+        .catch(error => {
           setSummary(t('predictiveCard.aiSummary.error'));
           console.error('predictiveCard.aiSummary.error', error);
         })
@@ -68,7 +68,9 @@ const PredictiveCard: React.FC<PredictiveCardProps> = ({
 
         {/* Content */}
         {loading && (
-          <p className="text-sm">{t('predictiveCard.predictiveAlert.loading')}</p>
+          <p className="text-sm">
+            {t('predictiveCard.predictiveAlert.loading')}
+          </p>
         )}
         {summary && <p className="text-sm">{summary}</p>}
 
