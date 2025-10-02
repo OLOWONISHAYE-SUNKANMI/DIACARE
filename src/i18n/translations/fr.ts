@@ -18,6 +18,8 @@ export const fr = {
     family: 'Famille',
     profile: 'Profil',
     reminders: 'Rappels',
+    insulin: 'Dose d Insuline',
+    biomarker: 'Outil de Suivi des Biomarqueurs',
   },
 
   // Journal Screen
@@ -1160,6 +1162,7 @@ export const fr = {
       copyButton: 'Copier le code',
     },
     numOfPatients: {
+       patients: 'Partenaires de soins',
       first: 'Alertes',
       second: 'Jours connectés',
     },

@@ -21,6 +21,8 @@ export const en = {
     family: 'Family',
     profile: 'Profile',
     reminders: 'Reminders',
+    insulin: 'Insulin Dosage',
+    biomarker: 'Biomarker Tracker',
   },
 
   // Journal Screen
@@ -1170,6 +1172,7 @@ export const en = {
     },
 
     numOfPatients: {
+      patients: 'Care Partners',
       first: 'Alerts',
       second: 'Connected Days',
     },
