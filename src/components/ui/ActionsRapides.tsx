@@ -468,7 +468,7 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
               💉
             </div>
             <span className={`text-xs sm:text-sm font-medium ${textButton}`}>
-              Insulin Dosage
+              {t('nav.insulin')}
             </span>
           </button>
           <button
@@ -481,7 +481,7 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
               🩺
             </div>
             <span className={`text-xs sm:text-sm font-medium ${textButton}`}>
-              Biomarker Tracker
+             {t('nav.biomarker')}
             </span>
           </button>
         </div>
