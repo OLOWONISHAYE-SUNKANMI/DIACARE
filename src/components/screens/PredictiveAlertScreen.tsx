@@ -214,21 +214,31 @@ export default function PredictiveAlertScreen({ values }: any) {
   const d = new Date(iso);
   return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 };
-  // Glucose data
+   // Glucose data with sequential points
   const glucoseData = [...glucose]
     .sort(
       (a, b) =>
         new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
     )
-    .map(r => ({
+    .map((r, i) => ({
       ...r,
-      time: formatTime(r.timestamp),
+      timestamp: r.timestamp,
+      point: i, // sequential simulated point
     }));
+
+  const glucoseValues = glucose.map(d => d.value);
+  const avgGlucose =
+    glucoseValues.reduce((a, b) => a + b, 0) / (glucoseValues.length || 1);
+  const maxGlucose = Math.max(...glucoseValues, 0);
+  const latestGlucose = glucoseData.length
+    ? glucoseData[glucoseData.length - 1].value
+    : 0;
+
 
   return (
     <div className="min-h-screen bg-muted text-foreground p-4 space-y-4">
       {/* Header */}
-      <h1 className="text-lg font-semibold text-center">Predictive Alert</h1>
+      <h1 className="text-lg font-semibold text-center"> {t('predictiveAlertHeader.title')}</h1>
 
       {/* Predictive Alert Card */}
       <PredictiveCard
@@ -450,61 +460,106 @@ export default function PredictiveAlertScreen({ values }: any) {
         <div className="lg:col-span-2 space-y-6">
           {/* Real-Time Graph */}
           <Card>
-            <CardHeader>
-              <CardTitle>{t('charts.glucose')}</CardTitle>
-            </CardHeader>
-            <CardContent className="h-72">
-              <ResponsiveContainer width="100%" height={300}>
-                <LineChart data={glucoseData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="time" />
-                  <YAxis domain={[0, 'dataMax + 20']} />
-                  <Tooltip />
+          <CardHeader>
+            <CardTitle>Blood Glucose with Diabetes Reference Ranges</CardTitle>
+          </CardHeader>
+          <CardContent className="h-80">
+            <ResponsiveContainer width="100%" height={300}>
+              <LineChart data={glucoseData}>
+                <CartesianGrid strokeDasharray="3 3" />
 
-                  {/* Target range shading */}
-                  <ReferenceArea
-                    y1={80}
-                    y2={180}
-                    strokeOpacity={0}
-                    fill="green"
-                    fillOpacity={0.1}
-                    label={{ value: 'Target Area' }}
-                  />
+                {/* X Axis with simulated points */}
+                <XAxis
+                  dataKey="point"
+                  label={{
+                    value: 'Point in Time',
+                    position: 'insideBottom',
+                    offset: -5,
+                  }}
+                />
 
-                  {/* Threshold lines */}
-                  <ReferenceLine
-                    y={70}
-                    stroke="purple"
-                    strokeDasharray="5 5"
-                    label={{
-                      value: 'Low',
-                      position: 'insideTopLeft',
-                      fill: 'purple',
-                    }}
-                  />
-                  <ReferenceLine
-                    y={250}
-                    stroke="red"
-                    strokeDasharray="5 5"
-                    label={{
-                      value: 'High',
-                      position: 'insideTopLeft',
-                      fill: 'red',
-                    }}
-                  />
+                <YAxis
+                  label={{
+                    value: 'Blood Glucose (mg/dL)',
+                    angle: -90,
+                    style: { textAnchor: 'middle' },
+                    position: 'insideLeft',
+                  }}
+                  domain={[0, 'dataMax + 50']}
+                />
 
-                  {/* Main glucose line */}
-                  <Line
-                    type="monotone"
-                    dataKey="value"
-                    stroke="#10b981"
-                    strokeWidth={2}
-                    dot
-                  />
-                </LineChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
+                <Tooltip
+                  formatter={(value: any) => [`${value} mg/dL`, 'Blood Glucose']}
+                  labelFormatter={(label, payload) => {
+                    const item = payload?.[0]?.payload;
+                    const date = new Date(item?.timestamp);
+                    return date.toLocaleString('en-US', {
+                      month: 'short',
+                      day: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    });
+                  }}
+                />
+
+                <Legend
+                  verticalAlign="top"
+                  wrapperStyle={{ fontSize: '12px', fontWeight: 'bold' }}
+                />
+
+                {/* Target Zone shading */}
+                <ReferenceArea
+                  y1={80}
+                  y2={180}
+                  strokeOpacity={0}
+                  fill="green"
+                  fillOpacity={0.1}
+                />
+
+                {/* Threshold lines */}
+                <ReferenceLine y={70} stroke="blue" strokeDasharray="5 5" />
+                <ReferenceLine y={250} stroke="red" strokeDasharray="5 5" />
+
+                {/* Main glucose line */}
+                <Line
+                  type="monotone"
+                  dataKey="value"
+                  stroke="#0d9488"
+                  strokeWidth={2}
+                  dot
+                  name="Blood Glucose"
+                />
+
+                {/* Dummy legend entries */}
+                {/* <Line
+                  type="monotone"
+                  dataKey="targetZone"
+                  stroke="green"
+                  strokeWidth={6}
+                  strokeOpacity={0.2}
+                  legendType="rect"
+                  name="Target Zone (80-180 mg/dL)"
+                />
+                <Line
+                  type="monotone"
+                  dataKey="low"
+                  stroke="blue"
+                  strokeDasharray="5 5"
+                  legendType="line"
+                  name="Low <70 mg/dL"
+                />
+                <Line
+                  type="monotone"
+                  dataKey="high"
+                  stroke="red"
+                  strokeDasharray="5 5"
+                  legendType="line"
+                  name="High >250 mg/dL"
+                /> */}
+              </LineChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
 
           {/* Alerts System */}
           <div className="bg-background rounded-xl shadow-lg p-6">
