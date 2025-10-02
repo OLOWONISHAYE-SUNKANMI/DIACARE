@@ -13,6 +13,7 @@ import {
   Cell,
   ReferenceLine,
   ReferenceArea,
+  Legend,
 } from 'recharts';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { useMeals } from '@/contexts/MealContext';
@@ -23,7 +24,6 @@ import { useTranslation } from 'react-i18next';
 import { Clock, Target, Activity, Droplet, BarChart3 } from 'lucide-react';
 
 // Helpers
-// Add this helper above your component
 const formatDay = (dateString: string) => {
   const date = new Date(dateString);
   return date.toLocaleDateString('en-US', {
@@ -40,27 +40,6 @@ const formatTime = (iso: string) => {
 
 const colors = ['#3b82f6', '#10b981', '#8b5cf6', '#f59e0b', '#ef4444'];
 
-// helpers (inside the same file)
-const renderLowLabel = (props: any) => {
-  const { viewBox } = props || {};
-  const { x = 0, y = 0 } = viewBox || {};
-  return (
-    <text x={x + 8} y={y - 6} fill="purple" fontSize={12}>
-      Low
-    </text>
-  );
-};
-
-const renderHighLabel = (props: any) => {
-  const { viewBox } = props || {};
-  const { x = 0, y = 0, width = 0 } = viewBox || {};
-  return (
-    <text x={x + width - 8} y={y - 6} fill="red" fontSize={12} textAnchor="end">
-      High
-    </text>
-  );
-};
-
 const ChartsScreen = () => {
   const { t } = useTranslation();
   const { meals } = useMeals();
@@ -68,18 +47,17 @@ const ChartsScreen = () => {
   const { activities } = useActivities();
   const { readings: glucose } = useGlucose();
 
-  // Glucose data
+  // Glucose data with sequential points
   const glucoseData = [...glucose]
     .sort(
       (a, b) =>
         new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
     )
-    .map(r => ({
+    .map((r, i) => ({
       ...r,
       timestamp: r.timestamp,
-      time: formatTime(r.timestamp),
-    }))
-    .reverse();
+      point: i, // sequential simulated point
+    }));
 
   const glucoseValues = glucose.map(d => d.value);
   const avgGlucose =
@@ -90,18 +68,20 @@ const ChartsScreen = () => {
     : 0;
 
   // Meals grouped by day (total carbs)
-  const mealsChartData = meals.map(m => ({
-    name: `${m.meal_name} (${new Date(m.meal_time).toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit',
-    })})`,
-    carbs: m.total_carbs,
-    date: new Date(m.meal_time).toLocaleDateString([], {
-      weekday: 'short',
-      month: 'short',
-      day: 'numeric',
-    }),
-  }));
+      const mealsChartData = meals.map(m => ({
+        time: new Date(m.meal_time).toLocaleTimeString([], {
+          hour: '2-digit',
+          minute: '2-digit',
+        }),
+        carbs: m.total_carbs,
+        meal: m.meal_name, // keep meal name here for tooltip
+        date: new Date(m.meal_time).toLocaleDateString([], {
+          weekday: 'short',
+          month: 'short',
+          day: 'numeric',
+        }),
+      }));
+
 
   //  Activities summary by type
   const activitySummary = Object.values(
@@ -117,23 +97,12 @@ const ChartsScreen = () => {
 
   // Stats for Time-in-Range
   const veryLow = glucoseValues.filter(v => v < 70).length;
-  const target = glucoseValues.filter(v => v >= 70 && v < 140).length;
-  const high = glucoseValues.filter(v => v >= 140).length;
+  const target = glucoseValues.filter(v => v >= 70 && v < 180).length;
+  const high = glucoseValues.filter(v => v >= 180).length;
 
   const veryLowPct = Math.round((veryLow / glucoseValues.length) * 100) || 0;
   const targetPct = Math.round((target / glucoseValues.length) * 100) || 0;
   const highPct = Math.round((high / glucoseValues.length) * 100) || 0;
-
-  // Weekly Trends
-  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  const weeklyTrends = days.map((day, i) => {
-    const points = glucose.filter(d => new Date(d.timestamp).getDay() === i);
-    const inRange = points.filter(d => d.value >= 70 && d.value < 140);
-    const percent = points.length
-      ? Math.round((inRange.length / points.length) * 100)
-      : 0;
-    return { day, percent };
-  });
 
   const getBarColor = (value: number) => {
     if (value < 30) return '#22c55e'; // green (low)
@@ -143,7 +112,7 @@ const ChartsScreen = () => {
 
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
-      const med = payload[0].payload; // full medication object
+      const med = payload[0].payload;
       return (
         <div className="bg-white border rounded p-2 shadow">
           <p className="font-semibold">{med.medication_name}</p>
@@ -158,7 +127,6 @@ const ChartsScreen = () => {
   return (
     <div className="flex-1 p-4 space-y-6 pb-24 animate-fade-in">
       {/* Title */}
-
       <div className="text-center space-y-2">
         <h2 className="text-2xl text-[#FFAB40] font-bold flex items-center justify-center space-x-2">
           <BarChart3 className="w-6 h-6 text-medical-teal" />
@@ -166,6 +134,7 @@ const ChartsScreen = () => {
         </h2>
         <p className="text-muted-foreground">{t('charts.subtitle')}</p>
       </div>
+
       {/* KPI Summary */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <Card>
@@ -196,34 +165,44 @@ const ChartsScreen = () => {
           </CardContent>
         </Card>
       </div>
+
       {/* Grid of main charts */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Blood Glucose Line */}
         <Card>
           <CardHeader>
-            <CardTitle>{t('charts.glucose')}</CardTitle>
+            <CardTitle>Blood Glucose with Diabetes Reference Ranges</CardTitle>
           </CardHeader>
-          <CardContent className="h-72">
+          <CardContent className="h-80">
             <ResponsiveContainer width="100%" height={300}>
               <LineChart data={glucoseData}>
                 <CartesianGrid strokeDasharray="3 3" />
 
-                {/* X Axis with month labels */}
+                {/* X Axis with simulated points */}
                 <XAxis
-                  dataKey="timestamp" // use raw timestamp instead of "time"
-                  interval="preserveStartEnd"
-                  tickFormatter={t => {
-                    const date = new Date(t);
-                    return date.toLocaleString('en-US', { month: 'short' }); // e.g. "Oct"
+                  dataKey="point"
+                  label={{
+                    value: 'Point in Time',
+                    position: 'insideBottom',
+                    offset: -5,
                   }}
                 />
 
-                <YAxis domain={[0, 'dataMax + 20']} />
+                <YAxis
+                  label={{
+                    value: 'Blood Glucose (mg/dL)',
+                    angle: -90,
+                    style: { textAnchor: 'middle' },
+                    position: 'insideLeft',
+                  }}
+                  domain={[0, 'dataMax + 50']}
+                />
 
-                {/* Tooltip with full date & time */}
                 <Tooltip
-                  labelFormatter={label => {
-                    const date = new Date(label);
+                  formatter={(value: any) => [`${value} mg/dL`, 'Blood Glucose']}
+                  labelFormatter={(label, payload) => {
+                    const item = payload?.[0]?.payload;
+                    const date = new Date(item?.timestamp);
                     return date.toLocaleString('en-US', {
                       month: 'short',
                       day: 'numeric',
@@ -233,52 +212,66 @@ const ChartsScreen = () => {
                   }}
                 />
 
-                {/* Target range shading */}
+                <Legend
+                  verticalAlign="top"
+                  wrapperStyle={{ fontSize: '12px', fontWeight: 'bold' }}
+                />
+
+                {/* Target Zone shading */}
                 <ReferenceArea
                   y1={80}
                   y2={180}
                   strokeOpacity={0}
                   fill="green"
                   fillOpacity={0.1}
-                  label={{ value: 'Target Area' }}
                 />
 
                 {/* Threshold lines */}
-                <ReferenceLine
-                  y={70}
-                  stroke="purple"
-                  strokeDasharray="5 5"
-                  label={{
-                    value: 'Low',
-                    position: 'insideTopLeft',
-                    fill: 'purple',
-                  }}
-                />
-                <ReferenceLine
-                  y={250}
-                  stroke="red"
-                  strokeDasharray="5 5"
-                  label={{
-                    value: 'High',
-                    position: 'insideTopLeft',
-                    fill: 'red',
-                  }}
-                />
+                <ReferenceLine y={70} stroke="blue" strokeDasharray="5 5" />
+                <ReferenceLine y={250} stroke="red" strokeDasharray="5 5" />
 
                 {/* Main glucose line */}
                 <Line
                   type="monotone"
                   dataKey="value"
-                  stroke="#10b981"
+                  stroke="#0d9488"
                   strokeWidth={2}
                   dot
+                  name="Blood Glucose"
                 />
+
+                {/* Dummy legend entries */}
+                {/* <Line
+                  type="monotone"
+                  dataKey="targetZone"
+                  stroke="green"
+                  strokeWidth={6}
+                  strokeOpacity={0.2}
+                  legendType="rect"
+                  name="Target Zone (80-180 mg/dL)"
+                />
+                <Line
+                  type="monotone"
+                  dataKey="low"
+                  stroke="blue"
+                  strokeDasharray="5 5"
+                  legendType="line"
+                  name="Low <70 mg/dL"
+                />
+                <Line
+                  type="monotone"
+                  dataKey="high"
+                  stroke="red"
+                  strokeDasharray="5 5"
+                  legendType="line"
+                  name="High >250 mg/dL"
+                /> */}
               </LineChart>
             </ResponsiveContainer>
           </CardContent>
         </Card>
 
-        {/* Meals Bar */}
+      {/* Meals Bar */}
         <Card>
           <CardHeader>
             <CardTitle>{t('charts.meals')}</CardTitle>
@@ -287,7 +280,7 @@ const ChartsScreen = () => {
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={mealsChartData}>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" reversed />
+                <XAxis dataKey="time" reversed />
                 <YAxis
                   label={{
                     value: 'Carbohydrate (g)',
@@ -296,25 +289,31 @@ const ChartsScreen = () => {
                     style: { textAnchor: 'middle' },
                   }}
                 />
-
-                <Tooltip />
-
-                {/* Demarcation lines */}
+                <Tooltip
+                  formatter={(value: any, _: any, props: any) => [
+                    `${value} g`,
+                    props.payload.meal,
+                  ]}
+                  labelFormatter={(label: any, payload: any) => {
+                    if (payload && payload.length > 0) {
+                      const { meal, time, carbs } = payload[0].payload;
+                      return `${meal} • ${time} • ${carbs} g`;
+                    }
+                    return label;
+                  }}
+                />
                 <ReferenceLine y={30} stroke="#22c55e" strokeDasharray="4 4" />
                 <ReferenceLine y={60} stroke="#eab308" strokeDasharray="4 4" />
-
-                <Bar dataKey="carbs">
+                <Bar dataKey="carbs" name="Carbs">
                   {mealsChartData.map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={getBarColor(entry.carbs)}
-                    />
+                    <Cell key={`cell-${index}`} fill={getBarColor(entry.carbs)} />
                   ))}
                 </Bar>
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
         </Card>
+
 
         {/* Medications Bar */}
         <Card>
@@ -327,11 +326,11 @@ const ChartsScreen = () => {
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis
                   dataKey="medication_time"
-                  tickFormatter={formatDay}
+                  tickFormatter={formatTime}
                   reversed
                 />
                 <YAxis />
-                <Tooltip content={<CustomTooltip />} />{' '}
+                <Tooltip content={<CustomTooltip />} />
                 <Bar dataKey="dose" fill="#8b5cf6" />
               </BarChart>
             </ResponsiveContainer>
@@ -363,6 +362,7 @@ const ChartsScreen = () => {
           </CardContent>
         </Card>
       </div>
+
       {/* Time in Range */}
       <Card className="border-medical-teal/20">
         <CardHeader>

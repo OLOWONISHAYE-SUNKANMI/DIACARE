@@ -249,7 +249,7 @@ const ProfileScreen = () => {
                 Date of birth
               </span>
               <p className="font-medium">
-               {profile.dob || ""}
+               {profile.dob || t('profileScreen.notSet')}
               </p>
             </div>
             <div>
@@ -265,7 +265,7 @@ const ProfileScreen = () => {
                City
               </span>
               <p className="font-medium">
-                {profile.city || ""}
+                {profile.city || t('profileScreen.notSet')}
               </p>
             </div>
             <div>
@@ -273,7 +273,7 @@ const ProfileScreen = () => {
                 profession
               </span>
               <p className="font-medium">
-                {profile.profession || ""}
+                {profile.profession || t('profileScreen.notSet')}
               </p>
             </div>
           </div>
@@ -379,7 +379,7 @@ const ProfileScreen = () => {
         </CardContent>
       </Card>
 
-      {/* Current treatment */}
+     
       {/* Current Treatment */}
       <Card className="border-l-4 border-l-medical-teal">
         <CardHeader>
