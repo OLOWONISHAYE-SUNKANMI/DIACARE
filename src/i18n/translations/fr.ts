@@ -18,7 +18,7 @@ export const fr = {
     family: 'Famille',
     profile: 'Profil',
     reminders: 'Rappels',
-    insulin: 'Dose d Insuline',
+    insulin: 'Fiche de dosage d insuline',
     biomarker: 'Outil de Suivi des Biomarqueurs',
   },
 
