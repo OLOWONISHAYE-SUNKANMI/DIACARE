@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Share2,
   Users,
@@ -19,6 +19,8 @@ import { useToast } from '@/hooks/use-toast';
 import { useTranslation } from 'react-i18next';
 import { Avatar, AvatarFallback } from '../ui/avatar';
 import { Separator } from '../ui/separator';
+import ManageAccessModal from '@/components/modals/ManageAccessModal';
+import InvitePartnerModal from '@/components/modals/InvitePartnerModal';
 
 
 
@@ -27,6 +29,11 @@ const FamilyScreen = () => {
   const { t } = useTranslation();
   const { accessCode, getAccessCode, loading } = useFamily();
   const { toast } = useToast();
+
+
+  // const [manageModalOpen, setManageModalOpen] = useState(false);
+  // const [selectedMember, setSelectedMember] = useState<string | null>(null);
+  // const [inviteModalOpen, setInviteModalOpen] = useState(false);
 
   useEffect(() => {
     getAccessCode();
@@ -254,6 +261,8 @@ const recentActivity = [
             {t('familyScreen.button2')}
         </Button>
       </div>
+
+      
 
       {/* Emergency Contact */}
       <Card className="bg-red-50 border-red-200">
