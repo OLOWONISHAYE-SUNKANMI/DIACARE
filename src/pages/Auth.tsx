@@ -53,6 +53,10 @@ import {
   FormLabel,
   useDisclosure,
 } from '@chakra-ui/react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { CurrencyConverter } from '@/utils/CurrencyConverter';
+import { CountryProvider, useCountry } from '@/contexts/CountryContext';
+import { Badge } from '@/components/ui/badge';
 
 const AuthPage = () => {
   const {
@@ -419,6 +423,38 @@ const AuthPage = () => {
     );
   }
 
+  // Country selector component for signup
+  const CountrySelector = () => {
+    const supportedCountries = CurrencyConverter.getSupportedCountries();
+    const [selectedCountry, setSelectedCountry] = useState('');
+
+    const handleCountryChange = (countryCode: string) => {
+      setSelectedCountry(countryCode);
+      // Store in localStorage for PlanSelection to use
+      localStorage.setItem('selectedCountry', countryCode);
+    };
+
+    return (
+      <Select value={selectedCountry} onValueChange={handleCountryChange}>
+        <SelectTrigger>
+          <SelectValue placeholder={t('countrySelector.Settings.countryCurrency.selectPlaceholder')} />
+        </SelectTrigger>
+        <SelectContent>
+          {supportedCountries.map(({ code, info }) => (
+            <SelectItem key={code} value={code}>
+              <div className="flex items-center justify-between w-full">
+                <span>{info.country}</span>
+                <Badge variant="secondary" className="ml-2">
+                  {info.symbol}
+                </Badge>
+              </div>
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    );
+  };
+
   const handleSignOut = async () => {
     setIsLoading(true);
     try {
@@ -735,7 +771,7 @@ const AuthPage = () => {
                             id="patient-signup-email"
                             type="number"
                             placeholder="enter your phone number"
-                            value={patientSignUpData.email}
+                            value={patientSignUpData.phoneNumber}
                             onChange={e =>
                               setPatientSignUpData(prev => ({
                                 ...prev,
@@ -792,6 +828,14 @@ const AuthPage = () => {
                             required
                           />
                         </div>
+                      </div>
+
+                      {/* Country Selector */}
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium">
+                          {t('countrySelector.Settings.countryCurrency.selectCountry')}
+                        </label>
+                        <CountrySelector />
                       </div>
 
                       <Button
@@ -1061,4 +1105,12 @@ const AuthPage = () => {
   );
 };
 
-export default AuthPage;
+const AuthPageWithProvider = () => {
+  return (
+    <CountryProvider>
+      <AuthPage />
+    </CountryProvider>
+  );
+};
+
+export default AuthPageWithProvider;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Card,
   CardContent,
@@ -10,9 +10,25 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useTranslation } from 'react-i18next';
 import { Check, Users, Heart } from 'lucide-react';
+import { CurrencyConverter } from '@/utils/CurrencyConverter';
 
 const PaymentPlan = ({ plans, selectedPlan, onPlanSelect }) => {
   const { t } = useTranslation();
+  const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Get selected country from localStorage
+    const country = localStorage.getItem('selectedCountry');
+    setSelectedCountry(country);
+  }, []);
+
+  const formatPrice = (eurPrice: number) => {
+    if (!selectedCountry) {
+      return `${(eurPrice / 100).toFixed(0)}€`;
+    }
+    const converted = CurrencyConverter.convertPrice(eurPrice / 100, selectedCountry);
+    return converted.formatted;
+  };
 
   return (
     <div className="flex-1 overflow-y-auto p-6">
@@ -64,11 +80,16 @@ const PaymentPlan = ({ plans, selectedPlan, onPlanSelect }) => {
 
                 <div className="mt-4">
                   <div className="text-3xl font-bold text-foreground">
-                    {(plan.price_eur / 100).toFixed(0)}€
+                    {formatPrice(plan.price_eur)}
                   </div>
                   <div className="text-sm text-muted-foreground">
                     {t(`${planKey}.pricePerMonth`)}
                   </div>
+                  {selectedCountry && selectedCountry !== 'DEFAULT' && (
+                    <div className="text-xs text-muted-foreground mt-1">
+                      ≈ {(plan.price_eur / 100).toFixed(0)}€
+                    </div>
+                  )}
                 </div>
               </CardHeader>
 
