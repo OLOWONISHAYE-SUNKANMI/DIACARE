@@ -31,9 +31,9 @@ const FamilyScreen = () => {
   const { toast } = useToast();
 
 
-  // const [manageModalOpen, setManageModalOpen] = useState(false);
-  // const [selectedMember, setSelectedMember] = useState<string | null>(null);
-  // const [inviteModalOpen, setInviteModalOpen] = useState(false);
+  const [manageModalOpen, setManageModalOpen] = useState(false);
+  const [selectedMember, setSelectedMember] = useState<string | null>(null);
+  const [inviteModalOpen, setInviteModalOpen] = useState(false);
 
   useEffect(() => {
     getAccessCode();
@@ -252,11 +252,11 @@ const recentActivity = [
 
       {/* Boutons Actions */}
       <div className="space-y-3">
-        <Button className="w-full bg-medical-teal hover:bg-medical-teal/90">
+        <Button className="w-full bg-medical-teal hover:bg-medical-teal/90" onClick={setInviteModalOpen}>
           <UserPlus className="w-4 h-4 mr-2" />
         {t('familyScreen.button1')}
         </Button>
-        <Button variant="outline" className="w-full">
+        <Button variant="outline" className="w-full" onClick={setManageModalOpen}>
           <Settings className="w-4 h-4 mr-2" />
             {t('familyScreen.button2')}
         </Button>
@@ -280,6 +280,8 @@ const recentActivity = [
           </Button>
         </CardContent>
       </Card>
+      <ManageAccessModal open={manageModalOpen} onClose={()=> setManageModalOpen(false)} />
+        <InvitePartnerModal open={inviteModalOpen} onClose={()=> setInviteModalOpen(false)} />
     </div>
   );
 };
