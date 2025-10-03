@@ -27,6 +27,7 @@ import PhotoAnalysisModal from '../modals/PhotoAnalysisModal';
 import { BookOpen, MessageCircle, Stethoscope, Users } from 'lucide-react';
 import DynamicAlert from './DynamicAlert';
 
+
 interface ActionsRapidesProps {
   onTabChange?: (tab: string) => void;
   onGlucoseSubmit?: (glucoseValue: string) => void;
@@ -42,7 +43,8 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
   const { addMedication } = useMedications();
   const { addActivity } = useActivities();
   const { darkMode } = useThemeStore();
-  const { toast } = useToast();
+    const { toast } = useToast();
+  
 
   // States
   const [isGlucoseModalOpen, setIsGlucoseModalOpen] = useState(false);
@@ -92,8 +94,8 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
     );
     toast({
       title: t('Actions.glucoseSaved'),
-      description: 'glucose added sucessfully ',
-      variant: 'success',
+      description: "glucose added sucessfully ",
+      variant: "success"
     });
 
     setGlucoseValue('');
@@ -464,11 +466,11 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
               darkMode ? bgButtonDark : bgButtonLight
             }`}
           >
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[#2ff993] rounded-full flex items-center justify-center mb-2">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-600 rounded-full flex items-center justify-center mb-2">
               💉
             </div>
             <span className={`text-xs sm:text-sm font-medium ${textButton}`}>
-              {t('nav.insulin')}
+              Insulin Dosage
             </span>
           </button>
           <button
@@ -477,11 +479,11 @@ const ActionsRapides: React.FC<ActionsRapidesProps> = ({
               darkMode ? bgButtonDark : bgButtonLight
             }`}
           >
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[#ffc94a] rounded-full flex items-center justify-center mb-2">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-accent rounded-full flex items-center justify-center mb-2">
               🩺
             </div>
             <span className={`text-xs sm:text-sm font-medium ${textButton}`}>
-             {t('nav.biomarker')}
+              Biomarker Tracker
             </span>
           </button>
         </div>

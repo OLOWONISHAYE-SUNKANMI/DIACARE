@@ -1,22 +1,35 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 
-interface DynamicAlertProps {
-  isVisible: boolean;
-  onDismiss: () => void;
+interface ToastAlert {
+  id: string;
   title?: string;
   message: string;
   variant?: 'info' | 'success' | 'warning' | 'error';
 }
 
-const DynamicAlert: React.FC<DynamicAlertProps> = ({
-  isVisible,
-  onDismiss,
-  title,
-  message,
-  variant = 'info'
-}) => {
-  if (!isVisible) return null;
+interface DynamicAlertProps {
+  alerts: ToastAlert[];
+  onDismiss: (id: string) => void;
+}
+
+const DynamicAlert: React.FC<DynamicAlertProps> = ({ alerts, onDismiss }) => {
+  const [currentAlert, setCurrentAlert] = useState<ToastAlert | null>(null);
+
+  useEffect(() => {
+    if (alerts.length > 0 && !currentAlert) {
+      setCurrentAlert(alerts[0]);
+    }
+  }, [alerts, currentAlert]);
+
+  const handleDismiss = () => {
+    if (currentAlert) {
+      onDismiss(currentAlert.id);
+      setCurrentAlert(null);
+    }
+  };
+
+  if (!currentAlert) return null;
 
   const variantStyles = {
     info: 'bg-blue-50 border-blue-200 text-blue-800',
@@ -33,25 +46,28 @@ const DynamicAlert: React.FC<DynamicAlertProps> = ({
   };
 
   return (
-    <div className={`rounded-lg border p-4 shadow-md transition-all duration-300 ${variantStyles[variant]}`}>
-      <div className="flex items-start justify-between">
-        <div className="flex items-start space-x-3">
-          <span className="text-lg">{iconMap[variant]}</span>
-          <div>
-            {title && <h4 className="font-semibold mb-1">{title}</h4>}
-            <p className="text-sm">{message}</p>
+    <div className="fixed top-4 right-4 z-50 animate-in slide-in-from-right duration-300">
+      <div className={`rounded-lg border p-4 shadow-lg max-w-sm ${variantStyles[currentAlert.variant || 'info']}`}>
+        <div className="flex items-start justify-between">
+          <div className="flex items-start space-x-3">
+            <span className="text-lg">{iconMap[currentAlert.variant || 'info']}</span>
+            <div>
+              {currentAlert.title && <h4 className="font-semibold mb-1">{currentAlert.title}</h4>}
+              <p className="text-sm">{currentAlert.message}</p>
+            </div>
           </div>
+          <button
+            onClick={handleDismiss}
+            className="ml-4 p-1 rounded-full hover:bg-black/10 transition-colors"
+            aria-label="Dismiss alert"
+          >
+            <X size={16} />
+          </button>
         </div>
-        <button
-          onClick={onDismiss}
-          className="ml-4 p-1 rounded-full hover:bg-black/10 transition-colors"
-          aria-label="Dismiss alert"
-        >
-          <X size={16} />
-        </button>
       </div>
     </div>
   );
 };
 
 export default DynamicAlert;
+export type { ToastAlert };

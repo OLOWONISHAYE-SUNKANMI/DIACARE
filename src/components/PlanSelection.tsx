@@ -69,7 +69,7 @@ const PlanSelection: React.FC<PlanSelectionProps> = ({
   };
 
   const handlePlanSelect = (plan: SubscriptionPlan) => {
-    setSelectedPlan(plan); // just store in state
+    setSelectedPlan(plan);
   };
 
   const handleContinue = () => {

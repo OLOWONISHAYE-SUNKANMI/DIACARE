@@ -1,7 +1,18 @@
 'use client';
 
 import { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  Radio,
+  Stack,
+} from "@chakra-ui/react";
+
 import { Button } from '@/components/ui/button';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
@@ -16,32 +27,31 @@ export default function ManageAccessModal({ open, onClose, memberName }: ManageA
   const [access, setAccess] = useState('read');
 
   return (
-    <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Manage Access for {memberName}</DialogTitle>
-        </DialogHeader>
-        <RadioGroup value={access} onValueChange={setAccess} className="space-y-3">
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="read" id="read" />
-            <Label htmlFor="read">Read Only</Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="full" id="full" />
-            <Label htmlFor="full">Full Access</Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="remove" id="remove" />
-            <Label htmlFor="remove">Remove Access</Label>
-          </div>
-        </RadioGroup>
-        <DialogFooter>
-          <Button variant="outline" onClick={onClose}>Cancel</Button>
-          <Button className="bg-medical-teal hover:bg-medical-teal/90" onClick={onClose}>
+     <Modal isOpen={open} onClose={onClose} isCentered>
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader>Manage Access for {memberName}</ModalHeader>
+        <ModalCloseButton />
+
+        <ModalBody>
+          <RadioGroup value={access} onChange={setAccess}>
+            <Stack direction="column" spacing={3}>
+              <Radio value="read">Read Only</Radio>
+              <Radio value="full">Full Access</Radio>
+              <Radio value="remove">Remove Access</Radio>
+            </Stack>
+          </RadioGroup>
+        </ModalBody>
+
+        <ModalFooter>
+          <Button variant="outline" mr={3} onClick={onClose}>
+            Cancel
+          </Button>
+          <Button colorScheme="teal" onClick={onClose}>
             Save
           </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
   );
 }
