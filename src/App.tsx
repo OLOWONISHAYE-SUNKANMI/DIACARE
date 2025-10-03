@@ -21,6 +21,7 @@ import { useThemeStore } from '@/store/useThemeStore';
 import { getChakraTheme } from './lib/theme';
 import { ForgotPassword } from './pages/ForgotPassword';
 import { ResetPassword } from './pages/ResetPassword';
+import ToastQueueIndicator from '@/components/ui/ToastQueueIndicator';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -100,6 +101,7 @@ const App = () => {
             <TooltipProvider>
               <Toaster richColors position="top-right" />
               <ToastContainer />
+              <ToastQueueIndicator />
               <AppContent />
             </TooltipProvider>
           </AuthProvider>

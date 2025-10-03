@@ -1,7 +1,19 @@
 'use client';
 
 import { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  FormControl,
+  FormLabel,
+  Radio,
+  Stack,
+} from "@chakra-ui/react";
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -25,45 +37,65 @@ export default function InvitePartnerModal({ open, onClose }: InvitePartnerModal
   };
 
   return (
-    <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Invite Care Partner</DialogTitle>
-        </DialogHeader>
-        <div className="space-y-3">
-          <div>
-            <Label htmlFor="name">Family Name</Label>
-            <Input id="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Enter family name" />
-          </div>
-          <div>
-            <Label htmlFor="phone">Phone Number</Label>
-            <Input id="phone" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="+221 77 ..." />
-          </div>
-          <div>
-            <Label htmlFor="patientCode">Patient Code</Label>
-            <Input id="patientCode" value={patientCode} onChange={(e) => setPatientCode(e.target.value)} placeholder="Enter patient code" />
-          </div>
-          <div>
-            <Label>Access Level</Label>
-            <RadioGroup value={access} onValueChange={setAccess} className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="read" id="read" />
-                <Label htmlFor="read">Read Only</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="full" id="full" />
-                <Label htmlFor="full">Full Access</Label>
-              </div>
-            </RadioGroup>
-          </div>
-        </div>
-        <DialogFooter>
-          <Button variant="outline" onClick={onClose}>Cancel</Button>
-          <Button className="bg-medical-teal hover:bg-medical-teal/90" onClick={handleSend}>
+    <Modal isOpen={open} onClose={onClose} isCentered>
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader>Invite Care Partner</ModalHeader>
+        <ModalCloseButton />
+
+        <ModalBody>
+          <Stack spacing={4}>
+            <FormControl>
+              <FormLabel htmlFor="name">Family Name</FormLabel>
+              <Input
+                id="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Enter family name"
+              />
+            </FormControl>
+
+            <FormControl>
+              <FormLabel htmlFor="phone">Phone Number</FormLabel>
+              <Input
+                id="phone"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="+221 77 ..."
+              />
+            </FormControl>
+
+            <FormControl>
+              <FormLabel htmlFor="patientCode">Patient Code</FormLabel>
+              <Input
+                id="patientCode"
+                value={patientCode}
+                onChange={(e) => setPatientCode(e.target.value)}
+                placeholder="Enter patient code"
+              />
+            </FormControl>
+
+            <FormControl>
+              <FormLabel>Access Level</FormLabel>
+              <RadioGroup value={access} onChange={setAccess}>
+                <Stack direction="column" spacing={2}>
+                  <Radio value="read">Read Only</Radio>
+                  <Radio value="full">Full Access</Radio>
+                </Stack>
+              </RadioGroup>
+            </FormControl>
+          </Stack>
+        </ModalBody>
+
+        <ModalFooter>
+          <Button variant="outline"  onClick={onClose}>
+            Cancel
+          </Button>
+          <Button onClick={handleSend}>
             Send Code
           </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
   );
 }
