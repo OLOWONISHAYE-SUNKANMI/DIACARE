@@ -1,11 +1,11 @@
-# DiabCare - Votre Compagnon Diabète
+# Klukoo - Votre Compagnon Diabète
 
-> **DiabCare** : *La première plateforme de gestion et suivi du diabète en afrique*  
+> **Klukoo** : *La première plateforme de gestion et suivi du diabète en afrique*  
 > Application de gestion du diabète adaptée aux contextes africains (zone CEMAC et UEMOA)
 
 ## Vision
 
-DiabCare révolutionne la prise en charge du diabète en Afrique en offrant une solution technologique adaptée aux réalités locales.
+Klukoo révolutionne la prise en charge du diabète en Afrique en offrant une solution technologique adaptée aux réalités locales.
 
 ## Fonctionnalités Principales
 
@@ -129,7 +129,7 @@ npm run preview
 ## **Support & Contact**
 
 - **Documentation** : Intégrée à l'application
-- **Support technique** : Via l'interface DiabCare
+- **Support technique** : Via l'interface Klukoo
 - **Feedback** : Système de notifications intégré
 
 ## **Impact Attendu**
