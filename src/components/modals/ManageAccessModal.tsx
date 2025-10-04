@@ -16,6 +16,8 @@ import {
 import { Button } from '@/components/ui/button';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
+import { useToast } from '@/hooks/use-toast';
+import { useTranslation } from 'react-i18next';
 
 interface ManageAccessModalProps {
   open: boolean;
@@ -26,29 +28,34 @@ interface ManageAccessModalProps {
 export default function ManageAccessModal({ open, onClose, memberName }: ManageAccessModalProps) {
   const [access, setAccess] = useState('read');
 
+  
+    const { toast } = useToast();
+    const { t } = useTranslation();
+  
+
   return (
      <Modal isOpen={open} onClose={onClose} isCentered>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Manage Access for {memberName}</ModalHeader>
+        <ModalHeader>{t('manageAccessModal.title')} {memberName}</ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>
           <RadioGroup value={access} onChange={setAccess}>
             <Stack direction="column" spacing={3}>
-              <Radio value="read">Read Only</Radio>
-              <Radio value="full">Full Access</Radio>
-              <Radio value="remove">Remove Access</Radio>
+              <Radio value="read">{t('manageAccessModal.radio1')}</Radio>
+              <Radio value="full">{t('manageAccessModal.radio2')}</Radio>
+              <Radio value="remove">{t('manageAccessModal.radio3')}</Radio>
             </Stack>
           </RadioGroup>
         </ModalBody>
 
         <ModalFooter>
-          <Button variant="outline" mr={3} onClick={onClose}>
-            Cancel
+          <Button variant="outline" style={{ marginRight: '12px' }} onClick={onClose}>
+          {t('manageAccessModal.button1')}
           </Button>
-          <Button colorScheme="teal" onClick={onClose}>
-            Save
+          <Button variant="default" onClick={onClose}>
+            {t('manageAccessModal.button2')}
           </Button>
         </ModalFooter>
       </ModalContent>
