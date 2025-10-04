@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
-import { CountrySelector } from '@/components/ui/CountrySelector';
+
 import { CurrencyConverter, CountryCurrency } from '@/utils/CurrencyConverter';
 import {
   ArrowLeft,
@@ -45,10 +45,13 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
     'form' | 'processing' | 'success'
   >('form');
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedCountry, setSelectedCountry] = useState<string>('');
-  const [currency, setCurrency] = useState<CountryCurrency>(
-    CurrencyConverter.getCurrencyInfo('DEFAULT')
-  );
+  const [selectedCountry, setSelectedCountry] = useState<string>(() => {
+    return localStorage.getItem('selectedCountry') || 'DEFAULT';
+  });
+  const [currency, setCurrency] = useState<CountryCurrency>(() => {
+    const storedCountry = localStorage.getItem('selectedCountry') || 'DEFAULT';
+    return CurrencyConverter.getCurrencyInfo(storedCountry);
+  });
   const { toast } = useToast();
 
   // Get plan from localStorage
@@ -70,13 +73,7 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
     );
   }, [selectedPlan, selectedCountry]);
 
-  const handleCountrySelect = (
-    countryCode: string,
-    currencyInfo: CountryCurrency
-  ) => {
-    setSelectedCountry(countryCode);
-    setCurrency(currencyInfo);
-  };
+
 
   // Configuration AfribaPay
   // const afribaPaymentData = React.useMemo(
@@ -235,11 +232,20 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
           </Badge>
         </div>
 
-        {/* Country and Currency Selection */}
-        <CountrySelector
-          onCountrySelect={handleCountrySelect}
-          selectedCountry={selectedCountry}
-        />
+        {/* Selected Country Display */}
+        {selectedCountry && selectedCountry !== 'DEFAULT' && (
+          <div className="mb-4 p-3 bg-muted/50 rounded-lg">
+            <div className="text-sm font-medium text-muted-foreground mb-1">
+              Selected Country
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="font-medium">{currency.country}</span>
+              <span className="text-sm text-muted-foreground">
+                Currency: {currency.symbol}
+              </span>
+            </div>
+          </div>
+        )}
 
         <Card className="mb-6">
           <CardHeader>

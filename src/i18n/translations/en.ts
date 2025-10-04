@@ -21,7 +21,7 @@ export const en = {
     family: 'Family',
     profile: 'Profile',
     reminders: 'Reminders',
-    insulin: 'Insulin Dosage',
+    insulin: 'Insulin Dose Sheet',
     biomarker: 'Biomarker Tracker',
   },
 
