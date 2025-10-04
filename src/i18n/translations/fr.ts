@@ -1208,6 +1208,33 @@ export const fr = {
     emergencyContact: 'Contact d’urgence',
   },
 
+    // Invite Partner Modal 
+  invitePartnerModal: {
+    title: 'Inviter un partenaire de soins',
+    form: {
+      name: 'Nom de famille',
+      phone: 'Numéro de téléphone',
+      code: 'Code patient',
+      permission: 'Niveau d accès',
+    },
+    permissionOptions: {
+      read: 'Lecture seule',
+      full: 'Accès complet',
+    },
+    button1: 'Annuler',
+    button2: 'Envoyer le code',
+  },
+
+  manageAccessModal: {
+    title: 'Gérer l accès',
+    radio1: 'Lecture seule',
+    radio2: 'Accès complet',
+    radio3: 'Supprimer l accès',
+    button1: 'Annuler',
+    button2: 'Enregistrer',
+
+  },
+
   toastMessage: {
     title: 'Nouvelle entrée',
     description: 'Fonctionnalité disponible prochainement',
