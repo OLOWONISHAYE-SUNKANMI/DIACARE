@@ -38,6 +38,7 @@ import { useActivities } from '@/contexts/ActivityContext';
 import { useEffect, useState } from 'react';
 import { Button } from '../ui/button';
 import { toast } from 'sonner';
+import { useLocation } from 'react-router-dom';
 
 type Alert = {
   type: 'hypo' | 'hyper' | 'stable';
@@ -96,6 +97,7 @@ export default function PredictiveAlertScreen({ values }: any) {
   const duration_minutes =
     activities.length > 0 ? activities[0].duration_minutes : null;
   const dose_unit = medications.length > 0 ? medications[0].dose_unit : null;
+
   const totalCarbs = meals.reduce((sum, meal) => sum + meal.total_carbs, 0);
   const latestReading = getLatestReading();
   const currentGlucose = latestReading?.value || 126;
@@ -160,6 +162,7 @@ export default function PredictiveAlertScreen({ values }: any) {
     setCarbs(0);
     setActivity(0);
   };
+  const latestCarb = meals[0].total_carbs
 
   const checkAlerts = predictedValue => {
     const newAlerts = [];
@@ -197,13 +200,29 @@ export default function PredictiveAlertScreen({ values }: any) {
     return Math.max(50, Math.min(300, Math.round(predictedGlucose)));
   };
 
+  // Show dynamic alert function - only for this screen
+  function showDynamicAlert(alert: Alert) {
+    const toastId = toast.custom(t => <PredictiveAlerts toastId={t} />, {
+      duration: Infinity, // keep open until explicitly dismissed
+    });
+    return toastId;
+  }
+
   useEffect(() => {
     fetchForecast();
-    showDynamicAlert({
+  }, []);
+  
+  useEffect(() => {
+    const toastId = showDynamicAlert({
       type: 'stable',
       time: '5m',
       message: 'Your session will expire soon!',
     });
+
+    // Cleanup: dismiss toast when component unmounts
+    return () => {
+      toast.dismiss(toastId);
+    };
   }, []);
 
   console.log(forecast);
@@ -250,12 +269,6 @@ export default function PredictiveAlertScreen({ values }: any) {
   const latestGlucose = glucoseData.length
     ? glucoseData[glucoseData.length - 1].value
     : 0;
-function showDynamicAlert(alert: Alert) {
-  toast.custom((t) => <PredictiveAlerts toastId={t} />, {
-    duration: Infinity, // keep open until explicitly dismissed
-  });
-}
-
 
   return (
     <div className="min-h-screen bg-muted text-foreground p-4 space-y-4">
@@ -292,7 +305,7 @@ function showDynamicAlert(alert: Alert) {
                   {t('insulinDosage.patient.currentGlucose')}
                 </label>
                 <input
-                  disabled={disabled}
+                  
                   type="number"
                   value={currentGlucose}
                   onChange={e => setCurrentGlucose(Number(e.target.value))}
@@ -306,7 +319,7 @@ function showDynamicAlert(alert: Alert) {
                   {t('insulinDosage.patient.insulinUnits')}
                 </label>
                 <input
-                  disabled={disabled}
+                  
                   type="number"
                   value={insulin || dose_unit || 0}
                   onChange={e => setInsulin(Number(e.target.value))}
@@ -320,9 +333,9 @@ function showDynamicAlert(alert: Alert) {
                   {t('insulinDosage.patient.carbsGrams')}
                 </label>
                 <input
-                  disabled={disabled}
+                  
                   type="number"
-                  value={carbs || totalCarbs || 0}
+                  value={latestCarb || totalCarbs || 0}
                   onChange={e => setCarbs(Number(e.target.value))}
                   className="w-full px-3 py-2 text-foreground bg-background border border-accent rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
                 />
@@ -334,7 +347,7 @@ function showDynamicAlert(alert: Alert) {
                   {t('insulinDosage.patient.activityMinutes')}
                 </label>
                 <input
-                  disabled={disabled}
+                  
                   type="number"
                   value={activity || duration_minutes || 0}
                   onChange={e => setActivity(Number(e.target.value))}
@@ -646,13 +659,15 @@ function showDynamicAlert(alert: Alert) {
   );
 }
 
-const PredictiveAlerts: React.FC<{ toastId: string | number }> = ({ toastId }) => {
+const PredictiveAlerts: React.FC<{ toastId: string | number }> = ({
+  toastId,
+}) => {
   const [currentAlertIndex, setCurrentAlertIndex] = useState(0);
   const [visible, setVisible] = useState(true);
 
   const handleAlertDismiss = () => {
     if (currentAlertIndex < alerts.length - 1) {
-      setCurrentAlertIndex((prev) => prev + 1);
+      setCurrentAlertIndex(prev => prev + 1);
     } else {
       setVisible(false);
       toast.dismiss(toastId); // dismiss the toast only here
@@ -673,7 +688,6 @@ const PredictiveAlerts: React.FC<{ toastId: string | number }> = ({ toastId }) =
     </div>
   );
 };
-
 
 const DynamicAlert: React.FC<{
   alert: Alert;

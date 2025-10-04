@@ -217,7 +217,7 @@ const recentActivity = [
                   </div>
                 </div>
 
-                <Button size="sm" variant="outline">
+                <Button size="sm" variant="outline" onClick={setManageModalOpen}>
                   <Settings className="w-4 h-4" />
                 </Button>
               </div>
