@@ -464,15 +464,14 @@ const AuthPage = () => {
     try {
       const result = await signInWithProfessionalCode(code);
       if (result.success) {
+        toast({
+          title: t('auth.professionalLoginSuccess'),
+          description: t('auth.welcomeProfessional'),
+        });
         navigate('/professional');
       } else {
         setError(result.error || 'Failed to sign in');
       }
-
-      toast({
-        title: t('auth.professionalLoginSuccess'),
-        description: t('auth.welcomeProfessional'),
-      });
     } catch (err: any) {
       console.log('Professional error:', err);
       setError(t('auth.connectionError'));
