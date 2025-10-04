@@ -46,7 +46,11 @@ interface AuthContextType {
     metadata?: any
   ) => Promise<{ error: any; needsSubscription?: boolean }>;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
-  signInWithProfessionalCode: (code: string) => Promise<{ error: any }>;
+  signInWithProfessionalCode: (code: string) => Promise<{
+    success: boolean;
+    error?: string;
+    user?: any;
+  }>;
   signOut: () => Promise<{ error: any }>;
   isProfessional: boolean;
   professionalData: any;
@@ -209,75 +213,73 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signInWithProfessionalCode = async (code: string) => {
     try {
-      // 1. Vérifier le code professionnel
-      const { data: professionalApp, error: codeError } = await supabase
+      // 1. First verify the professional code
+      const { data: professional, error: lookupError } = await supabase
         .from('professional_applications')
         .select('*')
         .eq('professional_code', code)
-        .eq('status', 'approved')
         .single();
 
-      if (codeError || !professionalApp) {
-        return {
-          error: { message: 'Code professionnel invalide ou non approuvé' },
-        };
+      if (lookupError || !professional) {
+        return { success: false, error: 'Invalid professional code' };
       }
 
-      // 2. Vérifier expiration
-      if (new Date() > new Date(professionalApp.code_expires_at)) {
-        return {
-          error: {
-            message: "Code professionnel expiré. Contactez l'administration.",
-          },
-        };
+      // 2. Check if code is expired
+      if (new Date(professional.code_expires_at) < new Date()) {
+        return { success: false, error: 'Professional code has expired' };
       }
 
-      // 3. Vérifier si un compte utilisateur existe déjà pour ce professionnel
-      if (professionalApp.reviewed_by) {
-        // Le professionnel a déjà un compte, nous devons le connecter différemment
-        return {
-          error: {
-            message:
-              'Ce code est lié à un compte. Veuillez vous connecter avec vos identifiants email.',
-          },
-        };
+      // 3. Check if professional is verified
+      if (professional.status !== 'approved') {
+        return { success: false, error: 'Professional account not approved' };
       }
 
-      // 4. Créer un compte temporaire ou utiliser un système de token
-      // Pour simplifier, on crée une session temporaire
-      const tempEmail = `professional-${code}@dare-temp.local`;
-      const tempPassword = `temp-${code}-${Date.now()}`;
+      // 4. Sign in or create auth user if needed
+      let authUser;
+      if (!professional.user_id) {
+        // Create new auth user if none exists
+        const { data: newUser, error: signUpError } =
+          await supabase.auth.signUp({
+            email: professional.email,
+            password: code, // Use professional code as initial password
+          });
 
-      // Créer un compte temporaire
-      const { data: authData, error: authError } = await supabase.auth.signUp({
-        email: tempEmail,
-        password: tempPassword,
-        options: {
-          emailRedirectTo: `${window.location.origin}/`,
-          data: {
-            professional_code: code,
-            is_professional: true,
-            first_name: professionalApp.first_name,
-            last_name: professionalApp.last_name,
-          },
-        },
-      });
+        if (signUpError) {
+          return { success: false, error: 'Failed to create account' };
+        }
 
-      if (authError) {
-        return { error: authError };
-      }
-
-      // 5. Lier le compte au professionnel
-      if (authData.user) {
-        await supabase
+        // Update professional record with new user_id
+        const { error: updateError } = await supabase
           .from('professional_applications')
-          .update({ reviewed_by: authData.user.id })
-          .eq('id', professionalApp.id);
+          .update({ user_id: newUser.user.id })
+          .eq('id', professional.id);
+
+        if (updateError) {
+          return { success: false, error: 'Failed to link account' };
+        }
+
+        authUser = newUser.user;
+      } else {
+        // Sign in existing user
+        const { data: signInData, error: signInError } =
+          await supabase.auth.signInWithPassword({
+            email: professional.email,
+            password: code,
+          });
+
+        if (signInError) {
+          return { success: false, error: 'Invalid credentials' };
+        }
+
+        authUser = signInData.user;
       }
 
-      return { error: null };
-    } catch (error: any) {
-      return { error: { message: error.message } };
+      return { success: true, user: authUser };
+    } catch (error) {
+      return {
+        success: false,
+        error: 'An unexpected error occurred',
+      };
     }
   };
 
