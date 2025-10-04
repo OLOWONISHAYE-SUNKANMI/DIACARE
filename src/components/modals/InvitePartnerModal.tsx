@@ -18,6 +18,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { useToast } from '@/hooks/use-toast';
+import { useTranslation } from 'react-i18next';
 
 interface InvitePartnerModalProps {
   open: boolean;
@@ -30,6 +32,9 @@ export default function InvitePartnerModal({ open, onClose }: InvitePartnerModal
   const [patientCode, setPatientCode] = useState('');
   const [access, setAccess] = useState('read');
 
+  const { toast } = useToast();
+  const { t } = useTranslation();
+
   const handleSend = () => {
     // Here you can integrate API call
     console.log({ name, phone, patientCode, access });
@@ -40,13 +45,13 @@ export default function InvitePartnerModal({ open, onClose }: InvitePartnerModal
     <Modal isOpen={open} onClose={onClose} isCentered>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Invite Care Partner</ModalHeader>
+        <ModalHeader>{t('invitePartnerModal.title')}</ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>
           <Stack spacing={4}>
             <FormControl>
-              <FormLabel htmlFor="name">Family Name</FormLabel>
+              <FormLabel htmlFor="name">{t('invitePartnerModal.form.name')}</FormLabel>
               <Input
                 id="name"
                 value={name}
@@ -56,7 +61,7 @@ export default function InvitePartnerModal({ open, onClose }: InvitePartnerModal
             </FormControl>
 
             <FormControl>
-              <FormLabel htmlFor="phone">Phone Number</FormLabel>
+              <FormLabel htmlFor="phone">{t('invitePartnerModal.form.phone')}</FormLabel>
               <Input
                 id="phone"
                 value={phone}
@@ -66,7 +71,7 @@ export default function InvitePartnerModal({ open, onClose }: InvitePartnerModal
             </FormControl>
 
             <FormControl>
-              <FormLabel htmlFor="patientCode">Patient Code</FormLabel>
+              <FormLabel htmlFor="patientCode">{t('invitePartnerModal.form.code')}</FormLabel>
               <Input
                 id="patientCode"
                 value={patientCode}
@@ -76,11 +81,11 @@ export default function InvitePartnerModal({ open, onClose }: InvitePartnerModal
             </FormControl>
 
             <FormControl>
-              <FormLabel>Access Level</FormLabel>
-              <RadioGroup value={access} onChange={setAccess}>
+              <FormLabel>{t('invitePartnerModal.form.permission')}</FormLabel>
+              <RadioGroup value={access} onChange={(e) => setAccess((e.target as HTMLInputElement).value)}>
                 <Stack direction="column" spacing={2}>
-                  <Radio value="read">Read Only</Radio>
-                  <Radio value="full">Full Access</Radio>
+                  <Radio value="read">{t('invitePartnerModal.permissionOptions.read')}</Radio>
+                  <Radio value="full">{t('invitePartnerModal.permissionOptions.full')}</Radio>
                 </Stack>
               </RadioGroup>
             </FormControl>
@@ -89,10 +94,10 @@ export default function InvitePartnerModal({ open, onClose }: InvitePartnerModal
 
         <ModalFooter>
           <Button variant="outline"  onClick={onClose}>
-            Cancel
+           {t('invitePartnerModal.button1')}
           </Button>
-          <Button onClick={handleSend}>
-            Send Code
+          <Button onClick={handleSend} className="ml-2">
+           {t('invitePartnerModal.button2')}
           </Button>
         </ModalFooter>
       </ModalContent>
