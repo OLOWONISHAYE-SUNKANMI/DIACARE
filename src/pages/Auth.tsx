@@ -455,6 +455,7 @@ const AuthPage = () => {
     setJobModal(true);
   };
 
+  // Professsioanl access code
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -463,7 +464,7 @@ const AuthPage = () => {
     try {
       const result = await signInWithProfessionalCode(code);
       if (result.success) {
-        navigate('/dashboard');
+        navigate('/professional');
       } else {
         setError(result.error || 'Failed to sign in');
       }
