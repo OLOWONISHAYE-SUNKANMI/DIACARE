@@ -53,7 +53,13 @@ import {
   FormLabel,
   useDisclosure,
 } from '@chakra-ui/react';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { CurrencyConverter } from '@/utils/CurrencyConverter';
 import { CountryProvider, useCountry } from '@/contexts/CountryContext';
 import { Badge } from '@/components/ui/badge';
@@ -441,7 +447,11 @@ const AuthPage = () => {
     return (
       <Select value={selectedCountry} onValueChange={handleCountryChange}>
         <SelectTrigger>
-          <SelectValue placeholder={t('countrySelector.Settings.countryCurrency.selectPlaceholder')} />
+          <SelectValue
+            placeholder={t(
+              'countrySelector.Settings.countryCurrency.selectPlaceholder'
+            )}
+          />
         </SelectTrigger>
         <SelectContent>
           {supportedCountries.map(({ code, info }) => (
@@ -504,7 +514,7 @@ const AuthPage = () => {
           title: t('auth.professionalLoginSuccess'),
           description: t('auth.welcomeProfessional'),
         });
-        navigate('/professional');
+        navigate('/professional-dashboard');
       } else {
         setError(result.error || 'Failed to sign in');
       }
@@ -862,7 +872,9 @@ const AuthPage = () => {
                       {/* Country Selector */}
                       <div className="space-y-2">
                         <label className="text-sm font-medium">
-                          {t('countrySelector.Settings.countryCurrency.selectCountry')}
+                          {t(
+                            'countrySelector.Settings.countryCurrency.selectCountry'
+                          )}
                         </label>
                         <CountrySelector />
                       </div>
