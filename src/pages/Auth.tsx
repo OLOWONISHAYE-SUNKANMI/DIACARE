@@ -69,6 +69,9 @@ const AuthPage = () => {
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
 
+  // Professional SignIn
+  const [code, setCode] = useState('');
+
   // États pour les formulaires - MOVED TO TOP
   const [activeTab, setActiveTab] = useState('patient');
   const [patientMode, setPatientMode] = useState<'signin' | 'signup'>('signin');
@@ -130,9 +133,10 @@ const AuthPage = () => {
   const handlePatientSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    setError(null);
+    setError('');
 
     try {
+      const result = await signInWithProfessionalCode(code);
       const { error } = await signIn(
         patientSignInData.email,
         patientSignInData.password
@@ -449,6 +453,31 @@ const AuthPage = () => {
 
   const handlePatientAccess = () => {
     setJobModal(true);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const result = await signInWithProfessionalCode(code);
+      if (result.success) {
+        navigate('/dashboard');
+      } else {
+        setError(result.error || 'Failed to sign in');
+      }
+
+      toast({
+        title: t('auth.professionalLoginSuccess'),
+        description: t('auth.welcomeProfessional'),
+      });
+    } catch (err: any) {
+      console.log('Professional error:', err);
+      setError(t('auth.connectionError'));
+    } finally {
+      setIsLoading(false);
+    }
   };
   return (
     <div className="relative min-h-screen flex items-center justify-center p-4 bg-background">
@@ -807,10 +836,7 @@ const AuthPage = () => {
               </TabsContent>
 
               <TabsContent value="professional" className="mt-6">
-                <form
-                  onSubmit={handleProfessionalCodeLogin}
-                  className="space-y-4"
-                >
+                <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="professional-code">
                       {t('auth.professionalCode')}
@@ -819,10 +845,8 @@ const AuthPage = () => {
                       id="professional-code"
                       type="text"
                       placeholder={t('auth.professionalCodePlaceholder')}
-                      value={professionalCode}
-                      onChange={e =>
-                        setProfessionalCode(e.target.value.toUpperCase())
-                      }
+                      value={code}
+                      onChange={e => setCode(e.target.value)}
                       className="text-center font-mono text-lg"
                       maxLength={15}
                       required
@@ -838,7 +862,7 @@ const AuthPage = () => {
                       : t('professionalLoginCard.loginButton')}
                   </Button>
 
-                  <div className="relative my-4">
+                  {/* <div className="relative my-4">
                     <div className="absolute inset-0 flex items-center">
                       <Separator className="w-full" />
                     </div>
@@ -847,9 +871,10 @@ const AuthPage = () => {
                         Patient Access
                       </span>
                     </div>
-                  </div>
+                  </div> */}
+
                   <div className="space-y-2">
-                    <Label htmlFor="professional-code">patient code</Label>
+                    {/* <Label htmlFor="professional-code">patient code</Label>
                     <Input
                       id="professional-code"
                       type="text"
@@ -861,20 +886,21 @@ const AuthPage = () => {
                       className="text-center font-mono text-lg"
                       maxLength={15}
                       required
-                    />
+                    /> */}
                     {/* <p className="text-xs text-muted-foreground text-center">
                       Format: TYPE-PAYS-XXXX
                     </p> */}
                   </div>
 
-                  <Button
+                  {/* <Button
                     onClick={handlePatientAccess}
                     className="w-full"
                     disabled={isLoading}
                   >
                     {isLoading ? t('auth.connecting') : 'Login as patient'}
-                  </Button>
+                  </Button> */}
                 </form>
+
                 <Modal
                   isOpen={jobModal}
                   onClose={() => {
