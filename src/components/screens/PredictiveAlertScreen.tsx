@@ -37,6 +37,7 @@ import { useMedications } from '@/contexts/MedicationContext';
 import { useActivities } from '@/contexts/ActivityContext';
 import { useEffect, useState } from 'react';
 import { Button } from '../ui/button';
+import { toast } from 'sonner';
 
 type Alert = {
   type: 'hypo' | 'hyper' | 'stable';
@@ -73,9 +74,6 @@ export default function PredictiveAlertScreen({ values }: any) {
   const { medications } = useMedications();
   const { activities } = useActivities();
   const disabled = false;
-  const [insulin, setInsulin] = useState(0);
-  const [carbs, setCarbs] = useState(0);
-  const [activity, setActivity] = useState(0);
   const [alertSettings, setAlertSettings] = useState({
     lowThreshold: 70,
     highThreshold: 180,
@@ -93,6 +91,32 @@ export default function PredictiveAlertScreen({ values }: any) {
     followUpDate: '',
     emergencyContact: '',
   });
+
+  // Calculate values from contexts
+  const duration_minutes =
+    activities.length > 0 ? activities[0].duration_minutes : null;
+  const dose_unit = medications.length > 0 ? medications[0].dose_unit : null;
+  const totalCarbs = meals.reduce((sum, meal) => sum + meal.total_carbs, 0);
+  const latestReading = getLatestReading();
+  const currentGlucose = latestReading?.value || 126;
+
+  // State for manual inputs with context fallbacks
+  const [insulin, setInsulin] = useState(0);
+  const [carbs, setCarbs] = useState(0);
+  const [activity, setActivity] = useState(0);
+
+  // Update state when context values change
+  useEffect(() => {
+    if (dose_unit && insulin === 0) setInsulin(dose_unit);
+  }, [dose_unit]);
+
+  useEffect(() => {
+    if (totalCarbs && carbs === 0) setCarbs(totalCarbs);
+  }, [totalCarbs]);
+
+  useEffect(() => {
+    if (duration_minutes && activity === 0) setActivity(duration_minutes);
+  }, [duration_minutes]);
 
   // Add new glucose reading
   const addGlucoseReading = () => {
@@ -172,20 +196,14 @@ export default function PredictiveAlertScreen({ values }: any) {
 
     return Math.max(50, Math.min(300, Math.round(predictedGlucose)));
   };
-  const duration_minutes =
-    activities.length > 0 ? activities[0].duration_minutes : null;
-
-  const dose_unit = medications.length > 0 ? medications[0].dose_unit : null;
-  console.log(dose_unit);
-
-  const totalCarbs = meals.reduce((sum, meal) => sum + meal.total_carbs, 0);
-  console.log(totalCarbs);
-
-  const latestReading = getLatestReading();
-  const currentGlucose = latestReading?.value || 126;
 
   useEffect(() => {
     fetchForecast();
+    showDynamicAlert({
+      type: 'stable',
+      time: '5m',
+      message: 'Your session will expire soon!',
+    });
   }, []);
 
   console.log(forecast);
@@ -232,6 +250,12 @@ export default function PredictiveAlertScreen({ values }: any) {
   const latestGlucose = glucoseData.length
     ? glucoseData[glucoseData.length - 1].value
     : 0;
+function showDynamicAlert(alert: Alert) {
+  toast.custom((t) => <PredictiveAlerts toastId={t} />, {
+    duration: Infinity, // keep open until explicitly dismissed
+  });
+}
+
 
   return (
     <div className="min-h-screen bg-muted text-foreground p-4 space-y-4">
@@ -249,7 +273,7 @@ export default function PredictiveAlertScreen({ values }: any) {
         setVisible={null}
       />
 
-      <PredictiveAlerts />
+      {/* <PredictiveAlerts /> */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Input Panel */}
         <div className="lg:col-span-1 space-y-6">
@@ -284,7 +308,7 @@ export default function PredictiveAlertScreen({ values }: any) {
                 <input
                   disabled={disabled}
                   type="number"
-                  value={insulin}
+                  value={insulin || dose_unit || 0}
                   onChange={e => setInsulin(Number(e.target.value))}
                   className="w-full px-3 py-2 text-foreground bg-background border border-accent rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
                 />
@@ -298,7 +322,7 @@ export default function PredictiveAlertScreen({ values }: any) {
                 <input
                   disabled={disabled}
                   type="number"
-                  value={carbs}
+                  value={carbs || totalCarbs || 0}
                   onChange={e => setCarbs(Number(e.target.value))}
                   className="w-full px-3 py-2 text-foreground bg-background border border-accent rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
                 />
@@ -312,7 +336,7 @@ export default function PredictiveAlertScreen({ values }: any) {
                 <input
                   disabled={disabled}
                   type="number"
-                  value={activity}
+                  value={activity || duration_minutes || 0}
                   onChange={e => setActivity(Number(e.target.value))}
                   className="w-full px-3 py-2 text-foreground bg-background border border-accent rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
                 />
@@ -535,33 +559,6 @@ export default function PredictiveAlertScreen({ values }: any) {
                     dot
                     name="Blood Glucose"
                   />
-
-                  {/* Dummy legend entries */}
-                  {/* <Line
-                  type="monotone"
-                  dataKey="targetZone"
-                  stroke="green"
-                  strokeWidth={6}
-                  strokeOpacity={0.2}
-                  legendType="rect"
-                  name="Target Zone (80-180 mg/dL)"
-                />
-                <Line
-                  type="monotone"
-                  dataKey="low"
-                  stroke="blue"
-                  strokeDasharray="5 5"
-                  legendType="line"
-                  name="Low <70 mg/dL"
-                />
-                <Line
-                  type="monotone"
-                  dataKey="high"
-                  stroke="red"
-                  strokeDasharray="5 5"
-                  legendType="line"
-                  name="High >250 mg/dL"
-                /> */}
                 </LineChart>
               </ResponsiveContainer>
             </CardContent>
@@ -649,15 +646,16 @@ export default function PredictiveAlertScreen({ values }: any) {
   );
 }
 
-const PredictiveAlerts: React.FC = () => {
+const PredictiveAlerts: React.FC<{ toastId: string | number }> = ({ toastId }) => {
   const [currentAlertIndex, setCurrentAlertIndex] = useState(0);
   const [visible, setVisible] = useState(true);
 
   const handleAlertDismiss = () => {
     if (currentAlertIndex < alerts.length - 1) {
-      setCurrentAlertIndex(prev => prev + 1);
+      setCurrentAlertIndex((prev) => prev + 1);
     } else {
       setVisible(false);
+      toast.dismiss(toastId); // dismiss the toast only here
     }
   };
 
@@ -666,7 +664,7 @@ const PredictiveAlerts: React.FC = () => {
   const currentAlert = alerts[currentAlertIndex];
 
   return (
-    <div className="fixed top-4 left-[80%] z-50 w-96">
+    <div className="w-96">
       <DynamicAlert
         alert={currentAlert}
         onExpire={handleAlertDismiss}
@@ -675,6 +673,7 @@ const PredictiveAlerts: React.FC = () => {
     </div>
   );
 };
+
 
 const DynamicAlert: React.FC<{
   alert: Alert;
