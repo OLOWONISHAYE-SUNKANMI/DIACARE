@@ -37,6 +37,8 @@ import { useMedications } from '@/contexts/MedicationContext';
 import { useActivities } from '@/contexts/ActivityContext';
 import { useEffect, useState } from 'react';
 import { Button } from '../ui/button';
+import { toast } from 'sonner';
+import { useLocation } from 'react-router-dom';
 
 type Alert = {
   type: 'hypo' | 'hyper' | 'stable';
@@ -73,9 +75,6 @@ export default function PredictiveAlertScreen({ values }: any) {
   const { medications } = useMedications();
   const { activities } = useActivities();
   const disabled = false;
-  const [insulin, setInsulin] = useState(0);
-  const [carbs, setCarbs] = useState(0);
-  const [activity, setActivity] = useState(0);
   const [alertSettings, setAlertSettings] = useState({
     lowThreshold: 70,
     highThreshold: 180,
@@ -94,6 +93,32 @@ export default function PredictiveAlertScreen({ values }: any) {
     emergencyContact: '',
   });
 
+  // Calculate values from contexts
+  const duration_minutes =
+    activities.length > 0 ? activities[0].duration_minutes : null;
+  const dose_unit = medications.length > 0 ? medications[0].dose_unit : null;
+
+  const totalCarbs = meals.reduce((sum, meal) => sum + meal.total_carbs, 0);
+  const latestReading = getLatestReading();
+  const currentGlucose = latestReading?.value || 126;
+
+  // State for manual inputs with context fallbacks
+  const [insulin, setInsulin] = useState(0);
+  const [carbs, setCarbs] = useState(0);
+  const [activity, setActivity] = useState(0);
+
+  // Update state when context values change
+  useEffect(() => {
+    if (dose_unit && insulin === 0) setInsulin(dose_unit);
+  }, [dose_unit]);
+
+  useEffect(() => {
+    if (totalCarbs && carbs === 0) setCarbs(totalCarbs);
+  }, [totalCarbs]);
+
+  useEffect(() => {
+    if (duration_minutes && activity === 0) setActivity(duration_minutes);
+  }, [duration_minutes]);
 
   // Add new glucose reading
   const addGlucoseReading = () => {
@@ -137,6 +162,7 @@ export default function PredictiveAlertScreen({ values }: any) {
     setCarbs(0);
     setActivity(0);
   };
+  const latestCarb = meals[0].total_carbs
 
   const checkAlerts = predictedValue => {
     const newAlerts = [];
@@ -173,20 +199,30 @@ export default function PredictiveAlertScreen({ values }: any) {
 
     return Math.max(50, Math.min(300, Math.round(predictedGlucose)));
   };
-  const duration_minutes =
-    activities.length > 0 ? activities[0].duration_minutes : null;
 
-  const dose_unit = medications.length > 0 ? medications[0].dose_unit : null;
-  console.log(dose_unit);
-
-  const totalCarbs = meals.reduce((sum, meal) => sum + meal.total_carbs, 0);
-  console.log(totalCarbs);
-
-  const latestReading = getLatestReading();
-  const currentGlucose = latestReading?.value || 126;
+  // Show dynamic alert function - only for this screen
+  function showDynamicAlert(alert: Alert) {
+    const toastId = toast.custom(t => <PredictiveAlerts toastId={t} />, {
+      duration: Infinity, // keep open until explicitly dismissed
+    });
+    return toastId;
+  }
 
   useEffect(() => {
     fetchForecast();
+  }, []);
+  
+  useEffect(() => {
+    const toastId = showDynamicAlert({
+      type: 'stable',
+      time: '5m',
+      message: 'Your session will expire soon!',
+    });
+
+    // Cleanup: dismiss toast when component unmounts
+    return () => {
+      toast.dismiss(toastId);
+    };
   }, []);
 
   console.log(forecast);
@@ -211,10 +247,10 @@ export default function PredictiveAlertScreen({ values }: any) {
     }
   };
   const formatTime = (iso: string) => {
-  const d = new Date(iso);
-  return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-};
-   // Glucose data with sequential points
+    const d = new Date(iso);
+    return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  };
+  // Glucose data with sequential points
   const glucoseData = [...glucose]
     .sort(
       (a, b) =>
@@ -234,11 +270,13 @@ export default function PredictiveAlertScreen({ values }: any) {
     ? glucoseData[glucoseData.length - 1].value
     : 0;
 
-
   return (
     <div className="min-h-screen bg-muted text-foreground p-4 space-y-4">
       {/* Header */}
-      <h1 className="text-lg font-semibold text-center"> {t('predictiveAlertHeader.title')}</h1>
+      <h1 className="text-lg font-semibold text-center">
+        {' '}
+        {t('predictiveAlertHeader.title')}
+      </h1>
 
       {/* Predictive Alert Card */}
       <PredictiveCard
@@ -248,7 +286,7 @@ export default function PredictiveAlertScreen({ values }: any) {
         setVisible={null}
       />
 
-      <PredictiveAlerts />
+      {/* <PredictiveAlerts /> */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Input Panel */}
         <div className="lg:col-span-1 space-y-6">
@@ -267,7 +305,7 @@ export default function PredictiveAlertScreen({ values }: any) {
                   {t('insulinDosage.patient.currentGlucose')}
                 </label>
                 <input
-                  disabled={disabled}
+                  
                   type="number"
                   value={currentGlucose}
                   onChange={e => setCurrentGlucose(Number(e.target.value))}
@@ -281,9 +319,9 @@ export default function PredictiveAlertScreen({ values }: any) {
                   {t('insulinDosage.patient.insulinUnits')}
                 </label>
                 <input
-                  disabled={disabled}
+                  
                   type="number"
-                  value={insulin}
+                  value={insulin || dose_unit || 0}
                   onChange={e => setInsulin(Number(e.target.value))}
                   className="w-full px-3 py-2 text-foreground bg-background border border-accent rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
                 />
@@ -295,9 +333,9 @@ export default function PredictiveAlertScreen({ values }: any) {
                   {t('insulinDosage.patient.carbsGrams')}
                 </label>
                 <input
-                  disabled={disabled}
+                  
                   type="number"
-                  value={carbs}
+                  value={latestCarb || totalCarbs || 0}
                   onChange={e => setCarbs(Number(e.target.value))}
                   className="w-full px-3 py-2 text-foreground bg-background border border-accent rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
                 />
@@ -309,9 +347,9 @@ export default function PredictiveAlertScreen({ values }: any) {
                   {t('insulinDosage.patient.activityMinutes')}
                 </label>
                 <input
-                  disabled={disabled}
+                  
                   type="number"
-                  value={activity}
+                  value={activity || duration_minutes || 0}
                   onChange={e => setActivity(Number(e.target.value))}
                   className="w-full px-3 py-2 text-foreground bg-background border border-accent rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
                 />
@@ -460,106 +498,84 @@ export default function PredictiveAlertScreen({ values }: any) {
         <div className="lg:col-span-2 space-y-6">
           {/* Real-Time Graph */}
           <Card>
-          <CardHeader>
-            <CardTitle>Blood Glucose with Diabetes Reference Ranges</CardTitle>
-          </CardHeader>
-          <CardContent className="h-80">
-            <ResponsiveContainer width="100%" height={300}>
-              <LineChart data={glucoseData}>
-                <CartesianGrid strokeDasharray="3 3" />
+            <CardHeader>
+              <CardTitle>
+                Blood Glucose with Diabetes Reference Ranges
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="h-80">
+              <ResponsiveContainer width="100%" height={300}>
+                <LineChart data={glucoseData}>
+                  <CartesianGrid strokeDasharray="3 3" />
 
-                {/* X Axis with simulated points */}
-                <XAxis
-                  dataKey="point"
-                  label={{
-                    value: 'Point in Time',
-                    position: 'insideBottom',
-                    offset: -5,
-                  }}
-                />
+                  {/* X Axis with simulated points */}
+                  <XAxis
+                    dataKey="point"
+                    label={{
+                      value: 'Point in Time',
+                      position: 'insideBottom',
+                      offset: -5,
+                    }}
+                  />
 
-                <YAxis
-                  label={{
-                    value: 'Blood Glucose (mg/dL)',
-                    angle: -90,
-                    style: { textAnchor: 'middle' },
-                    position: 'insideLeft',
-                  }}
-                  domain={[0, 'dataMax + 50']}
-                />
+                  <YAxis
+                    label={{
+                      value: 'Blood Glucose (mg/dL)',
+                      angle: -90,
+                      style: { textAnchor: 'middle' },
+                      position: 'insideLeft',
+                    }}
+                    domain={[0, 'dataMax + 50']}
+                  />
 
-                <Tooltip
-                  formatter={(value: any) => [`${value} mg/dL`, 'Blood Glucose']}
-                  labelFormatter={(label, payload) => {
-                    const item = payload?.[0]?.payload;
-                    const date = new Date(item?.timestamp);
-                    return date.toLocaleString('en-US', {
-                      month: 'short',
-                      day: 'numeric',
-                      hour: '2-digit',
-                      minute: '2-digit',
-                    });
-                  }}
-                />
+                  <Tooltip
+                    formatter={(value: any) => [
+                      `${value} mg/dL`,
+                      'Blood Glucose',
+                    ]}
+                    labelFormatter={(label, payload) => {
+                      const item = payload?.[0]?.payload;
+                      const date = new Date(item?.timestamp);
+                      return date.toLocaleString('en-US', {
+                        month: 'short',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      });
+                    }}
+                  />
 
-                <Legend
-                  verticalAlign="top"
-                  wrapperStyle={{ fontSize: '12px', fontWeight: 'bold' }}
-                />
+                  <Legend
+                    verticalAlign="top"
+                    wrapperStyle={{ fontSize: '12px', fontWeight: 'bold' }}
+                  />
 
-                {/* Target Zone shading */}
-                <ReferenceArea
-                  y1={80}
-                  y2={180}
-                  strokeOpacity={0}
-                  fill="green"
-                  fillOpacity={0.1}
-                />
+                  {/* Target Zone shading */}
+                  <ReferenceArea
+                    y1={80}
+                    y2={180}
+                    strokeOpacity={0}
+                    fill="green"
+                    fillOpacity={0.1}
+                  />
 
-                {/* Threshold lines */}
-                <ReferenceLine y={70} stroke="blue" strokeDasharray="5 5" />
-                <ReferenceLine y={250} stroke="red" strokeDasharray="5 5" />
+                  {/* Threshold lines */}
+                  <ReferenceLine y={70} stroke="blue" strokeDasharray="5 5" />
+                  <ReferenceLine y={250} stroke="red" strokeDasharray="5 5" />
 
-                {/* Main glucose line */}
-                <Line
-                  type="monotone"
-                  dataKey="value"
-                  stroke="#0d9488"
-                  strokeWidth={2}
-                  dot
-                  name="Blood Glucose"
-                />
-
-                {/* Dummy legend entries */}
-                {/* <Line
-                  type="monotone"
-                  dataKey="targetZone"
-                  stroke="green"
-                  strokeWidth={6}
-                  strokeOpacity={0.2}
-                  legendType="rect"
-                  name="Target Zone (80-180 mg/dL)"
-                />
-                <Line
-                  type="monotone"
-                  dataKey="low"
-                  stroke="blue"
-                  strokeDasharray="5 5"
-                  legendType="line"
-                  name="Low <70 mg/dL"
-                />
-                <Line
-                  type="monotone"
-                  dataKey="high"
-                  stroke="red"
-                  strokeDasharray="5 5"
-                  legendType="line"
-                  name="High >250 mg/dL"
-                /> */}
-              </LineChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
+                  {/* Main glucose line */}
+                  <Line
+                    type="monotone"
+                    dataKey="value"
+                    stroke="#0d9488"
+                    strokeWidth={2}
+                    dot
+                    name="Blood Glucose"
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
 
           {/* Alerts System */}
           <div className="bg-background rounded-xl shadow-lg p-6">
@@ -643,35 +659,41 @@ export default function PredictiveAlertScreen({ values }: any) {
   );
 }
 
-const PredictiveAlerts: React.FC = () => {
-  // Function to parse time from string format like '15 min'
-  const parseTotalMinutes = (time: string) => parseInt(time.split(' ')[0]);
-
+const PredictiveAlerts: React.FC<{ toastId: string | number }> = ({
+  toastId,
+}) => {
+  const [currentAlertIndex, setCurrentAlertIndex] = useState(0);
   const [visible, setVisible] = useState(true);
 
-  if (!visible) return null; // completely hide card when dismissed
+  const handleAlertDismiss = () => {
+    if (currentAlertIndex < alerts.length - 1) {
+      setCurrentAlertIndex(prev => prev + 1);
+    } else {
+      setVisible(false);
+      toast.dismiss(toastId); // dismiss the toast only here
+    }
+  };
+
+  if (!visible || alerts.length === 0) return null;
+
+  const currentAlert = alerts[currentAlertIndex];
 
   return (
-    <div className="relative space-y-3 p-4 bg-card rounded-xl shadow">
-      {alerts.map((alert, index) => (
-        <DynamicAlert key={index} alert={alert} />
-      ))}
-      <div className="flex justify-center items-center ">
-        <Button
-          className="py-2 px-6 rounded-xl bg-accent text-foreground"
-          onClick={() => setVisible(false)}
-        >
-          Dissmiss{' '}
-        </Button>
-      </div>
+    <div className="w-96">
+      <DynamicAlert
+        alert={currentAlert}
+        onExpire={handleAlertDismiss}
+        onDismiss={handleAlertDismiss}
+      />
     </div>
   );
 };
 
-const DynamicAlert: React.FC<{ alert: Alert; onExpire?: () => void }> = ({
-  alert,
-  onExpire,
-}) => {
+const DynamicAlert: React.FC<{
+  alert: Alert;
+  onExpire?: () => void;
+  onDismiss?: () => void;
+}> = ({ alert, onExpire, onDismiss }) => {
   const totalSeconds = parseTotalMinutes(alert.time) * 60;
   const [remainingSeconds, setRemainingSeconds] = useState(totalSeconds);
 
@@ -705,7 +727,7 @@ const DynamicAlert: React.FC<{ alert: Alert; onExpire?: () => void }> = ({
   const fillColor = getStyles(alert.type);
 
   return (
-    <div className="flex justify-between items-center  rounded-lg overflow-hidden shadow-md bg-muted relative">
+    <div className="flex justify-between items-center rounded-lg overflow-hidden shadow-lg bg-muted relative animate-in slide-in-from-right-full duration-300">
       {/* Inline CSS block for the stripe animation */}
       <style>{`
         @keyframes stripe-move {
@@ -770,9 +792,17 @@ const DynamicAlert: React.FC<{ alert: Alert; onExpire?: () => void }> = ({
         </div>
       </div>
 
-      {/* Right box with countdown */}
-      <div className="bg-white px-4 py-4 text-black font-semibold text-sm w-20 text-center z-10">
-        {minutes}:{String(seconds).padStart(2, '0')}
+      {/* Right box with countdown and dismiss button */}
+      <div className="bg-white px-2 py-4 text-black font-semibold text-sm w-24 text-center z-10 flex flex-col items-center gap-1">
+        <div>
+          {minutes}:{String(seconds).padStart(2, '0')}
+        </div>
+        <button
+          onClick={onDismiss}
+          className="text-xs text-gray-500 hover:text-gray-700"
+        >
+          ✕
+        </button>
       </div>
     </div>
   );

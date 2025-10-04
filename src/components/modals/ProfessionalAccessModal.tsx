@@ -37,6 +37,7 @@ export const ProfessionalAccessModal = ({
     licenseNumber: '',
     institution: '',
     motivation: '',
+    city: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isProfessionModalOpen, setIsProfessionModalOpen] = useState(false);
@@ -58,6 +59,7 @@ export const ProfessionalAccessModal = ({
     setIsSubmitting(true);
 
     try {
+      // Use the table 'professional_applications'
       const { error } = await supabase
         .from('professional_applications')
         .insert({
@@ -68,10 +70,23 @@ export const ProfessionalAccessModal = ({
           professional_type: formData.profession,
           license_number: formData.licenseNumber,
           institution: formData.institution,
-          country: 'FR',
+          country: 'FR', // You might want to make this dynamic
+          city: '', // Required field, add to form or set default
+          documents: [], // Required field for document URLs
+          status: 'pending', // Default status for new applications
+          reviewed_by: null,
+          reviewed_at: null,
+          rejection_reason: null,
+          professional_code: null, // Will be set by admin when approved
+          code_issued_at: null,
+          code_expires_at: null,
+          user_id: null, // Will be set when professional signs in
         });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Submission error:', error);
+        throw error;
+      }
 
       toast({
         title: t('professionalAccess.requestSent'),
@@ -159,6 +174,18 @@ export const ProfessionalAccessModal = ({
                 value={formData.phone}
                 onChange={e =>
                   setFormData({ ...formData, phone: e.target.value })
+                }
+                required
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="city">City</Label>
+              <Input
+                id="city"
+                value={formData.city}
+                onChange={e =>
+                  setFormData({ ...formData, city: e.target.value })
                 }
                 required
               />
