@@ -1,5 +1,6 @@
 import PredictiveAlertScreen from "@/components/screens/PredictiveAlertScreen";
 import { P } from "node_modules/framer-motion/dist/types.d-Cjd591yU";
+import { permission } from "process";
 
 export const en = {
   // App general
@@ -1225,6 +1226,31 @@ export const en = {
     copyDescription: 'The access code has been copied to your clipboard.',
   },
 
+  // Invite Partner Modal 
+  invitePartnerModal: {
+    title: 'Invite a Care Partner',
+    form: {
+      name: 'Family Name',
+      phone: 'Phone Number',
+      code: 'Patient Code',
+      permission: 'Access Level',
+    },
+    permissionOptions: {
+      read: 'Read Only',
+      full: 'Full Access',
+    },
+    button1: 'Cancel',
+    button2: 'Send Code',
+  },
+
+   manageAccessModal: {
+    title: 'Manage Access',
+    radio1: 'Read only',
+    radio2: 'Full Access',
+    radio3: 'Remove Access',
+    button1: 'Cancel',
+    button2: 'Save',
+  },
   professionalLoginCard: {
     title: 'Healthcare Professional',
     subtitle: 'Access professional tools',
