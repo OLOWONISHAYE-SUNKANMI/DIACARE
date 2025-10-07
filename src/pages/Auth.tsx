@@ -53,7 +53,13 @@ import {
   FormLabel,
   useDisclosure,
 } from '@chakra-ui/react';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { CurrencyConverter } from '@/utils/CurrencyConverter';
 import { CountryProvider, useCountry } from '@/contexts/CountryContext';
 import { Badge } from '@/components/ui/badge';
@@ -72,9 +78,6 @@ const AuthPage = () => {
   const { toast } = useToast();
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
-
-  // Professional SignIn
-  const [code, setCode] = useState('');
 
   // États pour les formulaires - MOVED TO TOP
   const [activeTab, setActiveTab] = useState('patient');
@@ -141,7 +144,7 @@ const AuthPage = () => {
 
     
     try {
-      const result = await signInWithProfessionalCode(code);
+      // const result = await signInWithProfessionalCode(code);
       const { error } = await signIn(
         patientSignInData.email,
         patientSignInData.password
@@ -442,7 +445,11 @@ const AuthPage = () => {
     return (
       <Select value={selectedCountry} onValueChange={handleCountryChange}>
         <SelectTrigger>
-          <SelectValue placeholder={t('countrySelector.Settings.countryCurrency.selectPlaceholder')} />
+          <SelectValue
+            placeholder={t(
+              'countrySelector.Settings.countryCurrency.selectPlaceholder'
+            )}
+          />
         </SelectTrigger>
         <SelectContent>
           {supportedCountries.map(({ code, info }) => (
@@ -499,15 +506,18 @@ const AuthPage = () => {
     setError(null);
 
     try {
-      const result = await signInWithProfessionalCode(code);
+      // Store the code before signing in
+      localStorage.setItem('professionalCode', professionalCode);
+      const result = await signInWithProfessionalCode(professionalCode);
       if (result.success) {
         toast({
           title: t('auth.professionalLoginSuccess'),
           description: t('auth.welcomeProfessional'),
         });
-        navigate('/professional');
+        navigate('/professional-dashboard');
       } else {
         setError(result.error || 'Failed to sign in');
+        localStorage.removeItem('professionalCode');
       }
     } catch (err: any) {
       console.log('Professional error:', err);
@@ -863,7 +873,9 @@ const AuthPage = () => {
                       {/* Country Selector */}
                       <div className="space-y-2">
                         <label className="text-sm font-medium">
-                          {t('countrySelector.Settings.countryCurrency.selectCountry')}
+                          {t(
+                            'countrySelector.Settings.countryCurrency.selectCountry'
+                          )}
                         </label>
                         <CountrySelector />
                       </div>
@@ -890,8 +902,8 @@ const AuthPage = () => {
                       id="professional-code"
                       type="text"
                       placeholder={t('auth.professionalCodePlaceholder')}
-                      value={code}
-                      onChange={e => setCode(e.target.value)}
+                      value={professionalCode}
+                      onChange={e => setProfessionalCode(e.target.value)}
                       className="text-center font-mono text-lg"
                       maxLength={15}
                       required
