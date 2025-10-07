@@ -61,7 +61,7 @@ export const ProfessionalDashboard = () => {
 
   const getUser = async () => {
     const { data, error } = await supabase.auth.getUser();
-    console.log('User:', data);
+    // console.log('User:', data);
     if (error) {
       console.error('Error fetching user:', error.message);
     } else if (data) {
@@ -78,7 +78,7 @@ export const ProfessionalDashboard = () => {
         console.error('No professional code found');
         return;
       }
-      console.log('Stored Professional Code:', storedCode);
+      // console.log('Stored Professional Code:', storedCode);
 
       const { data, error } = await supabase
         .from('professional_applications')
@@ -92,7 +92,6 @@ export const ProfessionalDashboard = () => {
     }
   };
 
-  // Get active patients
   // Trying to get the active patient and then map through it
   const getActivePatients = async () => {
     try {
@@ -100,7 +99,7 @@ export const ProfessionalDashboard = () => {
         .from('profiles')
         .select('id, first_name, last_name, specialty, phone');
 
-      console.log('Active Patients:', data);
+      // console.log('Active Patients:', data);
       if (error) throw error;
       setActivePatients(data);
     } catch (error) {
@@ -108,35 +107,59 @@ export const ProfessionalDashboard = () => {
     }
   };
 
-  // Get upcoming appointments
-  // This is for future updates
+  // Fetch upcoming consultations (appointments)
   const getUpcomingAppointments = async () => {
+    if (!user?.id) return console.warn('User ID not available yet.');
+
     try {
       const { data, error } = await supabase
-        .from('appointments')
-        .select('*')
-        .eq('professional_id', user?.id)
-        .gte('appointment_date', new Date().toISOString())
-        .order('appointment_date', { ascending: true });
+        .from('consultation_requests')
+        .select(
+          `
+        id,
+        consultation_reason,
+        status,
+        requested_at,
+        consultation_fee,
+        profiles:patient_id (first_name, last_name, phone)
+      `
+        )
+        .eq('professional_id', user.id)
+        .in('status', ['pending', 'scheduled'])
+        .order('requested_at', { ascending: true });
 
       if (error) throw error;
+
+      console.log('Upcoming Appointments:', data);
       setAppointments(data || []);
     } catch (error) {
-      console.error('Error fetching appointments:', error);
+      console.error('Error fetching upcoming appointments:', error);
     }
   };
 
-  // Get completed reports
-  // This is for future updates
   const getCompletedReports = async () => {
+    if (!user?.id) return console.warn('User ID not available yet.');
+
     try {
       const { data, error } = await supabase
-        .from('reports')
-        .select('*')
-        .eq('professional_id', user?.id)
-        .eq('status', 'completed');
+        .from('consultation_summaries')
+        .select(
+          `
+        id,
+        teleconsultation_id,
+        doctor_notes,
+        prescription,
+        recommendations,
+        duration_minutes,
+        created_at
+      `
+        )
+        // Optional: join teleconsultation for context
+        .order('created_at', { ascending: false });
 
       if (error) throw error;
+
+      console.log('Completed Reports:', data);
       setReports(data || []);
     } catch (error) {
       console.error('Error fetching reports:', error);
@@ -207,7 +230,7 @@ export const ProfessionalDashboard = () => {
               </Avatar>
               <div>
                 <h1 className="text-xl font-semibold">
-                  Dr. {professionalInfo.first_name}{' '}
+                  Dr. {professionalInfo?.first_name}{' '}
                   {professionalInfo?.last_name}
                 </h1>
                 <p
