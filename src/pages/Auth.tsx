@@ -143,7 +143,7 @@ const AuthPage = () => {
     setError('');
 
     try {
-      const result = await signInWithProfessionalCode(code);
+      // const result = await signInWithProfessionalCode(code);
       const { error } = await signIn(
         patientSignInData.email,
         patientSignInData.password
