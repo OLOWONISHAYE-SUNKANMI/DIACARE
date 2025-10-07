@@ -139,6 +139,7 @@ const AuthPage = () => {
     setIsLoading(true);
     setError('');
 
+    
     try {
       const result = await signInWithProfessionalCode(code);
       const { error } = await signIn(
