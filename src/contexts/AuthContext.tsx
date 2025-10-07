@@ -39,6 +39,7 @@ interface AuthContextType {
   session: Session | null;
   profile: Profile | null;
   loading: boolean;
+  professionalCode: string | null;
 
   signUp: (
     email: string,
@@ -67,7 +68,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const [isProfessional, setIsProfessional] = useState(false);
+  const [professionalCode, setProfessionalCode] = useState<string | null>(
+    () => {
+      return localStorage.getItem('professionalCode');
+    }
+  );
   const [professionalData, setProfessionalData] = useState<any>(null);
+
   const [isTestMode, setIsTestMode] = useState(() => {
     return localStorage.getItem('dare-test-mode') === 'true';
   });
@@ -339,6 +346,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     toggleTestMode,
     hasSubscription: effectiveSubscription,
     updateProfile,
+    professionalCode,
+    setProfessionalCode,
+    uid: user?.id || null,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
