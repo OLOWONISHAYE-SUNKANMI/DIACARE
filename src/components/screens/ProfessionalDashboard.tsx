@@ -22,8 +22,11 @@ import { PatientManagement } from '@/components/ui/PatientManagement';
 import { QuickActions } from '@/components/ui/QuickActions';
 import { toast } from 'sonner';
 import { useThemeStore } from '@/store/useThemeStore';
+import LanguageToggle from '@/components/ui/LanguageToggle';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { useTranslation } from 'react-i18next';
+
 
 export const ProfessionalDashboard = () => {
   const [user, setUser] = useState(null);
@@ -35,6 +38,9 @@ export const ProfessionalDashboard = () => {
   const { theme, toggleTheme } = useThemeStore();
   const { professionalCode } = useAuth();
   console.log('Professional Info:', professionalInfo);
+
+   const isDark = theme === 'dark';
+  const { t } = useTranslation();
 
   const handleLogout = () => {
     toast.success('Logged out successfully', {
@@ -169,24 +175,24 @@ export const ProfessionalDashboard = () => {
   // Update stats with real data
   const stats = [
     {
-      title: 'Active Patients',
+      title: t('professionalDashboard.stats.title1'),
       value: activePatients.length.toString(),
       icon: Users,
       trend: '+0%',
     },
     {
-      title: 'Upcoming Appointments',
+      title: t('professionalDashboard.stats.title2'),
       value: appointments.length.toString(),
       icon: Calendar,
       trend: '+0%',
     },
     {
-      title: 'Reports Completed',
+      title: t('professionalDashboard.stats.title3'),
       value: reports.length.toString(),
       icon: FileText,
       trend: '+0%',
     },
-    { title: 'Avg Consultation Time', value: '0min', icon: Clock, trend: '0%' },
+    { title: t('professionalDashboard.stats.title4'), value: '0min', icon: Clock, trend: '0%' },
   ];
 
   // Map active patients to recent patients format
@@ -258,7 +264,7 @@ export const ProfessionalDashboard = () => {
                   <Moon className="w-5 h-5 text-gray-800" />
                 )}
               </Button>
-              <Badge
+              {/* <Badge
                 variant="outline"
                 className={`${
                   theme === 'dark'
@@ -267,7 +273,12 @@ export const ProfessionalDashboard = () => {
                 }`}
               >
                 🚀 Demo Mode
-              </Badge>
+              </Badge> */}
+
+               <LanguageToggle
+                          className={`${isDark ? 'text-white' : 'text-black'}`}
+                />
+
               <Button variant="outline" size="sm" onClick={handleLogout}>
                 <LogOut className="h-4 w-4 mr-2" />
                 Logout
@@ -318,7 +329,7 @@ export const ProfessionalDashboard = () => {
                         : 'text-muted-foreground'
                     }`}
                   >
-                    compared to last week
+                   {t('professionalDashboard.stats.compared')}
                   </span>
                 </div>
               </CardContent>
@@ -329,11 +340,11 @@ export const ProfessionalDashboard = () => {
         {/* Tabs */}
         <Tabs defaultValue="overview" className="space-y-6">
           <TabsList className="grid w-full grid-cols-5">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="patients">Patients</TabsTrigger>
-            <TabsTrigger value="consultations">Consultations</TabsTrigger>
-            <TabsTrigger value="earnings">Earnings</TabsTrigger>
-            <TabsTrigger value="settings">Settings</TabsTrigger>
+            <TabsTrigger value="overview">{t('healthProfessionalScreen.tabs.overview')}</TabsTrigger>
+            <TabsTrigger value="patients">{t('healthProfessionalScreen.tabs.patients')}</TabsTrigger>
+            <TabsTrigger value="consultations">{t('healthProfessionalScreen.tabs.consultations')}</TabsTrigger>
+            <TabsTrigger value="earnings">{t('healthProfessionalScreen.tabs.earnings')}</TabsTrigger>
+            <TabsTrigger value="settings">{t('healthProfessionalScreen.tabs.settings')}</TabsTrigger>
           </TabsList>
 
           {/* Overview */}
@@ -348,7 +359,7 @@ export const ProfessionalDashboard = () => {
                 <CardHeader>
                   <CardTitle className="flex items-center">
                     <Users className="h-5 w-5 mr-2" />
-                    Recent Patients
+                    {t('professionalDashboard.overview.recentPatients.title')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -407,7 +418,7 @@ export const ProfessionalDashboard = () => {
                 <CardHeader>
                   <CardTitle className="flex items-center">
                     <Stethoscope className="h-5 w-5 mr-2" />
-                    Quick Actions
+                    {t('professionalDashboard.overview.quickActions.title')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
