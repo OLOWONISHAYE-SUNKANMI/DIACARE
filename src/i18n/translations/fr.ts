@@ -1265,10 +1265,10 @@ export const fr = {
     mode: 'Mode Démo',
     logout: 'Déconnexion',
     stats: {
-      title1: 'Patients suivis',
-      title2: 'Consultations ce mois',
-      title3: 'Rapports générés',
-      title4: 'Temps moyen / consultation',
+      title1: 'Patients actifs',
+      title2: 'Prochains rendez-vous',
+      title3: 'Rapports terminés',
+      title4: 'Durée moyenne / consultation',
       compared: 'vs mois dernier',
     },
 
@@ -2355,11 +2355,12 @@ L'application Klukoo AI sera la première à intégrer cette technologie dès se
       endocrinologist: 'Endocrinologue',
     },
     tabs: {
-      dashboard: 'Tableau de bord',
+      overview: 'Aperçu',
       consultations: 'Consultations',
       earnings: 'Rémunérations',
-      patients: 'Patients',
+      patients: 'Patientes',
       access_codes: "Codes d'accès",
+      settings: 'Paramètres',
     },
     labels: {
       patients_tracked: 'Patients suivis',
