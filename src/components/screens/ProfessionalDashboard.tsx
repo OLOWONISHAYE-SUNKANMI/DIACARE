@@ -34,6 +34,7 @@ export const ProfessionalDashboard = () => {
   const navigate = useNavigate();
   const { theme, toggleTheme } = useThemeStore();
   const { professionalCode } = useAuth();
+  console.log('Professional Info:', professionalInfo);
 
   const handleLogout = () => {
     toast.success('Logged out successfully', {
@@ -44,12 +45,19 @@ export const ProfessionalDashboard = () => {
   };
 
   useEffect(() => {
+    const storedCode = localStorage.getItem('professionalCode');
+    if (!storedCode) {
+      console.error('No professional code found, redirecting to login');
+      navigate('/auth');
+      return;
+    }
+
     getActivePatients();
     getUpcomingAppointments();
     getCompletedReports();
     getProfessionalInfo();
     getUser();
-  }, [user]);
+  }, [user, navigate]);
 
   const getUser = async () => {
     const { data, error } = await supabase.auth.getUser();
@@ -65,20 +73,20 @@ export const ProfessionalDashboard = () => {
   // Trying to use the professional code to get the excat info for the excat professional in the dashboard.
   const getProfessionalInfo = async () => {
     try {
-      if (!professionalCode) {
+      const storedCode = localStorage.getItem('professionalCode');
+      if (!storedCode) {
         console.error('No professional code found');
         return;
       }
+      console.log('Stored Professional Code:', storedCode);
 
       const { data, error } = await supabase
         .from('professional_applications')
         .select('first_name, last_name, professional_type')
-        .eq('professional_code', professionalCode)
-        .single();
+        .eq('professional_code', storedCode);
 
       if (error) throw error;
-      console.log('Professional Info:', data);
-      setProfessionalInfo(data);
+      setProfessionalInfo(data[0]);
     } catch (error) {
       console.error('Error fetching professional info:', error);
     }
@@ -90,7 +98,7 @@ export const ProfessionalDashboard = () => {
     try {
       const { data, error } = await supabase
         .from('profiles')
-        .select('id, first_name, last_name, specialty, phone'); // Specify columns to avoid deep type instantiation
+        .select('id, first_name, last_name, specialty, phone');
 
       console.log('Active Patients:', data);
       if (error) throw error;
@@ -199,7 +207,7 @@ export const ProfessionalDashboard = () => {
               </Avatar>
               <div>
                 <h1 className="text-xl font-semibold">
-                  Dr. {professionalInfo?.first_name}{' '}
+                  Dr. {professionalInfo.first_name}{' '}
                   {professionalInfo?.last_name}
                 </h1>
                 <p
