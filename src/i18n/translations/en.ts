@@ -1,4 +1,5 @@
 import PredictiveAlertScreen from "@/components/screens/PredictiveAlertScreen";
+import { set } from "date-fns";
 import { P } from "node_modules/framer-motion/dist/types.d-Cjd591yU";
 import { permission } from "process";
 
@@ -1273,9 +1274,9 @@ export const en = {
     mode: 'Demo Mode',
     logout: 'Logout',
     stats: {
-      title1: 'Patients monitored',
-      title2: 'Consultations this month',
-      title3: 'Reports generated',
+      title1: 'Active Patients',
+      title2: 'Upcoming Appointments',
+      title3: 'Reports Completed',
       title4: 'Average time / consultation',
       compared: 'vs last month',
     },
@@ -2323,11 +2324,12 @@ The Klukoo AI app will be the first to integrate this technology by September 20
       endocrinologist: 'Endocrinologist',
     },
     tabs: {
-      dashboard: 'Dashboard',
+      overview: 'Overview',
       consultations: 'Consultations',
       earnings: 'Earnings',
       patients: 'Patients',
       access_codes: 'Access Codes',
+      settings: 'Settings', 
     },
     labels: {
       patients_tracked: 'Patients Tracked',
