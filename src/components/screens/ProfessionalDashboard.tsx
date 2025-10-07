@@ -22,10 +22,18 @@ import { PatientManagement } from '@/components/ui/PatientManagement';
 import { QuickActions } from '@/components/ui/QuickActions';
 import { toast } from 'sonner';
 import { useThemeStore } from '@/store/useThemeStore';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
 
 export const ProfessionalDashboard = () => {
+  const [user, setUser] = useState(null);
+  const [activePatients, setActivePatients] = useState([]);
+  const [appointments, setAppointments] = useState([]);
+  const [reports, setReports] = useState([]);
+  const [professionalInfo, setProfessionalInfo] = useState(null);
   const navigate = useNavigate();
   const { theme, toggleTheme } = useThemeStore();
+  const { professionalCode } = useAuth();
 
   const handleLogout = () => {
     toast.success('Logged out successfully', {
@@ -35,43 +43,128 @@ export const ProfessionalDashboard = () => {
     navigate('/auth');
   };
 
+  useEffect(() => {
+    getActivePatients();
+    getUpcomingAppointments();
+    getCompletedReports();
+    getProfessionalInfo();
+    getUser();
+  }, [user]);
+
+  const getUser = async () => {
+    const { data, error } = await supabase.auth.getUser();
+    console.log('User:', data);
+    if (error) {
+      console.error('Error fetching user:', error.message);
+    } else if (data) {
+      setUser(data);
+    }
+  };
+
+  // Get professional info
+  // Trying to use the professional code to get the excat info for the excat professional in the dashboard.
+  const getProfessionalInfo = async () => {
+    try {
+      if (!professionalCode) {
+        console.error('No professional code found');
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from('professional_applications')
+        .select('first_name, last_name, professional_type')
+        .eq('professional_code', professionalCode)
+        .single();
+
+      if (error) throw error;
+      console.log('Professional Info:', data);
+      setProfessionalInfo(data);
+    } catch (error) {
+      console.error('Error fetching professional info:', error);
+    }
+  };
+
+  // Get active patients
+  // Trying to get the active patient and then map through it
+  const getActivePatients = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('id, first_name, last_name, specialty, phone'); // Specify columns to avoid deep type instantiation
+
+      console.log('Active Patients:', data);
+      if (error) throw error;
+      setActivePatients(data);
+    } catch (error) {
+      console.error('Error fetching active patients:', error);
+    }
+  };
+
+  // Get upcoming appointments
+  // This is for future updates
+  const getUpcomingAppointments = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('appointments')
+        .select('*')
+        .eq('professional_id', user?.id)
+        .gte('appointment_date', new Date().toISOString())
+        .order('appointment_date', { ascending: true });
+
+      if (error) throw error;
+      setAppointments(data || []);
+    } catch (error) {
+      console.error('Error fetching appointments:', error);
+    }
+  };
+
+  // Get completed reports
+  // This is for future updates
+  const getCompletedReports = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('reports')
+        .select('*')
+        .eq('professional_id', user?.id)
+        .eq('status', 'completed');
+
+      if (error) throw error;
+      setReports(data || []);
+    } catch (error) {
+      console.error('Error fetching reports:', error);
+    }
+  };
+
+  // Update stats with real data
   const stats = [
-    { title: 'Active Patients', value: '24', icon: Users, trend: '+12%' },
+    {
+      title: 'Active Patients',
+      value: activePatients.length.toString(),
+      icon: Users,
+      trend: '+0%',
+    },
     {
       title: 'Upcoming Appointments',
-      value: '48',
+      value: appointments.length.toString(),
       icon: Calendar,
-      trend: '+8%',
+      trend: '+0%',
     },
-    { title: 'Reports Completed', value: '15', icon: FileText, trend: '+23%' },
     {
-      title: 'Avg Consultation Time',
-      value: '32min',
-      icon: Clock,
-      trend: '-5%',
+      title: 'Reports Completed',
+      value: reports.length.toString(),
+      icon: FileText,
+      trend: '+0%',
     },
+    { title: 'Avg Consultation Time', value: '0min', icon: Clock, trend: '0%' },
   ];
 
-  const recentPatients = [
-    {
-      name: 'Marie Dubois',
-      lastVisit: '2 days ago',
-      glucose: '7.2 mmol/L',
-      status: 'stable',
-    },
-    {
-      name: 'Pierre Martin',
-      lastVisit: '5 days ago',
-      glucose: '6.8 mmol/L',
-      status: 'attention',
-    },
-    {
-      name: 'Sophie Laurent',
-      lastVisit: '1 week ago',
-      glucose: '8.1 mmol/L',
-      status: 'stable',
-    },
-  ];
+  // Map active patients to recent patients format
+  const recentPatients = activePatients.map(patient => ({
+    name: `${patient.first_name} ${patient.last_name}`,
+    lastVisit: new Date(patient.last_visit || '').toLocaleDateString(),
+    glucose: patient.last_glucose_reading || 'N/A',
+    status: patient.status || 'stable',
+  }));
 
   return (
     <div
@@ -91,22 +184,31 @@ export const ProfessionalDashboard = () => {
       >
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between flex-wrap gap-4">
-            {/* User info */}
+            {/* User info - now dynamic */}
             <div className="flex items-center space-x-4">
               <Avatar className="h-12 w-12">
-                <AvatarImage src="/placeholder-doctor.jpg" />
+                <AvatarImage
+                  src={
+                    professionalInfo?.avatar_url || '/placeholder-doctor.jpg'
+                  }
+                />
                 <AvatarFallback className="bg-primary text-primary-foreground">
-                  JD
+                  {professionalInfo?.first_name}
+                  {professionalInfo?.last_name}
                 </AvatarFallback>
               </Avatar>
               <div>
-                <h1 className="text-xl font-semibold">Dr. Jane Doe</h1>
+                <h1 className="text-xl font-semibold">
+                  Dr. {professionalInfo?.first_name}{' '}
+                  {professionalInfo?.last_name}
+                </h1>
                 <p
                   className={`text-sm ${
                     theme === 'dark' ? 'text-gray-400' : 'text-muted-foreground'
                   }`}
                 >
-                  General Practitioner
+                  {professionalInfo?.professional_type ||
+                    'Medical Professional'}
                 </p>
               </div>
             </div>
