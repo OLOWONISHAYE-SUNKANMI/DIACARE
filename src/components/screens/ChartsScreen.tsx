@@ -47,16 +47,16 @@ const ChartsScreen = () => {
   const { activities } = useActivities();
   const { readings: glucose } = useGlucose();
 
-  // Glucose data with sequential points
+  // Glucose data sorted by timestamp and limited to latest 15 readings
   const glucoseData = [...glucose]
     .sort(
-      (a, b) =>
-        new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+      (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
     )
+    .slice(-15) // keep latest 15
     .map((r, i) => ({
       ...r,
       timestamp: r.timestamp,
-      point: i, // sequential simulated point
+      point: i + 1, // count from 1
     }));
 
   const glucoseValues = glucose.map(d => d.value);
@@ -68,22 +68,21 @@ const ChartsScreen = () => {
     : 0;
 
   // Meals grouped by day (total carbs)
-      const mealsChartData = meals.map(m => ({
-        time: new Date(m.meal_time).toLocaleTimeString([], {
-          hour: '2-digit',
-          minute: '2-digit',
-        }),
-        carbs: m.total_carbs,
-        meal: m.meal_name, // keep meal name here for tooltip
-        date: new Date(m.meal_time).toLocaleDateString([], {
-          weekday: 'short',
-          month: 'short',
-          day: 'numeric',
-        }),
-      }));
+  const mealsChartData = meals.map(m => ({
+    time: new Date(m.meal_time).toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+    }),
+    carbs: m.total_carbs,
+    meal: m.meal_name,
+    date: new Date(m.meal_time).toLocaleDateString([], {
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric',
+    }),
+  }));
 
-
-  //  Activities summary by type
+  // Activities summary
   const activitySummary = Object.values(
     activities.reduce((acc: any, a) => {
       acc[a.activity_type] = acc[a.activity_type] || {
@@ -95,7 +94,7 @@ const ChartsScreen = () => {
     }, {})
   );
 
-  // Stats for Time-in-Range
+  // Time in Range stats
   const veryLow = glucoseValues.filter(v => v < 70).length;
   const target = glucoseValues.filter(v => v >= 70 && v < 180).length;
   const high = glucoseValues.filter(v => v >= 180).length;
@@ -105,9 +104,9 @@ const ChartsScreen = () => {
   const highPct = Math.round((high / glucoseValues.length) * 100) || 0;
 
   const getBarColor = (value: number) => {
-    if (value < 30) return '#22c55e'; // green (low)
-    if (value <= 60) return '#eab308'; // yellow (moderate)
-    return '#ef4444'; // red (high)
+    if (value < 30) return '#22c55e';
+    if (value <= 60) return '#eab308';
+    return '#ef4444';
   };
 
   const CustomTooltip = ({ active, payload, label }: any) => {
@@ -140,49 +139,50 @@ const ChartsScreen = () => {
         <Card>
           <CardContent className="p-4 flex flex-col items-center">
             <Droplet className="w-6 h-6 text-blue-500 mb-2" />
-            <p className="text-sm text-muted-foreground">
-              {t('charts.latest')}
-            </p>
+            <p className="text-sm text-muted-foreground">{t('charts.latest')}</p>
             <p className="text-xl font-bold">{latestGlucose} mg/dL</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4 flex flex-col items-center">
             <Activity className="w-6 h-6 text-green-500 mb-2" />
-            <p className="text-sm text-muted-foreground">
-              {t('charts.average')}
-            </p>
+            <p className="text-sm text-muted-foreground">{t('charts.average')}</p>
             <p className="text-xl font-bold">{avgGlucose.toFixed(1)} mg/dL</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4 flex flex-col items-center">
             <Target className="w-6 h-6 text-red-500 mb-2" />
-            <p className="text-sm text-muted-foreground">
-              {t('charts.highest')}
-            </p>
+            <p className="text-sm text-muted-foreground">{t('charts.highest')}</p>
             <p className="text-xl font-bold">{maxGlucose} mg/dL</p>
           </CardContent>
         </Card>
       </div>
 
-      {/* Grid of main charts */}
+      {/* Main Charts */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Blood Glucose Line */}
+        {/* Blood Glucose Chart */}
         <Card>
           <CardHeader>
             <CardTitle>{t('charts.glucose')}</CardTitle>
           </CardHeader>
           <CardContent className="h-80">
             <ResponsiveContainer width="100%" height={300}>
-              <LineChart data={glucoseData}>
+              <LineChart
+                data={glucoseData}
+                margin={{ top: 20, right: 30, left: 10, bottom: 20 }}
+              >
                 <CartesianGrid strokeDasharray="3 3" />
 
-                {/* X Axis with simulated points */}
                 <XAxis
                   dataKey="point"
+                  type="number"
+                  domain={[1, 15]}
+                  ticks={[...Array(15)].map((_, i) => i + 1)}
+                  interval={0}
+                  allowDecimals={false}
                   label={{
-                    value: 'Point in Time',
+                    value: 'Stimulated Time in Points',
                     position: 'insideBottom',
                     offset: -5,
                   }}
@@ -192,10 +192,9 @@ const ChartsScreen = () => {
                   label={{
                     value: 'Blood Glucose (mg/dL)',
                     angle: -90,
-                    style: { textAnchor: 'middle' },
                     position: 'insideLeft',
+
                   }}
-                  domain={[0, 'dataMax + 50']}
                 />
 
                 <Tooltip
@@ -212,66 +211,27 @@ const ChartsScreen = () => {
                   }}
                 />
 
-                <Legend
-                  verticalAlign="top"
-                  wrapperStyle={{ fontSize: '12px', fontWeight: 'bold' }}
-                />
+                <Legend verticalAlign="top" height={36} />
 
-                {/* Target Zone shading */}
-                <ReferenceArea
-                  y1={80}
-                  y2={180}
-                  strokeOpacity={0}
-                  fill="green"
-                  fillOpacity={0.1}
-                />
-
-                {/* Threshold lines */}
+                <ReferenceArea y1={80} y2={180} fill="green" fillOpacity={0.1} />
                 <ReferenceLine y={70} stroke="blue" strokeDasharray="5 5" />
                 <ReferenceLine y={250} stroke="red" strokeDasharray="5 5" />
 
-                {/* Main glucose line */}
                 <Line
                   type="monotone"
                   dataKey="value"
                   stroke="#0d9488"
                   strokeWidth={2}
-                  dot
+                  dot={{ r: 3 }}
+                  activeDot={{ r: 5 }}
                   name="Blood Glucose"
                 />
-
-                {/* Dummy legend entries */}
-                {/* <Line
-                  type="monotone"
-                  dataKey="targetZone"
-                  stroke="green"
-                  strokeWidth={6}
-                  strokeOpacity={0.2}
-                  legendType="rect"
-                  name="Target Zone (80-180 mg/dL)"
-                />
-                <Line
-                  type="monotone"
-                  dataKey="low"
-                  stroke="blue"
-                  strokeDasharray="5 5"
-                  legendType="line"
-                  name="Low <70 mg/dL"
-                />
-                <Line
-                  type="monotone"
-                  dataKey="high"
-                  stroke="red"
-                  strokeDasharray="5 5"
-                  legendType="line"
-                  name="High >250 mg/dL"
-                /> */}
               </LineChart>
             </ResponsiveContainer>
           </CardContent>
         </Card>
 
-      {/* Meals Bar */}
+        {/* Meals Bar Chart */}
         <Card>
           <CardHeader>
             <CardTitle>{t('charts.meals')}</CardTitle>
@@ -286,7 +246,6 @@ const ChartsScreen = () => {
                     value: 'Carbohydrate (g)',
                     angle: -90,
                     position: 'insideLeft',
-                    style: { textAnchor: 'middle' },
                   }}
                 />
                 <Tooltip
@@ -294,13 +253,6 @@ const ChartsScreen = () => {
                     `${value} g`,
                     props.payload.meal,
                   ]}
-                  labelFormatter={(label: any, payload: any) => {
-                    if (payload && payload.length > 0) {
-                      const { meal, time, carbs } = payload[0].payload;
-                      return `${meal} • ${time} • ${carbs} g`;
-                    }
-                    return label;
-                  }}
                 />
                 <ReferenceLine y={30} stroke="#22c55e" strokeDasharray="4 4" />
                 <ReferenceLine y={60} stroke="#eab308" strokeDasharray="4 4" />
@@ -314,8 +266,7 @@ const ChartsScreen = () => {
           </CardContent>
         </Card>
 
-
-        {/* Medications Bar */}
+        {/* Medications Chart */}
         <Card>
           <CardHeader>
             <CardTitle>{t('charts.medications')}</CardTitle>
@@ -337,7 +288,7 @@ const ChartsScreen = () => {
           </CardContent>
         </Card>
 
-        {/* Activities Pie */}
+        {/* Activities Pie Chart */}
         <Card>
           <CardHeader>
             <CardTitle>{t('charts.activities')}</CardTitle>
@@ -363,7 +314,7 @@ const ChartsScreen = () => {
         </Card>
       </div>
 
-      {/* Time in Range */}
+      {/* Time in Range Bar */}
       <Card className="border-medical-teal/20">
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
@@ -378,15 +329,9 @@ const ChartsScreen = () => {
             <div className="bg-orange-400" style={{ width: `${highPct}%` }} />
           </div>
           <div className="flex justify-between text-xs mt-2">
-            <span>
-              {veryLowPct}% {t('charts.zones.low')}
-            </span>
-            <span>
-              {targetPct}% {t('charts.inRange')}
-            </span>
-            <span>
-              {highPct}% {t('charts.zones.high')}
-            </span>
+            <span>{veryLowPct}% {t('charts.zones.low')}</span>
+            <span>{targetPct}% {t('charts.inRange')}</span>
+            <span>{highPct}% {t('charts.zones.high')}</span>
           </div>
         </CardContent>
       </Card>

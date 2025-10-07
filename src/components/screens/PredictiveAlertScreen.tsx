@@ -100,7 +100,7 @@ export default function PredictiveAlertScreen({ values }: any) {
 
   const totalCarbs = meals.reduce((sum, meal) => sum + meal.total_carbs, 0);
   const latestReading = getLatestReading();
-  const currentGlucose = latestReading?.value || 126;
+  const [currentGlucose, setCurrentGlucose] = useState(latestReading?.value || 126);
 
   // State for manual inputs with context fallbacks
   const [insulin, setInsulin] = useState(0);
@@ -109,7 +109,7 @@ export default function PredictiveAlertScreen({ values }: any) {
 
   // Update state when context values change
   useEffect(() => {
-    if (dose_unit && insulin === 0) setInsulin(dose_unit);
+    if (dose_unit && insulin === 0) setInsulin(Number(dose_unit));
   }, [dose_unit]);
 
   useEffect(() => {
@@ -250,16 +250,17 @@ export default function PredictiveAlertScreen({ values }: any) {
     const d = new Date(iso);
     return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
-  // Glucose data with sequential points
+  
+  // Glucose data sorted by timestamp and limited to latest 15 readings
   const glucoseData = [...glucose]
     .sort(
-      (a, b) =>
-        new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+      (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
     )
+    .slice(-15) // keep latest 15
     .map((r, i) => ({
       ...r,
       timestamp: r.timestamp,
-      point: i, // sequential simulated point
+      point: i + 1, // count from 1
     }));
 
   const glucoseValues = glucose.map(d => d.value);
@@ -498,84 +499,73 @@ export default function PredictiveAlertScreen({ values }: any) {
         <div className="lg:col-span-2 space-y-6">
           {/* Real-Time Graph */}
           <Card>
-            <CardHeader>
-              <CardTitle>
-                Blood Glucose with Diabetes Reference Ranges
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="h-80">
-              <ResponsiveContainer width="100%" height={300}>
-                <LineChart data={glucoseData}>
-                  <CartesianGrid strokeDasharray="3 3" />
+          <CardHeader>
+            <CardTitle>{t('charts.glucose')}</CardTitle>
+          </CardHeader>
+          <CardContent className="h-80">
+            <ResponsiveContainer width="100%" height={300}>
+              <LineChart
+                data={glucoseData}
+                margin={{ top: 20, right: 30, left: 10, bottom: 20 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
 
-                  {/* X Axis with simulated points */}
-                  <XAxis
-                    dataKey="point"
-                    label={{
-                      value: 'Point in Time',
-                      position: 'insideBottom',
-                      offset: -5,
-                    }}
-                  />
+                <XAxis
+                  dataKey="point"
+                  type="number"
+                  domain={[1, 15]}
+                  ticks={[...Array(15)].map((_, i) => i + 1)}
+                  interval={0}
+                  allowDecimals={false}
+                  label={{
+                    value: 'Stimulated Time in Points',
+                    position: 'insideBottom',
+                    offset: -5,
+                  }}
+                />
 
-                  <YAxis
-                    label={{
-                      value: 'Blood Glucose (mg/dL)',
-                      angle: -90,
-                      style: { textAnchor: 'middle' },
-                      position: 'insideLeft',
-                    }}
-                    domain={[0, 'dataMax + 50']}
-                  />
+                <YAxis
+                  label={{
+                    value: 'Blood Glucose (mg/dL)',
+                    angle: -90,
+                    position: 'insideLeft',
 
-                  <Tooltip
-                    formatter={(value: any) => [
-                      `${value} mg/dL`,
-                      'Blood Glucose',
-                    ]}
-                    labelFormatter={(label, payload) => {
-                      const item = payload?.[0]?.payload;
-                      const date = new Date(item?.timestamp);
-                      return date.toLocaleString('en-US', {
-                        month: 'short',
-                        day: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                      });
-                    }}
-                  />
+                  }}
+                />
 
-                  <Legend
-                    verticalAlign="top"
-                    wrapperStyle={{ fontSize: '12px', fontWeight: 'bold' }}
-                  />
+                <Tooltip
+                  formatter={(value: any) => [`${value} mg/dL`, 'Blood Glucose']}
+                  labelFormatter={(label, payload) => {
+                    const item = payload?.[0]?.payload;
+                    const date = new Date(item?.timestamp);
+                    return date.toLocaleString('en-US', {
+                      month: 'short',
+                      day: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    });
+                  }}
+                />
 
-                  {/* Target Zone shading */}
-                  <ReferenceArea
-                    y1={80}
-                    y2={180}
-                    strokeOpacity={0}
-                    fill="green"
-                    fillOpacity={0.1}
-                  />
+                <Legend verticalAlign="top" height={36} />
 
-                  {/* Threshold lines */}
-                  <ReferenceLine y={70} stroke="blue" strokeDasharray="5 5" />
-                  <ReferenceLine y={250} stroke="red" strokeDasharray="5 5" />
+                <ReferenceArea y1={80} y2={180} fill="green" fillOpacity={0.1} />
+                <ReferenceLine y={70} stroke="blue" strokeDasharray="5 5" />
+                <ReferenceLine y={250} stroke="red" strokeDasharray="5 5" />
 
-                  {/* Main glucose line */}
-                  <Line
-                    type="monotone"
-                    dataKey="value"
-                    stroke="#0d9488"
-                    strokeWidth={2}
-                    dot
-                    name="Blood Glucose"
-                  />
-                </LineChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
+                <Line
+                  type="monotone"
+                  dataKey="value"
+                  stroke="#0d9488"
+                  strokeWidth={2}
+                  dot={{ r: 3 }}
+                  activeDot={{ r: 5 }}
+                  name="Blood Glucose"
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
 
           {/* Alerts System */}
           <div className="bg-background rounded-xl shadow-lg p-6">
@@ -648,7 +638,7 @@ export default function PredictiveAlertScreen({ values }: any) {
                   {t('insulinDosage.historicalDatabase.dataPointsToday')}
                 </p>
                 <p className="text-xl font-bold text-muted-foreground">
-                  {glucoseData.filter(d => !d.predicted).length}
+                  {glucoseData.filter(d => !('predicted' in d) || !d.predicted).length}
                 </p>
               </div>
             </div>
