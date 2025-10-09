@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import {
   LineChart,
   Line,
@@ -123,6 +124,8 @@ const ChartsScreen = () => {
     return null;
   };
 
+
+
   return (
     <div className="flex-1 p-4 space-y-6 pb-24 animate-fade-in">
       {/* Title */}
@@ -234,13 +237,26 @@ const ChartsScreen = () => {
         {/* Meals Bar Chart */}
         <Card>
           <CardHeader>
-            <CardTitle>{t('charts.meals')}</CardTitle>
+             <CardTitle>{t('charts.meals')}</CardTitle>
           </CardHeader>
-          <CardContent className="h-72">
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={mealsChartData}>
+
+          <CardContent className="h-96">
+            <ResponsiveContainer width="100%" height={320}>
+              <BarChart
+                data={mealsChartData.slice(0, 4)} // show only first 3–4 data points
+                margin={{ top: 20, right: 20, left: 0, bottom: 30 }}
+                barCategoryGap="25%" // wider bars
+              >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="time" reversed />
+                <XAxis
+                  dataKey="time"
+                   reversed 
+                  label={{
+                    value: 'Meals',
+                    position: 'insideBottom',
+                    offset: -5,
+                  }}
+                />
                 <YAxis
                   label={{
                     value: 'Carbohydrate (g)',
@@ -254,17 +270,30 @@ const ChartsScreen = () => {
                     props.payload.meal,
                   ]}
                 />
-                <ReferenceLine y={30} stroke="#22c55e" strokeDasharray="4 4" />
-                <ReferenceLine y={60} stroke="#eab308" strokeDasharray="4 4" />
-                <Bar dataKey="carbs" name="Carbs">
-                  {mealsChartData.map((entry, index) => (
+                <Bar dataKey="carbs" barSize={80} radius={[10, 10, 0, 0]}>
+                  {mealsChartData.slice(0, 4).map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={getBarColor(entry.carbs)} />
+                  ))}
+                  {mealsChartData.slice(0, 4).map((entry, index) => (
+                    <text
+                      key={`label-${index}`}
+                      x={index * (100 / 4) + 70}
+                      y={300 - entry.carbs * 0.5}
+                      textAnchor="middle"
+                      fill="white"
+                      fontSize={13}
+                      fontWeight="bold"
+                    >
+                    </text>
                   ))}
                 </Bar>
               </BarChart>
             </ResponsiveContainer>
+
+        
           </CardContent>
         </Card>
+
 
         {/* Medications Chart */}
         <Card>
