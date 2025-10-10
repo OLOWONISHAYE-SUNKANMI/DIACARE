@@ -22,8 +22,11 @@ import { PatientManagement } from '@/components/ui/PatientManagement';
 import { QuickActions } from '@/components/ui/QuickActions';
 import { toast } from 'sonner';
 import { useThemeStore } from '@/store/useThemeStore';
+import LanguageToggle from '@/components/ui/LanguageToggle';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { useTranslation } from 'react-i18next';
+
 
 export const ProfessionalDashboard = () => {
   const [user, setUser] = useState(null);
@@ -34,6 +37,10 @@ export const ProfessionalDashboard = () => {
   const navigate = useNavigate();
   const { theme, toggleTheme } = useThemeStore();
   const { professionalCode } = useAuth();
+  console.log('Professional Info:', professionalInfo);
+
+   const isDark = theme === 'dark';
+  const { t } = useTranslation();
 
   const handleLogout = () => {
     toast.success('Logged out successfully', {
@@ -44,16 +51,23 @@ export const ProfessionalDashboard = () => {
   };
 
   useEffect(() => {
+    const storedCode = localStorage.getItem('professionalCode');
+    if (!storedCode) {
+      console.error('No professional code found, redirecting to login');
+      navigate('/auth');
+      return;
+    }
+
     getActivePatients();
     getUpcomingAppointments();
     getCompletedReports();
     getProfessionalInfo();
     getUser();
-  }, [user]);
+  }, [user, navigate]);
 
   const getUser = async () => {
     const { data, error } = await supabase.auth.getUser();
-    console.log('User:', data);
+    // console.log('User:', data);
     if (error) {
       console.error('Error fetching user:', error.message);
     } else if (data) {
@@ -65,34 +79,33 @@ export const ProfessionalDashboard = () => {
   // Trying to use the professional code to get the excat info for the excat professional in the dashboard.
   const getProfessionalInfo = async () => {
     try {
-      if (!professionalCode) {
+      const storedCode = localStorage.getItem('professionalCode');
+      if (!storedCode) {
         console.error('No professional code found');
         return;
       }
+      // console.log('Stored Professional Code:', storedCode);
 
       const { data, error } = await supabase
         .from('professional_applications')
         .select('first_name, last_name, professional_type')
-        .eq('professional_code', professionalCode)
-        .single();
+        .eq('professional_code', storedCode);
 
       if (error) throw error;
-      console.log('Professional Info:', data);
-      setProfessionalInfo(data);
+      setProfessionalInfo(data[0]);
     } catch (error) {
       console.error('Error fetching professional info:', error);
     }
   };
 
-  // Get active patients
   // Trying to get the active patient and then map through it
   const getActivePatients = async () => {
     try {
       const { data, error } = await supabase
         .from('profiles')
-        .select('id, first_name, last_name, specialty, phone'); // Specify columns to avoid deep type instantiation
+        .select('id, first_name, last_name, specialty, phone');
 
-      console.log('Active Patients:', data);
+      // console.log('Active Patients:', data);
       if (error) throw error;
       setActivePatients(data);
     } catch (error) {
@@ -100,35 +113,59 @@ export const ProfessionalDashboard = () => {
     }
   };
 
-  // Get upcoming appointments
-  // This is for future updates
+  // Fetch upcoming consultations (appointments)
   const getUpcomingAppointments = async () => {
+    if (!user?.id) return console.warn('User ID not available yet.');
+
     try {
       const { data, error } = await supabase
-        .from('appointments')
-        .select('*')
-        .eq('professional_id', user?.id)
-        .gte('appointment_date', new Date().toISOString())
-        .order('appointment_date', { ascending: true });
+        .from('consultation_requests')
+        .select(
+          `
+        id,
+        consultation_reason,
+        status,
+        requested_at,
+        consultation_fee,
+        profiles:patient_id (first_name, last_name, phone)
+      `
+        )
+        .eq('professional_id', user.id)
+        .in('status', ['pending', 'scheduled'])
+        .order('requested_at', { ascending: true });
 
       if (error) throw error;
+
+      console.log('Upcoming Appointments:', data);
       setAppointments(data || []);
     } catch (error) {
-      console.error('Error fetching appointments:', error);
+      console.error('Error fetching upcoming appointments:', error);
     }
   };
 
-  // Get completed reports
-  // This is for future updates
   const getCompletedReports = async () => {
+    if (!user?.id) return console.warn('User ID not available yet.');
+
     try {
       const { data, error } = await supabase
-        .from('reports')
-        .select('*')
-        .eq('professional_id', user?.id)
-        .eq('status', 'completed');
+        .from('consultation_summaries')
+        .select(
+          `
+        id,
+        teleconsultation_id,
+        doctor_notes,
+        prescription,
+        recommendations,
+        duration_minutes,
+        created_at
+      `
+        )
+        // Optional: join teleconsultation for context
+        .order('created_at', { ascending: false });
 
       if (error) throw error;
+
+      console.log('Completed Reports:', data);
       setReports(data || []);
     } catch (error) {
       console.error('Error fetching reports:', error);
@@ -138,24 +175,24 @@ export const ProfessionalDashboard = () => {
   // Update stats with real data
   const stats = [
     {
-      title: 'Active Patients',
+      title: t('professionalDashboard.stats.title1'),
       value: activePatients.length.toString(),
       icon: Users,
       trend: '+0%',
     },
     {
-      title: 'Upcoming Appointments',
+      title: t('professionalDashboard.stats.title2'),
       value: appointments.length.toString(),
       icon: Calendar,
       trend: '+0%',
     },
     {
-      title: 'Reports Completed',
+      title: t('professionalDashboard.stats.title3'),
       value: reports.length.toString(),
       icon: FileText,
       trend: '+0%',
     },
-    { title: 'Avg Consultation Time', value: '0min', icon: Clock, trend: '0%' },
+    { title: t('professionalDashboard.stats.title4'), value: '0min', icon: Clock, trend: '0%' },
   ];
 
   // Map active patients to recent patients format
@@ -227,7 +264,7 @@ export const ProfessionalDashboard = () => {
                   <Moon className="w-5 h-5 text-gray-800" />
                 )}
               </Button>
-              <Badge
+              {/* <Badge
                 variant="outline"
                 className={`${
                   theme === 'dark'
@@ -236,7 +273,12 @@ export const ProfessionalDashboard = () => {
                 }`}
               >
                 🚀 Demo Mode
-              </Badge>
+              </Badge> */}
+
+               <LanguageToggle
+                          className={`${isDark ? 'text-white' : 'text-black'}`}
+                />
+
               <Button variant="outline" size="sm" onClick={handleLogout}>
                 <LogOut className="h-4 w-4 mr-2" />
                 Logout
@@ -287,7 +329,7 @@ export const ProfessionalDashboard = () => {
                         : 'text-muted-foreground'
                     }`}
                   >
-                    compared to last week
+                   {t('professionalDashboard.stats.compared')}
                   </span>
                 </div>
               </CardContent>
@@ -298,11 +340,11 @@ export const ProfessionalDashboard = () => {
         {/* Tabs */}
         <Tabs defaultValue="overview" className="space-y-6">
           <TabsList className="grid w-full grid-cols-5">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="patients">Patients</TabsTrigger>
-            <TabsTrigger value="consultations">Consultations</TabsTrigger>
-            <TabsTrigger value="earnings">Earnings</TabsTrigger>
-            <TabsTrigger value="settings">Settings</TabsTrigger>
+            <TabsTrigger value="overview">{t('healthProfessionalScreen.tabs.overview')}</TabsTrigger>
+            <TabsTrigger value="patients">{t('healthProfessionalScreen.tabs.patients')}</TabsTrigger>
+            <TabsTrigger value="consultations">{t('healthProfessionalScreen.tabs.consultations')}</TabsTrigger>
+            <TabsTrigger value="earnings">{t('healthProfessionalScreen.tabs.earnings')}</TabsTrigger>
+            <TabsTrigger value="settings">{t('healthProfessionalScreen.tabs.settings')}</TabsTrigger>
           </TabsList>
 
           {/* Overview */}
@@ -317,7 +359,7 @@ export const ProfessionalDashboard = () => {
                 <CardHeader>
                   <CardTitle className="flex items-center">
                     <Users className="h-5 w-5 mr-2" />
-                    Recent Patients
+                    {t('professionalDashboard.overview.recentPatients.title')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -376,7 +418,7 @@ export const ProfessionalDashboard = () => {
                 <CardHeader>
                   <CardTitle className="flex items-center">
                     <Stethoscope className="h-5 w-5 mr-2" />
-                    Quick Actions
+                    {t('professionalDashboard.overview.quickActions.title')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>

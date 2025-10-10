@@ -79,9 +79,6 @@ const AuthPage = () => {
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
 
-  // Professional SignIn
-  const [code, setCode] = useState('');
-
   // États pour les formulaires - MOVED TO TOP
   const [activeTab, setActiveTab] = useState('patient');
   const [patientMode, setPatientMode] = useState<'signin' | 'signup'>('signin');
@@ -145,8 +142,9 @@ const AuthPage = () => {
     setIsLoading(true);
     setError('');
 
+    
     try {
-      const result = await signInWithProfessionalCode(code);
+      // const result = await signInWithProfessionalCode(code);
       const { error } = await signIn(
         patientSignInData.email,
         patientSignInData.password
@@ -508,7 +506,9 @@ const AuthPage = () => {
     setError(null);
 
     try {
-      const result = await signInWithProfessionalCode(code);
+      // Store the code before signing in
+      localStorage.setItem('professionalCode', professionalCode);
+      const result = await signInWithProfessionalCode(professionalCode);
       if (result.success) {
         toast({
           title: t('auth.professionalLoginSuccess'),
@@ -517,6 +517,7 @@ const AuthPage = () => {
         navigate('/professional-dashboard');
       } else {
         setError(result.error || 'Failed to sign in');
+        localStorage.removeItem('professionalCode');
       }
     } catch (err: any) {
       console.log('Professional error:', err);
@@ -901,8 +902,8 @@ const AuthPage = () => {
                       id="professional-code"
                       type="text"
                       placeholder={t('auth.professionalCodePlaceholder')}
-                      value={code}
-                      onChange={e => setCode(e.target.value)}
+                      value={professionalCode}
+                      onChange={e => setProfessionalCode(e.target.value)}
                       className="text-center font-mono text-lg"
                       maxLength={15}
                       required
