@@ -317,12 +317,11 @@ export default function PredictiveAlertScreen({ values }: any) {
               <div>
                 <label className="block text-sm font-medium text-foreground mb-1">
                   <Syringe className="inline mr-1" size={16} />
-                  {t('insulinDosage.patient.insulinUnits')}
+                  Medication dosage
                 </label>
                 <input
-                  
                   type="number"
-                  value={insulin || dose_unit || 0}
+                  value={insulin || medications?.[0]?.dose || 0}
                   onChange={e => setInsulin(Number(e.target.value))}
                   className="w-full px-3 py-2 text-foreground bg-background border border-accent rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
                 />
