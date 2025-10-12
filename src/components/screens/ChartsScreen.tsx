@@ -49,16 +49,20 @@ const ChartsScreen = () => {
   const { readings: glucose } = useGlucose();
 
   // Glucose data sorted by timestamp and limited to latest 15 readings
-  const glucoseData = [...glucose]
-    .sort(
-      (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
-    )
-    .slice(-15) // keep latest 15
-    .map((r, i) => ({
-      ...r,
-      timestamp: r.timestamp,
-      point: i + 1, // count from 1
-    }));
+ const glucoseData = [...glucose]
+  .sort(
+    (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+  )
+  .slice(-15)
+  .map((r) => ({
+    ...r,
+    time: new Date(r.timestamp).toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    }), // format for X-axis
+  }));
+
 
   const glucoseValues = glucose.map(d => d.value);
   const avgGlucose =
@@ -82,6 +86,38 @@ const ChartsScreen = () => {
       day: 'numeric',
     }),
   }));
+
+
+  // Medications Data
+const medicationsChartData = medications.slice(0, 4).map((m) => {
+  const medicationDate = new Date(m.medication_time);
+
+  // Ensure valid date
+  const formattedDate = isNaN(medicationDate.getTime())
+    ? "No date"
+    : medicationDate.toLocaleDateString("en-US", {
+        weekday: "short",
+        month: "short",
+        day: "numeric",
+      });
+
+  const formattedTime = isNaN(medicationDate.getTime())
+    ? ""
+    : medicationDate.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      });
+
+  return {
+    time: formattedTime || "00:00",
+    date: formattedDate,
+    dose: m.dose,
+    medication_name: m.medication_name,
+  };
+});
+
+  
 
   // Activities summary
   const activitySummary = Object.values(
@@ -110,19 +146,20 @@ const ChartsScreen = () => {
     return '#ef4444';
   };
 
-  const CustomTooltip = ({ active, payload, label }: any) => {
-    if (active && payload && payload.length) {
-      const med = payload[0].payload;
-      return (
-        <div className="bg-white border rounded p-2 shadow">
-          <p className="font-semibold">{med.medication_name}</p>
-          <p>Dose: {med.dose}</p>
-          <p className="text-gray-500 text-sm">{formatDay(label)}</p>
-        </div>
-      );
-    }
-    return null;
-  };
+  const CustomTooltip = ({ active, payload }: any) => {
+  if (active && payload && payload.length) {
+    const med = payload[0].payload;
+    return (
+      <div className="bg-white border rounded p-2 shadow">
+        <p className="font-semibold">{med.medication_name}</p>
+        <p>Dose: {med.dose}</p>
+        <p className="text-gray-500 text-sm">{med.date}</p>
+      </div>
+    );
+  }
+  return null;
+};
+
 
 
 
@@ -177,23 +214,19 @@ const ChartsScreen = () => {
               >
                 <CartesianGrid strokeDasharray="3 3" />
 
-                <XAxis
-                  dataKey="point"
-                  type="number"
-                  domain={[1, 15]}
-                  ticks={[...Array(15)].map((_, i) => i + 1)}
-                  interval={0}
-                  allowDecimals={false}
+               <XAxis
+                  dataKey="time"
+                  type="category"
+                  interval="preserveStartEnd"
                   label={{
-                    value: 'Stimulated Time in Points',
                     position: 'insideBottom',
                     offset: -5,
                   }}
                 />
 
+
                 <YAxis
                   label={{
-                    value: 'Blood Glucose (mg/dL)',
                     angle: -90,
                     position: 'insideLeft',
 
@@ -252,7 +285,7 @@ const ChartsScreen = () => {
                   dataKey="time"
                    reversed 
                   label={{
-                    value: 'Meals',
+                  
                     position: 'insideBottom',
                     offset: -5,
                   }}
@@ -295,23 +328,23 @@ const ChartsScreen = () => {
         </Card>
 
 
-        {/* Medications Chart */}
+   {/* Medications Chart */}
         <Card>
           <CardHeader>
-            <CardTitle>{t('charts.medications')}</CardTitle>
+            <CardTitle>{t("charts.medications")}</CardTitle>
           </CardHeader>
-          <CardContent className="h-72">
-            <ResponsiveContainer>
-              <BarChart data={medications}>
+          <CardContent className="h-96">
+            <ResponsiveContainer width="100%" height={320}>
+              <BarChart data={medicationsChartData} barCategoryGap="25%">
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis
-                  dataKey="medication_time"
-                  tickFormatter={formatTime}
-                  reversed
-                />
-                <YAxis />
+                <XAxis dataKey="time" reversed label={{   position: "insideBottom", offset: -5 }} />
+                <YAxis label={{ value: "Dose (mg)", angle: -90, position: "insideLeft" }} />
                 <Tooltip content={<CustomTooltip />} />
-                <Bar dataKey="dose" fill="#8b5cf6" />
+                <Bar dataKey="dose" barSize={80} radius={[10, 10, 0, 0]} fill="#6366f1">
+                  {medicationsChartData.map((_, i) => (
+                    <Cell key={i} fill="#000397ff" />
+                  ))}
+                </Bar>
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
