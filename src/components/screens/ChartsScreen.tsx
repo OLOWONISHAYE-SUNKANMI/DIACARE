@@ -229,7 +229,6 @@ const medicationsChartData = medications.slice(0, 4).map((m) => {
                   label={{
                     angle: -90,
                     position: 'insideLeft',
-
                   }}
                 />
 
