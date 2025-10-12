@@ -252,16 +252,20 @@ export default function PredictiveAlertScreen({ values }: any) {
   };
   
   // Glucose data sorted by timestamp and limited to latest 15 readings
-  const glucoseData = [...glucose]
-    .sort(
-      (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
-    )
-    .slice(-15) // keep latest 15
-    .map((r, i) => ({
-      ...r,
-      timestamp: r.timestamp,
-      point: i + 1, // count from 1
-    }));
+ const glucoseData = [...glucose]
+  .sort(
+    (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+  )
+  .slice(-15)
+  .map((r) => ({
+    ...r,
+    time: new Date(r.timestamp).toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    }), // format for X-axis
+  }));
+
 
   const glucoseValues = glucose.map(d => d.value);
   const avgGlucose =
@@ -498,7 +502,7 @@ export default function PredictiveAlertScreen({ values }: any) {
         {/* Main Display */}
         <div className="lg:col-span-2 space-y-6">
           {/* Real-Time Graph */}
-          <Card>
+         <Card>
           <CardHeader>
             <CardTitle>{t('charts.glucose')}</CardTitle>
           </CardHeader>
@@ -510,26 +514,21 @@ export default function PredictiveAlertScreen({ values }: any) {
               >
                 <CartesianGrid strokeDasharray="3 3" />
 
-                <XAxis
-                  dataKey="point"
-                  type="number"
-                  domain={[1, 15]}
-                  ticks={[...Array(15)].map((_, i) => i + 1)}
-                  interval={0}
-                  allowDecimals={false}
+               <XAxis
+                  dataKey="time"
+                  type="category"
+                  interval="preserveStartEnd"
                   label={{
-                    value: 'Stimulated Time in Points',
                     position: 'insideBottom',
                     offset: -5,
                   }}
                 />
 
+
                 <YAxis
                   label={{
-                    value: 'Blood Glucose (mg/dL)',
                     angle: -90,
                     position: 'insideLeft',
-
                   }}
                 />
 
@@ -566,6 +565,7 @@ export default function PredictiveAlertScreen({ values }: any) {
             </ResponsiveContainer>
           </CardContent>
         </Card>
+
 
           {/* Alerts System */}
           <div className="bg-background rounded-xl shadow-lg p-6">
