@@ -252,6 +252,7 @@ export default function PredictiveAlertScreen({ values }: any) {
   };
   
   // Glucose data sorted by timestamp and limited to latest 15 readings
+<<<<<<< HEAD
   const glucoseData = [...glucose]
     .sort(
       (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
@@ -262,6 +263,22 @@ export default function PredictiveAlertScreen({ values }: any) {
       timestamp: r.timestamp,
       point: i + 1, // count from 1
     }));
+=======
+ const glucoseData = [...glucose]
+  .sort(
+    (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+  )
+  .slice(-15)
+  .map((r) => ({
+    ...r,
+    time: new Date(r.timestamp).toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    }), // format for X-axis
+  }));
+
+>>>>>>> c27ac2cef5677ab20b0254edaed274703022957d
 
   const glucoseValues = glucose.map(d => d.value);
   const avgGlucose =
@@ -317,11 +334,20 @@ export default function PredictiveAlertScreen({ values }: any) {
               <div>
                 <label className="block text-sm font-medium text-foreground mb-1">
                   <Syringe className="inline mr-1" size={16} />
+<<<<<<< HEAD
                   Medication dosage
                 </label>
                 <input
                   type="number"
                   value={insulin || medications?.[0]?.dose || 0}
+=======
+                  {t('insulinDosage.patient.insulinUnits')}
+                </label>
+                <input
+                  
+                  type="number"
+                  value={insulin || dose_unit || 0}
+>>>>>>> c27ac2cef5677ab20b0254edaed274703022957d
                   onChange={e => setInsulin(Number(e.target.value))}
                   className="w-full px-3 py-2 text-foreground bg-background border border-accent rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
                 />
@@ -497,7 +523,11 @@ export default function PredictiveAlertScreen({ values }: any) {
         {/* Main Display */}
         <div className="lg:col-span-2 space-y-6">
           {/* Real-Time Graph */}
+<<<<<<< HEAD
           <Card>
+=======
+         <Card>
+>>>>>>> c27ac2cef5677ab20b0254edaed274703022957d
           <CardHeader>
             <CardTitle>{t('charts.glucose')}</CardTitle>
           </CardHeader>
@@ -509,6 +539,7 @@ export default function PredictiveAlertScreen({ values }: any) {
               >
                 <CartesianGrid strokeDasharray="3 3" />
 
+<<<<<<< HEAD
                 <XAxis
                   dataKey="point"
                   type="number"
@@ -518,17 +549,32 @@ export default function PredictiveAlertScreen({ values }: any) {
                   allowDecimals={false}
                   label={{
                     value: 'Stimulated Time in Points',
+=======
+               <XAxis
+                  dataKey="time"
+                  type="category"
+                  interval="preserveStartEnd"
+                  label={{
+>>>>>>> c27ac2cef5677ab20b0254edaed274703022957d
                     position: 'insideBottom',
                     offset: -5,
                   }}
                 />
 
+<<<<<<< HEAD
                 <YAxis
                   label={{
                     value: 'Blood Glucose (mg/dL)',
                     angle: -90,
                     position: 'insideLeft',
 
+=======
+
+                <YAxis
+                  label={{
+                    angle: -90,
+                    position: 'insideLeft',
+>>>>>>> c27ac2cef5677ab20b0254edaed274703022957d
                   }}
                 />
 
@@ -566,6 +612,10 @@ export default function PredictiveAlertScreen({ values }: any) {
           </CardContent>
         </Card>
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> c27ac2cef5677ab20b0254edaed274703022957d
           {/* Alerts System */}
           <div className="bg-background rounded-xl shadow-lg p-6">
             <div className="flex items-center mb-4">
