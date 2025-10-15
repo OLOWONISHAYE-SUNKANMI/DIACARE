@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import {
   Modal,
   ModalOverlay,
@@ -28,24 +28,33 @@ const PhotoUploadModal = ({
   const { t } = useTranslation();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [preview, setPreview] = useState<string | null>(currentPhoto || null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = e => {
-        const result = e.target?.result as string;
-        setPreview(result);
-      };
-      reader.readAsDataURL(file);
-    }
+  // Trigger file input
+  const handleButtonClick = () => {
+    fileInputRef.current?.click();
   };
 
+  // Handle file select
+  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = e => {
+      const result = e.target?.result as string;
+      setPreview(result);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  // Save photo
   const handleSave = () => {
     onPhotoChange(preview);
     onClose();
   };
 
+  // Remove photo
   const handleRemove = () => {
     setPreview(null);
     onPhotoChange(null);
@@ -87,14 +96,16 @@ const PhotoUploadModal = ({
                   type="file"
                   accept="image/*"
                   onChange={handleFileSelect}
+                  ref={fileInputRef}
                   className="hidden"
-                  id="photo-upload"
                 />
-                <label htmlFor="photo-upload" className="block">
-                  <ChakraButton w="100%" leftIcon={<Upload className="w-4 h-4" />}>
-                    {t('photoUploadModal.profilePhoto.choosePhoto')}
-                  </ChakraButton>
-                </label>
+                <ChakraButton
+                  w="100%"
+                  leftIcon={<Upload className="w-4 h-4" />}
+                  onClick={handleButtonClick}
+                >
+                  {t('photoUploadModal.profilePhoto.choosePhoto')}
+                </ChakraButton>
               </div>
 
               {preview && (
@@ -111,18 +122,10 @@ const PhotoUploadModal = ({
           </ModalBody>
 
           <ModalFooter className="flex gap-2 w-full">
-            <ChakraButton
-              variant="outline"
-              onClick={onClose}
-              flex="1"
-            >
+            <ChakraButton variant="outline" onClick={onClose} flex="1">
               {t('photoUploadModal.buttons.cancel')}
             </ChakraButton>
-            <ChakraButton
-              colorScheme="blue"
-              onClick={handleSave}
-              flex="1"
-            >
+            <ChakraButton colorScheme="blue" onClick={handleSave} flex="1">
               {t('photoUploadModal.buttons.save')}
             </ChakraButton>
           </ModalFooter>
