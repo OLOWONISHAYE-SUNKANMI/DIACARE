@@ -1,5 +1,8 @@
+import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
   Table,
   TableBody,
@@ -8,7 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Euro, TrendingUp } from 'lucide-react';
+import { Euro, TrendingUp, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 interface Earning {
@@ -24,6 +27,8 @@ interface Earning {
 
 export const EarningsTable = () => {
   const { t } = useTranslation();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
   // Données de démo pour un endocrinologue (600 F CFA par consultation)
   const earnings: Earning[] = [
     {
@@ -93,6 +98,12 @@ export const EarningsTable = () => {
       status: t('professionalDashboard.revenue.status.paid'),
     },
   ];
+
+  // Pagination logic
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedEarnings = earnings.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(earnings.length / itemsPerPage);
 
   const totalEarnings = earnings.reduce(
     (sum, earning) => sum + earning.netAmount,
@@ -177,7 +188,7 @@ export const EarningsTable = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {earnings.map(earning => (
+            {paginatedEarnings.map(earning => (
               <TableRow key={earning.id}>
                 <TableCell className="font-medium">
                   {new Date(earning.date).toLocaleDateString('fr-FR')}
@@ -196,6 +207,51 @@ export const EarningsTable = () => {
             ))}
           </TableBody>
         </Table>
+        
+        {/* Pagination */}
+        <div className="flex items-center justify-between px-2 py-4">
+          <div className="flex items-center space-x-2">
+            <div className="text-sm text-muted-foreground">
+              Showing {startIndex + 1} to {Math.min(endIndex, earnings.length)} of {earnings.length} earnings
+            </div>
+            <div className="flex items-center space-x-1">
+              <span className="text-sm">Rows per page:</span>
+              <Input
+                type="number"
+                min="1"
+                max="50"
+                value={itemsPerPage}
+                onChange={(e) => {
+                  const value = parseInt(e.target.value) || 5;
+                  setItemsPerPage(value);
+                  setCurrentPage(1);
+                }}
+                className="w-16 h-8 text-center"
+              />
+            </div>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            <div className="text-sm">
+              Page {currentPage} of {totalPages}
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+              disabled={currentPage === totalPages}
+            >
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
       </CardContent>
     </Card>
   );

@@ -42,8 +42,25 @@ import {
   UserPlus,
   Video,
   Send,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  ModalCloseButton,
+  FormControl,
+  FormLabel,
+  Text,
+  Box,
+  SimpleGrid,
+  Select,
+} from '@chakra-ui/react';
 
 interface Patient {
   id: string;
@@ -86,6 +103,9 @@ export const PatientManagement = () => {
   const [isCallModalOpen, setIsCallModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [activePatient, setActivePatient] = useState<Patient | null>(null);
+  const [patientsCurrentPage, setPatientsCurrentPage] = useState(1);
+  const [consultationsCurrentPage, setConsultationsCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
 
   const handlePatientAction = (
     action: 'view' | 'message' | 'teleconsultation' | 'call' | 'edit',
@@ -131,6 +151,12 @@ export const PatientManagement = () => {
     setSelectedAction(null);
   };
 
+  // Pagination logic
+  const patientsStartIndex = (patientsCurrentPage - 1) * itemsPerPage;
+  const patientsEndIndex = patientsStartIndex + itemsPerPage;
+  const consultationsStartIndex = (consultationsCurrentPage - 1) * itemsPerPage;
+  const consultationsEndIndex = consultationsStartIndex + itemsPerPage;
+
   // Données de démo
   const patients: Patient[] = [
     {
@@ -173,6 +199,12 @@ export const PatientManagement = () => {
     },
   ];
 
+  const paginatedPatients = patients.slice(
+    patientsStartIndex,
+    patientsEndIndex
+  );
+  const totalPatientsPages = Math.ceil(patients.length / itemsPerPage);
+
   const consultations: Consultation[] = [
     {
       id: '1',
@@ -211,6 +243,14 @@ export const PatientManagement = () => {
       duration: '60min',
     },
   ];
+
+  const paginatedConsultations = consultations.slice(
+    consultationsStartIndex,
+    consultationsEndIndex
+  );
+  const totalConsultationsPages = Math.ceil(
+    consultations.length / itemsPerPage
+  );
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -304,7 +344,7 @@ export const PatientManagement = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {patients.map(patient => (
+                  {paginatedPatients.map(patient => (
                     <TableRow key={patient.id}>
                       <TableCell>
                         <div className="flex items-center space-x-3">
@@ -320,7 +360,9 @@ export const PatientManagement = () => {
                             <p className="font-medium">{patient.name}</p>
                             <p className="text-sm text-muted-foreground">
                               {patient.nextAppointment &&
-                                `Prochain RDV: ${new Date(patient.nextAppointment).toLocaleDateString('fr-FR')}`}
+                                `Prochain RDV: ${new Date(
+                                  patient.nextAppointment
+                                ).toLocaleDateString('fr-FR')}`}
                             </p>
                           </div>
                         </div>
@@ -384,40 +426,7 @@ export const PatientManagement = () => {
                                 'professionalDashboard.patients.dropdownOptions.second'
                               )}
                             </DropdownMenuItem>
-                            <DropdownMenuItem
-                              className="cursor-pointer hover:bg-accent hover:text-accent-foreground rounded-sm px-2 py-1.5 text-sm"
-                              onClick={e => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                handlePatientAction(
-                                  'teleconsultation',
-                                  patient.id,
-                                  patient.name
-                                );
-                              }}
-                            >
-                              <Video className="mr-2 h-4 w-4" />
-                              {t(
-                                'professionalDashboard.patients.dropdownOptions.third'
-                              )}
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                              className="cursor-pointer hover:bg-accent hover:text-accent-foreground rounded-sm px-2 py-1.5 text-sm"
-                              onClick={e => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                handlePatientAction(
-                                  'call',
-                                  patient.id,
-                                  patient.name
-                                );
-                              }}
-                            >
-                              <Phone className="mr-2 h-4 w-4" />
-                              {t(
-                                'professionalDashboard.patients.dropdownOptions.fourth'
-                              )}
-                            </DropdownMenuItem>
+
                             <DropdownMenuItem
                               className="cursor-pointer hover:bg-accent hover:text-accent-foreground rounded-sm px-2 py-1.5 text-sm"
                               onClick={e => {
@@ -442,36 +451,58 @@ export const PatientManagement = () => {
                   ))}
                 </TableBody>
               </Table>
-            </CardContent>
-          </Card>
 
-          {/* Notes des patients */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <FileText className="h-5 w-5 mr-2" />
-                {t('professionalDashboard.patients.recentNotes.title')}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {patients
-                  .filter(p => p.notes)
-                  .map(patient => (
-                    <div key={patient.id} className="p-4 border rounded-lg">
-                      <div className="flex items-center justify-between mb-2">
-                        <h4 className="font-medium">{patient.name}</h4>
-                        <span className="text-sm text-muted-foreground">
-                          {new Date(
-                            patient.lastConsultation
-                          ).toLocaleDateString('fr-FR')}
-                        </span>
-                      </div>
-                      <p className="text-sm text-muted-foreground">
-                        {patient.notes}
-                      </p>
-                    </div>
-                  ))}
+              {/* Patients Pagination */}
+              <div className="flex items-center justify-between px-2 py-4">
+                <div className="flex items-center space-x-2">
+                  <div className="text-sm text-muted-foreground">
+                    Showing {patientsStartIndex + 1} to{' '}
+                    {Math.min(patientsEndIndex, patients.length)} of{' '}
+                    {patients.length} patients
+                  </div>
+                  <div className="flex items-center space-x-1">
+                    <span className="text-sm">Rows per page:</span>
+                    <Input
+                      type="number"
+                      min="1"
+                      max="50"
+                      value={itemsPerPage}
+                      onChange={e => {
+                        const value = parseInt(e.target.value) || 5;
+                        setItemsPerPage(value);
+                        setPatientsCurrentPage(1);
+                      }}
+                      className="w-16 h-8 text-center"
+                    />
+                  </div>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() =>
+                      setPatientsCurrentPage(prev => Math.max(prev - 1, 1))
+                    }
+                    disabled={patientsCurrentPage === 1}
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                  </Button>
+                  <div className="text-sm">
+                    Page {patientsCurrentPage} of {totalPatientsPages}
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() =>
+                      setPatientsCurrentPage(prev =>
+                        Math.min(prev + 1, totalPatientsPages)
+                      )
+                    }
+                    disabled={patientsCurrentPage === totalPatientsPages}
+                  >
+                    <ChevronRight className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -511,7 +542,7 @@ export const PatientManagement = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {consultations.map(consultation => (
+                  {paginatedConsultations.map(consultation => (
                     <TableRow key={consultation.id}>
                       <TableCell className="font-medium">
                         {new Date(consultation.date).toLocaleDateString(
@@ -575,6 +606,61 @@ export const PatientManagement = () => {
                   ))}
                 </TableBody>
               </Table>
+
+              {/* Consultations Pagination */}
+              <div className="flex items-center justify-between px-2 py-4">
+                <div className="flex items-center space-x-2">
+                  <div className="text-sm text-muted-foreground">
+                    Showing {consultationsStartIndex + 1} to{' '}
+                    {Math.min(consultationsEndIndex, consultations.length)} of{' '}
+                    {consultations.length} consultations
+                  </div>
+                  <div className="flex items-center space-x-1">
+                    <span className="text-sm">Rows per page:</span>
+                    <Input
+                      type="number"
+                      min="1"
+                      max="50"
+                      value={itemsPerPage}
+                      onChange={e => {
+                        const value = parseInt(e.target.value) || 5;
+                        setItemsPerPage(value);
+                        setConsultationsCurrentPage(1);
+                      }}
+                      className="w-16 h-8 text-center"
+                    />
+                  </div>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() =>
+                      setConsultationsCurrentPage(prev => Math.max(prev - 1, 1))
+                    }
+                    disabled={consultationsCurrentPage === 1}
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                  </Button>
+                  <div className="text-sm">
+                    Page {consultationsCurrentPage} of {totalConsultationsPages}
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() =>
+                      setConsultationsCurrentPage(prev =>
+                        Math.min(prev + 1, totalConsultationsPages)
+                      )
+                    }
+                    disabled={
+                      consultationsCurrentPage === totalConsultationsPages
+                    }
+                  >
+                    <ChevronRight className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
@@ -652,26 +738,32 @@ export const PatientManagement = () => {
       </Tabs>
 
       {/* Modal pour saisir le code patient */}
-      <Dialog
-        open={isPatientCodeModalOpen}
-        onOpenChange={setIsPatientCodeModalOpen}
+      <Modal
+        isOpen={isPatientCodeModalOpen}
+        onClose={() => {
+          setIsPatientCodeModalOpen(false);
+          setPatientCode('');
+        }}
+        isCentered
       >
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>
-              {t('patientManagement.patientCodeModal.title')}
-            </DialogTitle>
-            <DialogDescription>
+        <ModalOverlay />
+        <ModalContent maxW="sm" borderRadius="lg" p={2}>
+          <ModalHeader>
+            {t('patientManagement.patientCodeModal.title')}
+          </ModalHeader>
+          <ModalCloseButton />
+
+          <ModalBody pb={4}>
+            <Text fontSize="sm" color="gray.600" mb={4}>
               {t('patientManagement.patientCodeModal.description')}
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <Label>
+            </Text>
+
+            <FormControl mb={4}>
+              <FormLabel fontSize="sm" fontWeight="medium">
                 {t('patientManagement.patientCodeModal.enterCodeFor', {
                   patientName: selectedAction?.patientName,
                 })}
-              </Label>
+              </FormLabel>
               <Input
                 type="text"
                 placeholder={t(
@@ -685,166 +777,198 @@ export const PatientManagement = () => {
                   }
                 }}
               />
-            </div>
-            <div className="flex justify-end space-x-2">
-              <Button
-                variant="outline"
-                onClick={() => {
-                  setIsPatientCodeModalOpen(false);
-                  setPatientCode('');
-                  setSelectedAction(null);
-                }}
-              >
-                {t('patientManagement.patientCodeModal.cancel')}
-              </Button>
-              <Button
-                onClick={handlePatientCodeSubmit}
-                disabled={!patientCode.trim()}
-              >
-                {t('patientManagement.patientCodeModal.access')}
-              </Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
+            </FormControl>
+          </ModalBody>
+
+          <ModalFooter display="flex" justifyContent="flex-end" gap={3}>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setIsPatientCodeModalOpen(false);
+                setPatientCode('');
+              }}
+            >
+              {t('patientManagement.patientCodeModal.cancel')}
+            </Button>
+
+            <Button
+              colorScheme="blue"
+              onClick={handlePatientCodeSubmit}
+              isDisabled={!patientCode.trim()}
+            >
+              {t('patientManagement.patientCodeModal.access')}
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
 
       {/* Modal Dossier Patient */}
-      <Dialog open={isPatientFileOpen} onOpenChange={setIsPatientFileOpen}>
-        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>
-              {t('patientManagement.patientFile.title', {
-                patientName: activePatient?.name,
-              })}
-            </DialogTitle>
-            <DialogDescription>
+      <Modal
+        isOpen={isPatientFileOpen}
+        onClose={() => setIsPatientFileOpen(false)}
+        size="4xl"
+        isCentered
+        scrollBehavior="inside"
+      >
+        <ModalOverlay />
+        <ModalContent maxH="80vh" borderRadius="lg">
+          <ModalHeader>
+            {t('patientManagement.patientFile.title', {
+              patientName: activePatient?.name,
+            })}
+          </ModalHeader>
+          <ModalCloseButton />
+
+          <ModalBody pb={6}>
+            <Text fontSize="sm" color="gray.600" mb={4}>
               {t('patientManagement.patientFile.description')}
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-6">
+            </Text>
+
             {activePatient && (
               <>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label className="text-sm font-medium">
+                <SimpleGrid columns={[1, 2]} spacing={4} mb={6}>
+                  <Box>
+                    <FormLabel fontSize="sm" fontWeight="medium">
                       {t('patientManagement.patientFile.name')}
-                    </Label>
-                    <p className="text-lg font-semibold">
+                    </FormLabel>
+                    <Text fontSize="lg" fontWeight="semibold">
                       {activePatient.name}
-                    </p>
-                  </div>
-                  <div>
-                    <Label className="text-sm font-medium">
+                    </Text>
+                  </Box>
+
+                  <Box>
+                    <FormLabel fontSize="sm" fontWeight="medium">
                       {t('patientManagement.patientFile.diabetesType')}
-                    </Label>
-                    <p>{activePatient.diabetesType}</p>
-                  </div>
-                  <div>
-                    <Label className="text-sm font-medium">
+                    </FormLabel>
+                    <Text>{activePatient.diabetesType}</Text>
+                  </Box>
+
+                  <Box>
+                    <FormLabel fontSize="sm" fontWeight="medium">
                       {t('patientManagement.patientFile.lastGlucose')}
-                    </Label>
-                    <p>{activePatient.lastGlucose}</p>
-                  </div>
-                  <div>
-                    <Label className="text-sm font-medium">
+                    </FormLabel>
+                    <Text>{activePatient.lastGlucose}</Text>
+                  </Box>
+
+                  <Box>
+                    <FormLabel fontSize="sm" fontWeight="medium">
                       {t('patientManagement.patientFile.status')}
-                    </Label>
-                    <div>{getStatusBadge(activePatient.status)}</div>
-                  </div>
-                </div>
-                <div>
-                  <Label className="text-sm font-medium">
+                    </FormLabel>
+                    <Box>{getStatusBadge(activePatient.status)}</Box>
+                  </Box>
+                </SimpleGrid>
+
+                <Box mb={6}>
+                  <FormLabel fontSize="sm" fontWeight="medium">
                     {t('patientManagement.patientFile.medicalNotes')}
-                  </Label>
-                  <div className="mt-2 p-3 bg-muted rounded-lg">
-                    <p>{activePatient.notes}</p>
-                  </div>
-                </div>
-                <div>
-                  <Label className="text-sm font-medium">
+                  </FormLabel>
+                  <Box bg="gray.50" p={3} borderRadius="md">
+                    <Text>{activePatient.notes}</Text>
+                  </Box>
+                </Box>
+
+                <Box>
+                  <FormLabel fontSize="sm" fontWeight="medium">
                     {t('patientManagement.patientFile.lastConsultation')}
-                  </Label>
-                  <p>
+                  </FormLabel>
+                  <Text>
                     {new Date(
                       activePatient.lastConsultation
                     ).toLocaleDateString('fr-FR')}
-                  </p>
+                  </Text>
+
                   {activePatient.nextAppointment && (
                     <>
-                      <Label className="text-sm font-medium mt-2 block">
+                      <FormLabel
+                        fontSize="sm"
+                        fontWeight="medium"
+                        mt={3}
+                        display="block"
+                      >
                         {t('patientManagement.patientFile.nextAppointment')}
-                      </Label>
-                      <p>
+                      </FormLabel>
+                      <Text>
                         {new Date(
                           activePatient.nextAppointment
                         ).toLocaleDateString('fr-FR')}
-                      </p>
+                      </Text>
                     </>
                   )}
-                </div>
+                </Box>
               </>
             )}
-            <div className="flex justify-end">
-              <Button onClick={() => setIsPatientFileOpen(false)}>
-                {t('patientManagement.patientFile.close')}
-              </Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
+          </ModalBody>
 
-      {/* Modal Message */}
-      <Dialog open={isMessageModalOpen} onOpenChange={setIsMessageModalOpen}>
-        <DialogContent className="max-w-2xl">
-          <DialogHeader>
-            <DialogTitle>
-              {t('patientManagement.messageModal.title', {
-                patientName: activePatient?.name,
-              })}
-            </DialogTitle>
-            <DialogDescription>
+          <ModalFooter>
+            <Button
+              colorScheme="blue"
+              onClick={() => setIsPatientFileOpen(false)}
+            >
+              {t('patientManagement.patientFile.close')}
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      {/* 💬 Message Modal */}
+      <Modal
+        isOpen={isMessageModalOpen}
+        onClose={() => setIsMessageModalOpen(false)}
+        size="2xl"
+        isCentered
+      >
+        <ModalOverlay />
+        <ModalContent borderRadius="lg">
+          <ModalHeader>
+            {t('patientManagement.messageModal.title', {
+              patientName: activePatient?.name,
+            })}
+          </ModalHeader>
+          <ModalCloseButton />
+
+          <ModalBody pb={6}>
+            <Text fontSize="sm" color="gray.600" mb={4}>
               {t('patientManagement.messageModal.description')}
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-4">
-            <div>
-              <Label htmlFor="message-subject">
+            </Text>
+
+            <FormControl mb={4}>
+              <FormLabel>
                 {t('patientManagement.messageModal.subject')}
-              </Label>
+              </FormLabel>
               <Input
-                id="message-subject"
                 placeholder={t(
                   'patientManagement.messageModal.subjectPlaceholder'
                 )}
               />
-            </div>
-            <div>
-              <Label htmlFor="message-content">
+            </FormControl>
+
+            <FormControl>
+              <FormLabel>
                 {t('patientManagement.messageModal.content')}
-              </Label>
+              </FormLabel>
               <Textarea
-                id="message-content"
                 placeholder={t(
                   'patientManagement.messageModal.contentPlaceholder'
                 )}
-                className="min-h-32"
+                minH="8rem"
               />
-            </div>
-            <div className="flex justify-end space-x-2">
-              <Button
-                variant="outline"
-                onClick={() => setIsMessageModalOpen(false)}
-              >
-                {t('patientManagement.messageModal.cancel')}
-              </Button>
-              <Button>
-                <Send className="mr-2 h-4 w-4" />
-                {t('patientManagement.messageModal.send')}
-              </Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
+            </FormControl>
+          </ModalBody>
+
+          <ModalFooter display="flex" justifyContent="flex-end" gap={3}>
+            <Button
+              variant="outline"
+              onClick={() => setIsMessageModalOpen(false)}
+            >
+              {t('patientManagement.messageModal.cancel')}
+            </Button>
+            <Button colorScheme="blue">
+              <Send className="mr-2 h-4 w-4" />
+              {t('patientManagement.messageModal.send')}
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
 
       {/* Modal Téléconsultation */}
       <Dialog
@@ -931,6 +1055,7 @@ export const PatientManagement = () => {
         </DialogContent>
       </Dialog>
 
+
       {/* Modal Appel */}
       <Dialog open={isCallModalOpen} onOpenChange={setIsCallModalOpen}>
         <DialogContent className="max-w-md">
@@ -985,48 +1110,61 @@ export const PatientManagement = () => {
       </Dialog>
 
       {/* Modal Édition du profil */}
-      <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
-        <DialogContent className="max-w-2xl">
-          <DialogHeader>
-            <DialogTitle>
-              {t('patientManagement.editProfile.title', {
-                patientName: activePatient?.name,
-              })}
-            </DialogTitle>
-            <DialogDescription>
+      <Modal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        size="2xl"
+        scrollBehavior="inside"
+      >
+        <ModalOverlay />
+        <ModalContent borderRadius="xl" p={4}>
+          <ModalHeader>
+            {t('patientManagement.editProfile.title', {
+              patientName: activePatient?.name,
+            })}
+          </ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <p className="text-gray-500 mb-4">
               {t('patientManagement.editProfile.description')}
-            </DialogDescription>
-          </DialogHeader>
+            </p>
 
-          <div className="space-y-4">
             {activePatient && (
-              <>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="edit-name">
+              <div className="space-y-4">
+                {/* Name and Diabetes Type */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <FormControl>
+                    <FormLabel htmlFor="edit-name">
                       {t('patientManagement.editProfile.name')}
-                    </Label>
-                    <Input id="edit-name" defaultValue={activePatient.name} />
-                  </div>
-                  <div>
-                    <Label htmlFor="edit-diabetes-type">
+                    </FormLabel>
+                    <Input
+                      id="edit-name"
+                      defaultValue={activePatient.name}
+                      focusBorderColor="blue.500"
+                    />
+                  </FormControl>
+
+                  <FormControl>
+                    <FormLabel htmlFor="edit-diabetes-type">
                       {t('patientManagement.editProfile.diabetesType')}
-                    </Label>
+                    </FormLabel>
                     <Input
                       id="edit-diabetes-type"
                       defaultValue={activePatient.diabetesType}
+                      focusBorderColor="blue.500"
                     />
-                  </div>
+                  </FormControl>
                 </div>
 
-                <div>
-                  <Label htmlFor="edit-status">
+                {/* Status */}
+                <FormControl>
+                  <FormLabel htmlFor="edit-status">
                     {t('patientManagement.editProfile.status')}
-                  </Label>
-                  <select
+                  </FormLabel>
+                  <Select
                     id="edit-status"
-                    className="w-full p-2 border rounded-md"
                     defaultValue={activePatient.status}
+                    focusBorderColor="blue.500"
                   >
                     <option value="stable">
                       {t('patientManagement.editProfile.statusOptions.stable')}
@@ -1041,55 +1179,64 @@ export const PatientManagement = () => {
                         'patientManagement.editProfile.statusOptions.improving'
                       )}
                     </option>
-                  </select>
-                </div>
+                  </Select>
+                </FormControl>
 
-                <div>
-                  <Label htmlFor="edit-glucose">
+                {/* Glucose */}
+                <FormControl>
+                  <FormLabel htmlFor="edit-glucose">
                     {t('patientManagement.editProfile.lastGlucose')}
-                  </Label>
+                  </FormLabel>
                   <Input
                     id="edit-glucose"
                     defaultValue={activePatient.lastGlucose}
+                    focusBorderColor="blue.500"
                   />
-                </div>
+                </FormControl>
 
-                <div>
-                  <Label htmlFor="edit-notes">
+                {/* Notes */}
+                <FormControl>
+                  <FormLabel htmlFor="edit-notes">
                     {t('patientManagement.editProfile.notes')}
-                  </Label>
+                  </FormLabel>
                   <Textarea
                     id="edit-notes"
                     defaultValue={activePatient.notes}
-                    className="min-h-32"
+                    minH="120px"
+                    focusBorderColor="blue.500"
                   />
-                </div>
+                </FormControl>
 
-                <div>
-                  <Label htmlFor="edit-next-appointment">
+                {/* Next Appointment */}
+                <FormControl>
+                  <FormLabel htmlFor="edit-next-appointment">
                     {t('patientManagement.editProfile.nextAppointment')}
-                  </Label>
+                  </FormLabel>
                   <Input
                     id="edit-next-appointment"
                     type="date"
                     defaultValue={activePatient.nextAppointment}
+                    focusBorderColor="blue.500"
                   />
-                </div>
-              </>
+                </FormControl>
+              </div>
             )}
+          </ModalBody>
 
-            <div className="flex justify-end space-x-2">
-              <Button
-                variant="outline"
-                onClick={() => setIsEditModalOpen(false)}
-              >
-                {t('patientManagement.editProfile.cancel')}
-              </Button>
-              <Button>{t('patientManagement.editProfile.save')}</Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
+          <ModalFooter>
+            <Button
+              variant="outline"
+              mr={3}
+              onClick={() => setIsEditModalOpen(false)}
+            >
+              {t('patientManagement.editProfile.cancel')}
+            </Button>
+            <Button colorScheme="blue">
+              {t('patientManagement.editProfile.save')}
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </div>
   );
 };
