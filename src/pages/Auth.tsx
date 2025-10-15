@@ -549,7 +549,7 @@ const AuthPage = () => {
         <div className="text-center mb-8">
           <div className="mx-auto mb-4 flex items-center justify-center">
             <img
-              src="https://res.cloudinary.com/depeqzb6z/image/upload/v1760105889/Klukoo_logo_New_aiyyti.png"
+              src="https://res.cloudinary.com/depeqzb6z/image/upload/v1760470801/New_Klukoo_Logo_vgkxe7.png"
               className="w-20 h-20 text-primary-foreground"
               alt="logo"
             />
