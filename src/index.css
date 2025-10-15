@@ -23,7 +23,7 @@ All colors MUST be HSL.
     --popover-foreground: 210 15% 12%;
 
     /* Primary - Medical Orange */
-    --primary: 187, 77%, 20%;
+    --primary: 190, 100%, 29%;
     --primary-foreground: 0 0% 100%;
 
     /* Secondary - Light Medical Blue */
@@ -51,7 +51,7 @@ All colors MUST be HSL.
     /* DARE Medical Colors */
     --medical-teal: 25 100% 64%;
     --medical-teal-light: 25 100% 85%;
-    --medical-blue-dark: 177, 48%, 44%;
+    --medical-blue-dark: 190, 100%, 29%;
     --medical-green-light: 142 76% 90%;
     --medical-blue: 187, 77%, 20%;
     --medical-blue-light: 210 50% 90%;
