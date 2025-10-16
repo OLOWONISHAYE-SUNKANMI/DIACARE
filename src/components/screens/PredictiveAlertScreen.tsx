@@ -334,6 +334,18 @@ export default function PredictiveAlertScreen({ values }: any) {
 
               <div>
                 <label className="block text-sm font-medium text-foreground mb-1">
+                  Last Dosage Taken
+                </label>
+                <input
+                  type="text"
+                  value={medications?.[0]?.dose ? `${medications[0].dose} ${medications[0].dose_unit}` : ''}
+                  readOnly
+                  className="w-full px-3 py-2 text-foreground bg-background border border-accent rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-foreground mb-1">
                   <Utensils className="inline mr-1" size={16} />
                   {t('insulinDosage.patient.carbsGrams')}
                 </label>

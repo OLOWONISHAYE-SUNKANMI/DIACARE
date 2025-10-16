@@ -1055,7 +1055,6 @@ export const PatientManagement = () => {
         </DialogContent>
       </Dialog>
 
-
       {/* Modal Appel */}
       <Dialog open={isCallModalOpen} onOpenChange={setIsCallModalOpen}>
         <DialogContent className="max-w-md">

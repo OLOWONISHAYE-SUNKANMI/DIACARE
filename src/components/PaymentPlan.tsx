@@ -26,7 +26,10 @@ const PaymentPlan = ({ plans, selectedPlan, onPlanSelect }) => {
     if (!selectedCountry) {
       return `${(eurPrice / 100).toFixed(0)}€`;
     }
-    const converted = CurrencyConverter.convertPrice(eurPrice / 100, selectedCountry);
+    const converted = CurrencyConverter.convertPrice(
+      eurPrice / 100,
+      selectedCountry
+    );
     return converted.formatted;
   };
 
@@ -85,11 +88,6 @@ const PaymentPlan = ({ plans, selectedPlan, onPlanSelect }) => {
                   <div className="text-sm text-muted-foreground">
                     {t(`${planKey}.pricePerMonth`)}
                   </div>
-                  {selectedCountry && selectedCountry !== 'DEFAULT' && (
-                    <div className="text-xs text-muted-foreground mt-1">
-                      ≈ {(plan.price_eur / 100).toFixed(0)}€
-                    </div>
-                  )}
                 </div>
               </CardHeader>
 
@@ -104,14 +102,24 @@ const PaymentPlan = ({ plans, selectedPlan, onPlanSelect }) => {
                     t(`${planKey}.features.news`),
 
                     // Show only on family plan
-                    !isPatientPlan && t(`${planKey}.features.familySharing`),
-                    !isPatientPlan && t(`${planKey}.features.familyAlerts`),
+                    !isPatientPlan && 'All feature from Klukoo Patient',
+                    !isPatientPlan && 'Data Sharing for up to 3 Family members',
+                    !isPatientPlan && 'Family Alert ',
+                    !isPatientPlan && 'Family Dashboard',
+                    !isPatientPlan && 'TeleMedicine for Family',
+                    !isPatientPlan && 'Family Coaching ',
+                    !isPatientPlan && 'Priority Medical Support',
+                    !isPatientPlan && 'Monthly Progress Report',
 
                     // Show only on patient plan
-                    isPatientPlan &&
-                      t(`${planKey}.features.personalizedAlerts`),
-
-                    t(`${planKey}.features.glucoseTracking`),
+                    isPatientPlan && 'AI predictive alert',
+                    'Glucose tracking',
+                    'Personalized INsight & Report ',
+                    '10 Monthly Consultation',
+                    'Klukoo Chat ',
+                    'Klkoo News & Education Hub ',
+                    'Medication & Insulin Reminders',
+                    'Daily Mood & Activity Log',
                   ]
                     .filter(Boolean)
                     .map((feature, index) => (

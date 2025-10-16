@@ -49,6 +49,7 @@ const ProfileScreen = () => {
     phone: profile?.phone || '',
     specialty: profile?.specialty || '',
     professional_license: profile?.professional_license || '',
+    diabetes_type: profile?.diabetes_type || '',
   });
 
   const [emergencyForm, setEmergencyForm] = useState({
@@ -84,6 +85,7 @@ const ProfileScreen = () => {
       dob: form.dob,
       profession: form.professon,
       city: form.city,
+      diabetes_type: form.diabetes_type,
     });
 
     setLoading(false);
@@ -274,6 +276,14 @@ const ProfileScreen = () => {
               </span>
               <p className="font-medium">
                 {profile.profession || t('profileScreen.notSet')}
+              </p>
+            </div>
+            <div>
+              <span className="text-muted-foreground">
+                Diabetes Type
+              </span>
+              <p className="font-medium">
+                {profile.diabetes_type || t('profileScreen.notSet')}
               </p>
             </div>
           </div>
