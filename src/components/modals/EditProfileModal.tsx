@@ -9,6 +9,7 @@ import {
   ModalCloseButton,
   Button,
   Input,
+  Select,
   useDisclosure,
 } from '@chakra-ui/react';
 
@@ -164,7 +165,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
                 />
               </div>
 
-              {/* Last Name */}
+              {/* City */}
               <div className="flex flex-col">
                 <label className="text-sm mb-1">
                   City
@@ -182,6 +183,33 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
                     boxShadow: '0 0 0 1px #32948f',
                   }}
                 />
+              </div>
+
+              {/* Diabetes Type */}
+              <div className="flex flex-col">
+                <label className="text-sm mb-1">
+                  Diabetes Type
+                </label>
+                <Select
+                  size="sm"
+                  value={form.diabetes_type || ''}
+                  onChange={e => handleChange('diabetes_type', e.target.value)}
+                  _focus={{
+                    borderColor: '#32948f',
+                    boxShadow: '0 0 0 1px #32948f',
+                  }}
+                  _focusVisible={{
+                    borderColor: '#32948f',
+                    boxShadow: '0 0 0 1px #32948f',
+                  }}
+                >
+                  <option value="">Select diabetes type</option>
+                  <option value="Type 1">Type 1</option>
+                  <option value="Type 2">Type 2</option>
+                  <option value="Gestational">Gestational</option>
+                  <option value="MODY">MODY</option>
+                  <option value="Other">Other</option>
+                </Select>
               </div>
 
               {/* Submit Button */}
