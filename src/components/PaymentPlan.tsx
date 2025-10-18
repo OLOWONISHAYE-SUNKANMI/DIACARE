@@ -58,7 +58,7 @@ const PaymentPlan = ({ plans, selectedPlan, onPlanSelect }) => {
               {/* Recommended Badge for Family Plan */}
               {!isPatientPlan && (
                 <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                  <Badge className="bg-primary text-primary-foreground">
+                  <Badge className="bg-primary text-primary-foreground m-5">
                     {t('planSelection.badge_recommended_family')}
                   </Badge>
                 </div>
@@ -89,51 +89,56 @@ const PaymentPlan = ({ plans, selectedPlan, onPlanSelect }) => {
                     {t(`${planKey}.pricePerMonth`)}
                   </div>
                 </div>
+
+
+                  {/* Description for each plan */}
+                  <p className="mt-3 text-sm text-muted-foreground px-2 text-left">
+                    {isPatientPlan
+                      ? t('planSelection.patient_description')
+                      : t('planSelection.family_description')} 
+                  </p>
+                  
               </CardHeader>
 
               {/* Features */}
               <CardContent className="space-y-4">
+
+                 {/* Included Features Heading */}
+                  <h4 className="text-base font-semibold text-foreground mb-2">
+                    {t('planSelection.includeFeatures')}
+                  </h4>
+
                 <div className="space-y-3">
-                  {/* Each feature line with ✅ Icon */}
-                  {[
-                    t(`${planKey}.features.allFeatures`),
-                    t(`${planKey}.features.consultationsPerMonth`),
-                    t(`${planKey}.features.chat`),
-                    t(`${planKey}.features.news`),
-
-                    // Show only on family plan
-                    !isPatientPlan && 'All feature from Klukoo Patient',
-                    !isPatientPlan && 'Data Sharing for up to 3 Family members',
-                    !isPatientPlan && 'Family Alert ',
-                    !isPatientPlan && 'Family Dashboard',
-                    !isPatientPlan && 'TeleMedicine for Family',
-                    !isPatientPlan && 'Family Coaching ',
-                    !isPatientPlan && 'Priority Medical Support',
-                    !isPatientPlan && 'Monthly Progress Report',
-
-                    // Show only on patient plan
-                    isPatientPlan && 'AI predictive alert',
-                    'Glucose tracking',
-                    'Personalized INsight & Report ',
-                    '10 Monthly Consultation',
-                    'Klukoo Chat ',
-                    'Klkoo News & Education Hub ',
-                    'Medication & Insulin Reminders',
-                    'Daily Mood & Activity Log',
-                  ]
-                    .filter(Boolean)
-                    .map((feature, index) => (
-                      <div
-                        key={index}
-                        className="flex items-center gap-3 text-sm"
-                      >
-                        {/* ✅ ICON (just like before) */}
-                        <div className="w-5 h-5 rounded-full bg-success/20 flex items-center justify-center flex-shrink-0">
-                          <Check className="w-3 h-3 text-success" />
-                        </div>
-                        <span>{feature}</span>
+                  {(
+                    isPatientPlan
+                      ? [
+                         t('planSelection.patientFeatures.predictiveAlert'),
+                         t('planSelection.patientFeatures.glucoseTracking'),
+                         t('planSelection.patientFeatures.insights'),
+                         t('planSelection.patientFeatures.chat'),
+                         t('planSelection.patientFeatures.insights'),
+                         t('planSelection.patientFeatures.blog'),
+                         t('planSelection.patientFeatures.reminder'),
+                         t('planSelection.patientFeatures.mood'),
+                        ]
+                      : [
+                          t('planSelection.familyFeatures.allFeatures'),
+                          t('planSelection.familyFeatures.dataSharing'),
+                          t('planSelection.familyFeatures.alert'),
+                          t('planSelection.familyFeatures.dashboard'),
+                          t('planSelection.familyFeatures.family'),
+                          t('planSelection.familyFeatures.coaching'),
+                          t('planSelection.familyFeatures.support'),
+                          t('planSelection.familyFeatures.report'),
+                        ]
+                  ).map((feature, index) => (
+                    <div key={index} className="flex items-center gap-3 text-sm">
+                      <div className="w-5 h-5 rounded-full bg-success/20 flex items-center justify-center flex-shrink-0">
+                        <Check className="w-3 h-3 text-success" />
                       </div>
-                    ))}
+                      <span>{feature}</span>
+                    </div>
+                  ))}
                 </div>
 
                 {/* CTA Button */}

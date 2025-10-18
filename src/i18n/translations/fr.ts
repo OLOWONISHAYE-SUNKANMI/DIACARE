@@ -1706,6 +1706,29 @@ export const fr = {
     cancel: 'Annuler',
     continue: 'Continuer',
     localCurrency: 'Devise locale',
+      patient_description: 'Les personnes vivant avec le diabète (de type 1 ou de type 2) qui souhaitent un suivi continu et personnalisé.',
+    family_description: 'Les familles gèrent le diabète ensemble, en particulier pour les enfants ou les membres diabétiques multiples.',
+    includeFeatures: 'Fonctionnalités incluses:',
+    patientFeatures: {
+      predictiveAlert: 'Alerte prédictive IA',
+      glucoseTracking: 'Suivi du glucose',
+      insights: 'Aperçu et rapport personnalisés',
+      consulations: 'Consultation mensuelle de 10 jours',
+      chat: 'Chat Klukoo',
+      blog: 'Centre d\'actualités et d\'éducation Klukoo',
+      reminder: 'Rappels de médicaments et d\'insuline',
+      mood: 'Journal quotidien d\'humeur et d\'activité'
+    },
+    familyFeatures: {
+      allFeatures: 'Toutes les fonctionnalités de Klukoo Patient',
+      dataSharing: 'Partage de données jusqu\'à 3 membres de la famille',
+      alert: 'Alerte familiale',
+      dashboard: 'Tableau de bord familial',
+      family: 'Télémédecine pour la famille',
+      coaching: 'Coaching familial',
+      support: 'Assistance médicale prioritaire',
+      report: 'Rapport d\'avancement mensuel'         
+    }
   },
 
   professionalCodeManager: {
