@@ -1702,6 +1702,29 @@ export const en = {
       '• Patient code automatically generated after payment',
     cancel: 'Cancel',
     continue: 'Continue',
+    patient_description: 'Individuals living with diabetes (Type 1 or Type 2) who want continous, personalized monitoring.',
+    family_description: 'Families managing diabetes together, especially for children or multiple diabetic members.',
+    includeFeatures: 'Included Features:',
+    patientFeatures: {
+      predictiveAlert: 'AI predictive alert',
+      glucoseTracking: 'Glucose tracking',
+      insights: 'Personalized Insight & Report',
+      consulations: '10 Monthly Consultation',
+      chat: 'Klukoo Chat',
+      blog: 'Klukoo News & Education Hub',
+      reminder: 'Medication & Insulin Reminders',
+      mood: 'Daily Mood & Activity Log'
+    },
+    familyFeatures: {
+      allFeatures: 'All features from Klukoo Patient',
+      dataSharing: 'Data Sharing for up to 3 Family Members',
+      alert: 'Family Alert',
+      dashboard: 'Family Dashboard',
+      family: 'TeleMedicine for Family',
+      coaching: 'Family Coaching',
+      support: 'Priority Medical Support',
+      report: 'Monthly Progress Report'         
+    }
   },
 
   professionalCodeManager: {
