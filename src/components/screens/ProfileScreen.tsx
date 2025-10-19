@@ -82,8 +82,8 @@ const ProfileScreen = () => {
       first_name: form.first_name,
       last_name: form.last_name,
       phone: form.phone,
-      dob: form.dob,
-      profession: form.professon,
+      date_of_birth: form.date_of_birth,
+      specialty: form.specialty,
       city: form.city,
       diabetes_type: form.diabetes_type,
     });
@@ -247,41 +247,29 @@ const ProfileScreen = () => {
               </p>
             </div>
             <div>
-              <span className="text-muted-foreground">
-                Date of birth
-              </span>
+              <span className="text-muted-foreground">Date of birth</span>
               <p className="font-medium">
-               {profile.dob || t('profileScreen.notSet')}
+                {profile.date_of_birth || t('profileScreen.notSet')}
               </p>
             </div>
             <div>
-              <span className="text-muted-foreground">
-                Age
-              </span>
-              <p className="font-medium">
-                49 years old
-              </p>
+              <span className="text-muted-foreground">Age</span>
+              <p className="font-medium">49 years old</p>
             </div>
             <div>
-              <span className="text-muted-foreground">
-               City
-              </span>
+              <span className="text-muted-foreground">City</span>
               <p className="font-medium">
                 {profile.city || t('profileScreen.notSet')}
               </p>
             </div>
             <div>
-              <span className="text-muted-foreground">
-                profession
-              </span>
+              <span className="text-muted-foreground">profession</span>
               <p className="font-medium">
-                {profile.profession || t('profileScreen.notSet')}
+                {profile.specialty || t('profileScreen.notSet')}
               </p>
             </div>
             <div>
-              <span className="text-muted-foreground">
-                Diabetes Type
-              </span>
+              <span className="text-muted-foreground">Diabetes Type</span>
               <p className="font-medium">
                 {profile.diabetes_type || t('profileScreen.notSet')}
               </p>
@@ -302,13 +290,11 @@ const ProfileScreen = () => {
 
         <CardContent className="space-y-3">
           <p className="text-sm text-muted-foreground">
-           {t('booklet.downloadGuideDescription')}
+            {t('booklet.downloadGuideDescription')}
           </p>
 
           <div className="flex gap-3">
-
-
-              {/* English PDF */}
+            {/* English PDF */}
             <Button
               variant="secondary"
               asChild
@@ -320,11 +306,10 @@ const ProfileScreen = () => {
                 rel="noopener noreferrer"
                 download
               >
-            {t('booklet.downloadEnglish')}
+                {t('booklet.downloadEnglish')}
               </a>
             </Button>
 
-            
             {/* French PDF */}
             <Button
               variant="secondary"
@@ -336,18 +321,16 @@ const ProfileScreen = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 download
-                
               >
                 {t('booklet.downloadFrench')}
               </a>
             </Button>
-
           </div>
         </CardContent>
       </Card>
 
       {/* Équipe Médicale */}
-       <Card className="border-l-4 border-l-medical-teal">
+      <Card className="border-l-4 border-l-medical-teal">
         <CardHeader>
           <CardTitle className="text-lg flex items-center gap-2">
             <Users className="w-5 h-5 text-medical-teal" />
@@ -389,13 +372,12 @@ const ProfileScreen = () => {
         </CardContent>
       </Card>
 
-     
       {/* Current Treatment */}
       <Card className="border-l-4 border-l-medical-teal">
         <CardHeader>
           <CardTitle className="text-lg flex items-center gap-2">
             <Pill className="w-5 h-5 text-medical-teal" />
-           {t('profileScreen.currentTreatment')}
+            {t('profileScreen.currentTreatment')}
           </CardTitle>
         </CardHeader>
 
@@ -476,10 +458,9 @@ const ProfileScreen = () => {
                 //   emergency_contact_name: addContact.emergency_contact_name,
                 //   emergency_contact_phone: addContact.emergency_contact_phone,
                 // });
-                
 
                 // if (!error) {
-                  toast.success('Profile updated successfully');
+                toast.success('Profile updated successfully');
                 // } else {
                 //   toast.error('Failed to update profile');
                 // }
@@ -488,7 +469,7 @@ const ProfileScreen = () => {
                   emergency_contact_phone: '',
                 });
 
-                return ;
+                return;
               }}
               trigger={<Plus className="w-4 h-4 cursor-pointer" />}
             />
