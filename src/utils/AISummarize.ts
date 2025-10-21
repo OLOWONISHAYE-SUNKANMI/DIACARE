@@ -8,3 +8,5 @@ export async function getAISummary(values) {
   const data = await res.json();
   return data.summary;
 }
+
+

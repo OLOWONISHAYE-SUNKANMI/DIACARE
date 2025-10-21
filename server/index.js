@@ -11,14 +11,15 @@ const port = process.env.PORT || 8000;
 app.use(cors());
 app.use(express.json());
 
+// ========== FORECAST ENDPOINT ==========
 app.post('/forecast', async (req, res) => {
   const { currentGlucose } = req.body;
 
   const prompt = `
-   Given the past glucose readings: ${currentGlucose},
-   predict the 30 minutes forecast in this format
-   Stable ( (↓ mg/dL)Next 30 min forecast: Stable (↓ mg/dL).
-   Respond with the just number beside the arrow mg/dL.
+You are a medical AI that predicts blood glucose trends.
+Given the current glucose reading: ${currentGlucose} mg/dL,
+forecast the glucose level after 30 minutes.
+Respond with only the number (in mg/dL) expected after 30 minutes.
   `;
 
   try {
@@ -26,42 +27,98 @@ app.post('/forecast', async (req, res) => {
       model: 'gpt-3.5-turbo',
       messages: [{ role: 'user', content: prompt }],
       temperature: 0.2,
-      max_tokens: 300,
+      max_tokens: 100,
     });
 
-    const forecast = completion.choices[0].message.content;
-    res.json({ forecast: forecast });
+    const forecast = completion.choices[0].message.content.trim();
+    res.json({ forecast });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'forecast failed' });
+    console.error('Forecast error:', error.message);
+    res.status(500).json({ error: 'Forecast failed' });
   }
 });
 
+// ========== PREDICTIVE ALERT ENDPOINT ==========
 app.post('/predict', async (req, res) => {
-  const { glucoseHistory } = req.body;
+  const { glucoseHistory, insulinType, insulinUnits, calories, activity } = req.body;
 
   const prompt = `
-   Given the past glucose readings: ${glucoseHistory},
-   predict the user sugar level for the next 30 minutes.
-   Respond with just the number of mg/dL.
+You are a diabetes prediction AI.
+Analyze the following data:
+- Glucose readings: ${glucoseHistory}
+- Insulin type: ${insulinType}
+- Insulin units: ${insulinUnits}
+- Calories: ${calories}
+- Activity: ${activity}
+
+1. Predict the user's blood glucose value 30 minutes from now (in mg/dL).
+2. Determine the risk type:
+   - "Hypo risk" if below 100 mg/dL
+   - "Hyper risk" if above 150 mg/dL
+   - "Stable" if between 100 and 150 mg/dL
+3. Respond in this exact JSON format only:
+{
+  "forecast_mgdl": [number],
+  "risk_type": "Hypo risk" or "Hyper risk" or "Stable",
+  "forecast_minutes": 30
+}
   `;
 
   try {
     const completion = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [{ role: 'user', content: prompt }],
-      temperature: 0.2,
+      temperature: 0.3,
       max_tokens: 300,
     });
 
-    const prediction = completion.choices[0].message.content;
-    res.json({ prediction: prediction });
+    const text = completion.choices[0].message.content;
+    const jsonStart = text.indexOf('{');
+    const jsonEnd = text.lastIndexOf('}');
+    const jsonString = text.slice(jsonStart, jsonEnd + 1);
+    const parsed = JSON.parse(jsonString);
+
+    const now = new Date();
+    const alertTime = new Date(now.getTime() + parsed.forecast_minutes * 60000);
+
+    const alertList = [
+      {
+        risk: parsed.risk_type,
+        in_minutes: parsed.forecast_minutes,
+        time: alertTime.toTimeString().slice(0, 5),
+      },
+    ];
+
+    let mainAlert = {};
+    if (parsed.risk_type === 'Hypo risk') {
+      mainAlert = {
+        type: 'Predictive Alert!',
+        message: 'Risk of Hypoglycemia forecasted. Check your BG and take necessary actions.',
+      };
+    } else if (parsed.risk_type === 'Hyper risk') {
+      mainAlert = {
+        type: 'Warning!',
+        message: 'Risk of Hyperglycemia forecasted. Monitor closely.',
+      };
+    } else {
+      mainAlert = {
+        type: 'Stable',
+        message: 'No immediate risk detected.',
+      };
+    }
+
+    res.json({
+      forecast_mgdl: parsed.forecast_mgdl,
+      main_alert: mainAlert,
+      alerts: alertList,
+    });
   } catch (error) {
-    console.error(error);
+    console.error('Prediction error:', error.message);
     res.status(500).json({ error: 'Prediction failed' });
   }
 });
 
+// ========== SUMMARY ENDPOINT ==========
 app.post('/summarize', async (req, res) => {
   try {
     const { values } = req.body;
@@ -71,14 +128,16 @@ app.post('/summarize', async (req, res) => {
     }
 
     const systemPrompt = `
-You are a health AI assistant. Always answer ONLY in the following format, with each item on a new line and no extra explanation:
+You are a clinical AI assistant analyzing patient data.
+Always respond using this exact structure:
 
-Risk of Hypoglycemia: [probability %]
-Forecast: BG may drop to [exact mg/dl] in [exact time].
-Suggestions: Re-check in [exact time], and take [exact medication].
-
-Do not add any extra text or explanation. Only output the summary in this format.
-`;
+Risk Summary:
+- Hypoglycemia probability: [percentage]
+- Hyperglycemia probability: [percentage]
+- Overall forecast: [Stable / Risk of spike / Risk of drop]
+Recommendation:
+- [Provide one simple and clear health suggestion]
+    `;
 
     const userPrompt = `Health data: ${JSON.stringify(values)}`;
 
@@ -92,22 +151,20 @@ Do not add any extra text or explanation. Only output the summary in this format
       max_tokens: 300,
     });
 
-    const summary = chat.choices[0].message.content;
-
+    const summary = chat.choices[0].message.content.trim();
     res.json({ summary });
   } catch (error) {
-    console.error(
-      'Error something went wrong generating the summary',
-      error.message
-    );
+    console.error('Summary error:', error.message);
     res.status(500).json({ message: 'Error generating summary' });
   }
 });
 
+// ========== ROOT ROUTE ==========
 app.get('/', (req, res) => {
-  res.send('AI Summarization API is running.');
+  res.send('AI Predictive Alert and Forecast API is running.');
 });
 
+// ========== SERVER LISTEN ==========
 app.listen(port, () => {
   console.log(`AI server listening at http://localhost:${port}`);
 });
