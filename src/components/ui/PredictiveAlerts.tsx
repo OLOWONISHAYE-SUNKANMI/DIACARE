@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
 import {
   AlertTriangle,
   Clock,
@@ -15,12 +16,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { predictiveAnalyzer } from '@/utils/SimplifiedPredictiveAnalyzer';
-import type { RiskAlert } from '@/utils/SimplifiedPredictiveAnalyzer';
 import { useTranslation } from 'react-i18next';
 import { useThemeStore } from '@/store/useThemeStore';
 import { toast } from 'sonner';
 import PredictiveCard from './PredictiveCard';
+import { getPredictiveAlert, getAISummary } from '@/utils/AISummarize'; // ✅ Integrated AI utilities
 
 interface PredictiveAlertsProps {
   onTabChange?: (tab: string) => void;
@@ -33,22 +33,70 @@ const PredictiveAlerts: React.FC<PredictiveAlertsProps> = ({
   glucoseValue,
   onTabChange,
 }) => {
-  console.log('glucoseValue', glucoseValue);
   const { t } = useTranslation();
   const { isDarkMode } = useThemeStore();
-  const [alerts, setAlerts] = useState<RiskAlert[]>([]);
+
+  const [alerts, setAlerts] = useState<any[]>([]);
+  const [summary, setSummary] = useState<string>('');
   const [loading, setLoading] = useState(true);
   const urgentRef = useRef(0);
   const prevGlucose = useRef<string | null>(null);
   const [predictiveVisible, setPredictiveVisible] = useState<boolean>(true);
 
+  // ===================== AI INTEGRATION =====================
   useEffect(() => {
-    setTimeout(() => {
-      const newAlerts = predictiveAnalyzer.analyzeAndGenerateAlerts();
-      setAlerts(newAlerts);
-      setLoading(false);
-    }, 1500);
-  }, []);
+    async function fetchAIInsights() {
+      try {
+        setLoading(true);
+
+        const glucoseValueNum = parseFloat(glucoseValue);
+        if (isNaN(glucoseValueNum)) return;
+
+        // 🔹 Fetch predictive alert from backend AI
+        const aiResponse = await getPredictiveAlert(
+          [glucoseValueNum], // glucose history
+          'rapid-acting', // insulinType
+          6, // insulinUnits
+          500, // calories
+          'walking' // activity
+        );
+
+        // 🔹 Format AI alert response
+        const formattedAlerts = aiResponse.alerts.map((alert: any) => ({
+          id: alert.id || Math.random().toString(36).substring(2, 9),
+          type: alert.risk,
+          message: alert.message || aiResponse.main_alert.message,
+          severity:
+            alert.risk === 'Hypo risk'
+              ? 'critical'
+              : alert.risk === 'Hyper risk'
+              ? 'high'
+              : 'medium',
+          time: alert.time,
+        }));
+
+        setAlerts(formattedAlerts);
+
+        // 🔹 Fetch AI-generated summary
+        const summaryText = await getAISummary({
+          glucoseValue: glucoseValueNum,
+          insulinType: 'rapid-acting',
+          insulinUnits: 6,
+          calories: 500,
+          activity: 'walking',
+        });
+        setSummary(summaryText);
+      } catch (error) {
+        console.error('Error fetching AI data:', error);
+        toast.error('Failed to fetch AI predictions.');
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchAIInsights();
+  }, [glucoseValue]);
+  // ==========================================================
 
   const getSeverityColor = (severity: string) => {
     switch (severity) {
@@ -73,9 +121,9 @@ const PredictiveAlerts: React.FC<PredictiveAlertsProps> = ({
 
   const getAlertIcon = (type: string) => {
     switch (type) {
-      case 'hypo_risk':
+      case 'Hypo risk':
         return <TrendingDown className="w-5 h-5" />;
-      case 'hyper_risk':
+      case 'Hyper risk':
         return <TrendingUp className="w-5 h-5" />;
       case 'trend_warning':
         return <AlertTriangle className="w-5 h-5" />;
@@ -89,12 +137,10 @@ const PredictiveAlerts: React.FC<PredictiveAlertsProps> = ({
   };
 
   const handleMarkAsRead = (alertId: string) => {
-    predictiveAnalyzer.markAlertAsRead(alertId);
     setAlerts(prev => prev.filter(alert => alert.id !== alertId));
   };
 
   const handleDismissAll = () => {
-    alerts.forEach(alert => predictiveAnalyzer.markAlertAsRead(alert.id));
     setAlerts([]);
   };
 
@@ -151,15 +197,13 @@ const PredictiveAlerts: React.FC<PredictiveAlertsProps> = ({
     }
   }, [glucoseValue, t]);
 
-  // --- Begin dynamic stats logic ---
-  // We'll keep a running count of high/low/total glucose readings
+  // --- Glucose statistics logic ---
   const [glucoseStats, setGlucoseStats] = useState({
     total: 0,
-    urgent: 0, // high
-    monitor: 0, // low
+    urgent: 0,
+    monitor: 0,
   });
 
-  // Use a separate ref to track last value for stats, so stats always update for new values
   const lastStatsValue = useRef<string | null>(null);
   useEffect(() => {
     const value = parseFloat(glucoseValue);
@@ -167,25 +211,20 @@ const PredictiveAlerts: React.FC<PredictiveAlertsProps> = ({
       setGlucoseStats(prev => {
         const newStats = { ...prev };
         newStats.total += 1;
-        if (value > 180) {
-          newStats.urgent += 1;
-        } else if (value < 70) {
-          newStats.monitor += 1;
-        }
+        if (value > 180) newStats.urgent += 1;
+        else if (value < 70) newStats.monitor += 1;
         return newStats;
       });
       lastStatsValue.current = glucoseValue;
     }
   }, [glucoseValue]);
-  console.log(glucoseStats);
+  // --- End stats ---
 
   const handleViewMore = () => {
     onTabChange?.('predictive');
   };
 
-  // --- End dynamic stats logic ---
-
-  // Optionally, you can render nothing or a placeholder
+  // --- UI ---
   return (
     <div className={`space-y-4 ${className}`}>
       {/* Header */}
@@ -196,7 +235,6 @@ const PredictiveAlerts: React.FC<PredictiveAlertsProps> = ({
               <Brain className="w-6 h-6" />
               <span className="font-semibold">{t('Alerts.title')}</span>
             </div>
-            {/* Hide mark all read button since we don't have alert list here */}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -223,7 +261,7 @@ const PredictiveAlerts: React.FC<PredictiveAlertsProps> = ({
         </CardContent>
       </Card>
 
-      {/* predictive  */}
+      {/* Predictive Card */}
       <PredictiveCard
         cancelable={true}
         values={glucoseValue}
@@ -231,13 +269,40 @@ const PredictiveAlerts: React.FC<PredictiveAlertsProps> = ({
         setVisible={setPredictiveVisible}
         onTabChange={onTabChange}
       />
-      {/* Alerts */}
 
-      {/* AI Analysis Summary */}
+      {/* AI Alerts */}
+      {loading ? (
+        <p className="text-center text-muted">Analyzing with AI...</p>
+      ) : alerts.length > 0 ? (
+        alerts.map(alert => (
+          <Alert
+            key={alert.id}
+            className={`${getSeverityColor(
+              alert.severity
+            )} flex items-center justify-between`}
+          >
+            <div className="flex items-center space-x-2">
+              {getAlertIcon(alert.type)}
+              <AlertDescription>{alert.message}</AlertDescription>
+            </div>
+            <Button
+              onClick={() => handleMarkAsRead(alert.id)}
+              size="sm"
+              variant="ghost"
+              className="ml-auto"
+            >
+              <X className="w-4 h-4" />
+            </Button>
+          </Alert>
+        ))
+      ) : (
+        <p className="text-center text-muted">No AI alerts detected.</p>
+      )}
+
+      {/* AI Summary Section */}
       <Card className="bg-[#dffffb] text-foreground">
         <CardContent className="p-4 flex justify-between items-center ">
           <div className="flex flex-col md:flex-row sm:items-center justify-between gap-3 sm:gap-6 w-full ">
-            {/* Left: Icon + Text */}
             <div className="flex items-start sm:items-center space-x-3">
               <Brain className="w-6 h-6 text-accent-foreground flex-shrink-0" />
               <div>
@@ -245,12 +310,15 @@ const PredictiveAlerts: React.FC<PredictiveAlertsProps> = ({
                   {t('analyze.title')}
                 </h4>
                 <p className="text-sm text-foreground/80">
-                  {t('analyze.message')}
+                  {summary ||
+                    t(
+                      'analyze.message',
+                      'AI summary not available yet. Please wait...'
+                    )}
                 </p>
               </div>
             </div>
 
-            {/* Right: Button */}
             <Button
               onClick={handleViewMore}
               variant="default"
