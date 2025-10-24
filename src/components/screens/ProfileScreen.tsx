@@ -43,13 +43,15 @@ const ProfileScreen = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [profilePhoto, setProfilePhoto] = useState<string | null>(null);
   const [weight, setWeight] = useState<number>(75.2);
-  const [form, setForm] = useState<Partial<Profile>>({
+  type FormType = Partial<Profile> & { diabetes_type?: string };
+
+  const [form, setForm] = useState<FormType>({
     first_name: profile?.first_name || '',
     last_name: profile?.last_name || '',
     phone: profile?.phone || '',
     specialty: profile?.specialty || '',
     professional_license: profile?.professional_license || '',
-    diabetes_type: profile?.diabetes_type || '',
+    diabetes_type: (profile as any)?.diabetes_type || '',
   });
 
   const [emergencyForm, setEmergencyForm] = useState({
@@ -86,7 +88,7 @@ const ProfileScreen = () => {
       specialty: form.specialty,
       city: form.city,
       diabetes_type: form.diabetes_type,
-    });
+    } as unknown as Partial<Profile>);
 
     setLoading(false);
 
@@ -99,7 +101,7 @@ const ProfileScreen = () => {
     }
   };
 
-  const handleChange = (field: keyof Profile, value: string) => {
+  const handleChange = (field: keyof FormType, value: string) => {
     setForm(prev => ({
       ...prev,
       [field]: value,
@@ -271,7 +273,8 @@ const ProfileScreen = () => {
             <div>
               <span className="text-muted-foreground">Diabetes Type</span>
               <p className="font-medium">
-                {profile.diabetes_type || t('profileScreen.notSet')}
+                {(profile as Profile & { diabetes_type?: string })
+                  .diabetes_type || t('profileScreen.notSet')}
               </p>
             </div>
           </div>
