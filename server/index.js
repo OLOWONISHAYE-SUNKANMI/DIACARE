@@ -15,11 +15,11 @@ app.post('/forecast', async (req, res) => {
   const { currentGlucose } = req.body;
 
   const prompt = `
-   Given the past glucose readings: ${currentGlucose},
-   predict the 30 minutes forecast in this format
-   Stable ( (↓ mg/dL)Next 30 min forecast: Stable (↓ mg/dL).
-   Respond with the just number beside the arrow mg/dL.
-  `;
+    Given the past glucose readings: ${currentGlucose},
+    predict the 30 minutes forecast in this format
+    Stable ( (↓ mg/dL)Next 30 min forecast: Stable (↓ mg/dL).
+    Respond with the just number beside the arrow mg/dL.
+    `;
 
   try {
     const completion = await openai.chat.completions.create({

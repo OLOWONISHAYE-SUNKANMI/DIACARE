@@ -20,6 +20,7 @@ import PlanSelection from '@/components/PlanSelection';
 import LanguageSwitcher from '@/components/ui/LanguageSwitcher';
 import { LegalModal } from '@/components/modals/LegalModal';
 import { ProfessionalAccessModal } from '@/components/modals/ProfessionalAccessModal';
+import { FamilyMemberSignupFlow } from '@/components/FamilyMemberSignupFlow';
 import { supabase } from '@/integrations/supabase/client';
 import {
   Mail,
@@ -142,7 +143,6 @@ const AuthPage = () => {
     setIsLoading(true);
     setError('');
 
-    
     try {
       // const result = await signInWithProfessionalCode(code);
       const { error } = await signIn(
@@ -1026,57 +1026,7 @@ const AuthPage = () => {
               </TabsContent>
 
               <TabsContent value="family" className="mt-6">
-                <form onSubmit={handleFamilyAccess} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="patient-code">
-                      {t('auth.patientCode')}
-                    </Label>
-                    <Input
-                      id="patient-code"
-                      type="text"
-                      placeholder={
-                        isTestMode
-                          ? 'TEST123 (Mode Test)'
-                          : t('auth.patientCodePlaceholder')
-                      }
-                      value={familyData.patientCode}
-                      onChange={e =>
-                        setFamilyData(prev => ({
-                          ...prev,
-                          patientCode: e.target.value.toUpperCase(),
-                        }))
-                      }
-                      className="text-center font-mono text-lg"
-                      required={!isTestMode}
-                    />
-                    <p className="text-xs text-muted-foreground text-center">
-                      {isTestMode
-                        ? t('auth.testModeHint')
-                        : t('auth.codeProvidedByPatient')}
-                    </p>
-                  </div>
-
-                  <Button
-                    type="submit"
-                    className="w-full"
-                    disabled={
-                      isLoading || (!isTestMode && !familyData.patientCode)
-                    }
-                  >
-                    {isLoading
-                      ? t('authFixes.auth.connecting')
-                      : t('authFixes.auth.familyAccess')}
-                  </Button>
-                </form>
-
-                <Separator className="my-4" />
-
-                <div className="text-center text-sm text-muted-foreground">
-                  {t('auth.needHelp')}
-                  <Button variant="link" className="p-0 ml-1">
-                    {t('auth.familyAccessGuide')}
-                  </Button>
-                </div>
+                <FamilyMemberSignupFlow />
               </TabsContent>
             </Tabs>
           </CardContent>
