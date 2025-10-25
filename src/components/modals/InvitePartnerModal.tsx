@@ -12,24 +12,22 @@ import {
   FormControl,
   FormLabel,
   Radio,
+  RadioGroup,
   Stack,
 } from '@chakra-ui/react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { useToast } from '@/hooks/use-toast';
 import { useTranslation } from 'react-i18next';
 import { supabase } from '@/integrations/supabase/client';
 import { Loader2 } from 'lucide-react';
 
-// InvitePartnerModal.tsx
 interface InvitePartnerModalProps {
   open: boolean;
   onClose: () => void;
-  familyMemberId?: string; // Make it optional
-  patientAccessCode?: string; // Add this for when patients use it
-  isPatientInviting?: boolean; // Flag to know which flow
+  familyMemberId?: string;
+  patientAccessCode?: string;
+  isPatientInviting?: boolean;
 }
 
 export default function InvitePartnerModal({
@@ -42,16 +40,18 @@ export default function InvitePartnerModal({
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [patientCode, setPatientCode] = useState('');
-  const [access, setAccess] = useState('read');
+  const [profession, setProfession] = useState('');
+  const [city, setCity] = useState('');
+  const [country, setCountry] = useState('');
+  const [relation, setRelation] = useState('');
+  const [access, setAccess] = useState('read_only');
   const [loading, setLoading] = useState(false);
 
   const { toast } = useToast();
   const { t } = useTranslation();
 
   const handleSend = async () => {
-    // If patient is inviting, just share the access code via SMS/email
     if (isPatientInviting && patientAccessCode) {
-      // TODO: Send SMS/Email with access code to the phone number
       toast({
         title: 'Invitation Sent!',
         description: `Access code ${patientAccessCode} has been shared with ${phone}`,
@@ -69,7 +69,7 @@ export default function InvitePartnerModal({
       return;
     }
 
-    if (!name || !phone || !patientCode) {
+    if (!name || !phone || !patientCode || !relation) {
       toast({
         title: 'Error',
         description: 'Please fill in all required fields',
@@ -90,10 +90,28 @@ export default function InvitePartnerModal({
     setLoading(true);
 
     try {
-      // Call the request_patient_access function
+      // First, update family member profile with additional info
+      const { error: updateError } = await supabase
+        .from('family_members')
+        .update({
+          full_name: name,
+          phone: phone,
+          profession: profession || null,
+          city: city || null,
+          country: country || null,
+          relation: relation,
+        })
+        .eq('id', familyMemberId);
+
+      if (updateError) {
+        console.error('Error updating family member:', updateError);
+      }
+
+      // Then request access with permission level
       const { data, error } = await supabase.rpc('request_patient_access', {
         p_family_member_id: familyMemberId,
         p_patient_code: patientCode.toUpperCase(),
+        p_permission_level: access, // Pass the permission level
       });
 
       if (error) {
@@ -121,7 +139,6 @@ export default function InvitePartnerModal({
         try {
           result = JSON.parse(data) as RpcResult;
         } catch {
-          // If RPC returned a plain string, treat it as an error message
           result = { success: false, error: data };
         }
       } else {
@@ -129,23 +146,24 @@ export default function InvitePartnerModal({
       }
 
       if (result.success) {
-        // TODO: Send actual SMS via your backend API
-        // For now, we'll just log the SMS details
         console.log('SMS to send:', result.sms_details);
-
-        // In production, call your SMS API here:
-        // await sendSMS(result.sms_details);
 
         toast({
           title: 'Success!',
-          description: `Access request sent to patient. They will receive an SMS with instructions.`,
+          description: `Access request sent with ${
+            access === 'read_only' ? 'Read-Only' : 'Full Access'
+          } permission.`,
         });
 
         // Reset form
         setName('');
         setPhone('');
         setPatientCode('');
-        setAccess('read');
+        setProfession('');
+        setCity('');
+        setCountry('');
+        setRelation('');
+        setAccess('read_only');
 
         onClose();
       } else {
@@ -169,9 +187,9 @@ export default function InvitePartnerModal({
   };
 
   return (
-    <Modal isOpen={open} onClose={onClose} isCentered>
+    <Modal isOpen={open} onClose={onClose} isCentered size="lg">
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent maxH="90vh" overflowY="auto">
         <ModalHeader>{t('invitePartnerModal.title')}</ModalHeader>
         <ModalCloseButton />
 
@@ -199,7 +217,18 @@ export default function InvitePartnerModal({
                 type="tel"
                 value={phone}
                 onChange={e => setPhone(e.target.value)}
-                placeholder="+221 77 ..."
+                placeholder="+234..."
+                disabled={loading}
+              />
+            </FormControl>
+
+            <FormControl isRequired>
+              <FormLabel htmlFor="relation">Relationship to Patient</FormLabel>
+              <Input
+                id="relation"
+                value={relation}
+                onChange={e => setRelation(e.target.value)}
+                placeholder="e.g., Son, Daughter, Spouse, Friend"
                 disabled={loading}
               />
             </FormControl>
@@ -222,17 +251,50 @@ export default function InvitePartnerModal({
             </FormControl>
 
             <FormControl>
+              <FormLabel htmlFor="profession">Profession (Optional)</FormLabel>
+              <Input
+                id="profession"
+                value={profession}
+                onChange={e => setProfession(e.target.value)}
+                placeholder="Your profession"
+                disabled={loading}
+              />
+            </FormControl>
+
+            <div className="grid grid-cols-2 gap-3">
+              <FormControl>
+                <FormLabel htmlFor="city">City (Optional)</FormLabel>
+                <Input
+                  id="city"
+                  value={city}
+                  onChange={e => setCity(e.target.value)}
+                  placeholder="Your city"
+                  disabled={loading}
+                />
+              </FormControl>
+
+              <FormControl>
+                <FormLabel htmlFor="country">Country (Optional)</FormLabel>
+                <Input
+                  id="country"
+                  value={country}
+                  onChange={e => setCountry(e.target.value)}
+                  placeholder="Your country"
+                  disabled={loading}
+                />
+              </FormControl>
+            </div>
+
+            {/* Fixed Radio Group */}
+            <FormControl>
               <FormLabel>{t('invitePartnerModal.form.permission')}</FormLabel>
-              <RadioGroup
-                value={access}
-                onChange={e => setAccess((e.target as HTMLInputElement).value)}
-              >
+              <RadioGroup value={access} onChange={setAccess}>
                 <Stack direction="column" spacing={2}>
-                  <Radio value="read" isDisabled={loading}>
-                    {t('invitePartnerModal.permissionOptions.read')}
+                  <Radio value="read_only" isDisabled={loading}>
+                    Read-Only Access (View dashboard, data, journal)
                   </Radio>
-                  <Radio value="full" isDisabled={loading}>
-                    {t('invitePartnerModal.permissionOptions.full')}
+                  <Radio value="full_access" isDisabled={loading}>
+                    Full Access (Can edit and manage data)
                   </Radio>
                 </Stack>
               </RadioGroup>
