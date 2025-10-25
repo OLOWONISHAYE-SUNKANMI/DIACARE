@@ -19,11 +19,11 @@ app.post('/forecast', async (req, res) => {
   }
 
   const prompt = `
-You are a clinical diabetes forecasting assistant.
-Given a current glucose level of ${currentGlucose} mg/dL, 
-estimate the glucose level after 30 minutes considering normal physiological glucose metabolism.
-Respond only with the numeric glucose forecast (mg/dL).
-  `;
+    Given the past glucose readings: ${currentGlucose},
+    predict the 30 minutes forecast in this format
+    Stable ( (↓ mg/dL)Next 30 min forecast: Stable (↓ mg/dL).
+    Respond with the just number beside the arrow mg/dL.
+    `;
 
   try {
     const completion = await openai.chat.completions.create({

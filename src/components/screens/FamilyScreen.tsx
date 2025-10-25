@@ -21,15 +21,13 @@ import { Avatar, AvatarFallback } from '../ui/avatar';
 import { Separator } from '../ui/separator';
 import ManageAccessModal from '@/components/modals/ManageAccessModal';
 import InvitePartnerModal from '@/components/modals/InvitePartnerModal';
-
-
-
+import { useAuth } from '@/contexts/AuthContext'; // Import your auth context
 
 const FamilyScreen = () => {
   const { t } = useTranslation();
   const { accessCode, getAccessCode, loading } = useFamily();
+  const { profile } = useAuth(); // Get the logged-in patient profile
   const { toast } = useToast();
-
 
   const [manageModalOpen, setManageModalOpen] = useState(false);
   const [selectedMember, setSelectedMember] = useState<string | null>(null);
@@ -49,78 +47,74 @@ const FamilyScreen = () => {
   };
 
   const familyMembers = [
-  {
-    id: 1,
-    name: 'Fatou Diop',
-    role: t('familyScreen.familyMembers.patientOne.role'),
-    permission: t('familyScreen.familyMembers.patientOne.permission'),
-    status: 'online',
-    avatar: 'F',
-    lastSeen: t('familyScreen.familyMembers.patientOne.lastSeen'),
-    icon: CheckCircle,
-    color: 'text-green-500',
-    phone: '+221 77 987 65 43',
-  },
-  {
-    id: 2,
-    name: 'Dr. Mamadou Kane',
-    role: t('familyScreen.familyMembers.patientTwo.role'),
-    permission: t('familyScreen.familyMembers.patientTwo.permission'),
-    status: 'emergency',
-    avatar: 'Dr',
-    lastSeen: t('familyScreen.familyMembers.patientTwo.lastSeen'),
-    icon: AlertTriangle,
-    color: 'text-orange-500',
-    phone: '+221 33 825 14 52',
-  },
-  {
-    id: 3,
-    name: 'Ibrahim Diallo',
-    role: t('familyScreen.familyMembers.patientThree.role'),
-    permission: t('familyScreen.familyMembers.patientThree.permission'),
-    status: 'readonly',
-    avatar: 'I',
-    lastSeen: t('familyScreen.familyMembers.patientThree.lastSeen'),
-    icon: Eye,
-    color: 'text-blue-500',
-    phone: '+221 76 543 21 09',
-  },
-];
+    {
+      id: 1,
+      name: 'Fatou Diop',
+      role: t('familyScreen.familyMembers.patientOne.role'),
+      permission: t('familyScreen.familyMembers.patientOne.permission'),
+      status: 'online',
+      avatar: 'F',
+      lastSeen: t('familyScreen.familyMembers.patientOne.lastSeen'),
+      icon: CheckCircle,
+      color: 'text-green-500',
+      phone: '+221 77 987 65 43',
+    },
+    {
+      id: 2,
+      name: 'Dr. Mamadou Kane',
+      role: t('familyScreen.familyMembers.patientTwo.role'),
+      permission: t('familyScreen.familyMembers.patientTwo.permission'),
+      status: 'emergency',
+      avatar: 'Dr',
+      lastSeen: t('familyScreen.familyMembers.patientTwo.lastSeen'),
+      icon: AlertTriangle,
+      color: 'text-orange-500',
+      phone: '+221 33 825 14 52',
+    },
+    {
+      id: 3,
+      name: 'Ibrahim Diallo',
+      role: t('familyScreen.familyMembers.patientThree.role'),
+      permission: t('familyScreen.familyMembers.patientThree.permission'),
+      status: 'readonly',
+      avatar: 'I',
+      lastSeen: t('familyScreen.familyMembers.patientThree.lastSeen'),
+      icon: Eye,
+      color: 'text-blue-500',
+      phone: '+221 76 543 21 09',
+    },
+  ];
 
-
-
-
-const recentActivity = [
-  {
-    id: 1,
-    time: t('familyScreen.recentActivity.firstOne.time'),
-    action: t('familyScreen.recentActivity.firstOne.action'),
-    type: 'view',
-    actor: 'Fatou',
-  },
-  {
-    id: 2,
-    time: t('familyScreen.recentActivity.secondOne.time'),
-    action: t('familyScreen.recentActivity.secondOne.action'),
-    type: 'medical',
-    actor: 'Dr. Kane',
-  },
-  {
-    id: 3,
-    time: t('familyScreen.recentActivity.thirdOne.time'),
-    action: t('familyScreen.recentActivity.thirdOne.action'),
-    type: 'alert',
-    actor: 'Ibrahim',
-  },
-  {
-    id: 4,
-    time: t('familyScreen.recentActivity.fourthOne.time'),
-    action: t('familyScreen.recentActivity.fourthOne.action'),
-    type: 'confirmation',
-    actor: 'Fatou',
-  },
-];
-
+  const recentActivity = [
+    {
+      id: 1,
+      time: t('familyScreen.recentActivity.firstOne.time'),
+      action: t('familyScreen.recentActivity.firstOne.action'),
+      type: 'view',
+      actor: 'Fatou',
+    },
+    {
+      id: 2,
+      time: t('familyScreen.recentActivity.secondOne.time'),
+      action: t('familyScreen.recentActivity.secondOne.action'),
+      type: 'medical',
+      actor: 'Dr. Kane',
+    },
+    {
+      id: 3,
+      time: t('familyScreen.recentActivity.thirdOne.time'),
+      action: t('familyScreen.recentActivity.thirdOne.action'),
+      type: 'alert',
+      actor: 'Ibrahim',
+    },
+    {
+      id: 4,
+      time: t('familyScreen.recentActivity.fourthOne.time'),
+      action: t('familyScreen.recentActivity.fourthOne.action'),
+      type: 'confirmation',
+      actor: 'Fatou',
+    },
+  ];
 
   return (
     <div className="flex-1 p-4 space-y-6 pb-24 animate-fade-in">
@@ -158,7 +152,7 @@ const recentActivity = [
               className="border-yellow-600 text-yellow-700 hover:bg-yellow-100"
               disabled={loading || !accessCode}
             >
-             {t('familyScreen.familySharingCode.copyButton')}
+              {t('familyScreen.familySharingCode.copyButton')}
             </Button>
           </div>
         </CardContent>
@@ -168,19 +162,25 @@ const recentActivity = [
         <Card className="text-center p-3">
           <CardContent className="p-0">
             <div className="text-2xl font-bold text-medical-teal">∞</div>
-            <div className="text-xs text-muted-foreground">{t('familyScreen.numOfPatients.patients')}</div>
+            <div className="text-xs text-muted-foreground">
+              {t('familyScreen.numOfPatients.patients')}
+            </div>
           </CardContent>
         </Card>
         <Card className="text-center p-3">
           <CardContent className="p-0">
             <div className="text-2xl font-bold text-medical-teal">47</div>
-            <div className="text-xs text-muted-foreground">{t('familyScreen.numOfPatients.first')}</div>
+            <div className="text-xs text-muted-foreground">
+              {t('familyScreen.numOfPatients.first')}
+            </div>
           </CardContent>
         </Card>
         <Card className="text-center p-3">
           <CardContent className="p-0">
             <div className="text-2xl font-bold text-medical-teal">12</div>
-            <div className="text-xs text-muted-foreground">{t('familyScreen.numOfPatients.second')}</div>
+            <div className="text-xs text-muted-foreground">
+              {t('familyScreen.numOfPatients.second')}
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -189,7 +189,7 @@ const recentActivity = [
         <CardHeader>
           <CardTitle className="text-lg flex items-center gap-2">
             <Users className="w-5 h-5 text-medical-teal" />
-              {t('familyScreen.familyMembers.title')}
+            {t('familyScreen.familyMembers.title')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -217,7 +217,14 @@ const recentActivity = [
                   </div>
                 </div>
 
-                <Button size="sm" variant="outline" onClick={setManageModalOpen}>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => {
+                    setSelectedMember(member.id.toString());
+                    setManageModalOpen(true);
+                  }}
+                >
                   <Settings className="w-4 h-4" />
                 </Button>
               </div>
@@ -252,17 +259,25 @@ const recentActivity = [
 
       {/* Boutons Actions */}
       <div className="space-y-3">
-        <Button className="w-full bg-medical-teal hover:bg-medical-teal/90" onClick={setInviteModalOpen}>
+        <Button
+          className="w-full bg-medical-teal hover:bg-medical-teal/90"
+          onClick={() => setInviteModalOpen(true)}
+        >
           <UserPlus className="w-4 h-4 mr-2" />
-        {t('familyScreen.button1')}
+          {t('familyScreen.button1')}
         </Button>
-        <Button variant="outline" className="w-full" onClick={setManageModalOpen}>
+        <Button
+          variant="outline"
+          className="w-full"
+          onClick={() => {
+            setSelectedMember(null);
+            setManageModalOpen(true);
+          }}
+        >
           <Settings className="w-4 h-4 mr-2" />
-            {t('familyScreen.button2')}
+          {t('familyScreen.button2')}
         </Button>
       </div>
-
-      
 
       {/* Emergency Contact */}
       <Card className="bg-red-50 border-red-200">
@@ -280,8 +295,20 @@ const recentActivity = [
           </Button>
         </CardContent>
       </Card>
-      <ManageAccessModal open={manageModalOpen} onClose={()=> setManageModalOpen(false)} />
-        <InvitePartnerModal open={inviteModalOpen} onClose={()=> setInviteModalOpen(false)} />
+
+      <ManageAccessModal
+        open={manageModalOpen}
+        onClose={() => setManageModalOpen(false)}
+      />
+
+      {/* ✅ FIX: This modal should NOT receive familyMemberId 
+          This is used by PATIENTS to invite family members, not by family members */}
+      <InvitePartnerModal
+        open={inviteModalOpen}
+        onClose={() => setInviteModalOpen(false)}
+        isPatientInviting={true}
+        patientAccessCode={accessCode || ''}
+      />
     </div>
   );
 };
