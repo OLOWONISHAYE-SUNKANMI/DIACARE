@@ -8,10 +8,15 @@ import 'jsr:@supabase/functions-js/edge-runtime.d.ts';
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
-const getEnv = (key: string) =>
-  (globalThis as any).Deno?.env?.get(key) ??
-  (globalThis as any).process?.env?.[key] ??
-  '';
+type GlobalEnv = {
+  Deno?: { env?: { get(key: string): string | undefined } };
+  process?: { env?: Record<string, string | undefined> };
+};
+
+const getEnv = (key: string) => {
+  const g = globalThis as unknown as GlobalEnv;
+  return g.Deno?.env?.get(key) ?? g.process?.env?.[key] ?? '';
+};
 
 const supabaseUrl = getEnv('SUPABASE_URL');
 const supabaseKey = getEnv('SUPABASE_SERVICE_ROLE_KEY');
