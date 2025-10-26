@@ -20,7 +20,7 @@ import PlanSelection from '@/components/PlanSelection';
 import LanguageSwitcher from '@/components/ui/LanguageSwitcher';
 import { LegalModal } from '@/components/modals/LegalModal';
 import { ProfessionalAccessModal } from '@/components/modals/ProfessionalAccessModal';
-import { FamilyMemberSignupFlow } from '@/components/FamilyMemberSignupFlow';
+// import { FamilyMemberSignupFlow } from '@/components/FamilyMemberSignupFlow';
 import { supabase } from '@/integrations/supabase/client';
 import {
   Mail,
