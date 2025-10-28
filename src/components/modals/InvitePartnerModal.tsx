@@ -21,25 +21,19 @@ import { useToast } from '@/hooks/use-toast';
 import { useTranslation } from 'react-i18next';
 import { supabase } from '@/integrations/supabase/client';
 import { Loader2 } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface InvitePartnerModalProps {
   open: boolean;
   onClose: () => void;
-  familyMemberId?: string;
-  patientAccessCode?: string;
-  isPatientInviting?: boolean;
 }
 
 export default function InvitePartnerModal({
   open,
   onClose,
-  familyMemberId,
-  patientAccessCode,
-  isPatientInviting = false,
 }: InvitePartnerModalProps) {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
-  const [patientCode, setPatientCode] = useState('');
   const [profession, setProfession] = useState('');
   const [city, setCity] = useState('');
   const [country, setCountry] = useState('');
@@ -49,27 +43,19 @@ export default function InvitePartnerModal({
 
   const { toast } = useToast();
   const { t } = useTranslation();
+  const { profile } = useAuth();
 
   const handleSend = async () => {
-    if (isPatientInviting && patientAccessCode) {
-      toast({
-        title: 'Invitation Sent!',
-        description: `Access code ${patientAccessCode} has been shared with ${phone}`,
-      });
-      onClose();
-      return;
-    }
-
-    if (!familyMemberId) {
+    if (!profile?.access_code) {
       toast({
         title: 'Error',
-        description: 'Family member ID not found. Please log in again.',
+        description: 'Patient access code not found',
         variant: 'destructive',
       });
       return;
     }
 
-    if (!name || !phone || !patientCode || !relation) {
+    if (!name || !phone || !relation) {
       toast({
         title: 'Error',
         description: 'Please fill in all required fields',
@@ -78,107 +64,57 @@ export default function InvitePartnerModal({
       return;
     }
 
-    if (patientCode.length !== 8) {
-      toast({
-        title: 'Error',
-        description: 'Patient code must be 8 characters',
-        variant: 'destructive',
-      });
-      return;
-    }
-
     setLoading(true);
 
     try {
-      // First, update family member profile with additional info
-      const { error: updateError } = await supabase
+      // 1. Create family member directly
+      const { data: familyMember, error: familyError } = await supabase
         .from('family_members')
-        .update({
+        .insert({
+          patient_user_id: profile.user_id,
+          patient_code: profile.access_code,
           full_name: name,
           phone: phone,
+          relation: relation,
+          permission_level: access, // 'read_only' or 'full_access'
           profession: profession || null,
           city: city || null,
           country: country || null,
-          relation: relation,
         })
-        .eq('id', familyMemberId);
+        .select()
+        .single();
 
-      if (updateError) {
-        console.error('Error updating family member:', updateError);
-      }
+      if (familyError) throw familyError;
 
-      // Then request access with permission level
-      const { data, error } = await supabase.rpc('request_patient_access', {
-        p_family_member_id: familyMemberId,
-        p_patient_code: patientCode.toUpperCase(),
-        p_permission_level: access, // Pass the permission level
+      // 2. Prepare SMS message (no need for access_requests table)
+      const smsMessage = `Hi ${name}! You've been added as ${relation} for ${profile.first_name}'s diabetes care. Use access code: ${profile.access_code} to login at klukoo.com/auth`;
+
+      // TODO: Send actual SMS via your SMS service
+      console.log('SMS to send:', {
+        to: phone,
+        message: smsMessage,
       });
 
-      if (error) {
-        console.error('Error requesting access:', error);
-        throw error;
-      }
+      toast({
+        title: 'Success!',
+        description: `${name} has been added and will receive an SMS with the access code.`,
+      });
 
-      type RpcResult = {
-        success: boolean;
-        error?: string;
-        request_id?: string;
-        sms_details?: {
-          to: string;
-          patient_name: string;
-          family_member_name: string;
-          relation: string;
-          message: string;
-          response_code: string;
-        };
-      };
+      // Reset form
+      setName('');
+      setPhone('');
+      setProfession('');
+      setCity('');
+      setCountry('');
+      setRelation('');
+      setAccess('view');
 
-      let result: RpcResult;
-
-      if (typeof data === 'string') {
-        try {
-          result = JSON.parse(data) as RpcResult;
-        } catch {
-          result = { success: false, error: data };
-        }
-      } else {
-        result = data as unknown as RpcResult;
-      }
-
-      if (result.success) {
-        console.log('SMS to send:', result.sms_details);
-
-        toast({
-          title: 'Success!',
-          description: `Access request sent with ${
-            access === 'read_only' ? 'Read-Only' : 'Full Access'
-          } permission.`,
-        });
-
-        // Reset form
-        setName('');
-        setPhone('');
-        setPatientCode('');
-        setProfession('');
-        setCity('');
-        setCountry('');
-        setRelation('');
-        setAccess('read_only');
-
-        onClose();
-      } else {
-        toast({
-          title: 'Failed',
-          description: result.error || 'Failed to send access request',
-          variant: 'destructive',
-        });
-      }
+      onClose();
     } catch (error: any) {
       console.error('Error:', error);
       toast({
         title: 'Error',
-        description:
-          error.message || 'An error occurred while sending the request',
+        description: error.message || 'Failed to add family member',
         variant: 'destructive',
       });
     } finally {
@@ -190,30 +126,24 @@ export default function InvitePartnerModal({
     <Modal isOpen={open} onClose={onClose} isCentered size="lg">
       <ModalOverlay />
       <ModalContent maxH="90vh" overflowY="auto">
-        <ModalHeader>{t('invitePartnerModal.title')}</ModalHeader>
+        <ModalHeader>Add Family Member</ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>
           <Stack spacing={4}>
             <FormControl isRequired>
-              <FormLabel htmlFor="name">
-                {t('invitePartnerModal.form.name')}
-              </FormLabel>
+              <FormLabel>Full Name</FormLabel>
               <Input
-                id="name"
                 value={name}
                 onChange={e => setName(e.target.value)}
-                placeholder="Enter family member name"
+                placeholder="Enter full name"
                 disabled={loading}
               />
             </FormControl>
 
             <FormControl isRequired>
-              <FormLabel htmlFor="phone">
-                {t('invitePartnerModal.form.phone')}
-              </FormLabel>
+              <FormLabel>Phone Number</FormLabel>
               <Input
-                id="phone"
                 type="tel"
                 value={phone}
                 onChange={e => setPhone(e.target.value)}
@@ -223,9 +153,8 @@ export default function InvitePartnerModal({
             </FormControl>
 
             <FormControl isRequired>
-              <FormLabel htmlFor="relation">Relationship to Patient</FormLabel>
+              <FormLabel>Relationship to Patient</FormLabel>
               <Input
-                id="relation"
                 value={relation}
                 onChange={e => setRelation(e.target.value)}
                 placeholder="e.g., Son, Daughter, Spouse, Friend"
@@ -233,27 +162,9 @@ export default function InvitePartnerModal({
               />
             </FormControl>
 
-            <FormControl isRequired>
-              <FormLabel htmlFor="patientCode">
-                {t('invitePartnerModal.form.code')}
-              </FormLabel>
-              <Input
-                id="patientCode"
-                value={patientCode}
-                onChange={e => setPatientCode(e.target.value.toUpperCase())}
-                placeholder="Enter 8-character patient code"
-                maxLength={8}
-                disabled={loading}
-              />
-              <p className="text-xs text-gray-500 mt-1">
-                The patient will receive an SMS to approve/deny this request
-              </p>
-            </FormControl>
-
             <FormControl>
-              <FormLabel htmlFor="profession">Profession (Optional)</FormLabel>
+              <FormLabel>Profession (Optional)</FormLabel>
               <Input
-                id="profession"
                 value={profession}
                 onChange={e => setProfession(e.target.value)}
                 placeholder="Your profession"
@@ -263,31 +174,28 @@ export default function InvitePartnerModal({
 
             <div className="grid grid-cols-2 gap-3">
               <FormControl>
-                <FormLabel htmlFor="city">City (Optional)</FormLabel>
+                <FormLabel>City (Optional)</FormLabel>
                 <Input
-                  id="city"
                   value={city}
                   onChange={e => setCity(e.target.value)}
-                  placeholder="Your city"
+                  placeholder="City"
                   disabled={loading}
                 />
               </FormControl>
 
               <FormControl>
-                <FormLabel htmlFor="country">Country (Optional)</FormLabel>
+                <FormLabel>Country (Optional)</FormLabel>
                 <Input
-                  id="country"
                   value={country}
                   onChange={e => setCountry(e.target.value)}
-                  placeholder="Your country"
+                  placeholder="Country"
                   disabled={loading}
                 />
               </FormControl>
             </div>
 
-            {/* Fixed Radio Group */}
             <FormControl>
-              <FormLabel>{t('invitePartnerModal.form.permission')}</FormLabel>
+              <FormLabel>Access Level</FormLabel>
               <RadioGroup value={access} onChange={setAccess}>
                 <Stack direction="column" spacing={2}>
                   <Radio value="read_only" isDisabled={loading}>
@@ -299,21 +207,28 @@ export default function InvitePartnerModal({
                 </Stack>
               </RadioGroup>
             </FormControl>
+
+            <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg text-sm">
+              <p className="text-blue-700 dark:text-blue-300">
+                📱 {name || 'Family member'} will receive an SMS with your
+                access code: <strong>{profile?.access_code}</strong>
+              </p>
+            </div>
           </Stack>
         </ModalBody>
 
         <ModalFooter>
           <Button variant="outline" onClick={onClose} disabled={loading}>
-            {t('invitePartnerModal.button1')}
+            Cancel
           </Button>
           <Button onClick={handleSend} className="ml-2" disabled={loading}>
             {loading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Sending...
+                Adding...
               </>
             ) : (
-              t('invitePartnerModal.button2')
+              'Add Family Member'
             )}
           </Button>
         </ModalFooter>
