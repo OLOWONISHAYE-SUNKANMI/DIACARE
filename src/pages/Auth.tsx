@@ -307,7 +307,12 @@ const AuthPage = () => {
     try {
       // 1. Find patient by access code
       const { data: profile, error: profileError } = await supabase
-        .from('profiles')
+        .from<{
+          user_id: string;
+          first_name: string;
+          last_name: string;
+          access_code: string;
+        }>('profiles')
         .select('user_id, first_name, last_name, access_code')
         .eq('access_code', accessCode)
         .single();
@@ -321,8 +326,13 @@ const AuthPage = () => {
 
       // 2. Find family member by phone number for this patient
       const { data: familyMember, error: familyError } = await supabase
-        .from('family_members')
-        .select('*')
+        .from<{
+          id: string;
+          full_name: string;
+          phone: string;
+          permission_level: string;
+        }>('family_members')
+        .select('id, full_name, phone, permission_level')
         .eq('patient_user_id', profile.user_id)
         .eq('phone', phoneNumber)
         .single();
@@ -335,8 +345,8 @@ const AuthPage = () => {
         );
         setIsLoading(false);
         return;
-      }
-
+      };
+      
       // 3. Store session
       const familySession = {
         family_member_id: familyMember.id,

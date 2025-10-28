@@ -6,7 +6,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
 
 // Import only the profile screen
-import FamilyProfileScreen from '../FamilyProfileScreen';
+// import FamilyProfieScreen from '@/components/screens/';
 
 interface FamilySession {
   family_member_id: string;
@@ -29,10 +29,18 @@ const FamilyDashboard: React.FC = () => {
   console.log('navigated to /family-dashboard');
 
   // Family session data
+  interface PatientProfile {
+    user_id: string;
+    full_name?: string;
+    email?: string;
+    phone?: string;
+    avatar_url?: string;
+    [key: string]: unknown;
+  }
   const [familySession, setFamilySession] = useState<FamilySession | null>(
     null
   );
-  const [patientData, setPatientData] = useState<any>(null);
+  const [patientData, setPatientData] = useState<PatientProfile | null>(null);
 
   useEffect(() => {
     checkFamilyAccess();
@@ -59,7 +67,7 @@ const FamilyDashboard: React.FC = () => {
       setFamilySession(session);
 
       // Verify the family member still exists and is active
-      const { data: familyMember, error } = await (supabase as any)
+      const { data: familyMember, error } = await supabase
         .from('family_members')
         .select('*')
         .eq('id', session.family_member_id)
@@ -90,11 +98,14 @@ const FamilyDashboard: React.FC = () => {
         title: 'Welcome!',
         description: `You can now view ${session.patient_name}'s health profile`,
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const errMsg = error instanceof Error ? error.message : String(error);
       console.error('Error checking access:', error);
       toast({
         title: 'Error',
-        description: 'Failed to verify access permissions',
+        description: `Failed to verify access permissions${
+          errMsg ? `: ${errMsg}` : ''
+        }`,
         variant: 'destructive',
       });
       navigate('/auth');

@@ -11,7 +11,7 @@ import NotFound from './pages/NotFound';
 import PaymentSuccess from './components/screens/PaymentSuccess';
 import PaymentScreen from './components/screens/PaymentScreen';
 import { ProfessionalDashboard } from './components/screens/ProfessionalDashboard';
-import FamilyDashboard from './components/screens/FamilyDashboard'; // ✅ This should exist
+import FamilyDashboard from './components/screens/FamilyDashboard';
 import { ProfessionalRegistrationScreen } from './components/screens/ProfessionalRegistrationScreen';
 import { ChakraProvider } from '@chakra-ui/react';
 import { Toaster } from 'sonner';
@@ -45,45 +45,21 @@ const AppContent = () => {
       )}
       <BrowserRouter>
         <Routes>
-          {/* Public Routes */}
           <Route path="/auth" element={<Auth />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
-          <Route path="*" element={<NotFound />} />
-
-          {/* Protected Routes */}
-          <Route
-            path="/"
-            element={
-              <ProtectedRoute>
-                <Index />
-              </ProtectedRoute>
-            }
-          />
-
           <Route
             path="/payment"
             element={
-              <ProtectedRoute>
-                <PaymentScreen
-                  onBack={() => window.history.back()}
-                  onPaymentSuccess={() =>
-                    (window.location.href = '/payment-success')
-                  }
-                />
-              </ProtectedRoute>
+              <PaymentScreen
+                onBack={() => window.history.back()}
+                onPaymentSuccess={() =>
+                  (window.location.href = '/payment-success')
+                }
+              />
             }
           />
-
-          <Route
-            path="/payment-success"
-            element={
-              <ProtectedRoute>
-                <PaymentSuccess />
-              </ProtectedRoute>
-            }
-          />
-
+          <Route path="/payment-success" element={<PaymentSuccess />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route
             path="/professional-registration"
             element={
@@ -92,25 +68,18 @@ const AppContent = () => {
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/professional-dashboard"
-            element={
-              <ProtectedRoute>
-                <ProfessionalDashboard />
-              </ProtectedRoute>
-            }
+            element={<ProfessionalDashboard />}
           />
-
           <Route
-            path="/professional"
+            path="/"
             element={
               <ProtectedRoute>
-                <ProfessionalDashboard />
+                <Index />
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/family-dashboard"
             element={
@@ -119,6 +88,8 @@ const AppContent = () => {
               </ProtectedRoute>
             }
           />
+          <Route path="/professional" element={<ProfessionalDashboard />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </>
