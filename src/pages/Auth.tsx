@@ -312,7 +312,7 @@ const AuthPage = () => {
         .eq('access_code', accessCode)
         .single();
 
-      console.log('profile', profile);
+      // console.log('profile', profile);
       if (profileError || !profile) {
         setError('Invalid access code');
         setIsLoading(false);
@@ -327,7 +327,7 @@ const AuthPage = () => {
         .eq('phone', phoneNumber)
         .single();
 
-      console.log('familyMember', profile);
+      // console.log('familyMember', familyMember);
 
       if (familyError || !familyMember) {
         setError(
@@ -349,7 +349,7 @@ const AuthPage = () => {
         login_time: new Date().toISOString(),
       };
 
-      console.log(familySession);
+      // console.log(familySession);
 
       localStorage.setItem('family_session', JSON.stringify(familySession));
 
