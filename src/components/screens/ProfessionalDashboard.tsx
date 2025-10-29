@@ -678,23 +678,7 @@ export const ProfessionalDashboard = () => {
                 </Card>
                 <div className="flex flex-col gap-6">
                   {/* Quick Actions */}
-                  <Card
-                    className={
-                      theme === 'dark'
-                        ? 'bg-gray-800/80 border-white/10 h-fit'
-                        : 'h-fit'
-                    }
-                  >
-                    <CardHeader>
-                      <CardTitle className="flex items-center">
-                        <Stethoscope className="h-5 w-5 mr-2" />
-                        {t('professionalDashboard.overview.quickActions.title')}
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <QuickActions />
-                    </CardContent>
-                  </Card>
+
                   {/* Notes des patients */}
                   <Card>
                     <CardHeader>
