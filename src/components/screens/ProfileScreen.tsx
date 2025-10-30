@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   User,
   Phone,
@@ -34,6 +34,8 @@ import { useThemeStore } from '@/store/useThemeStore';
 import { EmergencyContactModal } from '../modals/EmergencyContactModal';
 import { useMedications } from '@/contexts/MedicationContext';
 import { AddEmergencyContactModal } from '../modals/AddEmergencyContactModal';
+import { uploadToCloudinary } from '@/utils/cloudinary';
+import { supabase } from '@/integrations/supabase/client';
 
 const ProfileScreen = () => {
   const { t } = useTranslation();
@@ -41,7 +43,15 @@ const ProfileScreen = () => {
   const [notifications, setNotifications] = useState(true);
   const [dataSharing, setDataSharing] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
-  const [profilePhoto, setProfilePhoto] = useState<string | null>(null);
+  const [profilePhoto, setProfilePhoto] = useState<string | null>(
+    (profile as any)?.profile_photo_url || null
+  );
+
+  useEffect(() => {
+    if (profile?.id) {
+      setProfilePhoto((profile as any)?.profile_photo_url || null);
+    }
+  }, [profile]);
   const [weight, setWeight] = useState<number>(75.2);
   type FormType = Partial<Profile> & { diabetes_type?: string };
 
@@ -69,6 +79,31 @@ const ProfileScreen = () => {
   const isDark = theme === 'dark';
 
   const [loading, setLoading] = useState(false);
+  const [uploadingPhoto, setUploadingPhoto] = useState(false);
+
+  const handlePhotoUpload = async (file: File) => {
+    setUploadingPhoto(true);
+    try {
+      const imageUrl = await uploadToCloudinary(file);
+
+      const { error } = await supabase
+        .from('profiles')
+        .update({ profile_photo_url: imageUrl })
+        .eq('id', profile.id);
+
+      if (error) {
+        console.error('Supabase error:', error);
+        throw error;
+      }
+
+      setProfilePhoto(imageUrl);
+      toast.success('Photo updated successfully');
+    } catch (error) {
+      toast.error('Failed to upload photo');
+    } finally {
+      setUploadingPhoto(false);
+    }
+  };
 
   if (!profile) {
     return <div className="p-4">{t('profileScreen.loading')}</div>;
@@ -115,7 +150,7 @@ const ProfileScreen = () => {
         <div className="relative">
           <PhotoUploadModal
             currentPhoto={profilePhoto}
-            onPhotoChange={setProfilePhoto}
+            onPhotoChange={handlePhotoUpload}
           >
             <Avatar className="w-24 h-24 mx-auto bg-gradient-to-br from-gray-400 to-gray-600 cursor-pointer hover:opacity-80 transition-opacity">
               {profilePhoto ? (
@@ -135,7 +170,7 @@ const ProfileScreen = () => {
           >
             <PhotoUploadModal
               currentPhoto={profilePhoto}
-              onPhotoChange={setProfilePhoto}
+              onPhotoChange={handlePhotoUpload}
             >
               <span>
                 <Camera className="w-4 h-4" />
