@@ -127,7 +127,7 @@ export const ProfessionalDashboard = () => {
       }
 
       const { data, error } = await supabase
-        .from('professional_sessions')
+        .from('professional_applications')
         .select(
           `
         id,

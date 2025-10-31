@@ -17,6 +17,7 @@ import {
   Pencil,
   Plus,
   BookOpen,
+  Trash2,
 } from 'lucide-react';
 import { Profile, useAuth } from '@/contexts/AuthContext';
 import { useTranslation } from 'react-i18next';
@@ -105,6 +106,22 @@ const ProfileScreen = () => {
     }
   };
 
+  const handleRemovePhoto = async () => {
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .update({ profile_photo_url: null })
+        .eq('id', profile.id);
+
+      if (error) throw error;
+
+      setProfilePhoto(null);
+      toast.success('Photo removed successfully');
+    } catch (error) {
+      toast.error('Failed to remove photo');
+    }
+  };
+
   if (!profile) {
     return <div className="p-4">{t('profileScreen.loading')}</div>;
   }
@@ -165,18 +182,27 @@ const ProfileScreen = () => {
           </PhotoUploadModal>
           <Button
             size="sm"
-            className="absolute -bottom-2 -right-2 h-8 w-8 rounded-full p-0"
+            className="absolute -bottom-2 -left-2 h-8 w-8 rounded-full p-0"
             asChild
           >
             <PhotoUploadModal
               currentPhoto={profilePhoto}
               onPhotoChange={handlePhotoUpload}
             >
-              <span>
-                <Camera className="w-4 h-4" />
-              </span>
+              <Camera className="w-4 h-4" />
+              {/* <span></span> */}
             </PhotoUploadModal>
           </Button>
+          {profilePhoto && (
+            <Button
+              size="sm"
+              variant="destructive"
+              className="absolute -bottom-2 -right-2 h-6 w-6 rounded-full p-0"
+              onClick={handleRemovePhoto}
+            >
+              <Trash2 className="w-3 h-3" />
+            </Button>
+          )}
         </div>
 
         <div className="space-y-2">

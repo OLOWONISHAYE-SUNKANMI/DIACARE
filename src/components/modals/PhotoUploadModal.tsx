@@ -1,13 +1,16 @@
-import { useState, useRef } from 'react';
-import { Camera, Upload } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { useRef } from 'react';
+import { Upload } from 'lucide-react';
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  Button,
+  useDisclosure,
+} from '@chakra-ui/react';
 
 interface PhotoUploadModalProps {
   children: React.ReactNode;
@@ -20,42 +23,44 @@ export default function PhotoUploadModal({
   currentPhoto,
   onPhotoChange,
 }: PhotoUploadModalProps) {
-  const [open, setOpen] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       onPhotoChange(file);
-      setOpen(false);
+      onClose();
     }
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle>Update Profile Photo</DialogTitle>
-        </DialogHeader>
-        <div className="space-y-4">
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/*"
-            onChange={handleFileSelect}
-            className="hidden"
-          />
-          <Button
-            onClick={() => fileInputRef.current?.click()}
-            className="w-full"
-            variant="outline"
-          >
-            <Upload className="w-4 h-4 mr-2" />
-            Choose Photo
-          </Button>
-        </div>
-      </DialogContent>
-    </Dialog>
+    <>
+      <div onClick={onOpen}>{children}</div>
+      <Modal isOpen={isOpen} onClose={onClose} isCentered>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Update Profile Photo</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handleFileSelect}
+              style={{ display: 'none' }}
+            />
+            <Button
+              onClick={() => fileInputRef.current?.click()}
+              width="100%"
+              variant="outline"
+            >
+              <Upload className="w-4 h-4 mr-2" />
+              Choose Photo
+            </Button>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+    </>
   );
 }
