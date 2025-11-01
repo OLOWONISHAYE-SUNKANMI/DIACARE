@@ -468,7 +468,7 @@ const ProfileScreen = () => {
           ) : medications.length === 0 ? (
             <p className="text-sm text-muted-foreground">No medications set</p>
           ) : (
-            medications.map(med => (
+            medications.slice(0, 10).map(med => (
               <div key={med.id}>
                 <span className="text-muted-foreground text-sm">
                   {med.medication_name} • {med.dose}
