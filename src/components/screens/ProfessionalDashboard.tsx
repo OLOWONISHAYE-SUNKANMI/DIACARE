@@ -1,6 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -27,7 +33,9 @@ import { toast } from 'sonner';
 import { useThemeStore } from '@/store/useThemeStore';
 import LanguageToggle from '@/components/ui/LanguageToggle';
 import { supabase } from '@/integrations/supabase/client';
+import { supabaseService } from '@/lib/supabase-service';
 import { useAuth } from '@/contexts/AuthContext';
+import { useConsultation } from '@/contexts/ConsultationContext';
 import { useTranslation } from 'react-i18next';
 import {
   Drawer,
@@ -40,7 +48,6 @@ import {
 import { useIsMobile } from '@/hooks/use-mobile';
 
 export const ProfessionalDashboard = () => {
-  const [user, setUser] = useState(null);
   const [activePatients, setActivePatients] = useState([]);
   const [appointments, setAppointments] = useState([]);
   const [reports, setReports] = useState([]);
@@ -50,8 +57,8 @@ export const ProfessionalDashboard = () => {
   const [showAllPatients, setShowAllPatients] = useState(false);
   const navigate = useNavigate();
   const { theme, toggleTheme } = useThemeStore();
-  const { professionalCode } = useAuth();
-  console.log('Professional Info:', professionalInfo);
+  const { user, professionalCode, professionalData } = useAuth();
+  const { professionalRequests, loadProfessionalRequests } = useConsultation();
 
   const isDark = theme === 'dark';
   const { t } = useTranslation();
@@ -72,28 +79,30 @@ export const ProfessionalDashboard = () => {
       return;
     }
 
-    getActivePatients();
-    getUpcomingAppointments();
-    getCompletedReports();
-    getProfessionalInfo();
-    getUser();
+    // Wait for user to be available (either real or mock)
+    if (professionalCode || storedCode) {
+      loadData();
+    }
   }, [user, navigate]);
 
-  const getUser = async () => {
-    const { data, error } = await supabase.auth.getUser();
-    // console.log('User:', data);
-    if (error) {
-      console.error('Error fetching user:', error.message);
-    } else if (data) {
-      setUser(data);
-    }
+  const loadData = async () => {
+    await getProfessionalInfo();
+    await getUpcomingAppointments();
+    await getCompletedReports();
   };
 
+  // Load active patients after appointments are loaded
+  useEffect(() => {
+    if (appointments.length > 0) {
+      getActivePatients();
+    }
+  }, [appointments]);
   // Get professional info
   // Trying to use the professional code to get the excat info for the excat professional in the dashboard.
   const getProfessionalInfo = async () => {
     try {
       const storedCode = localStorage.getItem('professionalCode');
+      console.log(storedCode);
       if (!storedCode) {
         console.error('No professional code found');
         return;
@@ -105,6 +114,7 @@ export const ProfessionalDashboard = () => {
         .select('first_name, last_name, professional_type')
         .eq('professional_code', storedCode);
 
+      // console.log(data);
       if (error) throw error;
       setProfessionalInfo(data[0]);
     } catch (error) {
@@ -112,16 +122,47 @@ export const ProfessionalDashboard = () => {
     }
   };
 
-  // Trying to get the active patient and then map through it
+  // Fetch patients who created consultation requests for this professional
   const getActivePatients = async () => {
     try {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('id, first_name, last_name, specialty, phone');
+      // Get unique patient IDs from appointments
+      const patientIds = [...new Set(appointments.map(apt => apt.patient_id))];
 
-      // console.log('Active Patients:', data);
+      if (patientIds.length === 0) {
+        setActivePatients([]);
+        return;
+      }
+      console.log('pateintIds', patientIds);
+
+      // Fetch patient profiles using user_id instead of id
+      const { data: patients, error } = await supabase
+        .from('profiles')
+        .select('user_id, first_name, last_name, phone')
+        .in('user_id', patientIds);
+
       if (error) throw error;
-      setActivePatients(data);
+      console.log('patients:', patients);
+
+      // Combine patient data with their latest consultation info
+      const activePatients = patients.map(patient => {
+        const latestRequest = appointments
+          .filter(apt => apt.patient_id === patient.user_id)
+          .sort(
+            (a, b) => new Date(b.requested_at) - new Date(a.requested_at)
+          )[0];
+
+        return {
+          id: patient.user_id,
+          first_name: patient.first_name,
+          last_name: patient.last_name,
+          phone: patient.phone || '',
+          last_visit: latestRequest?.requested_at,
+          status: latestRequest?.status || 'unknown',
+        };
+      });
+
+      console.log('Active Patients:', activePatients);
+      setActivePatients(activePatients);
     } catch (error) {
       console.error('Error fetching active patients:', error);
     }
@@ -129,22 +170,20 @@ export const ProfessionalDashboard = () => {
 
   // Fetch upcoming consultations (appointments)
   const getUpcomingAppointments = async () => {
-    if (!user?.id) return console.warn('User ID not available yet.');
-
     try {
+      const storedCode = localStorage.getItem('professionalCode');
+      if (!storedCode) {
+        console.error('No professional code found');
+        return;
+      }
+
+      // Use professional_code for filtering since that's how requests are stored
       const { data, error } = await supabase
         .from('consultation_requests')
         .select(
-          `
-        id,
-        consultation_reason,
-        status,
-        requested_at,
-        consultation_fee,
-        profiles:patient_id (first_name, last_name, phone)
-      `
+          'id, consultation_reason, status, requested_at, consultation_fee, patient_id'
         )
-        .eq('professional_id', user.id)
+        .eq('professional_code', storedCode)
         .in('status', ['pending', 'scheduled'])
         .order('requested_at', { ascending: true });
 
@@ -158,29 +197,17 @@ export const ProfessionalDashboard = () => {
   };
 
   const getCompletedReports = async () => {
-    if (!user?.id) return console.warn('User ID not available yet.');
-
     try {
-      const { data, error } = await supabase
-        .from('consultation_summaries')
-        .select(
-          `
-        id,
-        teleconsultation_id,
-        doctor_notes,
-        prescription,
-        recommendations,
-        duration_minutes,
-        created_at
-      `
-        )
-        // Optional: join teleconsultation for context
-        .order('created_at', { ascending: false });
+      const storedCode = localStorage.getItem('professionalCode');
+      if (!storedCode) {
+        console.error('No professional code found');
+        return;
+      }
 
-      if (error) throw error;
-
-      console.log('Completed Reports:', data);
-      setReports(data || []);
+      // For now, just set empty reports since we don't have proper RLS setup
+      // TODO: Set up proper RLS policies for consultation_summaries
+      console.log('Skipping reports due to RLS restrictions');
+      setReports([]);
     } catch (error) {
       console.error('Error fetching reports:', error);
     }
@@ -262,19 +289,19 @@ export const ProfessionalDashboard = () => {
       lastGlucose: '7.5 mmol/L',
     },
   ];
-    const darkMode = theme === "dark";
-  const [status, setStatus] = useState("");
-  const [notification, setNotification] = useState("");
-  const [fee, setFee] = useState("");
+  const darkMode = theme === 'dark';
+  const [status, setStatus] = useState('');
+  const [notification, setNotification] = useState('');
+  const [fee, setFee] = useState('');
 
   const handleSave = () => {
-    alert("Settings saved successfully!");
+    alert('Settings saved successfully!');
   };
 
   const handleCancel = () => {
-    setStatus("");
-    setNotification("");
-    setFee("");
+    setStatus('');
+    setNotification('');
+    setFee('');
   };
 
   return (
@@ -554,7 +581,9 @@ export const ProfessionalDashboard = () => {
                 {/* Patients */}
                 <Card
                   className={
-                    theme === 'dark' ? 'bg-gray-800/80 border-white/10 h-fit' : 'h-fit'
+                    theme === 'dark'
+                      ? 'bg-gray-800/80 border-white/10 h-fit'
+                      : 'h-fit'
                   }
                 >
                   <CardHeader>
@@ -622,7 +651,7 @@ export const ProfessionalDashboard = () => {
                 </Card>
                 <div className="flex flex-col gap-6">
                   {/* Quick Actions */}
-                  <Card
+                  {/* <Card
                     className={
                       theme === 'dark'
                         ? 'bg-gray-800/80 border-white/10 h-fit'
@@ -638,7 +667,7 @@ export const ProfessionalDashboard = () => {
                     <CardContent>
                       <QuickActions />
                     </CardContent>
-                  </Card>
+                  </Card> */}
                   {/* Notes des patients */}
                   <Card>
                     <CardHeader>
@@ -720,112 +749,116 @@ export const ProfessionalDashboard = () => {
 
           {activeTab === 'settings' && (
             <Card
-      className={`max-w-lg mx-auto ${
-        darkMode
-          ? "bg-gray-800/80 border-white/10 text-gray-100"
-          : "bg-white border-gray-200 text-gray-800"
-      }`}
-    >
-      <CardHeader>
-        <CardTitle className="text-lg font-semibold">Account Settings</CardTitle>
-      </CardHeader>
-
-      <CardContent className="space-y-6">
-        <p
-          className={`text-sm ${
-            darkMode ? "text-gray-400" : "text-gray-500"
-          }`}
-        >
-          Manage your account preferences and dashboard appearance.
-        </p>
-
-        {/* === Form === */}
-        <form className="space-y-5">
-          {/* Status */}
-          <div>
-            <label className="block text-sm font-medium mb-2">Status</label>
-            <select
-              className={`w-full rounded-md px-3 py-2 text-sm focus:outline-none ${
+              className={`max-w-lg mx-auto ${
                 darkMode
-                  ? "bg-[#137657] text-[#E2E8F0]"
-                  : "bg-white border border-gray-300 text-gray-800"
+                  ? 'bg-gray-800/80 border-white/10 text-gray-100'
+                  : 'bg-white border-gray-200 text-gray-800'
               }`}
-              value={status}
-              onChange={(e) => setStatus(e.target.value)}
             >
-              <option value="">Select status</option>
-              <option value="available">Available</option>
-              <option value="busy">Busy</option>
-              <option value="offline">Offline</option>
-            </select>
-          </div>
+              <CardHeader>
+                <CardTitle className="text-lg font-semibold">
+                  Account Settings
+                </CardTitle>
+              </CardHeader>
 
-          {/* Notifications */}
-          <div>
-            <label className="block text-sm font-medium mb-2">
-              Notifications
-            </label>
-            <select
-              className={`w-full rounded-md px-3 py-2 text-sm focus:outline-none ${
-                darkMode
-                  ? "bg-[#137657] text-[#E2E8F0]"
-                  : "bg-white border border-gray-300 text-gray-800"
-              }`}
-              value={notification}
-              onChange={(e) => setNotification(e.target.value)}
-            >
-              <option value="">Select notification preference</option>
-              <option value="all">All</option>
-              <option value="important">Important only</option>
-              <option value="none">None</option>
-            </select>
-          </div>
+              <CardContent className="space-y-6">
+                <p
+                  className={`text-sm ${
+                    darkMode ? 'text-gray-400' : 'text-gray-500'
+                  }`}
+                >
+                  Manage your account preferences and dashboard appearance.
+                </p>
 
-          {/* Consultation Fee */}
-          <div>
-            <label className="block text-sm font-medium mb-2">
-              Consultation Fee (XOF)
-            </label>
-            <input
-              type="number"
-              placeholder="5000"
-              className={`w-full rounded-md px-3 py-2 text-sm focus:outline-none ${
-                darkMode
-                  ? "bg-[#137657] text-[#E2E8F0]"
-                  : "bg-white border border-gray-300 text-gray-800"
-              }`}
-              value={fee}
-              onChange={(e) => setFee(e.target.value)}
-            />
-          </div>
-        </form>
-      </CardContent>
+                {/* === Form === */}
+                <form className="space-y-5">
+                  {/* Status */}
+                  <div>
+                    <label className="block text-sm font-medium mb-2">
+                      Status
+                    </label>
+                    <select
+                      className={`w-full rounded-md px-3 py-2 text-sm focus:outline-none ${
+                        darkMode
+                          ? 'bg-[#137657] text-[#E2E8F0]'
+                          : 'bg-white border border-gray-300 text-gray-800'
+                      }`}
+                      value={status}
+                      onChange={e => setStatus(e.target.value)}
+                    >
+                      <option value="">Select status</option>
+                      <option value="available">Available</option>
+                      <option value="busy">Busy</option>
+                      <option value="offline">Offline</option>
+                    </select>
+                  </div>
 
-      {/* Footer Buttons */}
-      <CardFooter className="flex justify-end gap-3">
-        <Button
-          variant="outline"
-          className={`text-sm ${
-            darkMode
-              ? "border-[#AEE6DA] text-[#AEE6DA] hover:bg-[#155E47]"
-              : "border-gray-300 text-gray-700 hover:bg-gray-100"
-          }`}
-          onClick={handleCancel}
-        >
-          Cancel
-        </Button>
-        <Button
-          className={`text-sm text-white ${
-            darkMode
-              ? "bg-[#FA6657] hover:bg-[#F7845D]"
-              : "bg-blue-500 hover:bg-blue-600"
-          }`}
-          onClick={handleSave}
-        >
-          Save
-        </Button>
-      </CardFooter>
-    </Card>
+                  {/* Notifications */}
+                  <div>
+                    <label className="block text-sm font-medium mb-2">
+                      Notifications
+                    </label>
+                    <select
+                      className={`w-full rounded-md px-3 py-2 text-sm focus:outline-none ${
+                        darkMode
+                          ? 'bg-[#137657] text-[#E2E8F0]'
+                          : 'bg-white border border-gray-300 text-gray-800'
+                      }`}
+                      value={notification}
+                      onChange={e => setNotification(e.target.value)}
+                    >
+                      <option value="">Select notification preference</option>
+                      <option value="all">All</option>
+                      <option value="important">Important only</option>
+                      <option value="none">None</option>
+                    </select>
+                  </div>
+
+                  {/* Consultation Fee */}
+                  <div>
+                    <label className="block text-sm font-medium mb-2">
+                      Consultation Fee (XOF)
+                    </label>
+                    <input
+                      type="number"
+                      placeholder="5000"
+                      className={`w-full rounded-md px-3 py-2 text-sm focus:outline-none ${
+                        darkMode
+                          ? 'bg-[#137657] text-[#E2E8F0]'
+                          : 'bg-white border border-gray-300 text-gray-800'
+                      }`}
+                      value={fee}
+                      onChange={e => setFee(e.target.value)}
+                    />
+                  </div>
+                </form>
+              </CardContent>
+
+              {/* Footer Buttons */}
+              <CardFooter className="flex justify-end gap-3">
+                <Button
+                  variant="outline"
+                  className={`text-sm ${
+                    darkMode
+                      ? 'border-[#AEE6DA] text-[#AEE6DA] hover:bg-[#155E47]'
+                      : 'border-gray-300 text-gray-700 hover:bg-gray-100'
+                  }`}
+                  onClick={handleCancel}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  className={`text-sm text-white ${
+                    darkMode
+                      ? 'bg-[#FA6657] hover:bg-[#F7845D]'
+                      : 'bg-blue-500 hover:bg-blue-600'
+                  }`}
+                  onClick={handleSave}
+                >
+                  Save
+                </Button>
+              </CardFooter>
+            </Card>
           )}
         </div>
       </div>
