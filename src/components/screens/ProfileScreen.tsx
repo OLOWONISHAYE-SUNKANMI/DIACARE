@@ -75,12 +75,36 @@ const ProfileScreen = () => {
   });
 
   const { medications, loading: medsLoading } = useMedications();
+  const [medicalTeam, setMedicalTeam] = useState([]);
+  const [teamLoading, setTeamLoading] = useState(false);
 
   const { theme, toggleTheme } = useThemeStore();
   const isDark = theme === 'dark';
 
   const [loading, setLoading] = useState(false);
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
+
+  const fetchMedicalTeam = async () => {
+    setTeamLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from('professional_applications')
+        .select('first_name, last_name, professional_type, email, phone')
+        .eq('status', 'approved')
+        .limit(10);
+
+      if (error) throw error;
+      setMedicalTeam(data || []);
+    } catch (error) {
+      console.error('Error fetching medical team:', error);
+    } finally {
+      setTeamLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchMedicalTeam();
+  }, []);
 
   const handlePhotoUpload = async (file: File) => {
     setUploadingPhoto(true);
@@ -235,7 +259,6 @@ const ProfileScreen = () => {
           </div>
         </div>
       </div>
-
       {/* Quick Stats */}
       <div className="grid grid-cols-3 gap-3">
         <Card className="text-center p-3">
@@ -270,7 +293,6 @@ const ProfileScreen = () => {
           </CardContent>
         </Card>
       </div>
-
       {/* Personal Info */}
       <Card className="border-l-4 border-l-medical-teal">
         <div className="flex justify-between items-center w-full">
@@ -341,7 +363,6 @@ const ProfileScreen = () => {
           </div>
         </CardContent>
       </Card>
-
       <Card className="border-l-4 border-l-medical-teal">
         <div className="flex justify-between items-center w-full">
           <CardHeader className="flex justify-between">
@@ -392,8 +413,7 @@ const ProfileScreen = () => {
           </div>
         </CardContent>
       </Card>
-
-      {/* Équipe Médicale */}
+      {/* Équipe Médicale */} {/* Médical team */}
       <Card className="border-l-4 border-l-medical-teal">
         <CardHeader>
           <CardTitle className="text-lg flex items-center gap-2">
@@ -402,40 +422,37 @@ const ProfileScreen = () => {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <div className="font-medium">Dr. Mamadou Kane</div>
-            <div className="text-sm text-muted-foreground">
-              {t('profileScreen.doctor')}
-            </div>
-            <div className="text-sm">📞 +221 33 825 14 52</div>
-          </div>
-
-          <Separator />
-
-          <div className="space-y-2">
-            <div className="font-medium">CHU Aristide Le Dantec</div>
-            <div className="text-sm text-muted-foreground">
-              {t('profileScreen.followUpCenter')}
-            </div>
-            <div className="text-sm text-muted-foreground">
-              📍 Dakar, Sénégal
-            </div>
-          </div>
-
-          <Separator />
-
-          <div className="space-y-2">
-            <div className="font-medium">Dr. Aminata Sow</div>
-            <div className="text-sm text-muted-foreground">
-              {t('profileScreen.consultant')}
-            </div>
-            <div className="text-sm text-muted-foreground">
-              🏥 Polyclinique du Point E
-            </div>
-          </div>
+          {teamLoading ? (
+            <p className="text-sm text-muted-foreground">
+              Loading medical team...
+            </p>
+          ) : medicalTeam.length === 0 ? (
+            <p className="text-sm text-muted-foreground">
+              No medical professionals available
+            </p>
+          ) : (
+            medicalTeam.map((professional, index) => (
+              <div key={index}>
+                <div className="space-y-2 pb-2">
+                  <div className="font-medium">
+                    Dr. {professional.first_name} {professional.last_name}
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    {professional.professional_type}
+                  </div>
+                  {professional.phone && (
+                    <div className="text-sm">📞 {professional.phone}</div>
+                  )}
+                  {professional.email && (
+                    <div className="text-sm">✉️ {professional.email}</div>
+                  )}
+                </div>
+                {index < medicalTeam.length - 1 && <Separator />}
+              </div>
+            ))
+          )}
         </CardContent>
       </Card>
-
       {/* Current Treatment */}
       <Card className="border-l-4 border-l-medical-teal">
         <CardHeader>
@@ -472,7 +489,6 @@ const ProfileScreen = () => {
           )}
         </CardContent>
       </Card>
-
       {/* Energency Contact */}
       <Card className="border-l-4 border-l-red-500 bg-red-50">
         <div className="flex justify-between items-start w-full">
@@ -572,7 +588,6 @@ const ProfileScreen = () => {
           </div>
         </CardContent>
       </Card>
-
       {/* Settings */}
       <Card className="border-l-4 border-l-medical-teal">
         <CardHeader>
@@ -632,7 +647,6 @@ const ProfileScreen = () => {
           </div>
         </CardContent>
       </Card>
-
       {/* Boutons Actions */}
       <div className="space-y-3">
         <Button variant="outline" className="w-full">
